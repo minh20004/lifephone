@@ -11,7 +11,6 @@ class Voucher extends Model
 
     protected $fillable = ['code', 'discount_percentage', 'max_discount_amount', 'min_order_value', 'start_date', 'end_date', 'usage_limit'];
 
-    // Một voucher có thể áp dụng cho nhiều đơn hàng
     public function orders()
     {
         return $this->hasMany(Order::class);
