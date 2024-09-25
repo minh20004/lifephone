@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('product_variants', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->enum('role', ['admin', 'staff', 'customer']);
-            $table->string('password');
-            $table->rememberToken();
+            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
+            $table->string('variant_name');
+            $table->string('variant_value');
+            $table->decimal('price_difference', 10, 2)->default(0);
+            $table->integer('stock');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('product_variants');
     }
 };
