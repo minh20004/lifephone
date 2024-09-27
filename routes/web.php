@@ -17,4 +17,8 @@ Route::get('/', function () {
     return view('index');
 });
 
+<<<<<<< HEAD
 // duy tan
+=======
+// duy taan 
+>>>>>>> 51a70ddfe5823614657d6c268b768bc4383ad475
