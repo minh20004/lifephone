@@ -583,38 +583,23 @@
 
             <li class="nav-item">
                 <a class="nav-link menu-link" href="#sidebarPages" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarPages">
-                    <i class="ri-pages-line"></i> <span data-key="t-pages">Pages</span>
+                    <i class="ri-pages-line"></i> <span data-key="t-pages">Quản lý Sản phẩm</span>
                 </a>
                 <div class="collapse menu-dropdown" id="sidebarPages">
                     <ul class="nav nav-sm flex-column">
                         <li class="nav-item">
-                            <a href="pages-starter.html" class="nav-link" data-key="t-starter"> Starter </a>
+                            <a href="{{route('category.index')}}" class="nav-link" data-key="t-starter"> Danh mục </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#sidebarProfile" class="nav-link" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarProfile" data-key="t-profile"> Profile
-                            </a>
-                            <div class="collapse menu-dropdown" id="sidebarProfile">
-                                <ul class="nav nav-sm flex-column">
-                                    <li class="nav-item">
-                                        <a href="pages-profile.html" class="nav-link" data-key="t-simple-page">
-                                            Simple Page </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="pages-profile-settings.html" class="nav-link" data-key="t-settings"> Settings </a>
-                                    </li>
-                                </ul>
-                            </div>
+                            <a href="{{route('product.index')}}" class="nav-link" data-key="t-team"> Sản phẩm  </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages-team.html" class="nav-link" data-key="t-team"> Team </a>
+                            <a href="{{ route('product.trashed') }}" class="nav-link" data-key="t-timeline"> Sản phẩm đã bị xóa  </a>
                         </li>
                         <li class="nav-item">
-                            <a href="pages-timeline.html" class="nav-link" data-key="t-timeline"> Timeline </a>
+                            <a href="{{ route('category.trashed') }}" class="nav-link" data-key="t-faqs"> Danh mục đã bị xóa </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="pages-faqs.html" class="nav-link" data-key="t-faqs"> FAQs </a>
-                        </li>
-                        <li class="nav-item">
+                        {{-- <li class="nav-item">
                             <a href="pages-pricing.html" class="nav-link" data-key="t-pricing"> Pricing </a>
                         </li>
                         <li class="nav-item">
@@ -639,7 +624,7 @@
                         </li>
                         <li class="nav-item">
                             <a href="pages-term-conditions.html" class="nav-link" data-key="t-term-conditions">Term & Conditions</a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </div>
             </li>
