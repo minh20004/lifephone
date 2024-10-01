@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('index');
+<<<<<<< HEAD
 })->name('user.home');
 
 // admin
@@ -24,5 +25,10 @@ Route::get('/admin', function () {
 })->name('admin.home');// ->middleware('isAdmin')->name('admin.home');
 
 Route::get('/them-thanh-vien', [AuthController::class, 'create'])->name('admin.them-thanh-vien');
-Route::get('/thanh-vien', [AuthController::class, 'index'])->name('admin.thanh-vien');
+Route::get('/thanh-vienit ', [AuthController::class, 'index'])->name('admin.thanh-vien');
 Route::resource('users', AuthController::class);
+=======
+});
+
+// duy taan 
+>>>>>>> b2efbbfaaf22f41b3b5faf7f6af28023396ba5e0
