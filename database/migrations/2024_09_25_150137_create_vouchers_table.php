@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->integer('usage_limit');
+            // $table->softDeletes(); // Dòng này sẽ tự động thêm cột deleted_at
             $table->timestamps();
         });
     }
