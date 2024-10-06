@@ -15,11 +15,20 @@ class CategoryController extends Controller
     }
 
 
-    public function index()
+
+    public function index(Request $request)
     {
-        $listCategory = $this->categories->getAll();
-        return view('admin.page.category.index', ['categories' => $listCategory]);
+        $search = $request->input('search');
+
+        if ($search) {
+            $listCategory = Category::where('name', 'LIKE', "%{$search}%");
+        } else {
+            $listCategory = Category::paginate(5);
+        }
+
+        return view('admin.page.category.index', ['categories' => $listCategory, 'search' => $search]);
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -34,27 +43,33 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        // Kiểm tra nếu danh mục đã tồn tại
-    $existingCategory = $this->categories->where('name', $request->name)->first();
-
-    if ($existingCategory) {
-        // Nếu danh mục đã tồn tại, trả về thông báo lỗi
-        if ($request->ajax()) {
-            return response()->json(['error' => 'Danh mục đã tồn tại!'], 400);
-        }
-
-        return redirect()->route('category.index')->with('error', 'Danh mục đã tồn tại!');
-    }
-    
-        $this->categories->create([
-            'name' => $request->name,
+        $validateData = $request->validate([
+            'name' => 'required|unique:categories,name',
         ]);
 
-        // Nếu là AJAX request, trả về phản hồi JSON
-    if ($request->ajax()) {
-        return response()->json(['success' => 'Danh mục đã được thêm thành công!']);
-    }
         
+
+        // Kiểm tra nếu danh mục đã tồn tại
+        $existingCategory = $this->categories->where('name', $request->name)->first();
+
+        if ($existingCategory) {
+            // Nếu danh mục đã tồn tại, trả về thông báo lỗi
+            if ($request->ajax()) {
+                return response()->json(['error' => 'Danh mục đã tồn tại!'], 400);
+            }
+
+            return redirect()->route('category.index')->with('error', 'Danh mục đã tồn tại!');
+        }
+
+        $this->categories->create([
+            'name' => $validateData['name'],
+        ]);
+
+        // sử lý thêm danh mục bên add sản phẩm
+        if ($request->ajax()) {
+            return response()->json(['success' => 'Danh mục đã được thêm thành công!']);
+        }
+
         return redirect()->route('category.index');
     }
 
@@ -80,10 +95,14 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $validateData = $request->validate([
+            'name' => 'required|unique:categories,name',
+        ]);
+
         $category = $this->categories->find($id);
 
         $dataUpdateCate = [
-            'name' => $request->name,
+            'name' => $validateData['name'],
         ];
 
         $category->updateCategory($dataUpdateCate, $id);
@@ -110,7 +129,7 @@ class CategoryController extends Controller
 
     public function trashed()
     {
-        $categories = Category::onlyTrashed()->get();
+        $categories = Category::onlyTrashed()->paginate(5);
 
         return view('admin.page.category.trashed', compact('categories'));
     }
