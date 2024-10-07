@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\VoucherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,13 +16,19 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-<<<<<<< HEAD
-    return view('admin.index');
-});
-
-Route::resource('vouchers', VoucherController::class);
-=======
     return view('index');
 })->name('user.home');
 
-// duy taan 
+// admin Quang Minh
+Route::get('/admin', function () {
+    return view('admin.index');
+})->name('admin.home'); // ->middleware('isAdmin')->name('admin.home');
+
+Route::get('/them-thanh-vien', [AuthController::class, 'create'])->name('admin.them-thanh-vien');
+Route::get('/thanh-vien', [AuthController::class, 'index'])->name('admin.thanh-vien');
+Route::get('cap-nhat/thanh-vien/{id}/edit', [AuthController::class, 'edit'])->name('admin.edit');
+Route::get('ho-so/admin', [AuthController::class, 'hoso'])->name('admin.hoso');
+Route::resource('admins', AuthController::class);
+
+// Voucher routes
+Route::resource('vouchers', VoucherController::class);

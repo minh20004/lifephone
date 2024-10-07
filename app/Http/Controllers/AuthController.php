@@ -5,16 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
-    // List all users
     public function index()
     {
-        $users = User::all();
+        $users = User::latest('id')->paginate(2);
         return view('admin.page.member.list-member', compact('users'));
     }
-
+    public function hoso()
+    {
+        // $user = User::findOrFail($id);
+        return view('admin.page.member.file');
+    }
     // Show form to create a new user
     public function create()
     {
@@ -23,56 +27,63 @@ class AuthController extends Controller
 
     // Store a new user
     public function store(Request $request)
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'email' => 'required|email|unique:users,email',
-        'password' => 'required|min:8',
-        'role' => 'required|in:admin,staff,customer',
-    ]);
+    {
+        // Xác thực dữ liệu yêu cầu đầu vào
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
 
-    // Tạo người dùng mới
-    User::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password' => bcrypt($request->password),  // Mã hóa mật khẩu
-        'role' => $request->role,
-    ]);
+        $data = $request->only(['name', 'email']);
+        $data['password'] = bcrypt($request->password); // Mã hóa mật khẩu
 
-    return redirect()->route('admin.thanh-vien')->with('success', 'Thêm thành viên thành công');
-}
+        if ($request->hasFile('avatar')) {
+            if (!Storage::exists('avatars')) {
+                Storage::makeDirectory('avatars');
+            }
+            $data['avatar'] = Storage::put('avatars', $request->file('avatar'));
+        }
+        
+        User::create($data);
 
+        return redirect()->route('users.index')->with('success', 'Thêm thành công');
+    }
 
-    // Show form to edit an existing user
+    
     public function edit($id)
     {
         $user = User::findOrFail($id);
         return view('admin.page.member.edit', compact('user'));
     }
-
     // Update an existing user
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $user->id,
-            'password' => 'nullable|min:8|confirmed',
+            'email' => 'required|string|email|max:255|unique:users,email,'.$id,
+            'name' => 'required|string|max:255',
             'role' => 'required|in:admin,staff,customer',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'role' => $request->role,
-            'password' => $request->password ? Hash::make($request->password) : $user->password,
-        ]);
+        $user = User::findOrFail($id);
+        $data = $request->except('avatar');
 
-        return redirect()->route('admin.thanh-vien')->with('success', 'User updated successfully.');
+        if ($request->hasFile('avatar')) {
+            // Xóa ảnh cũ nếu cần
+            if ($user->avatar) {
+                Storage::delete($user->avatar);
+            }
+            // Lưu ảnh mới
+            $data['avatar'] = Storage::put('avatars', $request->file('avatar'));
+        }
+
+        $user->update($data);
+
+        return redirect()->route('admins.index')->with('success', 'Cập nhật thông tin thành công');
     }
 
-    // Delete a user
     public function destroy($id)
     {
         $user = User::findOrFail($id);
