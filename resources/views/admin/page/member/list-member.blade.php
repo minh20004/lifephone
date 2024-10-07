@@ -5,9 +5,18 @@
 @section('content')
 <div class="page-content">
     <div class="container-fluid">
-
+        @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+        @endif
         <div class="d-flex align-items-lg-center flex-lg-row flex-column">
-            <div class="flex-grow-1"></div>
+            <div class="flex-grow-1">
+                <!--end col-->
+                <div class="col-auto">
+                    <a href="{{ route('admin.them-thanh-vien') }}" class="btn btn-soft-success"><i class="ri-add-circle-line align-middle me-1"></i> Thêm mới</a>
+                </div>
+            </div>
             <div class="mt-3 mt-lg-0">
                 <form action="javascript:void(0);">
                     <div class="row g-3 mb-0 align-items-center">
@@ -43,12 +52,11 @@
                         <thead class="text-muted table-light">
                             <tr>
                                 <th scope="col">Tên người dùng</th>
-                                <th scope="col">Tên</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Vai trò</th>
                                 <th scope="col">Bài viết</th>
                                 <th scope="col">Trạng thái 2FA</th>
-                                <th scope="col">Sắp xếp tăng dần</th>
+                                <th scope="col">Chức năng</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -60,7 +68,7 @@
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <div class="flex-shrink-0 me-2">
-                                                <img src="{{ asset('assets/images/users/avatar-' . $user->avatar) }}" alt="" class="avatar-xs rounded-circle" />
+                                                <img src="{{ asset('storage/' . $user->avatar) }}" alt="" class="avatar-xs rounded-circle" />
                                             </div>
                                             <div class="flex-grow-1">{{ $user->name }}</div>
                                         </div>
@@ -74,14 +82,21 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <h5 class="fs-14 fw-medium mb-0">{{ $user->rating }}<span class="text-muted fs-11 ms-1">({{ $user->votes }} votes)</span></h5>
+                                        <a href="{{route('admin.edit', $user)}}" class="btn btn-warning mt-3 btn-sm">Sửa</a>
+                                        <form action="{{route('admins.destroy', $user)}}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" onclick="return confirm('xác nhận xóa!')" class="btn btn-danger btn-sm mt-3"> Xóa</button>
+                                        </form>
+                                    </td>
+                                    <td>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div>{{ $users->links() }}
         </div> <!-- .card-->
 
     </div>
