@@ -39,7 +39,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = DB::table('categories')->get();
+        $categories = DB::table('categories')->where('status', 1)->get();
         return view('admin.page.product.add', ['categories' => $categories]);
     }
 
@@ -106,7 +106,7 @@ class ProductController extends Controller
     public function edit(string $id)
     {
         $product = Product::FindorFail($id);
-        $categories= DB::table('categories')->get();
+        $categories= DB::table('categories')->where('status', 1)->get();
         return view('admin.page.product.update', compact('product', 'categories'));
     }
 
