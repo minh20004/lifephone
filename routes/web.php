@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\VoucherController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,10 +15,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('index');
+    return view('admin.index');
 });
 Route::get('/admin', function () {
     return view('admin.sellerDetail');
 });
 
 // duy taan
+Route::resource('vouchers', VoucherController::class);
