@@ -35,6 +35,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
+        $categories = Category::where('status', 1)->get();
         return view('admin.page.category.add');
     }
 
@@ -123,6 +124,9 @@ class CategoryController extends Controller
             return redirect()->route('category.index')->with('error', 'Không thể xóa danh mục vì vẫn còn sản phẩm trong danh mục này.');
         }
 
+        $category->status = 0;
+        $category->save();
+
         $category->delete();
         return redirect()->route('category.index')->with('success', 'Danh mục đã được xóa thành công.');
     }
@@ -139,6 +143,8 @@ class CategoryController extends Controller
         $category = Category::withTrashed()->findOrFail($id);
         $category->restore();
 
+        $category->status = 1;
+        $category->save();
         return redirect()->route('category.trashed')->with('success', 'Danh mục đã được khôi phục thành công.');
     }
 }
