@@ -17,5 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('admin.index');
 });
+Route::get('/admin', function () {
+    return view('admin.sellerDetail');
+});
 
+// duy taan
 Route::resource('vouchers', VoucherController::class);

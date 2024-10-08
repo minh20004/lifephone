@@ -19,4 +19,15 @@
 <script src="{{ asset('assets/js/pages/dashboard-ecommerce.init.js') }}"></script>
 
 <!-- App js -->
+
+<script src="assets/js/app.js"></script>
+
+<!-- gridjs js -->
+<script src="assets/libs/gridjs/gridjs.umd.js"></script>
+<!-- <script src="https://unpkg.com/gridjs/plugins/selection/dist/selection.umd.js"></script> -->
+
+<!-- seller-details init js -->
+<script src="assets/js/pages/seller-details.init.js"></script>
+
 <script src="{{ asset('assets/js/app.js') }}"></script>
+
