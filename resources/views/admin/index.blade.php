@@ -1,6 +1,6 @@
 @extends('admin.layout.master')
 @section('title')
-    admin
+    Trang quản trị
 @endsection
 @section('content')
 <div class="page-content">
