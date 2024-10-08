@@ -8,11 +8,11 @@
 <!-- apexcharts -->
 <script src="{{ asset('assets/libs/apexcharts/apexcharts.min.js') }}"></script>
 
-<!-- Vector map -->
+<!-- Vector map-->
 <script src="{{ asset('assets/libs/jsvectormap/js/jsvectormap.min.js') }}"></script>
 <script src="{{ asset('assets/libs/jsvectormap/maps/world-merc.js') }}"></script>
 
-<!-- Swiper slider js -->
+<!-- Swiper slider js-->
 <script src="{{ asset('assets/libs/swiper/swiper-bundle.min.js') }}"></script>
 
 <!-- Dashboard init -->
@@ -20,3 +20,108 @@
 
 <!-- App js -->
 <script src="{{ asset('assets/js/app.js') }}"></script>
+
+{{-- mô tả product --}}
+<script src="{{ asset('assets/ckeditor/ckeditor.js') }}"></script>
+    <script>
+        CKEDITOR.replace('description');
+    </script>
+
+{{-- ảnh thêm sản phẩm --}}
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('thumbimage').src = e.target.result;
+                document.getElementById('thumbimage').style.display = 'block';
+                document.querySelector('.removeimg').style.display = 'inline'; // Hiện liên kết xóa ảnh
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function removeImage() {
+        document.getElementById('image_url').value = ''; // Xóa giá trị input
+        document.getElementById('thumbimage').src = ''; // Xóa src của ảnh
+        document.getElementById('thumbimage').style.display = 'none'; // Ẩn ảnh
+        document.querySelector('.removeimg').style.display = 'none'; // Ẩn liên kết xóa ảnh
+    }
+</script>
+
+
+{{-- modal thêm danh mục trong add sp --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            
+            $('#saveCategory').on('click', function() {
+                var categoryName = $('#categoryName').val(); 
+                var token = $("input[name=_token]").val(); // Lấy CSRF token từ form
+
+                if (categoryName === '') {
+                    $('#categoryError').text('Tên danh mục không được để trống').show();
+                    return;
+                } else {
+                    $('#categoryError').hide(); 
+                }
+
+                // Gửi AJAX request
+                $.ajax({
+                    url: "{{ route('category.store') }}", // Đường dẫn đến route để lưu danh mục
+                    method: "POST", 
+                    data: {
+                        _token: token,
+                        name: categoryName
+                    },
+                    success: function(response) {
+                        $('#adddanhmuc').modal('hide'); 
+                        location.reload(); 
+                    },
+                    error: function(xhr) {
+                        // Xử lý lỗi 
+                        $('#categoryError').text('Danh mục đã tồn tại !').show();
+                    }
+                });
+            });
+        });
+    </script>
+
+
+<script>
+    // Biến để lưu trữ các ảnh đã hiển thị
+    const displayedImages = [];
+
+    function previewImages(event) {
+        const previewContainer = document.getElementById('image_preview');
+        const files = event.target.files; // Lấy tất cả các tệp đã chọn
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+
+            // Kiểm tra xem ảnh đã được hiển thị hay chưa
+            if (!displayedImages.includes(file.name)) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result; // Đặt nguồn cho ảnh là dữ liệu đọc từ file
+                    img.style.width = '70px'; // Thiết lập kích thước cho ảnh
+                    img.style.height = '70px'; // Thiết lập kích thước cho ảnh
+                    img.style.marginRight = '10px'; // Thiết lập khoảng cách giữa các ảnh
+
+                    const imagePreviewContainer = document.createElement('div');
+                    imagePreviewContainer.className = 'image-preview'; // Tạo một div để bao quanh ảnh
+                    imagePreviewContainer.appendChild(img); // Thêm ảnh vào div
+
+                    previewContainer.appendChild(imagePreviewContainer); // Thêm div vào container
+
+                    // Lưu tên tệp đã hiển thị để tránh hiển thị lại
+                    displayedImages.push(file.name);
+                };
+
+                reader.readAsDataURL(file); // Đọc dữ liệu của tệp
+            }
+        }
+    }
+</script>

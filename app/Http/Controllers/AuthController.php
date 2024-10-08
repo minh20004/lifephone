@@ -48,7 +48,7 @@ class AuthController extends Controller
         
         User::create($data);
 
-        return redirect()->route('users.index')->with('success', 'Thêm thành công');
+        return redirect()->route('admins.index')->with('success', 'Thêm thành công');
     }
 
     
