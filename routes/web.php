@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\NewController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,8 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::get('/', function ():View {
+//     return view('admin.index');
+// });
+Route::resource('review',ReviewController::class);
+Route::resource('new',NewController::class);
 Route::get('/', function () {
-    return view('index');
+    return view('admin.index');
 });
-
-// duy taan 
