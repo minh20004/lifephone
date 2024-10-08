@@ -1239,7 +1239,8 @@
             <div class="col-lg-9 d-lg-flex pt-3 pt-lg-0 ps-lg-0">
               <ul class="navbar-nav position-relative">
                 <li class="nav-item dropdown me-lg-n1 me-xl-0">
-                  <a class="nav-link dropdown-toggle active" aria-current="page" href="#" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">Home</a>
+                  <a class="nav-link dropdown-toggle active" aria-current="page" href="#" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">
+                  Trang chủ</a>
                   <ul class="dropdown-menu">
                     <li class="hover-effect-opacity px-2 mx-n2">
                       <a class="dropdown-item d-block mb-0" href="home-electronics.html">
