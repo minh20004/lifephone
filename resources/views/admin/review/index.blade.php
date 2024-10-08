@@ -43,26 +43,24 @@ REVIEW
                                                                 <div class="gridjs-th-content">#</div>
                                                             </th>
                                                             <th data-column-id="product" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 94px;">
-                                                                <div class="gridjs-th-content">STT</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
+                                                                <div class="gridjs-th-content">STT</div>
                                                             </th>
                                                             <th data-column-id="product" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 300;">
-                                                                <div class="gridjs-th-content">Product</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
+                                                                <div class="gridjs-th-content">Product</div>
                                                             </th>
                                                             <th data-column-id="user" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 105px;">
-                                                                <div class="gridjs-th-content">User</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
+                                                                <div class="gridjs-th-content">User</div>
                                                             </th>
                                                             <th data-column-id="comment" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 360px;">
-                                                                <div class="gridjs-th-content">comment</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-desc"></button>
+                                                                <div class="gridjs-th-content">comment</div>
                                                             </th>
                                                             <th data-column-id="rating" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 105px;">
-                                                                <div class="gridjs-th-content">Rating</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-desc"></button>
+                                                                <div class="gridjs-th-content">Rating</div>
                                                             </th>
                                                             <th data-column-id="action" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 140px;">
-                                                                <div class="gridjs-th-content">crate-at</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
-                                                            </th>
+                                                                <div class="gridjs-th-content">crate-at</div>
                                                             <th data-column-id="action" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 80px;">
-                                                                <div class="gridjs-th-content">Action</div><button tabindex="-1" aria-label="Sort column ascending" title="Sort column ascending" class="gridjs-sort gridjs-sort-neutral"></button>
-                                                            </th>
+                                                                <div class="gridjs-th-content">Action</div> 
                                                         </tr>
                                                     </thead>
                                                     <tbody class="gridjs-tbody">
@@ -105,8 +103,7 @@ REVIEW
                 <form action="{{route('review.destroy',$review->id)}}" method="post">
                     @method('DELETE')
                     @csrf
-                    <button onclick="return confirm('xoa')">
-                        <i class="ri-delete-bin-fill align-bottom me-2 text-muted btn btn danger    "></i> Delete
+                    <button class="ri-delete-bin-fill align-bottom me-2 btn btn-danger text-white "onclick="return confirm('xoa')"> Delete
                     </button>
                 </form>
             </div>
