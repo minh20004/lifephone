@@ -16,12 +16,21 @@ class CategoryController extends Controller
     }
 
 
-    public function index()
+
+    public function index(Request $request)
     {
-        $listCategory = $this->categories->getAll();
-        return view('admin.page.category.index', ['categories' => $listCategory]);
+        $search = $request->input('search');
+
+        if ($search) {
+            $listCategory = Category::where('name', 'LIKE', "%{$search}%");
+        } else {
+            $listCategory = Category::paginate(5);
+        }
+
+        return view('admin.page.category.index', ['categories' => $listCategory, 'search' => $search]);
     }
 
+<<<<<<< HEAD
 =======
     {
         $this->categories = new Category();
@@ -44,6 +53,9 @@ class CategoryController extends Controller
 
 
 >>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
+=======
+
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
     /**
      * Show the form for creating a new resource.
      */
@@ -57,6 +69,7 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+<<<<<<< HEAD
 <<<<<<< HEAD
         // Kiểm tra nếu danh mục đã tồn tại
     $existingCategory = $this->categories->where('name', $request->name)->first();
@@ -72,19 +85,22 @@ class CategoryController extends Controller
     
         $this->categories->create([
             'name' => $request->name,
+=======
+        $validateData = $request->validate([
+            'name' => 'required|unique:categories,name',
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
         ]);
 
-        // Nếu là AJAX request, trả về phản hồi JSON
-    if ($request->ajax()) {
-        return response()->json(['success' => 'Danh mục đã được thêm thành công!']);
-    }
         
+<<<<<<< HEAD
 =======
         $validateData = $request->validate([
             'name' => 'required|unique:categories,name',
         ]);
 
         
+=======
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
 
         // Kiểm tra nếu danh mục đã tồn tại
         $existingCategory = $this->categories->where('name', $request->name)->first();
@@ -107,7 +123,10 @@ class CategoryController extends Controller
             return response()->json(['success' => 'Danh mục đã được thêm thành công!']);
         }
 
+<<<<<<< HEAD
 >>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
+=======
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
         return redirect()->route('category.index');
     }
 
@@ -134,6 +153,7 @@ class CategoryController extends Controller
     public function update(Request $request, string $id)
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         $category = $this->categories->find($id);
 
         $dataUpdateCate = [
@@ -148,6 +168,16 @@ class CategoryController extends Controller
         $dataUpdateCate = [
             'name' => $validateData['name'],
 >>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
+=======
+        $validateData = $request->validate([
+            'name' => 'required|unique:categories,name',
+        ]);
+
+        $category = $this->categories->find($id);
+
+        $dataUpdateCate = [
+            'name' => $validateData['name'],
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
         ];
 
         $category->updateCategory($dataUpdateCate, $id);
@@ -175,10 +205,14 @@ class CategoryController extends Controller
     public function trashed()
     {
 <<<<<<< HEAD
+<<<<<<< HEAD
         $categories = Category::onlyTrashed()->get();
 =======
         $categories = Category::onlyTrashed()->paginate(5);
 >>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
+=======
+        $categories = Category::onlyTrashed()->paginate(5);
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
 
         return view('admin.page.category.trashed', compact('categories'));
     }

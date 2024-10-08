@@ -44,7 +44,6 @@ Route::prefix('products')->group(function () {
     Route::post('/restore/{id}', [ProductController::class, 'restore'])->name('product.restore');
 });
 
-<<<<<<< HEAD
 Route::resource('index', AdminController::class);
 Route::resource('product', ProductController::class);
 Route::resource('category', CategoryController::class);
@@ -58,10 +57,8 @@ Route::prefix('products')->group(function () {
     Route::get('/trashed', [ProductController::class, 'trashed'])->name('product.trashed');
     Route::post('/restore/{id}', [ProductController::class, 'restore'])->name('product.restore');
 });
-=======
 // Route cho danh mục
 Route::resource('category', CategoryController::class);
->>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
 Route::prefix('categories')->group(function () {
     Route::get('/trashed', [CategoryController::class, 'trashed'])->name('category.trashed');
     Route::post('/restore/{id}', [CategoryController::class, 'restore'])->name('category.restore');

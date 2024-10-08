@@ -10,13 +10,10 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-<<<<<<< HEAD
     /**
      * Display a listing of the resource.
      */
-=======
     
->>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
 
      public $products;
      public function __construct()
@@ -57,7 +54,6 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validateData = $request->validate([
-<<<<<<< HEAD
             'product_code' => 'required',
             'name' => 'required',
             'image_url' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048',
@@ -72,34 +68,11 @@ class ProductController extends Controller
             $coverImage = null;
         }
 
-=======
-            'product_code' => 'required|string|max:255',
-            'name' => 'required|string|max:255',
-            'image_url' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048',
-            'price' => 'required|numeric|min:0',
-            'description' => 'required|string',
-            'category_id' => 'required|exists:categories,id',
-            'gallery_image.*' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048', 
-        ]);
-    
-        $coverImage = null;
-        if ($request->hasFile('image_url')) {
-            $coverImage = $request->file('image_url')->store('uploads/avtproduct', 'public');
-        }
-    
->>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
         $product = Product::create([
             'product_code' => $validateData['product_code'],
             'name' => $validateData['name'],
             'image_url' => $coverImage,
             'price' => $validateData['price'],
-<<<<<<< HEAD
-            'description' =>$validateData['description'],
-            'category_id' => $validateData['category_id'],
-        ]);
-        // $product = Product::create($dataInsertProduct);
-        return redirect()->route('product.index');
-=======
             'description' => $validateData['description'],
             'category_id' => $validateData['category_id'],
             'gallery_image' => json_encode([]), 
@@ -118,7 +91,6 @@ class ProductController extends Controller
 
     
         return redirect()->route('product.index')->with('success', 'Sản phẩm đã được tạo thành công!');
->>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
     }
    
 
@@ -133,86 +105,6 @@ class ProductController extends Controller
         //
     }
 
-<<<<<<< HEAD
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-
-        $product = Product::FindorFail($id);
-        // $product = $this->products->find($id);
-        $categories= DB::table('categories')->get();
-        return view('admin.page.product.update', compact('product', 'categories'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        $validateData = $request->validate([
-            'product_code' => 'required',
-            'name' => 'required',
-            'image_url' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048',
-            'price' => 'required',
-            'description' =>'required',
-            'category_id' => 'required',
-        ]);
-
-        $product = Product::FindorFail($id);
-
-        if($request->hasFile('image_url')){
-            if($product->image_url){
-                Storage::disk('public')->delete($product->image_url);
-            }
-            $coverImage = $request->file('image_url')->store('uploads/avtproduct', 'public');
-        }else{
-            $coverImage = $product->image_url;
-        }
-
-        $product->update([
-            'product_code' => $validateData['product_code'],
-            'name' => $validateData['name'],
-            'image_url' => $coverImage,
-            'price' => $validateData['price'],
-            'description' =>$validateData['description'],
-            'category_id' => $validateData['category_id'],
-        ]);
-        // $product = Product::create($dataInsertProduct);
-        return redirect()->route('product.index');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        // $product = $this->products->find($id);
-
-        // if(!$product){
-        //     return redirect()->route('product.index');
-        // }
-
-        // if($product->image_url){
-        //     Storage::disk('public')->delete($product->image_url);
-        // }
-
-        // $product->delete();
-
-        $product = Product::FindorFail($id);
-
-        $product->delete();
-
-        return redirect()->route('product.index');
-    }
-
-    public function trashed(){
-        $listProduct = Product::onlyTrashed()->with('category')->get();
-
-        return view('admin.page.product.trashed', ['products' => $listProduct]);
-    
-=======
     
     public function edit(string $id)
     {
@@ -299,7 +191,6 @@ class ProductController extends Controller
         // ->paginate(10);
 
         // return view('admin.page.product.trashed', ['products' => $listProduct , 'search' => $search]);
->>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
     }
 
     public function restore($id){

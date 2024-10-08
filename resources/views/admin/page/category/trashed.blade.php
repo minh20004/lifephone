@@ -5,22 +5,31 @@
         <div class="container-fluid">
             <div class="card">
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
                 <div class="m-3" style="margin-left: 20px">
                     <a href="{{ route('category.trashed') }}"><b class="fs-4 fw-bold">Danh sách danh mục đã bị xóa</b></a>
                 </div>
             </div>
             <div class="card">
+<<<<<<< HEAD
 >>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
+=======
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
                 @if (session('success'))
                     <div class="alert alert-success">
                         {{ session('success') }}
                     </div>
                 @endif
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <h2 class="cart-header text-center m-3" style="font-weight: bold">Danh sách danh mục đã bị xóa</h2>
 =======
 >>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
+=======
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
                 <div class="card-body">
                     <table class="table table-bordered">
                         <thead class="thead-light">
@@ -37,10 +46,14 @@
                                         <form action="{{ route('category.restore', $item->id) }}" method="POST">
                                             @csrf
 <<<<<<< HEAD
+<<<<<<< HEAD
                                             <button class="btn btn-primary"
 =======
                                             <button class="btn btn-success"
 >>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
+=======
+                                            <button class="btn btn-success"
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
                                                 onclick="return confirm('Bạn có chắc chắn muốn khôi phục danh mục này không?')">Khôi phục</button>
                                         </form>
                                     </td>
@@ -49,8 +62,11 @@
                         </tbody>
                     </table>
 <<<<<<< HEAD
+<<<<<<< HEAD
                     <a href="{{ route('product.index') }}" class="btn btn-primary mb-3">Quay lại danh mục</a>
 =======
+=======
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
 
                     <div class="d-flex justify-content-between">
                         <a href="{{ route('category.index') }}" class="btn btn-dark mb-3">Quay lại</a>
@@ -88,7 +104,10 @@
                             </nav>
                         </div>
                     </div>
+<<<<<<< HEAD
 >>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
+=======
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
 
                 </div>
             </div>

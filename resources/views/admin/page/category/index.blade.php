@@ -6,13 +6,19 @@
         <div class="container-fluid">
             <div class="card">
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
                 <div class="m-3" style="margin-left: 20px">
                     <a href="{{ route('category.index') }}"><b class="fs-4 fw-bold">Danh sách Danh mục</b></a>
                 </div>
             </div>
             <div class="card">
+<<<<<<< HEAD
 >>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
+=======
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
                 @if (session('error'))
                     <div class="alert alert-danger">
                         {{ session('error') }}
@@ -25,6 +31,7 @@
                     </div>
                 @endif
 <<<<<<< HEAD
+<<<<<<< HEAD
 
                 <h2 class="cart-header text-center m-3" style="font-weight: bold"> Danh sách danh mục</h2>
                 <div class="card-body">
@@ -32,6 +39,9 @@
                     <a href="{{ route('category.trashed') }}" class="btn btn-danger mb-3">Xem danh mục đã bị xóa</a>
 =======
                 <div class="card-body">
+=======
+                <div class="card-body">
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
                     <div class="mb-3" style=" border-bottom: 1px solid #ddd; padding-bottom: 10px;margin-bottom: 10px;">
                         <a href="{{ route('category.create') }}" class="btn mb-3 fs-6 fw-bold text-dark"
                             style="background:#9df99d ">Thêm danh mục </a>
@@ -48,7 +58,10 @@
                             </form>
                         </div>
                     </div>
+<<<<<<< HEAD
 >>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
+=======
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
 
                     <table class="table table-bordered">
                         <thead class="thead-light">
@@ -66,10 +79,14 @@
                                         <div class="me-2">
                                             <a href="{{ route('category.edit', $item->id) }}">
 <<<<<<< HEAD
+<<<<<<< HEAD
                                                 <button class="btn btn-warning">Sửa</button>
 =======
                                                 <button class="btn btn-warning"><i class="bi bi-pencil-square"></i></button>
 >>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
+=======
+                                                <button class="btn btn-warning"><i class="bi bi-pencil-square"></i></button>
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
                                             </a>
                                         </div>
                                         <div>
@@ -78,12 +95,18 @@
                                                 @csrf
                                                 <button class="btn btn-danger"
 <<<<<<< HEAD
+<<<<<<< HEAD
                                                     onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này không ?')">Xóa</button>
 =======
                                                     onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này không ?')">
                                                     <i class="bi bi-trash-fill"></i>
                                                 </button>
 >>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
+=======
+                                                    onclick="return confirm('Bạn có chắc chắn muốn xóa danh mục này không ?')">
+                                                    <i class="bi bi-trash-fill"></i>
+                                                </button>
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
                                             </form>
                                         </div>
                                     </td>
@@ -93,7 +116,10 @@
 
                     </table>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
                     {{-- Phân trang danh mục --}}
                     <div class="d-flex justify-content-end">
                         <nav>
@@ -128,7 +154,10 @@
                         </nav>
                     </div>
 
+<<<<<<< HEAD
 >>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
+=======
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
                 </div>
             </div>
         </div>
