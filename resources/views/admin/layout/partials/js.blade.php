@@ -85,4 +85,47 @@
                 });
             });
         });
+<<<<<<< HEAD
     </script>
+=======
+    </script>
+
+
+<script>
+    // Biến để lưu trữ các ảnh đã hiển thị
+    const displayedImages = [];
+
+    function previewImages(event) {
+        const previewContainer = document.getElementById('image_preview');
+        const files = event.target.files; // Lấy tất cả các tệp đã chọn
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+
+            // Kiểm tra xem ảnh đã được hiển thị hay chưa
+            if (!displayedImages.includes(file.name)) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result; // Đặt nguồn cho ảnh là dữ liệu đọc từ file
+                    img.style.width = '70px'; // Thiết lập kích thước cho ảnh
+                    img.style.height = '70px'; // Thiết lập kích thước cho ảnh
+                    img.style.marginRight = '10px'; // Thiết lập khoảng cách giữa các ảnh
+
+                    const imagePreviewContainer = document.createElement('div');
+                    imagePreviewContainer.className = 'image-preview'; // Tạo một div để bao quanh ảnh
+                    imagePreviewContainer.appendChild(img); // Thêm ảnh vào div
+
+                    previewContainer.appendChild(imagePreviewContainer); // Thêm div vào container
+
+                    // Lưu tên tệp đã hiển thị để tránh hiển thị lại
+                    displayedImages.push(file.name);
+                };
+
+                reader.readAsDataURL(file); // Đọc dữ liệu của tệp
+            }
+        }
+    }
+</script>
+>>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6

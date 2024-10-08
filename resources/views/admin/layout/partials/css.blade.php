@@ -1,11 +1,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
 <meta content="Themesbrand" name="author" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-lp5kcb4S2Ad5Ewlb2U+K8K2H+8Z6JNHKZTExMi+VbNENfZQRq0cyQ9a8X4z1eVlkH+7Ya+qXEv3txFXe1ug5gA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- App favicon -->
-<link rel="shortcut icon" href="assets/images/favicon.ico">
+<link rel="shortcut icon" href="{{asset('assets/images/favicon.ico')}}">
 
 <!-- jsvectormap css -->
-<link href="assets/libs/jsvectormap/css/jsvectormap.min.css" rel="stylesheet" type="text/css" />
+<link href="{{asset('assets/libs/jsvectormap/css/jsvectormap.min.css')}}" rel="stylesheet" type="text/css" />
 
 <!--Swiper slider css-->
 <link href="{{ asset('assets/libs/swiper/swiper-bundle.min.css') }}" rel="stylesheet" type="text/css" />
@@ -59,3 +60,47 @@
         /* Màu nền khi hover */
     }
 </style>
+<<<<<<< HEAD
+=======
+
+
+<style>
+    .gallery-upload {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 70px;
+        /* Kích thước của ô dấu cộng */
+        height: 70px;
+        /* Kích thước của ô dấu cộng */
+        background-color: #f0f0f0;
+        /* Màu nền */
+        border: 2px dashed #007bff;
+        /* Viền chấm */
+        border-radius: 5px;
+        /* Bo góc */
+        cursor: pointer;
+        /* Hiển thị tay khi di chuột */
+        margin-top: 15px;
+        /* Khoảng cách giữa ô dấu cộng và ảnh xem trước */
+        transition: background-color 0.3s;
+        /* Hiệu ứng chuyển màu nền khi hover */
+    }
+
+    .gallery-upload:hover {
+        background-color: #e0e0e0;
+        /* Màu nền khi hover */
+    }
+
+    .plus-icon {
+        font-size: 36px;
+        /* Kích thước biểu tượng cộng */
+        color: #007bff;
+        /* Màu sắc biểu tượng */
+        line-height: 70px;
+        /* Căn giữa biểu tượng trong ô */
+        text-align: center;
+        /* Căn giữa văn bản */
+    }
+</style>
+>>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6

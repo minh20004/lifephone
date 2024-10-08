@@ -13,7 +13,12 @@
                     {{-- thêm danh mục modal --}}
                     <div style=" border-bottom: 1px solid #ddd; padding-bottom: 10px;margin-bottom: 10px;">
                         <div class="col-sm-2 mb-3">
+<<<<<<< HEAD
                             <button type="button" class="btn btn-sm fs-6 fw-bold" data-bs-toggle="modal" data-bs-target="#adddanhmuc" style="background:#9df99d ">
+=======
+                            <button type="button" class="btn btn-sm fs-6 fw-bold" data-bs-toggle="modal"
+                                data-bs-target="#adddanhmuc" style="background:#9df99d ">
+>>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
                                 <i class="fas fa-folder-plus"></i> Thêm danh mục
                             </button>
                         </div>
@@ -73,8 +78,12 @@
                                 @enderror
                             </div>
                             <div class="mb-3 mt-3 ">
+<<<<<<< HEAD
                                 <label for="image_url" class="form-label text-dark fw-bold fs-5 mb-3">Hình ảnh sản
                                     phẩm</label>
+=======
+                                <label for="image_url" class="form-label text-dark fw-bold fs-5 mb-3">Hình ảnh sản phẩm</label>
+>>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
                                 <div class="custom-file-upload">
                                     <input type="file" id="image_url" name="image_url" onchange="readURL(this);"
                                         accept="image/*" />
@@ -82,7 +91,10 @@
                                         <i class="fas fa-cloud-upload-alt"></i> Chọn ảnh
                                     </label>
                                 </div>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
                                 <div id="thumbbox" style="margin-top: 10px;">
                                     <img height="200" width="150" alt="Thumb image" id="thumbimage"
                                         style="display: none" />
@@ -96,6 +108,48 @@
                                 </div>
 
                             </div>
+<<<<<<< HEAD
+=======
+                            {{-- Thêm phần upload ảnh gallery --}}
+                            {{-- <div class="mb-3 mt-3">
+                                <label for="gallery_image" class="form-label text-dark fw-bold fs-5 mb-3">Ảnh phụ sản phẩm</label>
+                                <input type="file" id="gallery_image" name="gallery_image[]" multiple accept="image/*" class="form-control @error('gallery_image.*') is-invalid @enderror" />
+                                @error('gallery_image.*')
+                                    <div class="invalid-feedback text-danger">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div> --}}
+                            
+                            <div class="mb-3 mt-3">
+                                <label for="gallery_image" class="form-label text-dark fw-bold fs-5 mb-3">Ảnh phụ sản
+                                    phẩm</label>
+                                <div class="d-flex align-items-start"> <!-- Sử dụng Flexbox để căn chỉnh -->
+                                    <div id="image_preview" class="d-flex flex-wrap mt-3 me-3"></div>
+                                    <div class="gallery-upload" onclick="document.getElementById('gallery_image').click();">
+                                        <div class="plus-icon">+</div>
+                                    </div>
+                                </div>
+                                <input type="file" id="gallery_image" name="gallery_image[]" multiple accept="image/*"
+                                    class="form-control d-none @error('gallery_image.*') is-invalid @enderror"
+                                    onchange="previewImages(event)" />
+                                @error('gallery_image.*')
+                                    <div class="invalid-feedback text-danger">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
+
+
+                            <div id="image_preview" class="d-flex flex-wrap mt-3"></div>
+
+
+                            
+
+
+
+>>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
                             <div class="mb-5">
                                 <label for="description" class="form-label text-dark fw-bold fs-5">Mô tả sản phẩm:</label>
                                 <textarea class="form-control" id="description" name="description" cols="500" rows="10"
