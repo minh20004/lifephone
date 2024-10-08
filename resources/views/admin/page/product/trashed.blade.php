@@ -5,16 +5,51 @@
     <div class="page-content">
         <div class="container-fluid">
             <div class="card">
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
                 <div class="m-3" style="margin-left: 20px">
                     <a href="{{ route('product.trashed') }}"><b class="fs-4 fw-bold">Danh sách sản phẩm đã bị xóa</b></a>
                 </div>
             </div>
             <div class="card">
+<<<<<<< HEAD
+>>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
+=======
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
                 @if (session('success'))
                     <div class="alert alert-success">
                         {{ session('success') }}
                     </div>
                 @endif
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+                <h2 class="cart-header text-center m-3" style="font-weight: bold"> Danh sách sản phẩm đã bị xóa </h2>
+=======
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
+                <div class="card-body">
+                    {{-- <div class="d-flex justify-content-end">
+                        <div class="btn btn-light mb-4 border ">
+                            <form action="{{ route('product.index') }}" method="GET">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="search" value="{{ $search }}"
+                                        placeholder="Tìm kiếm...">
+                                    <button class="btn btn-primary" type="submit"><i class="mdi mdi-magnify"></i></button>
+                                </div>
+                            </form>
+                        </div>
+                    </div> --}}
+                    <table class="table table-bordered">
+                        <thead class="thead-light">
+                            <th>STT</th>
+                            <th>Mã sản phẩm</th>
+                            <th>Tên sản phẩm </th>
+                            <th>Hình ảnh</th>
+<<<<<<< HEAD
+=======
                 <div class="card-body">
                     {{-- <div class="d-flex justify-content-end">
                         <div class="btn btn-light mb-4 border ">
@@ -34,6 +69,10 @@
                             <th>Tên sản phẩm </th>
                             <th>Hình ảnh</th>
                             <th>Ảnh phụ</th>
+>>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
+=======
+                            <th>Ảnh phụ</th>
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
                             <th>Giá</th>
                             <th>Mô tả</th>
                             <th>Danh mục</th>
@@ -44,9 +83,20 @@
                             @foreach ($products as $index => $item)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
+<<<<<<< HEAD
+<<<<<<< HEAD
+                                    <td>{{ $item->name }}</td>
+                                    <td>
+                                        <img src="{{ Storage::url($item->image_url) }}" width="80px" alt="">
+=======
                                     <td>{{ $item->product_code }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>
+=======
+                                    <td>{{ $item->product_code }}</td>
+                                    <td>{{ $item->name }}</td>
+                                    <td>
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
                                         <img src="{{ Storage::url($item->image_url) }}" width="80px" height="80px" alt="">
                                     </td>
                                     <td>
@@ -60,6 +110,10 @@
                                         @else
                                             Không có ảnh phụ
                                         @endif
+<<<<<<< HEAD
+>>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
+=======
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
                                     </td>
                                     <td>{{ number_format($item->price, 0, ',', '.') }} VNĐ</td>
                                     <td>{!! Str::limit($item->description, 40) !!}</td>
@@ -74,11 +128,25 @@
                                     </td>
                                 </tr>
                             @endforeach
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+=======
+                        
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
+                        </tbody>
+                        
+
+                    </table>
+<<<<<<< HEAD
+=======
                         
                         </tbody>
                         
 
                     </table>
+=======
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
                     <div class="d-flex justify-content-between">
                         <a href="{{ route('product.index') }}" class="btn btn-danger mb-3">Quay lại </a>
                         {{-- phân trang  --}}
@@ -115,6 +183,10 @@
                             </nav>
                         </div>
                     </div>
+<<<<<<< HEAD
+>>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
+=======
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
                 </div>
             </div>
         </div>

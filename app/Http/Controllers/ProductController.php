@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     
 
      public $products;
@@ -51,20 +54,20 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $validateData = $request->validate([
-            'product_code' => 'required|string|max:255',
-            'name' => 'required|string|max:255',
+            'product_code' => 'required',
+            'name' => 'required',
             'image_url' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048',
-            'price' => 'required|numeric|min:0',
-            'description' => 'required|string',
-            'category_id' => 'required|exists:categories,id',
-            'gallery_image.*' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048', 
+            'price' => 'required',
+            'description' =>'required',
+            'category_id' => 'required',
         ]);
-    
-        $coverImage = null;
-        if ($request->hasFile('image_url')) {
+
+        if($request->hasFile('image_url')){
             $coverImage = $request->file('image_url')->store('uploads/avtproduct', 'public');
+        }else{
+            $coverImage = null;
         }
-    
+
         $product = Product::create([
             'product_code' => $validateData['product_code'],
             'name' => $validateData['name'],

@@ -1,6 +1,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
 <meta content="Themesbrand" name="author" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-lp5kcb4S2Ad5Ewlb2U+K8K2H+8Z6JNHKZTExMi+VbNENfZQRq0cyQ9a8X4z1eVlkH+7Ya+qXEv3txFXe1ug5gA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- App favicon -->
 <link rel="shortcut icon" href="{{asset('assets/images/favicon.ico')}}">
 
@@ -59,6 +60,11 @@
         /* Màu nền khi hover */
     }
 </style>
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
 
 
 <style>
@@ -99,4 +105,9 @@
         text-align: center;
         /* Căn giữa văn bản */
     }
+<<<<<<< HEAD
 </style>
+>>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
+=======
+</style>
+>>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
