@@ -161,8 +161,6 @@
             </div>
         </div>
     </div>
-
-
     <!-- Modal -->
     <div class="modal fade" id="adddanhmuc" tabindex="-1" role="dialog" aria-labelledby="addDanhMucModal"
         aria-hidden="true">
