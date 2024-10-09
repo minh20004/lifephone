@@ -16,17 +16,17 @@
                     </div>
                 @endif
                 <div class="card-body">
-                    {{-- <div class="d-flex justify-content-end">
+                    
+                    <div class="d-flex justify-content-end">
                         <div class="btn btn-light mb-4 border ">
-                            <form action="{{ route('product.index') }}" method="GET">
+                            <form action="{{ route('product.trashed') }}" method="GET" >
                                 <div class="input-group">
-                                    <input type="text" class="form-control" name="search" value="{{ $search }}"
-                                        placeholder="Tìm kiếm...">
+                                    <input type="text" name="search" class="form-control" placeholder="Tìm kiếm..." value="{{ request('search') }}">
                                     <button class="btn btn-primary" type="submit"><i class="mdi mdi-magnify"></i></button>
                                 </div>
                             </form>
                         </div>
-                    </div> --}}
+                    </div>
                     <table class="table table-bordered">
                         <thead class="thead-light">
                             <th>STT</th>

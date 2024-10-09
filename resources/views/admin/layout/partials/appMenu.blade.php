@@ -599,13 +599,13 @@
                         <li class="nav-item">
                             <a href="{{ route('category.trashed') }}" class="nav-link" data-key="t-faqs"> Danh mục đã bị xóa </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{route('color.index')}}" class="nav-link" data-key="t-pricing"> Màu Sắc </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('capacity.index')}}" class="nav-link" data-key="t-gallery"> Dung lượng </a>
+                        </li>
                         {{-- <li class="nav-item">
-                            <a href="pages-pricing.html" class="nav-link" data-key="t-pricing"> Pricing </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages-gallery.html" class="nav-link" data-key="t-gallery"> Gallery </a>
-                        </li>
-                        <li class="nav-item">
                             <a href="pages-maintenance.html" class="nav-link" data-key="t-maintenance"> Maintenance
                             </a>
                         </li>

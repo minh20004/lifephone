@@ -43,6 +43,9 @@
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->code }}</td>
+                                    <td>
+                                        <div style="width: 50px; height: 30px; background-color: {{ $item->code }}; border: 1px solid #000;"></div>
+                                    </td>
                                     <td class="d-flex">
                                         <div class="me-2">
                                             <a href="{{ route('color.edit', $item->id) }}">

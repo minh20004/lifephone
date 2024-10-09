@@ -34,8 +34,15 @@ class ColorController extends Controller
     {
         $validateData = $request->validate([
             'name' => 'required|unique:colors,name',
-            'code' => 'required',
+            'code' => 'required|unique:colors,code',
+        ], [
+
+            'name.required' => 'Vui lòng nhập tên màu sắc!',
+            'name.unique' => 'Tên màu sắc này đã tồn tại!',
+            'code.required' => 'Vui lòng nhập mã màu sắc!',
+            'code.unique' => 'Mã màu sắc này đã tồn tại!',
         ]);
+
 
         $color = Color::create([
             'name' => $validateData['name'],
@@ -44,6 +51,7 @@ class ColorController extends Controller
 
         return redirect()->route('color.index')->with('success', 'Màu sắc đã được tạo thành công!');
     }
+
 
     /**
      * Display the specified resource.
@@ -67,12 +75,19 @@ class ColorController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $color = Color::findOrFail($id);
+
         $validateData = $request->validate([
-            'name' => 'required|unique:colors,name',
-            'code' => 'required',
+            'name' => 'required|unique:colors,name,' . $color->id, // Bỏ qua id của màu sắc hiện tại
+            'code' => 'required|unique:colors,code,' . $color->id, 
+        ], [
+
+            'name.required' => 'Vui lòng nhập tên màu sắc!',
+            'name.unique' => 'Tên màu sắc này đã tồn tại!',
+            'code.required' => 'Vui lòng nhập mã màu sắc!',
+            'code.unique' => 'Mã màu sắc này đã tồn tại!',
         ]);
 
-        $color = Color::findOrFail($id);
 
         $color->update([
             'name' => $validateData['name'],
@@ -81,6 +96,8 @@ class ColorController extends Controller
 
         return redirect()->route('color.index')->with('success', 'Màu sắc đã được sửa thành công!');
     }
+  
+
 
     /**
      * Remove the specified resource from storage.

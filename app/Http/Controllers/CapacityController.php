@@ -32,6 +32,10 @@ class CapacityController extends Controller
     {
         $validateData = $request->validate([
             'name' => 'required|unique:capacities,name',
+        ],[
+            'name.required' => 'Vui lòng nhập tên dung lượng',
+            'name.unique' => 'Tên dung lượng này đã tồn tại!',
+            
         ]);
 
         
@@ -75,11 +79,17 @@ class CapacityController extends Controller
     
     public function update(Request $request, string $id)
     {
+        $capacity = Capacity::findOrFail($id);
+        
         $validateData = $request->validate([
-            'name' => 'required|unique:capacities,name',
+            'name' => 'required|unique:capacities,name,' . $capacity->id,
+        ],[
+            'name.required' => 'Vui lòng nhập tên dung lượng',
+            'name.unique' => 'Tên dung lượng này đã tồn tại!',
+            
         ]);
         
-        $capacity = Capacity::findOrFail($id);
+        
 
         $capacity->update([
             'name' => $validateData['name'],

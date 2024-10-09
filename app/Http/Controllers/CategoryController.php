@@ -46,21 +46,10 @@ class CategoryController extends Controller
     {
         $validateData = $request->validate([
             'name' => 'required|unique:categories,name',
+        ],[
+            'name.required' => 'Vui lòng nhập tên danh mục!',
+            'name.unique' => 'Tên danh mục này đã tồn tại!',
         ]);
-
-        
-
-        // Kiểm tra nếu danh mục đã tồn tại
-        $existingCategory = $this->categories->where('name', $request->name)->first();
-
-        if ($existingCategory) {
-            // Nếu danh mục đã tồn tại, trả về thông báo lỗi
-            if ($request->ajax()) {
-                return response()->json(['error' => 'Danh mục đã tồn tại!'], 400);
-            }
-
-            return redirect()->route('category.index')->with('error', 'Danh mục đã tồn tại!');
-        }
 
         $this->categories->create([
             'name' => $validateData['name'],
@@ -71,7 +60,7 @@ class CategoryController extends Controller
             return response()->json(['success' => 'Danh mục đã được thêm thành công!']);
         }
 
-        return redirect()->route('category.index');
+        return redirect()->route('category.index')->with('success','Danh mục đã được thêm thành công !');
     }
 
     /**
@@ -87,7 +76,7 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        $category = $this->categories->find($id);
+        $category = Category::FindOrFail($id);
         return view('admin.page.category.update', compact('category'));
     }
 
@@ -96,17 +85,21 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $category = Category::FindOrFail($id);
+        
         $validateData = $request->validate([
-            'name' => 'required|unique:categories,name',
+            'name' => 'required|unique:categories,name,' . $category->id,
+        ],[
+            'name.required' => 'Vui lòng nhập tên danh mục!',
+            'name.unique' => 'Tên danh mục này đã tồn tại!',
         ]);
 
-        $category = $this->categories->find($id);
+        
 
-        $dataUpdateCate = [
+        $category->update([
             'name' => $validateData['name'],
-        ];
+        ]);
 
-        $category->updateCategory($dataUpdateCate, $id);
 
         return redirect()->route('category.index');
     }
