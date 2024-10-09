@@ -13,17 +13,8 @@
                     {{-- thêm danh mục modal --}}
                     <div style=" border-bottom: 1px solid #ddd; padding-bottom: 10px;margin-bottom: 10px;">
                         <div class="col-sm-2 mb-3">
-<<<<<<< HEAD
-<<<<<<< HEAD
-                            <button type="button" class="btn btn-sm fs-6 fw-bold" data-bs-toggle="modal" data-bs-target="#adddanhmuc" style="background:#9df99d ">
-=======
                             <button type="button" class="btn btn-sm fs-6 fw-bold" data-bs-toggle="modal"
                                 data-bs-target="#adddanhmuc" style="background:#9df99d ">
->>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
-=======
-                            <button type="button" class="btn btn-sm fs-6 fw-bold" data-bs-toggle="modal"
-                                data-bs-target="#adddanhmuc" style="background:#9df99d ">
->>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
                                 <i class="fas fa-folder-plus"></i> Thêm danh mục
                             </button>
                         </div>
@@ -83,16 +74,7 @@
                                 @enderror
                             </div>
                             <div class="mb-3 mt-3 ">
-<<<<<<< HEAD
-<<<<<<< HEAD
-                                <label for="image_url" class="form-label text-dark fw-bold fs-5 mb-3">Hình ảnh sản
-                                    phẩm</label>
-=======
                                 <label for="image_url" class="form-label text-dark fw-bold fs-5 mb-3">Hình ảnh sản phẩm</label>
->>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
-=======
-                                <label for="image_url" class="form-label text-dark fw-bold fs-5 mb-3">Hình ảnh sản phẩm</label>
->>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
                                 <div class="custom-file-upload">
                                     <input type="file" id="image_url" name="image_url" onchange="readURL(this);"
                                         accept="image/*" />
@@ -100,13 +82,6 @@
                                         <i class="fas fa-cloud-upload-alt"></i> Chọn ảnh
                                     </label>
                                 </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
-=======
->>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
                                 <div id="thumbbox" style="margin-top: 10px;">
                                     <img height="200" width="150" alt="Thumb image" id="thumbimage"
                                         style="display: none" />
@@ -120,11 +95,6 @@
                                 </div>
 
                             </div>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
                             {{-- Thêm phần upload ảnh gallery --}}
                             {{-- <div class="mb-3 mt-3">
                                 <label for="gallery_image" class="form-label text-dark fw-bold fs-5 mb-3">Ảnh phụ sản phẩm</label>
@@ -164,10 +134,6 @@
 
 
 
-<<<<<<< HEAD
->>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
-=======
->>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
                             <div class="mb-5">
                                 <label for="description" class="form-label text-dark fw-bold fs-5">Mô tả sản phẩm:</label>
                                 <textarea class="form-control" id="description" name="description" cols="500" rows="10"
@@ -183,7 +149,7 @@
 
                             <div class="mb-3 d-flex justify-content-between">
                                 <div>
-                                    <a href="{{ route('product.index') }}" class="btn btn-danger"> Quay lại</a>
+                                    <a href="{{ route('product.index') }}" class="btn btn-dark"> Quay lại</a>
                                 </div>
                                 <button type="submit" class="btn btn-success">Lưu lại</button>
 

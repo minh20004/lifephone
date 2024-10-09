@@ -122,7 +122,7 @@ class ProductController extends Controller
             'product_code' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'image_url' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048',
-            'price' => 'required|numeric|min:0',
+            'price' => 'required|numeric',
             'description' => 'required|string',
             'category_id' => 'required|exists:categories,id',
             'gallery_image.*' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048', 
@@ -134,7 +134,7 @@ class ProductController extends Controller
         if ($request->hasFile('image_url')) {
             $coverImage = $request->file('image_url')->store('uploads/avtproduct', 'public');
         }
-
+        
         $product->update([
             'product_code' => $validateData['product_code'],
             'name' => $validateData['name'],
@@ -162,7 +162,7 @@ class ProductController extends Controller
 
         return redirect()->route('product.index')->with('success', 'Sản phẩm đã được cập nhật thành công!');
     }
-
+    
 
 
     
