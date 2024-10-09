@@ -13,7 +13,7 @@ class NewController extends Controller
     public function index()
     {
         $listNews=News::all();
-        return view('admin.new.index',compact('listNews'));
+        return view('admin.page.new.index',compact('listNews'));
     }
 
     /**
@@ -21,7 +21,7 @@ class NewController extends Controller
      */
     public function create()
     {
-        return view('admin.new.create');
+        return view('admin.page.new.create');
         
     }
 

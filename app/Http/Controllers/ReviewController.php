@@ -13,7 +13,7 @@ class ReviewController extends Controller
     public function index()
     {
         $listReview=Review::all();
-        return view('admin.review.index',compact('listReview'));
+        return view('admin.page.review.index',compact('listReview'));
     }
 
     /**
