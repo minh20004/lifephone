@@ -149,7 +149,7 @@
 
                             <div class="mb-3 d-flex justify-content-between">
                                 <div>
-                                    <a href="{{ route('product.index') }}" class="btn btn-danger"> Quay lại</a>
+                                    <a href="{{ route('product.index') }}" class="btn btn-dark"> Quay lại</a>
                                 </div>
                                 <button type="submit" class="btn btn-success">Lưu lại</button>
 
@@ -161,8 +161,6 @@
             </div>
         </div>
     </div>
-
-
     <!-- Modal -->
     <div class="modal fade" id="adddanhmuc" tabindex="-1" role="dialog" aria-labelledby="addDanhMucModal"
         aria-hidden="true">

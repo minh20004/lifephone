@@ -117,7 +117,7 @@
                                     <li class="page-item"><a href="{{ $products->nextPageUrl() }}"
                                             class="page-link">Tiến</a></li>
                                 @else
-                                    <li class="page-item disabled"><span class="page-link">Tiếp</span></li>
+                                    <li class="page-item disabled"><span class="page-link">Tiến</span></li>
                                 @endif
                             </ul>
                         </nav>

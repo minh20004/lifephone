@@ -46,6 +46,7 @@ class CategoryController extends Controller
     {
         $validateData = $request->validate([
             'name' => 'required|unique:categories,name',
+<<<<<<< HEAD
         ]);
 
         
@@ -62,6 +63,13 @@ class CategoryController extends Controller
             return redirect()->route('category.index')->with('error', 'Danh mục đã tồn tại!');
         }
 
+=======
+        ],[
+            'name.required' => 'Vui lòng nhập tên danh mục!',
+            'name.unique' => 'Tên danh mục này đã tồn tại!',
+        ]);
+
+>>>>>>> 1f2342d364ccbb982825d7e687f8bc0e65bca0b1
         $this->categories->create([
             'name' => $validateData['name'],
         ]);
@@ -71,7 +79,11 @@ class CategoryController extends Controller
             return response()->json(['success' => 'Danh mục đã được thêm thành công!']);
         }
 
+<<<<<<< HEAD
         return redirect()->route('category.index');
+=======
+        return redirect()->route('category.index')->with('success','Danh mục đã được thêm thành công !');
+>>>>>>> 1f2342d364ccbb982825d7e687f8bc0e65bca0b1
     }
 
     /**
@@ -87,7 +99,7 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        $category = $this->categories->find($id);
+        $category = Category::FindOrFail($id);
         return view('admin.page.category.update', compact('category'));
     }
 
@@ -96,17 +108,30 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
+<<<<<<< HEAD
+=======
+        $category = Category::FindOrFail($id);
+        
+>>>>>>> 1f2342d364ccbb982825d7e687f8bc0e65bca0b1
         $validateData = $request->validate([
-            'name' => 'required|unique:categories,name',
+            'name' => 'required|unique:categories,name,' . $category->id,
+        ],[
+            'name.required' => 'Vui lòng nhập tên danh mục!',
+            'name.unique' => 'Tên danh mục này đã tồn tại!',
         ]);
 
-        $category = $this->categories->find($id);
+        
 
-        $dataUpdateCate = [
+        $category->update([
             'name' => $validateData['name'],
+<<<<<<< HEAD
         ];
 
         $category->updateCategory($dataUpdateCate, $id);
+=======
+        ]);
+
+>>>>>>> 1f2342d364ccbb982825d7e687f8bc0e65bca0b1
 
         return redirect()->route('category.index');
     }
@@ -133,7 +158,10 @@ class CategoryController extends Controller
 
     public function trashed()
     {
+<<<<<<< HEAD
 
+=======
+>>>>>>> 1f2342d364ccbb982825d7e687f8bc0e65bca0b1
         $categories = Category::onlyTrashed()->paginate(5);
 
         return view('admin.page.category.trashed', compact('categories'));

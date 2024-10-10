@@ -42,7 +42,7 @@
                                 <div class="input-group">
                                     <input type="text" class="form-control @error('price') is-invalid @enderror"
                                         id="price" name="price" placeholder="Giá sản phẩm"
-                                        value="{{ number_format($product->price, 0, ',', '.') }}">
+                                        value="{{  $product->price }}">
                                     <span class="input-group-text">VNĐ</span>
                                 </div>
                                 @error('price')
@@ -147,7 +147,7 @@
                         
                         <div class="mb-3 d-flex justify-content-between">
                             <div>
-                                <a href="{{ route('product.index') }}" class="btn btn-danger"> Quay lại</a>
+                                <a href="{{ route('product.index') }}" class="btn btn-dark"> Quay lại</a>
                             </div>
                             <button type="submit" class="btn btn-warning">Lưu lại</button>
 

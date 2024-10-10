@@ -4,22 +4,27 @@ namespace App\Models;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Category extends Model
+class Color extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $table = 'categories';
+    protected $table = 'colors';
+    protected $fillable = [
+        'name',
+        'code',
+        'status',
+        
+    ];
 
-    protected $fillable = ['name','status'];
 
     public function getAll(){
         return self::all(); // Sử dụng Eloquent
     }
 
-    public function updateCategory($data, $id){
-        DB::table('categories')
+    public function updateColor($data, $id){
+        DB::table('colors')
         ->where('id', $id)
         ->update($data);
     }

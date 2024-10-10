@@ -60,11 +60,7 @@
         /* Màu nền khi hover */
     }
 </style>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
+
 
 
 <style>
@@ -105,9 +101,8 @@
         text-align: center;
         /* Căn giữa văn bản */
     }
-<<<<<<< HEAD
 </style>
->>>>>>> 3c3012604c44fb4bc640b192d7f3ee4fb1cdacc6
-=======
-</style>
->>>>>>> c5db0cfb274568866108d6c8989726da2e799e50
+
+
+
+

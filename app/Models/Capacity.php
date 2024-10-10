@@ -7,19 +7,21 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Category extends Model
+class Capacity extends Model
 {
-    use HasFactory, SoftDeletes;
-    protected $table = 'categories';
+    use HasFactory, SoftDeletes; 
+    protected $table = 'capacities';
 
-    protected $fillable = ['name','status'];
+    protected $fillable = [
+        'name',
+    ];
 
     public function getAll(){
         return self::all(); // Sử dụng Eloquent
     }
 
-    public function updateCategory($data, $id){
-        DB::table('categories')
+    public function updateCapacity($data, $id){
+        DB::table('capacities')
         ->where('id', $id)
         ->update($data);
     }

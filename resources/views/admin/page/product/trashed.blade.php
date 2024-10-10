@@ -16,17 +16,30 @@
                     </div>
                 @endif
                 <div class="card-body">
+<<<<<<< HEAD
                     {{-- <div class="d-flex justify-content-end">
                         <div class="btn btn-light mb-4 border ">
                             <form action="{{ route('product.index') }}" method="GET">
                                 <div class="input-group">
                                     <input type="text" class="form-control" name="search" value="{{ $search }}"
                                         placeholder="Tìm kiếm...">
+=======
+                    
+                    <div class="d-flex justify-content-end">
+                        <div class="btn btn-light mb-4 border ">
+                            <form action="{{ route('product.trashed') }}" method="GET" >
+                                <div class="input-group">
+                                    <input type="text" name="search" class="form-control" placeholder="Tìm kiếm..." value="{{ request('search') }}">
+>>>>>>> 1f2342d364ccbb982825d7e687f8bc0e65bca0b1
                                     <button class="btn btn-primary" type="submit"><i class="mdi mdi-magnify"></i></button>
                                 </div>
                             </form>
                         </div>
+<<<<<<< HEAD
                     </div> --}}
+=======
+                    </div>
+>>>>>>> 1f2342d364ccbb982825d7e687f8bc0e65bca0b1
                     <table class="table table-bordered">
                         <thead class="thead-light">
                             <th>STT</th>
@@ -80,7 +93,7 @@
 
                     </table>
                     <div class="d-flex justify-content-between">
-                        <a href="{{ route('product.index') }}" class="btn btn-danger mb-3">Quay lại </a>
+                        <a href="{{ route('product.index') }}" class="btn btn-dark mb-3">Quay lại </a>
                         {{-- phân trang  --}}
                         <div >
                             <nav>
