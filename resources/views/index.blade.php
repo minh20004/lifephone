@@ -112,7 +112,7 @@
             <i class="ci-delivery fs-2 m-xxl-1"></i>
           </div>
           <div class="text-center text-xxl-start ps-xxl-3">
-            <h3 class="h6 mb-1">Free Shipping &amp; Returns</h3>
+            <h3 class="h6 mb-1">Miễn phí vận chuyển </h3>
             <p class="fs-sm mb-0">For all orders over $199.00</p>
           </div>
         </div>
@@ -162,7 +162,7 @@
 
   <!-- New arrivals (List) -->
   <section class="container pt-5 mt-1 mt-sm-2 mt-md-3 mt-lg-4">
-    <h2 class="h3 pb-2 pb-sm-3">New arrivals</h2>
+    <h2 class="h3 pb-2 pb-sm-3">Hàng mới về</h2>
     <div class="row">
 
       <!-- Banner -->
@@ -394,7 +394,7 @@
 
     <!-- Heading -->
     <div class="d-flex align-items-center justify-content-between border-bottom pb-3 pb-md-4">
-      <h2 class="h3 mb-0">Trending products</h2>
+      <h2 class="h3 mb-0"> Sản phẩm thịnh hành</h2>
       <div class="nav ms-3">
         <a class="nav-link animate-underline px-0 py-2" href="shop-catalog-electronics.html">
           <span class="animate-target">View all</span>
