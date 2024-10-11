@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Models\Color;
 use App\Models\Product;
+use App\Models\Capacity;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Models\ProductVariant;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -20,33 +23,45 @@ class ProductController extends Controller
     {
         return $this->products = new Product();
     }
+    
     public function index(Request $request)
     {
         $search = $request->input('search');
-        // $listProduct = $this->products->with('category')->paginate(10);
-        $listProduct = $this->products
-            ->with('category')
+
+        // Lấy danh sách sản phẩm cùng với danh mục và các biến thể
+        $listProduct = Product::with(['category', 'variants']) 
             ->when($search, function ($query) use ($search) {
                 return $query->where('name', 'like', "%{$search}%")
                     ->orWhere('product_code', 'like', "%{$search}%");
             })
-            ->paginate(10);
+            ->paginate(10); 
 
         return view('admin.page.product.index', ['products' => $listProduct, 'search' => $search]);
     }
+
+    // show biến thể sản phẩm 
+    public function showVariants($id)
+    {
+        // $product = Product::with('variants.color', 'variants.capacity')->findOrFail($id);
+
+        $product = Product::withTrashed()->find($id);
+        $variants = $product->variants;
+        return view('admin.page.product.variants', compact('product','variants'));
+    }
+
+
+
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
+        $colors = Color::all();
+        $capacities = Capacity::all();
         $categories = DB::table('categories')->where('status', 1)->get();
-        return view('admin.page.product.add', ['categories' => $categories]);
+        return view('admin.page.product.add', ['categories' => $categories, 'colors' => $colors, 'capacities' => $capacities]);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
 
 
     public function store(Request $request)
@@ -55,9 +70,13 @@ class ProductController extends Controller
             'product_code' => 'required',
             'name' => 'required',
             'image_url' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048',
-            'price' => 'required',
             'description' => 'required',
             'category_id' => 'required',
+            'variants' => 'required|array',
+            'variants.*.color_id' => 'required|exists:colors,id',
+            'variants.*.capacity_id' => 'required|exists:capacities,id',
+            'variants.*.price_difference' => 'nullable|numeric|min:0',
+            'variants.*.stock' => 'required|integer|min:0',
         ]);
 
         if ($request->hasFile('image_url')) {
@@ -70,7 +89,6 @@ class ProductController extends Controller
             'product_code' => $validateData['product_code'],
             'name' => $validateData['name'],
             'image_url' => $coverImage,
-            'price' => $validateData['price'],
             'description' => $validateData['description'],
             'category_id' => $validateData['category_id'],
             'gallery_image' => json_encode([]),
@@ -87,13 +105,20 @@ class ProductController extends Controller
             $product->update(['gallery_image' => json_encode($galleryImages)]);
         }
 
+        // Lưu các biến thể của sản phẩm
+        foreach ($request->variants as $variant) {
+            ProductVariant::create([
+                'product_id' => $product->id,
+                'color_id' => $variant['color_id'],
+                'capacity_id' => $variant['capacity_id'], 
+                'price_difference' => $variant['price_difference'] ?? 0, 
+                'stock' => $variant['stock'], 
+            ]);
+        }
+
 
         return redirect()->route('product.index')->with('success', 'Sản phẩm đã được tạo thành công!');
     }
-
-
-
-
 
     /**
      * Display the specified resource.
@@ -103,16 +128,18 @@ class ProductController extends Controller
         //
     }
 
-
     public function edit(string $id)
     {
-        $product = Product::FindorFail($id);
+        $product = Product::findOrFail($id);
         $categories = DB::table('categories')->where('status', 1)->get();
-        return view('admin.page.product.update', compact('product', 'categories'));
+        $colors = DB::table('colors')->where('status', 1)->get();
+        $capacities = DB::table('capacities')->where('status', 1)->get();
+
+        // Lấy các biến thể của sản phẩm
+        $variants = ProductVariant::where('product_id', $id)->get();
+
+        return view('admin.page.product.update', compact('product', 'categories', 'variants', 'colors', 'capacities'));
     }
-
-
-
 
     public function update(Request $request, $id)
     {
@@ -120,10 +147,13 @@ class ProductController extends Controller
             'product_code' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'image_url' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048',
-            'price' => 'required|numeric',
             'description' => 'required|string',
             'category_id' => 'required|exists:categories,id',
             'gallery_image.*' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048',
+            'variants.*.color_id' => 'required|exists:colors,id',
+            'variants.*.capacity_id' => 'required|exists:capacities,id',
+            'variants.*.price_difference' => 'nullable|numeric|min:0',
+            'variants.*.stock' => 'required|integer|min:0',
         ]);
 
         $product = Product::findOrFail($id);
@@ -137,7 +167,6 @@ class ProductController extends Controller
             'product_code' => $validateData['product_code'],
             'name' => $validateData['name'],
             'image_url' => $coverImage ?? $product->image_url,
-            'price' => $validateData['price'],
             'description' => $validateData['description'],
             'category_id' => $validateData['category_id'],
         ]);
@@ -151,15 +180,38 @@ class ProductController extends Controller
                 $galleryImages[] = $imagePath; // Lưu đường dẫn ảnh vào mảng
             }
 
-            // Gộp các ảnh cũ với ảnh mới
             $allGalleryImages = array_merge($existingGalleryImages, $galleryImages);
 
             // Cập nhật gallery_image
             $product->update(['gallery_image' => json_encode($allGalleryImages)]);
         }
+        $existingVariantIds = ProductVariant::where('product_id', $product->id)->pluck('id')->toArray();
+        $updatedVariantIds = []; 
+        // Cập nhật các biến thể
+        foreach ($request->variants as $variantData) {
+            $variant = ProductVariant::updateOrCreate(
+                [
+                    'product_id' => $product->id,
+                    'color_id' => $variantData['color_id'],
+                    'capacity_id' => $variantData['capacity_id'],
+                ],
+                [
+                    'price_difference' => $variantData['price_difference'] ?? 0,
+                    'stock' => $variantData['stock'],
+                ]
+            );
+
+            $updatedVariantIds[] = $variant->id;
+        }
+        // xóa các biến thể kh có trong danh sách
+        $variantsToDelete = array_diff($existingVariantIds, $updatedVariantIds);
+        if (!empty($variantsToDelete)) {
+            ProductVariant::whereIn('id', $variantsToDelete)->delete();
+        }
 
         return redirect()->route('product.index')->with('success', 'Sản phẩm đã được cập nhật thành công!');
     }
+
 
 
 

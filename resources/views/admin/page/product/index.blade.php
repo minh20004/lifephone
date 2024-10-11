@@ -13,7 +13,7 @@
                 <div class="card-body">
                     <div class="mb-3" style=" border-bottom: 1px solid #ddd; padding-bottom: 10px;margin-bottom: 10px;">
                         <a href="{{ route('product.create') }}" class="btn mb-3 fs-6 fw-bold text-dark"
-                            style="background:#9df99d ">Thêm sản phẩm </a>
+                            style="background:#9df99d "><i class="bi bi-cloud-plus-fill"></i>Thêm sản phẩm </a>
                         <a href="{{ route('product.trashed') }}" class="btn btn-danger mb-3">Xem sản phẩm đã bị xóa</a>
                     </div>
 
@@ -30,17 +30,17 @@
                     </div>
 
 
-                    <table class="table table-bordered">
-                        <thead class="thead-light">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light">
                             <th>STT</th>
                             <th>Mã sản phẩm</th>
-                            <th>Tên sản phẩm </th>
+                            <th>Tên sản phẩm</th>
                             <th>Hình ảnh</th>
-                            <th>Ảnh phụ</th>
-                            <th>Giá</th>
+                            <th>Hình ảnh phụ</th>
                             <th>Mô tả</th>
                             <th>Danh mục</th>
-                            <th>Hành động </th>
+                            <th>Biến thể</th>
+                            <th>Hành động</th>
 
                         </thead>
                         <tbody>
@@ -64,9 +64,10 @@
                                             Không có ảnh phụ
                                         @endif
                                     </td>
-                                    <td>{{ number_format($item->price, 0, ',', '.') }} VNĐ</td>
+                                    
                                     <td>{!! Str::limit($item->description, 40) !!}</td>
                                     <td>{{ $item->category->name }}</td>
+                                    <td><a href="{{ route('product.variants', $item->id) }}" class="btn btn-dark"><i class="bi bi-eye-fill"></i></a></td>
                                     <td class="d-flex">
                                         <div class="me-2">
                                             <a href="{{ route('product.edit', $item->id) }}">
@@ -89,6 +90,7 @@
                         </tbody>
 
                     </table>
+                    
                     {{-- phân trang  --}}
                     <div class="d-flex justify-content-end">
                         <nav>

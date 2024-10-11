@@ -31,4 +31,8 @@ class Capacity extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    public function productVariants() {
+        return $this->hasMany(ProductVariant::class);
+    }
 }

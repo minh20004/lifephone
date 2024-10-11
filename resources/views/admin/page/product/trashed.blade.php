@@ -27,16 +27,16 @@
                             </form>
                         </div>
                     </div>
-                    <table class="table table-bordered">
-                        <thead class="thead-light">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light">
                             <th>STT</th>
                             <th>Mã sản phẩm</th>
                             <th>Tên sản phẩm </th>
                             <th>Hình ảnh</th>
                             <th>Ảnh phụ</th>
-                            <th>Giá</th>
                             <th>Mô tả</th>
                             <th>Danh mục</th>
+                            <th>Biến Thể</th>
                             <th>Hành động </th>
 
                         </thead>
@@ -61,9 +61,12 @@
                                             Không có ảnh phụ
                                         @endif
                                     </td>
-                                    <td>{{ number_format($item->price, 0, ',', '.') }} VNĐ</td>
                                     <td>{!! Str::limit($item->description, 40) !!}</td>
                                     <td>{{ $item->Category->name }}</td>
+                                    <td><a href="{{ route('product.variants', ['id' => $item->id]) }}" class="btn btn-dark"><i class="bi bi-eye-fill"></i></a></td>
+
+
+
                                     <td>
                                         <form action="{{ route('product.restore', $item->id) }}" method="POST">
                                             @csrf
