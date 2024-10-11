@@ -46,10 +46,21 @@ class CategoryController extends Controller
     {
         $validateData = $request->validate([
             'name' => 'required|unique:categories,name',
-        ],[
-            'name.required' => 'Vui lòng nhập tên danh mục!',
-            'name.unique' => 'Tên danh mục này đã tồn tại!',
         ]);
+
+        
+
+        // Kiểm tra nếu danh mục đã tồn tại
+        $existingCategory = $this->categories->where('name', $request->name)->first();
+
+        if ($existingCategory) {
+            // Nếu danh mục đã tồn tại, trả về thông báo lỗi
+            if ($request->ajax()) {
+                return response()->json(['error' => 'Danh mục đã tồn tại!'], 400);
+            }
+
+            return redirect()->route('category.index')->with('error', 'Danh mục đã tồn tại!');
+        }
 
         $this->categories->create([
             'name' => $validateData['name'],

@@ -16,6 +16,12 @@
                     </div>
                 @endif
                 <div class="card-body">
+                    {{-- <div class="d-flex justify-content-end">
+                        <div class="btn btn-light mb-4 border ">
+                            <form action="{{ route('product.index') }}" method="GET">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="search" value="{{ $search }}"
+                                        placeholder="Tìm kiếm..."> --}}
                     
                     <div class="d-flex justify-content-end">
                         <div class="btn btn-light mb-4 border ">
@@ -27,8 +33,10 @@
                             </form>
                         </div>
                     </div>
+
                     <table class="table table-bordered table-hover">
                         <thead class="table-light">
+
                             <th>STT</th>
                             <th>Mã sản phẩm</th>
                             <th>Tên sản phẩm </th>
