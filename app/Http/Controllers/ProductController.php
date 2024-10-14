@@ -75,8 +75,28 @@ class ProductController extends Controller
             'variants' => 'required|array',
             'variants.*.color_id' => 'required|exists:colors,id',
             'variants.*.capacity_id' => 'required|exists:capacities,id',
-            'variants.*.price_difference' => 'nullable|numeric|min:0',
+            'variants.*.price_difference' => 'required|nullable|numeric|min:0',
             'variants.*.stock' => 'required|integer|min:0',
+        ], [
+            'product_code.required' => 'Mã sản phẩm không được để trống.',
+            'name.required' => 'Tên sản phẩm không được để trống.',
+            'image_url.file' => 'Ảnh sản phẩm phải là một file.',
+            'image_url.mimes' => 'Ảnh sản phẩm phải có định dạng: png, jpg, jpeg, hoặc gif.',
+            'image_url.max' => 'Ảnh sản phẩm không được vượt quá 2MB.',
+            'description.required' => 'Mô tả sản phẩm không được để trống.',
+            'category_id.required' => 'Danh mục sản phẩm không được để trống.',
+            'variants.required' => 'Biến thể sản phẩm không được để trống.',
+            'variants.array' => 'Biến thể sản phẩm phải là một mảng.',
+            'variants.*.color_id.required' => 'Màu sắc của biến thể không được để trống.',
+            'variants.*.color_id.exists' => 'Màu sắc không tồn tại trong cơ sở dữ liệu.',
+            'variants.*.capacity_id.required' => 'Dung lượng của biến thể không được để trống.',
+            'variants.*.capacity_id.exists' => 'Dung lượng không tồn tại trong cơ sở dữ liệu.',
+            'variants.*.price_difference.required' => 'Giá sản phẩm không được để trống.',
+            'variants.*.price_difference.numeric' => 'Giá sản phẩm phải là số.',
+            'variants.*.price_difference.min' => 'Giá sản phẩm không được nhỏ hơn 0.',
+            'variants.*.stock.required' => 'Số lượng không được để trống.',
+            'variants.*.stock.integer' => 'Số lượng phải là một số nguyên.',
+            'variants.*.stock.min' => 'Số lượng không được nhỏ hơn 0.',
         ]);
 
         if ($request->hasFile('image_url')) {
@@ -119,6 +139,9 @@ class ProductController extends Controller
 
         return redirect()->route('product.index')->with('success', 'Sản phẩm đã được tạo thành công!');
     }
+    
+    
+
 
     /**
      * Display the specified resource.
@@ -144,16 +167,36 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $validateData = $request->validate([
-            'product_code' => 'required|string|max:255',
-            'name' => 'required|string|max:255',
+            'product_code' => 'required',
+            'name' => 'required',
             'image_url' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048',
-            'description' => 'required|string',
-            'category_id' => 'required|exists:categories,id',
-            'gallery_image.*' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048',
+            'description' => 'required',
+            'category_id' => 'required',
+            'variants' => 'required|array',
             'variants.*.color_id' => 'required|exists:colors,id',
             'variants.*.capacity_id' => 'required|exists:capacities,id',
-            'variants.*.price_difference' => 'nullable|numeric|min:0',
+            'variants.*.price_difference' => 'required|nullable|numeric|min:0',
             'variants.*.stock' => 'required|integer|min:0',
+        ], [
+            'product_code.required' => 'Mã sản phẩm không được để trống.',
+            'name.required' => 'Tên sản phẩm không được để trống.',
+            'image_url.file' => 'Ảnh sản phẩm phải là một file.',
+            'image_url.mimes' => 'Ảnh sản phẩm phải có định dạng: png, jpg, jpeg, hoặc gif.',
+            'image_url.max' => 'Ảnh sản phẩm không được vượt quá 2MB.',
+            'description.required' => 'Mô tả sản phẩm không được để trống.',
+            'category_id.required' => 'Danh mục sản phẩm không được để trống.',
+            'variants.required' => 'Biến thể sản phẩm không được để trống.',
+            'variants.array' => 'Biến thể sản phẩm phải là một mảng.',
+            'variants.*.color_id.required' => 'Màu sắc của biến thể không được để trống.',
+            'variants.*.color_id.exists' => 'Màu sắc không tồn tại trong cơ sở dữ liệu.',
+            'variants.*.capacity_id.required' => 'Dung lượng của biến thể không được để trống.',
+            'variants.*.capacity_id.exists' => 'Dung lượng không tồn tại trong cơ sở dữ liệu.',
+            'variants.*.price_difference.required' => 'Giá sản phẩm không được để trống.',
+            'variants.*.price_difference.numeric' => 'Giá sản phẩm phải là số.',
+            'variants.*.price_difference.min' => 'Giá sản phẩm không được nhỏ hơn 0.',
+            'variants.*.stock.required' => 'Số lượng không được để trống.',
+            'variants.*.stock.integer' => 'Số lượng phải là một số nguyên.',
+            'variants.*.stock.min' => 'Số lượng không được nhỏ hơn 0.',
         ]);
 
         $product = Product::findOrFail($id);

@@ -43,14 +43,31 @@ class ColorController extends Controller
             'code.unique' => 'Mã màu sắc này đã tồn tại!',
         ]);
 
+         // Kiểm tra nếu màu sắc đã tồn tại
+         $existingColor = $this->colors->where('name', $request->name)
+         ->orWhere('code', $request->code)
+         ->first();
+
+         if ($existingColor) {
+            if ($request->ajax()) {
+                return response()->json(['error' => 'Màu sắc hoặc mã màu đã tồn tại!'], 400);
+            }
+
+            return redirect()->route('color.index')->with('error', 'Màu sắc hoặc mã màu đã tồn tại!');
+        }
 
         $color = Color::create([
             'name' => $validateData['name'],
             'code' => $validateData['code'],
         ]);
 
+        if ($request->ajax()) {
+            return response()->json(['success' => 'Màu sắc đã được thêm thành công!']);
+        }
+
         return redirect()->route('color.index')->with('success', 'Màu sắc đã được tạo thành công!');
     }
+   
 
 
     /**

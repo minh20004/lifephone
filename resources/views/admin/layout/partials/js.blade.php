@@ -84,9 +84,74 @@
                 });
             });
         });
+        $(document).ready(function() {
+        // color
+        $('#saveColor').on('click', function() {
+            var colorName = $('#colorName').val(); 
+            var colorCode = $('#colorCode').val();
+            var token = $("input[name=_token]").val(); 
+
+            if (colorName === '' || colorCode === '') {
+                $('#colorError').text('Tên màu sắc và mã màu không được để trống').show();
+                return;
+            } else {
+                $('#colorError').hide(); 
+            }
+
+            $.ajax({
+                url: "{{ route('color.store') }}", 
+                method: "POST", 
+                data: {
+                    _token: token,
+                    name: colorName,
+                    code: colorCode
+                },
+                success: function(response) {
+                    $('#addmausac').modal('hide'); 
+                    location.reload(); 
+                },
+                error: function(xhr) {
+                    $('#colorError').text('Màu sắc hoặc mã màu đã tồn tại!').show();
+                }
+            });
+        });
+        // capacity
+        $(document).ready(function() {
+        $('#saveCapacity').on('click', function() {
+            var capacityName = $('#capacityName').val();
+            var token = $("input[name=_token]").val(); 
+
+            if (capacityName === '') {
+                $('#capacityError').text('Dung lượng không được để trống').show();
+                return;
+            } else {
+                $('#capacityError').hide(); 
+            }
+
+            $.ajax({
+                url: "{{ route('capacity.store') }}", 
+                method: "POST", 
+                data: {
+                    _token: token,
+                    name: capacityName
+                },
+                success: function(response) {
+                    $('#adddungluong').modal('hide'); 
+                    location.reload(); 
+                },
+                error: function(xhr) {
+                    $('#capacityError').text('Dung lượng đã tồn tại!').show();
+                }
+            });
+        });
+});
+
+});
+
 
     </script>
-
+    
+    
 
 
 <script>

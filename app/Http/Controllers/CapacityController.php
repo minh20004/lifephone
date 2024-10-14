@@ -41,15 +41,15 @@ class CapacityController extends Controller
         
 
         // Kiểm tra nếu danh mục đã tồn tại
-        $exitstingCapacity = $this->capacities->where('name', $request->name)->first();
+        $existingCapacity = $this->capacities->where('name', $request->name)->first();
 
-        if ($exitstingCapacity) {
-            // Nếu danh mục đã tồn tại, trả về thông báo lỗi
+        if ($existingCapacity) {
+            // Nếu dung lượng đã tồn tại, trả về thông báo lỗi
             if ($request->ajax()) {
-                return response()->json(['error' => 'Danh mục đã tồn tại!'], 400);
+                return response()->json(['error' => 'Dung lượng đã tồn tại!'], 400);
             }
 
-            return redirect()->route('capacity.index')->with('error', 'Danh mục đã tồn tại!');
+            return redirect()->route('capacity.index')->with('error', 'Dung lượng đã tồn tại!');
         }
 
         $this->capacities->create([
@@ -57,12 +57,13 @@ class CapacityController extends Controller
         ]);
 
         // sử lý thêm danh mục bên add sản phẩm
-        // if ($request->ajax()) {
-        //     return response()->json(['success' => 'Danh mục đã được thêm thành công!']);
-        // }
+        if ($request->ajax()) {
+            return response()->json(['success' => 'Dung lượng đã được thêm thành công!']);
+        }
 
         return redirect()->route('capacity.index');
     }
+    
 
     public function show(string $id)
     {
