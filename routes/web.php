@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
 use App\Http\Controllers\VoucherController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,3 +20,8 @@ Route::get('/', function () {
 });
 
 Route::resource('vouchers', VoucherController::class);
+
+Route::get('/shop', [ClientCategoryController::class, 'shop'])->name('shop');
+// Route::get('/shop-catalog', [ClientCategoryController::class, 'latestProducts'])->name('shop-catalog');
+
+
