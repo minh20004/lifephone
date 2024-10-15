@@ -23,18 +23,18 @@ class ProductController extends Controller
     {
         return $this->products = new Product();
     }
-    
+
     public function index(Request $request)
     {
         $search = $request->input('search');
 
         // Lấy danh sách sản phẩm cùng với danh mục và các biến thể
-        $listProduct = Product::with(['category', 'variants']) 
+        $listProduct = Product::with(['category', 'variants'])
             ->when($search, function ($query) use ($search) {
                 return $query->where('name', 'like', "%{$search}%")
                     ->orWhere('product_code', 'like', "%{$search}%");
             })
-            ->paginate(10); 
+            ->paginate(10);
 
         return view('admin.page.product.index', ['products' => $listProduct, 'search' => $search]);
     }
@@ -46,7 +46,7 @@ class ProductController extends Controller
 
         $product = Product::withTrashed()->find($id);
         $variants = $product->variants;
-        return view('admin.page.product.variants', compact('product','variants'));
+        return view('admin.page.product.variants', compact('product', 'variants'));
     }
 
 
@@ -99,6 +99,26 @@ class ProductController extends Controller
             'variants.*.stock.min' => 'Số lượng không được nhỏ hơn 0.',
         ]);
 
+        // // kiem tra vong lap bien the
+        $seenVariants = [];
+        $errors = [];
+
+        foreach ($request->variants as $index => $variant) {
+            $key = $variant['color_id'] . '-' . $variant['capacity_id'];
+
+            if (isset($seenVariants[$key])) {
+                // Nếu đã tồn tại biến thể với id màu sắc và id dung lượng này thông báo lỗi
+                $errors["variants.$index.capacity_id"] = "Dung lượng và màu sắc của biến thể đã bị trùng.";
+            } else {
+                $seenVariants[$key] = true;
+            }
+        }
+
+        // Nếu có lỗi thông lỗi
+        if (!empty($errors)) {
+            return back()->withErrors($errors)->withInput();
+        }
+
         if ($request->hasFile('image_url')) {
             $coverImage = $request->file('image_url')->store('uploads/avtproduct', 'public');
         } else {
@@ -130,17 +150,16 @@ class ProductController extends Controller
             ProductVariant::create([
                 'product_id' => $product->id,
                 'color_id' => $variant['color_id'],
-                'capacity_id' => $variant['capacity_id'], 
-                'price_difference' => $variant['price_difference'] ?? 0, 
-                'stock' => $variant['stock'], 
+                'capacity_id' => $variant['capacity_id'],
+                'price_difference' => $variant['price_difference'] ?? 0,
+                'stock' => $variant['stock'],
             ]);
         }
 
 
         return redirect()->route('product.index')->with('success', 'Sản phẩm đã được tạo thành công!');
     }
-    
-    
+
 
 
     /**
@@ -199,6 +218,8 @@ class ProductController extends Controller
             'variants.*.stock.min' => 'Số lượng không được nhỏ hơn 0.',
         ]);
 
+
+
         $product = Product::findOrFail($id);
 
         $coverImage = null;
@@ -229,7 +250,7 @@ class ProductController extends Controller
             $product->update(['gallery_image' => json_encode($allGalleryImages)]);
         }
         $existingVariantIds = ProductVariant::where('product_id', $product->id)->pluck('id')->toArray();
-        $updatedVariantIds = []; 
+        $updatedVariantIds = [];
         // Cập nhật các biến thể
         foreach ($request->variants as $variantData) {
             $variant = ProductVariant::updateOrCreate(

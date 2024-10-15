@@ -128,6 +128,7 @@
                 $('#capacityError').hide(); 
             }
 
+            // AJAX để lưu dung lượng
             $.ajax({
                 url: "{{ route('capacity.store') }}", 
                 method: "POST", 
