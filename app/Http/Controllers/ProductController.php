@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    
+
 
      public $products;
      public function __construct()
@@ -27,11 +27,12 @@ class ProductController extends Controller
             return $query->where('name', 'like', "%{$search}%")
                          ->orWhere('product_code', 'like', "%{$search}%");
         })
+        ->orderByRaw("CASE WHEN name LIKE '%{$search}%' THEN 1 ELSE 2 END")
         ->paginate(10);
 
         return view('admin.page.product.index', ['products' => $listProduct , 'search' => $search]);
 
-        
+
     }
 
     /**
@@ -46,7 +47,7 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    
+
 
     public function store(Request $request)
     {
@@ -57,14 +58,14 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'description' => 'required|string',
             'category_id' => 'required|exists:categories,id',
-            'gallery_image.*' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048', 
+            'gallery_image.*' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048',
         ]);
-    
+
         $coverImage = null;
         if ($request->hasFile('image_url')) {
             $coverImage = $request->file('image_url')->store('uploads/avtproduct', 'public');
         }
-    
+
         $product = Product::create([
             'product_code' => $validateData['product_code'],
             'name' => $validateData['name'],
@@ -72,10 +73,10 @@ class ProductController extends Controller
             'price' => $validateData['price'],
             'description' => $validateData['description'],
             'category_id' => $validateData['category_id'],
-            'gallery_image' => json_encode([]), 
+            'gallery_image' => json_encode([]),
         ]);
-    
-            
+
+
             if ($request->hasFile('gallery_image')) {
                 $galleryImages = [];
                 foreach ($request->file('gallery_image') as $image) {
@@ -86,12 +87,12 @@ class ProductController extends Controller
                 $product->update(['gallery_image' => json_encode($galleryImages)]);
             }
 
-    
+
         return redirect()->route('product.index')->with('success', 'Sản phẩm đã được tạo thành công!');
     }
-   
 
-    
+
+
 
 
     /**
@@ -102,7 +103,7 @@ class ProductController extends Controller
         //
     }
 
-    
+
     public function edit(string $id)
     {
         $product = Product::FindorFail($id);
@@ -110,8 +111,8 @@ class ProductController extends Controller
         return view('admin.page.product.update', compact('product', 'categories'));
     }
 
-   
-    
+
+
 
     public function update(Request $request, $id)
     {
@@ -122,7 +123,7 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'description' => 'required|string',
             'category_id' => 'required|exists:categories,id',
-            'gallery_image.*' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048', 
+            'gallery_image.*' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048',
         ]);
 
         $product = Product::findOrFail($id);
@@ -135,7 +136,7 @@ class ProductController extends Controller
         $product->update([
             'product_code' => $validateData['product_code'],
             'name' => $validateData['name'],
-            'image_url' => $coverImage ?? $product->image_url, 
+            'image_url' => $coverImage ?? $product->image_url,
             'price' => $validateData['price'],
             'description' => $validateData['description'],
             'category_id' => $validateData['category_id'],
@@ -162,7 +163,7 @@ class ProductController extends Controller
 
 
 
-    
+
     public function destroy(string $id)
     {
         $product = Product::FindorFail($id);
@@ -176,7 +177,7 @@ class ProductController extends Controller
         $listProduct = Product::onlyTrashed()->with('category')->paginate(10);
 
         return view('admin.page.product.trashed', ['products' => $listProduct]);
-        
+
 
         // $search = $request->input('search');
         // $listProduct = $this->products
@@ -197,5 +198,5 @@ class ProductController extends Controller
         return redirect()->route('product.trashed')->with('success','Sản phẩm đã được khôi phục thành công');
     }
 
-    
+
 }
