@@ -1,11 +1,12 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\FrontendControlle;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VoucherController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Admin\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,8 @@ use App\Http\Controllers\VoucherController;
 Route::get('/', function () {
     return view('index');
 })->name('user.home');
+
+Route::get('/', [FrontendControlle::class, 'index'])->name('home');
 
 // Các route dành cho Admin
 Route::get('/admin', function () {
