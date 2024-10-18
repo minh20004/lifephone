@@ -23,7 +23,9 @@ Route::get('/', function () {
     return view('index');
 })->name('user.home');
 
+// font end trang chủ
 Route::get('/', [FrontendControlle::class, 'index'])->name('home');
+Route::get('product/{id}', [FrontendControlle::class, 'showProduct'])->name('product.show');
 
 // Các route dành cho Admin
 Route::get('/admin', function () {

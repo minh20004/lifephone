@@ -9,17 +9,35 @@ class FrontendControlle extends Controller
 {
         public function index()
     {
-        // Fetch the latest 8 products ordered by creation date
-        $latestProducts = Product::orderBy('created_at', 'desc')->take(8)->get();
-        
-        // Fetch the top 10 trending products ordered by views
-        // $trendingProducts = Product::with('category')
-        //     ->orderBy('views', 'desc')
-        //     ->take(10)
-        //     ->get();
-            
-        // Return the view with both latest and trending products
-        return view('index', compact('latestProducts'));
-    }
+          // Lấy 8 sản phẩm mới nhất
+          $latestProducts = Product::orderBy('created_at', 'desc')->take(8)->get();
 
+          // Lấy 10 sản phẩm thịnh hành dựa vào lượt xem
+          $trendingProducts = Product::orderBy('views', 'desc')->take(10)->get();
+
+          // Kiểm tra nếu số lượng sản phẩm thịnh hành ít hơn 10
+          if ($trendingProducts->count() < 10) {
+              // Tính số sản phẩm ngẫu nhiên cần lấy thêm
+              $randomProducts = Product::whereNotIn('id', $trendingProducts->pluck('id'))
+                  ->inRandomOrder()
+                  ->take(10 - $trendingProducts->count())
+                  ->get();
+
+              // Hợp nhất các sản phẩm thịnh hành với sản phẩm ngẫu nhiên
+              $trendingProducts = $trendingProducts->merge($randomProducts);
+          }
+          return view('index', compact('latestProducts', 'trendingProducts'));
+    }
+      
+    public function showProduct($id)
+    {
+        // Lấy thông tin sản phẩm
+        $product = Product::findOrFail($id);
+
+        // Tăng lượt xem lên 1
+        $product->increment('views');
+
+        // Trả về view với dữ liệu sản phẩm
+        return view('client.page.detail-product.detail', compact('product')); // Chú ý đường dẫn view
+    }
 }
