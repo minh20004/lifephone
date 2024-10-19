@@ -18,8 +18,12 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/', function ():View {
 //     return view('admin.index');
 // });
-Route::resource('review',ReviewController::class);
-Route::resource('new',NewController::class);
-Route::get('/', function () {
+Route::resource('admin/review',ReviewController::class);
+Route::resource('admin/new',NewController::class);
+Route::get('/admin', function () {
     return view('admin.index');
 });
+Route::get('/', function () {
+    return view('index');
+});
+Route::get('new', [NewController::class, 'clientIndex'])->name('news.index');

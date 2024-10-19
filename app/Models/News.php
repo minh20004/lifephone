@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class News extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'content', 'author_id', 'category_news_id','thumbnail','slug','status','published_at','views'];
+    protected $fillable = ['title', 'content', 'author_id', 'category_news_id','thumbnail','slug','status','published_at','views','short_content'];
 
     public $table="news";
     protected $dates=['delete_at'];
@@ -18,4 +18,5 @@ class News extends Model
     public function loadAlluser(){
         return $this->belongsTo(User::class,'author_id' );
     }
+    
 }
