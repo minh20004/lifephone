@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class News extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'content', 'author_id', 'category_news_id','thumbnail','slug','status','published_at','views','short_content'];
+    protected $fillable = ['title', 'content', 'author_id', 'thumbnail','category_news_id','status','published_at','views','short_content'];
 
     public $table="news";
     protected $dates=['delete_at'];

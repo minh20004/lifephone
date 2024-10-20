@@ -1,9 +1,8 @@
 @extends('admin.layout.master')
 @section('title')
-
 Thêm Tin Tức
-
 @endsection
+
 @section('content')
 <div class="page-content">
     <div class="row">
@@ -13,8 +12,8 @@ Thêm Tin Tức
             </div>
         </div>
     </div>
-    <div id="createproduct-form" autocomplete="off" class="needs-validation" novalidate>
-        <form action="{{route('new.store')}}" method="post" enctype="multipart/form-data">
+    <div id="createproduct-form" autocomplete="off" class="needs-validation">
+        <form action="{{ route('new.store') }}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="row">
                 <div class="col">
@@ -22,20 +21,23 @@ Thêm Tin Tức
                         <div class="card-body">
                             <div class="mb-3">
                                 <label class="form-label" for="product-title-input">Tên chính tin tức</label>
-                                <input type="hidden" class="form-control" id="formAction" name="formAction" value="add">
-                                <input type="text" class="form-control d-none" id="product-id-input">
-                                <input type="text" class="form-control" id="product-title-input" value="" name="title" placeholder="Tin tức" required>
+                                <input type="hidden" class="form-control" id="formAction" value="add">
+                                <input type="text" class="form-control" id="product-title-input" value="{{ old('title') }}" name="title" placeholder="Tin tức">
+                                @error('title')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
-                            <div>
-                                <label>Mô tả dài tin tức </label>
-                                <input type="text" class="form-control d-none" id="product-id-input">
-                                <textarea id="editor" class="form-control" placeholder="Mô tả  " name="content" rows="3"  ></textarea>
 
+                            <div>
+                                <label> Tin tức </label>
+                                <textarea id="editor" class="form-control" placeholder=" " rows="3" name="content">{{ old('content') }}</textarea>
+                                @error('content')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- end card -->
 
                 <div class="card">
                     <div class="card-header">
@@ -54,7 +56,7 @@ Thêm Tin Tức
                                                 </div>
                                             </div>
                                         </label>
-                                        <input class="form-control d-none" value="" id="product-image-input" type="file" accept="image/png, image/gif, image/jpeg">
+                                        <input name="thumbnail" class="form-control d-none" id="product-image-input" type="file" accept="image/png, image/gif, image/jpeg" onchange="previewImage(event)">
                                     </div>
                                     <div class="avatar-lg">
                                         <div class="avatar-title bg-light rounded">
@@ -65,45 +67,39 @@ Thêm Tin Tức
                             </div>
                         </div>
                     </div>
-
                 </div>
-
-                <!-- end col -->
 
                 <div class="col">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Trạng thái</h5>
+                            <h5 class="card-title mb-0">Trạng   </h5>
                         </div>
                         <div class="card-body">
                             <div class="mb-3">
                                 <label for="choices-publish-status-input" class="form-label">Trạng Thái</label>
-
-                                <select class="form-select" id="choices-publish-status-input" data-choices data-choices-search-false>
-                                    <option value="Published" selected>Đã xuất bản</option>
-                                    <option value="Scheduled">Đã lên lịch</option>
-                                    <option value="Draft">Bản nháp</option>
+                                <select name="status" class="form-select" id="choices-publish-status-input" data-choices data-choices-search-false>
+                                    <option value="Công khai" {{ old('status') == 'Công khai' ? 'selected' : '' }}>Công khai</option>
+                                    <option value="Đã lên lịch" {{ old('status') == 'Đã lên lịch' ? 'selected' : '' }}>Đã lên lịch</option>
+                                    <option value="Bản nháp" {{ old('status') == 'Bản nháp' ? 'selected' : 'selected' }}>Bản nháp</option>
                                 </select>
                             </div>
-
                         </div>
-                        <!-- end card body -->
                     </div>
-                    <!-- end card -->
 
                     <div class="card">
                         <div class="card-header">
                             <h5 class="card-title mb-0">Ngày đăng tin</h5>
                         </div>
-                        <!-- end card body -->
                         <div class="card-body">
                             <div>
                                 <label for="datepicker-publish-input" class="form-label">Thời gian đăng bài</label>
-                                <input type="text" id="datepicker-publish-input" class="form-control" placeholder="thời gian đăng bài" data-provider="flatpickr" data-date-format="d.m.y" data-enable-time>
+                                <input value="{{ old('published_at') }}" name="published_at" type="date" id="datepicker-publish-input" class="form-control" placeholder="thời gian đăng bài">
+                                @error('published_at')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
                             </div>
                         </div>
                     </div>
-                    <!-- end card -->
 
                     <div class="card">
                         <div class="card-header">
@@ -111,59 +107,54 @@ Thêm Tin Tức
                         </div>
                         <div class="card-body">
                             <p class="text-muted mb-2"> <a href="#" class="float-end text-decoration-underline">Người đăng</a></p>
-                            <select class="form-select" id="choices-category-input" name="category_news" data-choices data-choices-search-false>
+                            <select class="form-select" id="choices-category-input" name="author_id" data-choices data-choices-search-false>
                                 @foreach ($author_id as $item)
-                                <option value="{{ $item->id}}">{{ $item->name }}</option>
+                                <option value="{{ $item->id }}">{{ $item->name }}</option>
                                 @endforeach
                             </select>
-
                         </div>
-                        <!-- end card body -->
                     </div>
                 </div>
+
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">Danh mục tin tức</h5>
                     </div>
                     <div class="card-body">
                         <p class="text-muted mb-2"> <a href="#" class="float-end text-decoration-underline">Danh mục tin tức</a>Hãy chọn danh mục tin tức của bạn</p>
-                        <select class="form-select" id="choices-category-input" name="category_news" data-choices data-choices-search-false>
+                        <select class="form-select" id="choices-category-input" name="category_news_id" data-choices data-choices-search-false>
                             @foreach ($category_news as $item)
-                            <option value="{{ $item->id}}">{{ $item->title }}</option>
+                            <option value="{{ $item->id }}">{{ $item->title }}</option>
                             @endforeach
                         </select>
-
                     </div>
-                    <!-- end card body -->
                 </div>
-                <!-- end card -->
 
                 <div class="card">
                     <div class="card-header">
-                        <h5 class="card-title mb-0">Tiêu đề ngắn</h5>
+                        <h5 class="card-title mb-0">Bài viết ngắn</h5>
                     </div>
                     <div class="card-body">
-                        <p class="text-muted mb-2">Hãy viết tiêu đề ngắn của bạn</p>
-                        <textarea class="form-control" placeholder="Tiêu đề ngắn để 100 chữ  " name="short_content" rows="3"></textarea>
+                        <p class="text-muted mb-2">Hãy viết bài viết ngắn của bạn</p>
+                        <textarea class="form-control" placeholder="Tiêu đề ngắn để 100 chữ" name="short_content" rows="3">{{ old('short_content') }}</textarea>
+                        @error('short_content')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
-                    <!-- end card body -->
                 </div>
-                <!-- end card -->
-
             </div>
-            <!-- end col -->
+
+            <div class="text-end mb-3">
+                <button type="submit" class="btn btn-success w-sm">Đăng tin tức</button>
+            </div>
+        </form>
     </div>
-    <!-- end row -->
-    <div class="text-end mb-3">
-        <button type="submit" class="btn btn-success w-sm">Đăng tin tức</button>
-    </div>
-    </form>
- 
 </div>
 
-<!-- container-fluid -->
-</div>
-<!-- End Page-content -->
-
-
+<script>
+    function previewImage(event) {
+        const img = document.getElementById('product-img');
+        img.src = URL.createObjectURL(event.target.files[0]);
+    }
+</script>
 @endsection
