@@ -97,7 +97,7 @@ class NewController extends Controller
     {
         // Lấy tất cả các bản tin có trạng thái 'Công khai'
         $allNews = News::where('status', 'Công khai')
-            ->paginate(5); // Sử dụng paginate để giới hạn 10 bản tin mỗi trang
+            ->paginate(6); // Sử dụng paginate để giới hạn 10 bản tin mỗi trang
         $mostViewedNews = News::where('status', 'Công khai')
             ->orderBy('views', 'desc')
             ->first();
@@ -108,8 +108,11 @@ class NewController extends Controller
             ->orderBy('views', 'desc')
             ->take(3)
             ->get();
+            
+            $latestNews = News::latest()->take(5)->get();
+            
         // Lấy 3 bản tin có trạng thái 'Công khai' và lượt xem cao nhất
-        return view('client.page.news.news', compact('allNews', 'additionalMostViewedNews', 'mostViewedNews'));
+        return view('client.page.news.news', compact('allNews', 'additionalMostViewedNews', 'mostViewedNews','latestNews'));
     }
 
 
@@ -117,6 +120,11 @@ class NewController extends Controller
     public function clientShow($id)
     {
         $news = News::findOrFail(id: $id);
-        return view('client.page.news.news', compact('news'));
+        $latestNews = News::where('id', '!=', $id) // Tránh lấy bài viết hiện tại
+        ->orderBy('published_at', 'desc') // Sắp xếp theo ngày xuất bản giảm dần
+        ->take(6) // Giới hạn số lượng bài viết mới nhất (có thể điều chỉnh theo ý muốn)
+        ->get();
+        
+        return view('client.page.news.news', compact('news','latestNews'));
     }
 }
