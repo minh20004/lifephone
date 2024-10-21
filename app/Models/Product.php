@@ -10,7 +10,7 @@ class Product extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['product_code','name', 'views', 'description', 'price', 'stock', 'category_id', 'image_url', 'gallery_image'];
+    protected $fillable = ['product_code', 'name', 'views', 'description', 'price', 'stock', 'category_id', 'image_url', 'gallery_image'];
 
     public function category()
     {
@@ -31,4 +31,5 @@ class Product extends Model
     {
         return $this->hasMany(Review::class);
     }
+    
 }
