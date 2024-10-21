@@ -2,17 +2,7 @@
 @extends('admin.layout.master')
 {{-- section: định nghĩa nội dung của section --}}
 @section('content')
-    <div class="page-content">
-        <div class="container-fluid">
-            @if ($errors->has('variants'))
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->get('variants') as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
+    
 
             <div class="card ">
                 <h2 class=" text-dark fw-bold m-3 mt-4 "

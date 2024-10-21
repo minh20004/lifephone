@@ -99,7 +99,7 @@ class ProductController extends Controller
             'variants.*.stock.min' => 'Số lượng không được nhỏ hơn 0.',
         ]);
 
-        // // kiem tra vong lap bien the
+        // kiem tra vong lap bien the
         $seenVariants = [];
         $errors = [];
 
@@ -218,7 +218,26 @@ class ProductController extends Controller
             'variants.*.stock.min' => 'Số lượng không được nhỏ hơn 0.',
         ]);
 
+        // kiem tra vong lap bien the
+        $seenVariants = [];
+        $errors = [];
 
+        foreach ($request->variants as $index => $variant) {
+            $key = $variant['color_id'] . '-' . $variant['capacity_id'];
+
+            if (isset($seenVariants[$key])) {
+                // Nếu đã tồn tại biến thể với id màu sắc và id dung lượng này thông báo lỗi
+                $errors["variants.$index.capacity_id"] = "Dung lượng và màu sắc của biến thể đã bị trùng.";
+            } else {
+                $seenVariants[$key] = true;
+            }
+        }
+
+        // Nếu có lỗi thông báo lỗi
+        if (!empty($errors)) {
+            return back()->withErrors($errors)->withInput();
+        }
+        
 
         $product = Product::findOrFail($id);
 
@@ -275,6 +294,7 @@ class ProductController extends Controller
 
         return redirect()->route('product.index')->with('success', 'Sản phẩm đã được cập nhật thành công!');
     }
+    
 
 
 
