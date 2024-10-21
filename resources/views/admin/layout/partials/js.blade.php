@@ -42,10 +42,10 @@
     }
 
     function removeImage() {
-        document.getElementById('image_url').value = ''; // Xóa giá trị input
-        document.getElementById('thumbimage').src = ''; // Xóa src của ảnh
-        document.getElementById('thumbimage').style.display = 'none'; // Ẩn ảnh
-        document.querySelector('.removeimg').style.display = 'none'; // Ẩn liên kết xóa ảnh
+        document.getElementById('image_url').value = ''; 
+        document.getElementById('thumbimage').src = ''; 
+        document.getElementById('thumbimage').style.display = 'none'; 
+        document.querySelector('.removeimg').style.display = 'none'; 
     }
 </script>
 
@@ -57,7 +57,7 @@
             
             $('#saveCategory').on('click', function() {
                 var categoryName = $('#categoryName').val(); 
-                var token = $("input[name=_token]").val(); // Lấy CSRF token từ form
+                var token = $("input[name=_token]").val(); 
 
                 if (categoryName === '') {
                     $('#categoryError').text('Tên danh mục không được để trống').show();
@@ -66,9 +66,8 @@
                     $('#categoryError').hide(); 
                 }
 
-                // Gửi AJAX request
                 $.ajax({
-                    url: "{{ route('category.store') }}", // Đường dẫn đến route để lưu danh mục
+                    url: "{{ route('category.store') }}", 
                     method: "POST", 
                     data: {
                         _token: token,
@@ -85,16 +84,84 @@
                 });
             });
         });
+        $(document).ready(function() {
+        // color
+        $('#saveColor').on('click', function() {
+            var colorName = $('#colorName').val(); 
+            var colorCode = $('#colorCode').val();
+            var token = $("input[name=_token]").val(); 
+
+            if (colorName === '' || colorCode === '') {
+                $('#colorError').text('Tên màu sắc và mã màu không được để trống').show();
+                return;
+            } else {
+                $('#colorError').hide(); 
+            }
+
+            $.ajax({
+                url: "{{ route('color.store') }}", 
+                method: "POST", 
+                data: {
+                    _token: token,
+                    name: colorName,
+                    code: colorCode
+                },
+                success: function(response) {
+                    $('#addmausac').modal('hide'); 
+                    location.reload(); 
+                },
+                error: function(xhr) {
+                    $('#colorError').text('Màu sắc hoặc mã màu đã tồn tại!').show();
+                }
+            });
+        });
+        // capacity
+        $(document).ready(function() {
+        $('#saveCapacity').on('click', function() {
+            var capacityName = $('#capacityName').val();
+            var token = $("input[name=_token]").val(); 
+
+            if (capacityName === '') {
+                $('#capacityError').text('Dung lượng không được để trống').show();
+                return;
+            } else {
+                $('#capacityError').hide(); 
+            }
+
+            // AJAX để lưu dung lượng
+            $.ajax({
+                url: "{{ route('capacity.store') }}", 
+                method: "POST", 
+                data: {
+                    _token: token,
+                    name: capacityName
+                },
+                success: function(response) {
+                    $('#adddungluong').modal('hide'); 
+                    location.reload(); 
+                },
+                error: function(xhr) {
+                    $('#capacityError').text('Dung lượng đã tồn tại!').show();
+                }
+            });
+        });
+});
+
+});
+
+
     </script>
+    
+    
 
 
 <script>
-    // Biến để lưu trữ các ảnh đã hiển thị
+    
     const displayedImages = [];
 
     function previewImages(event) {
         const previewContainer = document.getElementById('image_preview');
-        const files = event.target.files; // Lấy tất cả các tệp đã chọn
+        const files = event.target.files; 
 
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
@@ -106,22 +173,49 @@
                 reader.onload = function(e) {
                     const img = document.createElement('img');
                     img.src = e.target.result; // Đặt nguồn cho ảnh là dữ liệu đọc từ file
-                    img.style.width = '70px'; // Thiết lập kích thước cho ảnh
-                    img.style.height = '70px'; // Thiết lập kích thước cho ảnh
-                    img.style.marginRight = '10px'; // Thiết lập khoảng cách giữa các ảnh
+                    img.style.width = '70px'; 
+                    img.style.height = '70px'; 
+                    img.style.marginRight = '10px'; 
 
                     const imagePreviewContainer = document.createElement('div');
-                    imagePreviewContainer.className = 'image-preview'; // Tạo một div để bao quanh ảnh
-                    imagePreviewContainer.appendChild(img); // Thêm ảnh vào div
+                    imagePreviewContainer.className = 'image-preview'; 
+                    imagePreviewContainer.appendChild(img); 
 
-                    previewContainer.appendChild(imagePreviewContainer); // Thêm div vào container
+                    previewContainer.appendChild(imagePreviewContainer); 
 
                     // Lưu tên tệp đã hiển thị để tránh hiển thị lại
                     displayedImages.push(file.name);
                 };
 
-                reader.readAsDataURL(file); // Đọc dữ liệu của tệp
+                reader.readAsDataURL(file); 
             }
         }
     }
 </script>
+
+{{-- mã màu của color trong product --}}
+<script>
+    document.getElementById('colorCode').addEventListener('input', function() {
+        const colorPicker = document.getElementById('colorPicker');
+        let codeInput = this.value;
+
+        // Nếu mã màu ngắn (3 ký tự), chuyển sang dạng đầy đủ
+        if (/^#[0-9A-Fa-f]{3}$/.test(codeInput)) {
+            codeInput = '#' + codeInput[1] + codeInput[1] + codeInput[2] + codeInput[2] + codeInput[3] + codeInput[3];
+        }
+
+        // kiểm tra xem hợp lệ không
+        if (/^#[0-9A-Fa-f]{6}$/.test(codeInput)) {
+            colorPicker.value = codeInput;
+        }
+    });
+
+    document.getElementById('colorPicker').addEventListener('input', function() {
+        const colorCodeInput = document.getElementById('colorCode');
+        colorCodeInput.value = this.value;
+    });
+    
+</script>
+
+
+

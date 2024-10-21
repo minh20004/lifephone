@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->string('avatar')->nullable()->after('name'); // Add avatar column
+        Schema::table('capacities', function (Blueprint $table) {
+            $table->tinyInteger('status')->default(1)->after('name');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('avatar'); // Remove avatar column if rolling back
+        Schema::table('capacities', function (Blueprint $table) {
+            $table->dropColumn('status');
         });
     }
 };

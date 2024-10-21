@@ -21,22 +21,30 @@
                             <form action="{{ route('product.index') }}" method="GET">
                                 <div class="input-group">
                                     <input type="text" class="form-control" name="search" value="{{ $search }}"
-                                        placeholder="Tìm kiếm...">
+                                        placeholder="Tìm kiếm..."> --}}
+                    
+                    <div class="d-flex justify-content-end">
+                        <div class="btn btn-light mb-4 border ">
+                            <form action="{{ route('product.trashed') }}" method="GET" >
+                                <div class="input-group">
+                                    <input type="text" name="search" class="form-control" placeholder="Tìm kiếm..." value="{{ request('search') }}">
                                     <button class="btn btn-primary" type="submit"><i class="mdi mdi-magnify"></i></button>
                                 </div>
                             </form>
                         </div>
-                    </div> --}}
-                    <table class="table table-bordered">
-                        <thead class="thead-light">
+                    </div>
+
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-light">
+
                             <th>STT</th>
                             <th>Mã sản phẩm</th>
                             <th>Tên sản phẩm </th>
                             <th>Hình ảnh</th>
                             <th>Ảnh phụ</th>
-                            <th>Giá</th>
                             <th>Mô tả</th>
                             <th>Danh mục</th>
+                            <th>Biến Thể</th>
                             <th>Hành động </th>
 
                         </thead>
@@ -61,9 +69,12 @@
                                             Không có ảnh phụ
                                         @endif
                                     </td>
-                                    <td>{{ number_format($item->price, 0, ',', '.') }} VNĐ</td>
                                     <td>{!! Str::limit($item->description, 40) !!}</td>
                                     <td>{{ $item->Category->name }}</td>
+                                    <td><a href="{{ route('product.variants', ['id' => $item->id]) }}" class="btn btn-dark"><i class="bi bi-eye-fill"></i></a></td>
+
+
+
                                     <td>
                                         <form action="{{ route('product.restore', $item->id) }}" method="POST">
                                             @csrf
@@ -80,7 +91,7 @@
 
                     </table>
                     <div class="d-flex justify-content-between">
-                        <a href="{{ route('product.index') }}" class="btn btn-danger mb-3">Quay lại </a>
+                        <a href="{{ route('product.index') }}" class="btn btn-dark mb-3">Quay lại </a>
                         {{-- phân trang  --}}
                         <div >
                             <nav>

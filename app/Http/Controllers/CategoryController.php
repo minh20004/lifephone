@@ -35,6 +35,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
+        $categories = Category::where('status', 1)->get();
         return view('admin.page.category.add');
     }
 
@@ -70,7 +71,7 @@ class CategoryController extends Controller
             return response()->json(['success' => 'Danh mục đã được thêm thành công!']);
         }
 
-        return redirect()->route('category.index');
+        return redirect()->route('category.index')->with('success','Danh mục đã được thêm thành công !');
     }
 
     /**
@@ -86,7 +87,7 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        $category = $this->categories->find($id);
+        $category = Category::FindOrFail($id);
         return view('admin.page.category.update', compact('category'));
     }
 
@@ -95,17 +96,21 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $category = Category::FindOrFail($id);
+        
         $validateData = $request->validate([
-            'name' => 'required|unique:categories,name',
+            'name' => 'required|unique:categories,name,' . $category->id,
+        ],[
+            'name.required' => 'Vui lòng nhập tên danh mục!',
+            'name.unique' => 'Tên danh mục này đã tồn tại!',
         ]);
 
-        $category = $this->categories->find($id);
+        
 
-        $dataUpdateCate = [
+        $category->update([
             'name' => $validateData['name'],
-        ];
+        ]);
 
-        $category->updateCategory($dataUpdateCate, $id);
 
         return redirect()->route('category.index');
     }
@@ -123,6 +128,9 @@ class CategoryController extends Controller
             return redirect()->route('category.index')->with('error', 'Không thể xóa danh mục vì vẫn còn sản phẩm trong danh mục này.');
         }
 
+        $category->status = 0;
+        $category->save();
+
         $category->delete();
         return redirect()->route('category.index')->with('success', 'Danh mục đã được xóa thành công.');
     }
@@ -139,6 +147,8 @@ class CategoryController extends Controller
         $category = Category::withTrashed()->findOrFail($id);
         $category->restore();
 
+        $category->status = 1;
+        $category->save();
         return redirect()->route('category.trashed')->with('success', 'Danh mục đã được khôi phục thành công.');
     }
 }
