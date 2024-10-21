@@ -2,10 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ColorController;
 use App\Http\Controllers\FrontendControlle;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VoucherController;
-use App\Http\Controllers\ColorController;
 use App\Http\Controllers\CapacityController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Admin\AdminController;
