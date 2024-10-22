@@ -88,7 +88,7 @@ Lifephone
                             class="ratio d-flex hover-effect-scale rounded overflow-hidden"
                             href="{{ route('new.show', $news->id) }}"
                             style="--cz-aspect-ratio: calc(305 / 416 * 100%)">
-                            <img src="{{ Storage::url(  $news->thumbnail) }}" alt="{{ $news->title }}" class="hover-effect-target">
+                            <img src="{{ Storage::url(  $news->thumbnail)  }}" alt="{{ $news->title }}" class="hover-effect-target">
                         </a>
                         <div class="pt-4">
                             <div class="nav align-items-center gap-2 pb-2 mt-n1 mb-1">

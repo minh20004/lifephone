@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\News;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,8 +15,17 @@ class NewController extends Controller
     public function index()
     {
         $listNews = News::all();
+        foreach ($listNews as $news) {
+            // Kiểm tra xem trạng thái có phải là "Đã lên lịch" không và ngày đã đến chưa
+            if ($news->status === 'Đã lên lịch' && $news->scheduled_at <= Carbon::now()) {
+                // Cập nhật trạng thái thành "Công khai"
+                $news->status = 'Công khai';
+                $news->published_at = Carbon::now(); // Ghi lại ngày hiện tại
+                $news->save(); // Lưu lại thay đổi
+            }
         return view('admin.page.new.index', compact('listNews'));
     }
+}
 
     /**
      * Show the form for creating a new resource.
@@ -38,7 +48,6 @@ class NewController extends Controller
             'content' => 'required|string',
             'short_content' => 'required|string|max:100',
             'category_news_id' => 'required|integer|exists:categories,id',
-            'published_at' => 'required|date',
             'status' => 'required|string|in:Công khai,Đã lên lịch,Bản nháp',
             'author_id'=>'required'
         ]);
@@ -47,19 +56,28 @@ class NewController extends Controller
             // Lưu file vào thư mục 'uploads/news_img' trong 'storage/app/public'
             $thumbnail = $request->file('thumbnail')->store('uploads/news_img', 'public');
         }
-
+        $publishedAt = null;
+$scheduledAt = null;
+        // Xử lý trạng thái
+        if ($validateData['status'] === 'Công khai') {
+            $publishedAt = now(); // Đặt ngày hiện tại
+        } elseif ($validateData['status'] === 'Đã lên lịch') {
+            $scheduledAt = $request->input('scheduled_at'); // Lấy ngày đã lên lịch từ request
+        }
         $news = News::create([
             'title' => $validateData['title'],
             'thumbnail' => $thumbnail, // Sử dụng biến $thumbnail đã được lưu
             'short_content' => $validateData['short_content'],
             'content' => $validateData['content'],
             'category_news_id' => $validateData['category_news_id'],
-            'published_at' => $validateData['published_at'],
+            'published_at' => $publishedAt,
             'status' => $validateData['status'],
-             'author_id'=>$validateData['author_id']
+             'author_id'=>$validateData['author_id'],
+             'scheduled_at' => $scheduledAt,
+             
         ]);
 
-        return redirect()->route('new.create')->with('success', 'Tin tức đã được lưu thành công!');
+        return redirect()->route('new.index')->with('success', 'Tin tức đã được lưu thành công!');
     }
 
     /**
@@ -126,5 +144,10 @@ class NewController extends Controller
         ->get();
         
         return view('client.page.news.news', compact('news','latestNews'));
+    }
+    public function clientShow1($slug)
+    {
+        $news = News::where('slug', $slug)->firstOrFail();
+        return view('client.page.news.news', compact('news'));
     }
 }

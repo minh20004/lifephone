@@ -5,6 +5,7 @@ News
 
 @endsection
 @section('content')
+
 <div class="page-content">
     <div class="row">
         <div class="col-12">

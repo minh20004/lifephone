@@ -69,37 +69,35 @@ Thêm Tin Tức
                     </div>
                 </div>
 
-                <div class="col">
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">Trạng   </h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="mb-3">
-                                <label for="choices-publish-status-input" class="form-label">Trạng Thái</label>
-                                <select name="status" class="form-select" id="choices-publish-status-input" data-choices data-choices-search-false>
-                                    <option value="Công khai" {{ old('status') == 'Công khai' ? 'selected' : '' }}>Công khai</option>
-                                    <option value="Đã lên lịch" {{ old('status') == 'Đã lên lịch' ? 'selected' : '' }}>Đã lên lịch</option>
-                                    <option value="Bản nháp" {{ old('status') == 'Bản nháp' ? 'selected' : 'selected' }}>Bản nháp</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                <<div class="col">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title mb-0">Trạng thái </h5>
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label for="choices-publish-status-input" class="form-label">Trạng Thái</label>
+                <select name="status" class="form-select" id="choices-publish-status-input" data-choices data-choices-search-false onchange="toggleScheduledDate()">
+                    <option value="Công khai" {{ old('status') == 'Công khai' ? 'selected' : '' }}>Công khai</option>
+                    <option value="Đã lên lịch" {{ old('status') == 'Đã lên lịch' ? 'selected' : '' }}>Đã lên lịch</option>
+                    <option value="Bản nháp" {{ old('status') == 'Bản nháp' ? 'selected' : '' }}>Bản nháp</option>
+                </select>
+            </div>
+        </div>
+    </div>
 
-                    <div class="card">
-                        <div class="card-header">
-                            <h5 class="card-title mb-0">Ngày đăng tin</h5>
-                        </div>
-                        <div class="card-body">
-                            <div>
-                                <label for="datepicker-publish-input" class="form-label">Thời gian đăng bài</label>
-                                <input value="{{ old('published_at') }}" name="published_at" type="date" id="datepicker-publish-input" class="form-control" placeholder="thời gian đăng bài">
-                                @error('published_at')
-                                <div class="text-danger">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
+    <div class="card" id="scheduled-date-card" @if(old('status') == 'Đã lên lịch') style="display: block;" @else style="display: none;" @endif>
+        <div class="card-header">
+            <h5 class="card-title mb-0">Ngày đăng tin</h5>
+        </div>
+        <div class="card-body">
+            <div>
+                <label for="datepicker-publish-input" class="form-label">Thời gian đăng bài</label>
+                <input value="{{ old('scheduled_at') }}" name="scheduled_at" type="date" id="datepicker-publish-input" class="form-control" placeholder="thời gian đăng bài">
+            </div>
+        </div>
+    </div>
+</div>
 
                     <div class="card">
                         <div class="card-header">
@@ -156,5 +154,19 @@ Thêm Tin Tức
         const img = document.getElementById('product-img');
         img.src = URL.createObjectURL(event.target.files[0]);
     }
+    function toggleScheduledDate() {
+        const statusSelect = document.getElementById('choices-publish-status-input');
+        const scheduledDateCard = document.getElementById('scheduled-date-card');
+        
+        // Kiểm tra xem trạng thái có phải là "Đã lên lịch" không
+        if (statusSelect.value === 'Đã lên lịch') {
+            scheduledDateCard.style.display = 'block'; // Hiện phần ngày
+        } else {
+            scheduledDateCard.style.display = 'none'; // Ẩn phần ngày
+        }
+    }
+
+    // Gọi hàm ngay khi tải trang để xác định trạng thái ban đầu
+    document.addEventListener('DOMContentLoaded', toggleScheduledDate);
 </script>
 @endsection
