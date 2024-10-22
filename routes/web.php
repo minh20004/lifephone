@@ -22,6 +22,9 @@ Route::get('/', function () {
 Route::resource('vouchers', VoucherController::class);
 
 Route::get('/shop', [ClientCategoryController::class, 'shop'])->name('shop');
+// Route::get('/index', [ClientCategoryController::class, 'index'])->name('index');
 // Route::get('/shop-catalog', [ClientCategoryController::class, 'latestProducts'])->name('shop-catalog');
+Route::get('/categories/{id}/products', [ClientCategoryController::class, 'getProductsByCategory']);
+
 
 

@@ -132,7 +132,7 @@
           </div>
           <div class="offcanvas-body flex-column pt-2 py-lg-0">
 
-            <!-- Status -->
+            <!-- Status
             <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
               <h4 class="h6">Status</h4>
               <div class="d-flex flex-wrap gap-2">
@@ -143,22 +143,24 @@
                 <button type="button" class="btn btn-sm btn-outline-secondary">Same Day Delivery</button>
                 <button type="button" class="btn btn-sm btn-outline-secondary">Available to Order</button>
               </div>
-            </div>
+            </div> -->
 
             <!-- Categories -->
             <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
               <h4 class="h6 mb-2">Categories</h4>
               <ul class="list-unstyled d-block m-0">
-                @foreach ($latestProducts as $item)
+                @foreach ($categories as $item)
                 <li class="nav d-block pt-2 mt-1">
-                  <a class="nav-link animate-underline fw-normal p-0" href="#!">
-                    <span class="animate-target text-truncate me-3">{{ $item->category_id }}</span>
-                    <span class="text-body-secondary fs-xs ms-auto">218</span>
+                  <a class="nav-link animate-underline fw-normal p-0 category-link" href="javascript:void(0);" data-id="{{ $item->id }}">
+                    <span class="animate-target text-truncate me-3">{{ $item->name }}</span>
+                    <!-- Hiển thị số lượng sản phẩm hoặc biến thể -->
+                    <span class="text-body-secondary fs-xs ms-auto">{{ $item->product_variants_count ?? $item->products_count }}</span>
                   </a>
                 </li>
                 @endforeach
               </ul>
             </div>
+
 
             <!-- Price range -->
             <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
@@ -349,14 +351,18 @@
             </div>
 
             <!-- Color -->
+
             <div class="w-100 border rounded p-3 p-xl-4">
               <h4 class="h6">Color</h4>
               <div class="nav d-block mt-n2">
+                @foreach ($colors as $color)
                 <button type="button" class="nav-link w-auto animate-underline fw-normal pt-2 pb-0 px-0">
-                  <span class="rounded-circle me-2" style="width: .875rem; height: .875rem; margin-top: .125rem; background-color: #8bc4ab"></span>
-                  <span class="animate-target">Green</span>
+                  <span class="rounded-circle me-2" style="width: .875rem; height: .875rem; margin-top: .125rem; background-color: {{ $color->code }}"></span> <!-- Giả sử màu được lưu trong trường hex_code -->
+                  <span class="animate-target">{{ $color->name }}</span>
                 </button>
-                <button type="button" class="nav-link w-auto animate-underline fw-normal mt-1 pt-2 pb-0 px-0">
+                @endforeach
+
+                <!-- <button type="button" class="nav-link w-auto animate-underline fw-normal mt-1 pt-2 pb-0 px-0">
                   <span class="rounded-circle me-2" style="width: .875rem; height: .875rem; margin-top: .125rem; background-color: #ee7976"></span>
                   <span class="animate-target">Coral red</span>
                 </button>
@@ -371,13 +377,14 @@
                 <button type="button" class="nav-link w-auto animate-underline fw-normal mt-1 pt-2 pb-0 px-0">
                   <span class="rounded-circle me-2" style="width: .875rem; height: .875rem; margin-top: .125rem; background-color: #364254"></span>
                   <span class="animate-target">Black</span>
-                </button>
-                <button type="button" class="nav-link w-auto animate-underline fw-normal mt-1 pt-2 pb-0 px-0">
+                </button> -->
+                <!-- <button type="button" class="nav-link w-auto animate-underline fw-normal mt-1 pt-2 pb-0 px-0">
                   <span class="border rounded-circle me-2" style="width: .875rem; height: .875rem; margin-top: .125rem; background-color: #ffffff"></span>
                   <span class="animate-target">White</span>
-                </button>
+                </button> -->
               </div>
             </div>
+
           </div>
         </div>
       </aside>
@@ -386,7 +393,9 @@
       <!-- Product grid -->
       <div class="col-lg-9">
         <div class="row row-cols-2 row-cols-md-3 g-4 pb-3 mb-3">
-
+          <div id="product-list">
+            <!-- Sản phẩm sẽ được load vào đây qua Ajax -->
+          </div>
           <!-- Item -->
           @foreach ($latestProducts as $item)
           <div class="col">
@@ -454,17 +463,20 @@
               <div class="product-card-details position-absolute top-100 start-0 w-100 bg-body rounded-bottom shadow mt-n2 p-3 pt-1">
                 <span class="position-absolute top-0 start-0 w-100 bg-body mt-n2 py-2"></span>
                 <ul class="list-unstyled d-flex flex-column gap-2 m-0">
+                  @foreach ($item->variants as $variant)
                   <li class="d-flex align-items-center">
-                    <span class="fs-xs">Display:</span>
+                    <span class="fs-xs">Color:</span>
                     <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
-                    <span class="text-dark-emphasis fs-xs fw-medium text-end">OLED 1440x1600</span>
+                    <span class="text-dark-emphasis fs-xs fw-medium text-end">{{ $variant->color->name}}</span>
                   </li>
+
                   <li class="d-flex align-items-center">
-                    <span class="fs-xs">Graphics:</span>
+                    <span class="fs-xs">Capacity:</span>
                     <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
-                    <span class="text-dark-emphasis fs-xs fw-medium text-end">Adreno 540</span>
+                    <span class="text-dark-emphasis fs-xs fw-medium text-end">{{ $variant->capacity->name }}</span>
                   </li>
-                  <li class="d-flex align-items-center">
+                  @endforeach
+                  <!-- <li class="d-flex align-items-center">
                     <span class="fs-xs">Sound:</span>
                     <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
                     <span class="text-dark-emphasis fs-xs fw-medium text-end">2x3.5mm jack</span>
@@ -473,7 +485,7 @@
                     <span class="fs-xs">Input:</span>
                     <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
                     <span class="text-dark-emphasis fs-xs fw-medium text-end">4 built-in cameras</span>
-                  </li>
+                  </li> -->
                 </ul>
               </div>
             </div>
@@ -629,4 +641,30 @@
   </section>
   </main>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('.category-link').click(function() {
+      var categoryId = $(this).data('id');
+
+      $.ajax({
+        url: '/categories/' + categoryId + '/products',
+        method: 'GET',
+        success: function(data) {
+          // Xóa sản phẩm cũ (nếu cần)
+          $('#product-list').empty();
+
+          // Hiển thị sản phẩm mới
+          $.each(data, function(index, product) {
+            $('#product-list').append('<div>' + product.name + '</div>');
+          });
+        },
+        error: function(xhr) {
+          console.log(xhr.responseText);
+        }
+      });
+    });
+  });
+</script>
+
 @endsection
