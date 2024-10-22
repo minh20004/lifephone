@@ -29,10 +29,13 @@ Route::get('/', function () {
 Route::get('/', [FrontendControlle::class, 'index'])->name('home');
 Route::get('product/{id}', [FrontendControlle::class, 'showProduct'])->name('product.show');
 
-// Các route dành cho Admin
-Route::get('/admin', function () {
-    return view('admin.index');
-})->name('admin.home'); // ->middleware('isAdmin')->name('admin.home');
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/admin/login', [AuthController::class, 'adminLogin'])->name('admin.login.submit');
+Route::post('/admin/logout', [AuthController::class, 'adminLogout'])->name('admin.logout');
+
+Route::middleware(['auth', 'isAdmin'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.home');
+});
 
 // Quản lý thành viên admin
 Route::get('/them-thanh-vien', [AuthController::class, 'create'])->name('admin.them-thanh-vien');

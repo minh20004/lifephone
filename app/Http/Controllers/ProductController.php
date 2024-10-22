@@ -13,7 +13,10 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    
+    /**
+     * Display a listing of the resource.
+     */
+
 
     public $products;
     public function __construct()
@@ -24,19 +27,26 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        // $listProduct = $this->products->with('category')->paginate(10);
-        $listProduct = $this->products
-        ->with('category')
-        ->when($search, function($query) use ($search) {
-            return $query->where('name', 'like', "%{$search}%")
-                         ->orWhere('product_code', 'like', "%{$search}%");
-        })
-        ->paginate(10);
+
+        // Lấy danh sách sản phẩm cùng với danh mục và các biến thể
+        $listProduct = Product::with(['category', 'variants'])
+            ->when($search, function ($query) use ($search) {
+                return $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('product_code', 'like', "%{$search}%");
+            })
+            ->paginate(10);
 
         return view('admin.page.product.index', ['products' => $listProduct, 'search' => $search]);
     }
 
-        
+    // show biến thể sản phẩm 
+    public function showVariants($id)
+    {
+        // $product = Product::with('variants.color', 'variants.capacity')->findOrFail($id);
+
+        $product = Product::withTrashed()->find($id);
+        $variants = $product->variants;
+        return view('admin.page.product.variants', compact('product', 'variants'));
     }
 
 
@@ -53,10 +63,6 @@ class ProductController extends Controller
         return view('admin.page.product.add', ['categories' => $categories, 'colors' => $colors, 'capacities' => $capacities]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    
 
     public function store(Request $request)
     {
@@ -64,13 +70,55 @@ class ProductController extends Controller
             'product_code' => 'required',
             'name' => 'required',
             'image_url' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048',
-            'price' => 'required|numeric|min:0',
-            'description' => 'required|string',
-            'category_id' => 'required|exists:categories,id',
-            'gallery_image.*' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048', 
+            'description' => 'required',
+            'category_id' => 'required',
+            'variants' => 'required|array',
+            'variants.*.color_id' => 'required|exists:colors,id',
+            'variants.*.capacity_id' => 'required|exists:capacities,id',
+            'variants.*.price_difference' => 'required|nullable|numeric|min:0',
+            'variants.*.stock' => 'required|integer|min:0',
+        ], [
+            'product_code.required' => 'Mã sản phẩm không được để trống.',
+            'name.required' => 'Tên sản phẩm không được để trống.',
+            'image_url.file' => 'Ảnh sản phẩm phải là một file.',
+            'image_url.mimes' => 'Ảnh sản phẩm phải có định dạng: png, jpg, jpeg, hoặc gif.',
+            'image_url.max' => 'Ảnh sản phẩm không được vượt quá 2MB.',
+            'description.required' => 'Mô tả sản phẩm không được để trống.',
+            'category_id.required' => 'Danh mục sản phẩm không được để trống.',
+            'variants.required' => 'Biến thể sản phẩm không được để trống.',
+            'variants.array' => 'Biến thể sản phẩm phải là một mảng.',
+            'variants.*.color_id.required' => 'Màu sắc của biến thể không được để trống.',
+            'variants.*.color_id.exists' => 'Màu sắc không tồn tại trong cơ sở dữ liệu.',
+            'variants.*.capacity_id.required' => 'Dung lượng của biến thể không được để trống.',
+            'variants.*.capacity_id.exists' => 'Dung lượng không tồn tại trong cơ sở dữ liệu.',
+            'variants.*.price_difference.required' => 'Giá sản phẩm không được để trống.',
+            'variants.*.price_difference.numeric' => 'Giá sản phẩm phải là số.',
+            'variants.*.price_difference.min' => 'Giá sản phẩm không được nhỏ hơn 0.',
+            'variants.*.stock.required' => 'Số lượng không được để trống.',
+            'variants.*.stock.integer' => 'Số lượng phải là một số nguyên.',
+            'variants.*.stock.min' => 'Số lượng không được nhỏ hơn 0.',
         ]);
-    
-        $coverImage = null;
+
+        // kiem tra vong lap bien the
+        $seenVariants = [];
+        $errors = [];
+
+        foreach ($request->variants as $index => $variant) {
+            $key = $variant['color_id'] . '-' . $variant['capacity_id'];
+
+            if (isset($seenVariants[$key])) {
+                // Nếu đã tồn tại biến thể với id màu sắc và id dung lượng này thông báo lỗi
+                $errors["variants.$index.capacity_id"] = "Dung lượng và màu sắc của biến thể đã bị trùng.";
+            } else {
+                $seenVariants[$key] = true;
+            }
+        }
+
+        // Nếu có lỗi thông lỗi
+        if (!empty($errors)) {
+            return back()->withErrors($errors)->withInput();
+        }
+
         if ($request->hasFile('image_url')) {
             $coverImage = $request->file('image_url')->store('uploads/avtproduct', 'public');
         } else {
@@ -85,24 +133,33 @@ class ProductController extends Controller
             'category_id' => $validateData['category_id'],
             'gallery_image' => json_encode([]),
         ]);
-    
-            
-            if ($request->hasFile('gallery_image')) {
-                $galleryImages = [];
-                foreach ($request->file('gallery_image') as $image) {
-                    $imagePath = $image->store('uploads/product_gallery', 'public');
-                    $galleryImages[] = $imagePath; //lưu mảng
-                }
-                // Cập nhật gallery_image
-                $product->update(['gallery_image' => json_encode($galleryImages)]);
-            }
 
-    
+
+        if ($request->hasFile('gallery_image')) {
+            $galleryImages = [];
+            foreach ($request->file('gallery_image') as $image) {
+                $imagePath = $image->store('uploads/product_gallery', 'public');
+                $galleryImages[] = $imagePath; //lưu mảng
+            }
+            // Cập nhật gallery_image
+            $product->update(['gallery_image' => json_encode($galleryImages)]);
+        }
+
+        // Lưu các biến thể của sản phẩm
+        foreach ($request->variants as $variant) {
+            ProductVariant::create([
+                'product_id' => $product->id,
+                'color_id' => $variant['color_id'],
+                'capacity_id' => $variant['capacity_id'],
+                'price_difference' => $variant['price_difference'] ?? 0,
+                'stock' => $variant['stock'],
+            ]);
+        }
+
+
         return redirect()->route('product.index')->with('success', 'Sản phẩm đã được tạo thành công!');
     }
-   
 
-    
 
 
     /**
@@ -113,7 +170,6 @@ class ProductController extends Controller
         //
     }
 
-    
     public function edit(string $id)
     {
         $product = Product::findOrFail($id);
@@ -127,20 +183,61 @@ class ProductController extends Controller
         return view('admin.page.product.update', compact('product', 'categories', 'variants', 'colors', 'capacities'));
     }
 
-   
-    
-
     public function update(Request $request, $id)
     {
         $validateData = $request->validate([
             'product_code' => 'required',
             'name' => 'required',
             'image_url' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048',
-            'price' => 'required|numeric|min:0',
-            'description' => 'required|string',
-            'category_id' => 'required|exists:categories,id',
-            'gallery_image.*' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048', 
+            'description' => 'required',
+            'category_id' => 'required',
+            'variants' => 'required|array',
+            'variants.*.color_id' => 'required|exists:colors,id',
+            'variants.*.capacity_id' => 'required|exists:capacities,id',
+            'variants.*.price_difference' => 'required|nullable|numeric|min:0',
+            'variants.*.stock' => 'required|integer|min:0',
+        ], [
+            'product_code.required' => 'Mã sản phẩm không được để trống.',
+            'name.required' => 'Tên sản phẩm không được để trống.',
+            'image_url.file' => 'Ảnh sản phẩm phải là một file.',
+            'image_url.mimes' => 'Ảnh sản phẩm phải có định dạng: png, jpg, jpeg, hoặc gif.',
+            'image_url.max' => 'Ảnh sản phẩm không được vượt quá 2MB.',
+            'description.required' => 'Mô tả sản phẩm không được để trống.',
+            'category_id.required' => 'Danh mục sản phẩm không được để trống.',
+            'variants.required' => 'Biến thể sản phẩm không được để trống.',
+            'variants.array' => 'Biến thể sản phẩm phải là một mảng.',
+            'variants.*.color_id.required' => 'Màu sắc của biến thể không được để trống.',
+            'variants.*.color_id.exists' => 'Màu sắc không tồn tại trong cơ sở dữ liệu.',
+            'variants.*.capacity_id.required' => 'Dung lượng của biến thể không được để trống.',
+            'variants.*.capacity_id.exists' => 'Dung lượng không tồn tại trong cơ sở dữ liệu.',
+            'variants.*.price_difference.required' => 'Giá sản phẩm không được để trống.',
+            'variants.*.price_difference.numeric' => 'Giá sản phẩm phải là số.',
+            'variants.*.price_difference.min' => 'Giá sản phẩm không được nhỏ hơn 0.',
+            'variants.*.stock.required' => 'Số lượng không được để trống.',
+            'variants.*.stock.integer' => 'Số lượng phải là một số nguyên.',
+            'variants.*.stock.min' => 'Số lượng không được nhỏ hơn 0.',
         ]);
+
+        // kiem tra vong lap bien the
+        $seenVariants = [];
+        $errors = [];
+
+        foreach ($request->variants as $index => $variant) {
+            $key = $variant['color_id'] . '-' . $variant['capacity_id'];
+
+            if (isset($seenVariants[$key])) {
+                // Nếu đã tồn tại biến thể với id màu sắc và id dung lượng này thông báo lỗi
+                $errors["variants.$index.capacity_id"] = "Dung lượng và màu sắc của biến thể đã bị trùng.";
+            } else {
+                $seenVariants[$key] = true;
+            }
+        }
+
+        // Nếu có lỗi thông báo lỗi
+        if (!empty($errors)) {
+            return back()->withErrors($errors)->withInput();
+        }
+        
 
         $product = Product::findOrFail($id);
 
@@ -152,8 +249,7 @@ class ProductController extends Controller
         $product->update([
             'product_code' => $validateData['product_code'],
             'name' => $validateData['name'],
-            'image_url' => $coverImage ?? $product->image_url, 
-            'price' => $validateData['price'],
+            'image_url' => $coverImage ?? $product->image_url,
             'description' => $validateData['description'],
             'category_id' => $validateData['category_id'],
         ]);
@@ -198,6 +294,7 @@ class ProductController extends Controller
 
         return redirect()->route('product.index')->with('success', 'Sản phẩm đã được cập nhật thành công!');
     }
+    
 
 
 
@@ -234,26 +331,13 @@ class ProductController extends Controller
         $listProduct = $query->paginate(10);
 
         return view('admin.page.product.trashed', ['products' => $listProduct]);
-        
-
-        // $search = $request->input('search');
-        // $listProduct = $this->products
-        // ->with('category')
-        // ->when($search, function($query) use ($search) {
-        //     return $query->where('name', 'like', "%{$search}%")
-        //                  ->orWhere('product_code', 'like', "%{$search}%");
-        // })
-        // ->paginate(10);
-
-        // return view('admin.page.product.trashed', ['products' => $listProduct , 'search' => $search]);
     }
 
-    public function restore($id){
+    public function restore($id)
+    {
         $product = Product::onlyTrashed()->findOrFail($id);
         $product->restore();
 
         return redirect()->route('product.trashed')->with('success', 'Sản phẩm đã được khôi phục thành công');
     }
-
-    
 }
