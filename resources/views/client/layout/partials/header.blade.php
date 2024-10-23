@@ -39,7 +39,6 @@
     <div class="row flex-nowrap align-items-center g-0">
         <div class="col col-lg-3 d-flex align-items-center">
 
-<<<<<<< Updated upstream
         <!-- Mobile offcanvas menu toggler (Hamburger) -->
         <button type="button" class="navbar-toggler me-4 me-lg-0" data-bs-toggle="offcanvas" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>

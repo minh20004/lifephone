@@ -27,9 +27,9 @@ class AccountController extends Controller
         try {
             User::create($req->all());
         } catch (\Throwable $th) {
-            dd($th);
+            // return redirect()->back()->with('msg', 'Đã đăng kí thành công!');
         }
-        return redirect()->route('signin');
+        return redirect()->back()->with('msg', 'Đã đăng kí thành công!');
     }
 
     public function postSignin(Request $req)

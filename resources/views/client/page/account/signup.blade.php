@@ -207,6 +207,11 @@
             I already have an account
             <a class="nav-link text-decoration-underline p-0 ms-2" href="{{ route('signin') }}">Sign in</a>
           </div>
+          @if (session('msg'))
+                    <div class="alert alert-success">
+                        <strong>{{session('msg')}} - Vui lòng <a href="{{ route('signin') }}">Đăng nhập</a></strong>
+                    </div>
+                @endif
           <div class="nav fs-sm mb-4 d-lg-none">
             <span class="me-2">Uncertain about creating an account?</span>
             <a class="nav-link text-decoration-underline p-0" href="{{ asset('client/template') }}/#benefits" data-bs-toggle="offcanvas" aria-controls="benefits">Explore the Benefits</a>
