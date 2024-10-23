@@ -1,21 +1,16 @@
 <?php
 
-<<<<<<< Updated upstream
-=======
+
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
->>>>>>> Stashed changes
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\FrontendControlle;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VoucherController;
-use App\Http\Controllers\CapacityController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\CapacityController;;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +28,6 @@ Route::get('/', function () {
     return view('index');
 })->name('user.home');
 
-<<<<<<< Updated upstream
 // font end trang chủ
 Route::get('/', [FrontendControlle::class, 'index'])->name('home');
 Route::get('product/{id}', [FrontendControlle::class, 'showProduct'])->name('product.show');
@@ -45,7 +39,7 @@ Route::post('/admin/logout', [AuthController::class, 'adminLogout'])->name('admi
 Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.home');
 });
-=======
+
 //Route signin - signup (Client)
 Route::get('/sign-in', [AccountController::class, 'signin'])->name('signin');
 Route::get('/sign-up', [AccountController::class,'signup'])->name('signup');
@@ -59,7 +53,6 @@ Route::post('/sign-up', [AccountController::class,'postSignup']);
 Route::get('/admin', function () {
     return view('admin.index');
 })->name('admin.home'); // ->middleware('isAdmin')->name('admin.home');
->>>>>>> Stashed changes
 
 // Quản lý thành viên admin
 Route::get('/them-thanh-vien', [AuthController::class, 'create'])->name('admin.them-thanh-vien');
