@@ -167,7 +167,16 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // Lấy thông tin sản phẩm
+        $product = Product::with('variants')->findOrFail($id);
+
+        // Tăng lượt xem lên 1
+        $product->increment('views');
+        // hiển thị giá nhỏ nhat
+        $minPrice = $product->variants->min('price_difference');
+
+        // Trả về view với dữ liệu sản phẩm
+        return view('client.page.detail-product.general', compact('product','minPrice')); // Chú ý đường dẫn view
     }
 
     public function edit(string $id)

@@ -29,15 +29,15 @@ class FrontendControlle extends Controller
           return view('index', compact('latestProducts', 'trendingProducts'));
     }
       
-    public function showProduct($id)
-    {
-        // Lấy thông tin sản phẩm
-        $product = Product::findOrFail($id);
+    // public function showProduct($id)
+    // {
+    //     // Lấy thông tin sản phẩm
+    //     $product = Product::findOrFail($id);
 
-        // Tăng lượt xem lên 1
-        $product->increment('views');
+    //     // Tăng lượt xem lên 1
+    //     $product->increment('views');
 
-        // Trả về view với dữ liệu sản phẩm
-        return view('client.page.detail-product.detail', compact('product')); // Chú ý đường dẫn view
-    }
+    //     // Trả về view với dữ liệu sản phẩm
+    //     return view('client.page.detail-product.general', compact('product')); // Chú ý đường dẫn view
+    // }
 }

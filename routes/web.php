@@ -27,7 +27,8 @@ Route::get('/', function () {
 
 // font end trang chủ
 Route::get('/', [FrontendControlle::class, 'index'])->name('home');
-Route::get('product/{id}', [FrontendControlle::class, 'showProduct'])->name('product.show');
+// Route::get('product/{id}', [FrontendControlle::class, 'showProduct'])->name('product.show');
+
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/admin/login', [AuthController::class, 'adminLogin'])->name('admin.login.submit');

@@ -137,7 +137,7 @@
 
                   <!-- Buttton visible on screens > 991px wide (lg breakpoint) -->
                   <div class="cursor-pointer d-none d-lg-block" data-bs-toggle="dropdown" data-bs-trigger="hover" data-bs-theme="dark">
-                    <a class="position-absolute top-0 start-0 w-100 h-100" href="{{ route('home') }}">
+                    <a class="position-absolute top-0 start-0 w-100 h-100" href="">
                       <span class="visually-hidden">Danh mục</span>
                     </a>
                     <button type="button" class="btn btn-lg btn-secondary dropdown-toggle w-100 rounded-bottom-0 justify-content-start pe-none">
@@ -153,7 +153,7 @@
                   </button>
 
                   <!-- Mega menu -->
-                  <ul class="dropdown-menu dropdown-menu-static w-100 rounded-top-0 rounded-bottom-4 py-1 p-lg-1" style="--cz-dropdown-spacer: 0; --cz-dropdown-item-padding-y: .625rem; --cz-dropdown-item-spacer: 0">
+                  <ul class="dropdown-menu w-100 rounded-top-0 rounded-bottom-4 py-1 p-lg-1" style="--cz-dropdown-spacer: 0; --cz-dropdown-item-padding-y: .625rem; --cz-dropdown-item-spacer: 0">
                     <li class="d-lg-none pt-2">
                       <a class="dropdown-item fw-medium" href="shop-categories-electronics.html">
                         <i class="ci-grid fs-xl opacity-60 pe-1 me-2"></i>
