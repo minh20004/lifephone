@@ -15,7 +15,7 @@
 
 
   <!-- Page title -->
-  <h1 class="h3 container mb-4">Apple iPhone 14 Plus 128GB Blue</h1>
+  <h1 class="h3 container mb-4">{{$product->name}}</h1>
 
 
   <!-- Nav links + Reviews -->
@@ -67,7 +67,13 @@
           <div class="swiper-wrapper">
             <div class="swiper-slide">
               <div class="ratio ratio-1x1">
-                <img src="{{asset('client/img/shop/electronics/product/gallery/01.png')}}" data-zoom="assets/img/shop/electronics/product/gallery/01.png" data-zoom-options="{
+                {{-- <img src="{{asset('client/img/shop/electronics/product/gallery/01.png')}}" data-zoom="assets/img/shop/electronics/product/gallery/01.png" data-zoom-options="{
+                  &quot;paneSelector&quot;: &quot;#zoomPane&quot;,
+                  &quot;inlinePane&quot;: 768,
+                  &quot;hoverDelay&quot;: 500,
+                  &quot;touchDisable&quot;: true
+                }" alt="Preview"> --}}
+                <img src="{{ asset('storage/' . $product->image_url) }}" data-zoom="{{ asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}" data-zoom-options="{
                   &quot;paneSelector&quot;: &quot;#zoomPane&quot;,
                   &quot;inlinePane&quot;: 768,
                   &quot;hoverDelay&quot;: 500,
@@ -152,53 +158,60 @@
         <div class="ps-md-4 ps-xl-0">
           <div class="position-relative" id="zoomPane">
 
-            <!-- Model -->
+            <!-- Model dung lượng -->
             <div class="pb-3 mb-2 mb-lg-3">
               <label class="form-label fw-semibold pb-1 mb-2">Model</label>
               <div class="d-flex flex-wrap gap-2">
-                <input type="radio" class="btn-check" name="model-options" id="gb-64">
-                <label for="gb-64" class="btn btn-sm btn-outline-secondary">64 GB</label>
-                <input type="radio" class="btn-check" name="model-options" id="gb-128" checked="">
-                <label for="gb-128" class="btn btn-sm btn-outline-secondary">128 GB</label>
-                <input type="radio" class="btn-check" name="model-options" id="gb-256">
-                <label for="gb-256" class="btn btn-sm btn-outline-secondary">256 GB</label>
-                <input type="radio" class="btn-check" name="model-options" id="gb-512">
-                <label for="gb-512" class="btn btn-sm btn-outline-secondary">512 GB</label>
+                @php
+                    $capacities = $product->variants->unique('capacity_id');
+                @endphp
+                @foreach ($capacities as $variant)
+                    <input type="radio" class="btn-check model-option" name="model-options" id="model-{{ $variant->capacity->id }}" 
+                          value="{{ $variant->capacity->id }}" {{ $loop->first ? 'checked' : '' }}>
+                    <label for="model-{{ $variant->capacity->id }}" class="btn btn-sm btn-outline-secondary">{{ $variant->capacity->name }} GB</label>
+                @endforeach
               </div>
             </div>
 
-            <!-- Color -->
-            <div class="pb-3 mb-2 mb-lg-3">
-              <label class="form-label fw-semibold pb-1 mb-2">Color: <span class="text-body fw-normal" id="colorOption">Gray blue</span></label>
-              <div class="d-flex flex-wrap gap-2" data-binded-label="#colorOption">
-                <input type="radio" class="btn-check" name="color-options" id="color-1" checked="">
-                <label for="color-1" class="btn btn-color fs-xl" data-label="Gray blue" style="color: #5a7aa1">
-                  <span class="visually-hidden">Gray blue</span>
-                </label>
-                <input type="radio" class="btn-check" name="color-options" id="color-2">
-                <label for="color-2" class="btn btn-color fs-xl" data-label="Pink" style="color: #ee7976">
-                  <span class="visually-hidden">Pink</span>
-                </label>
-                <input type="radio" class="btn-check" name="color-options" id="color-3">
-                <label for="color-3" class="btn btn-color fs-xl" data-label="Light blue" style="color: #9acbf1">
-                  <span class="visually-hidden">Light blue</span>
-                </label>
-                <input type="radio" class="btn-check" name="color-options" id="color-4">
-                <label for="color-4" class="btn btn-color fs-xl" data-label="Green" style="color: #8cd1ab">
-                  <span class="visually-hidden">Green</span>
-                </label>
-              </div>
+            <!-- Color màu sắc -->
+            <div class="pb-3 mb-3 mb-lg-3">
+              <label class="form-label fw-semibold pb-1 mb-2">Color: <span class="text-body fw-normal fs-6" id="colorOption">{{ $product->variants->first()->color->name }}</span></label>
+              <div class="d-flex flex-wrap gap-2 mb-2" >
+                @php
+                    $colors = $product->variants->unique('color_id');
+                @endphp
+                @foreach ($colors as $variant)
+                    <input type="radio" class="btn-check color-option" name="color-options" id="color-{{ $variant->color->id }}" 
+                          value="{{ $variant->color->id }}" data-color-name="{{ $variant->color->name }}">
+                    <label for="color-{{ $variant->color->id }}" class="btn btn-color fs-xl" style="color: {{ $variant->color->code }};">
+                        <span class="visually-hidden">{{ $variant->color->name }}</span>
+                    </label>
+                @endforeach
+            </div>
+            <!-- Hiển thị giá -->
+            <div class="d-flex flex-wrap align-items-center mb-2">
+                <div class="fs-3 mb-0 text-danger fw-bold" id="productPrice" data-base-price="{{ $minPrice }}">{{ number_format($minPrice, 0, ',', '.') }} đ</div>
+                <div class="d-flex align-items-center text-success fs-sm ms-auto">
+                    <i class="ci-check-circle fs-base me-2"></i>
+                    Available to order
+                </div>
+            </div>
+            {{-- số lượng --}}
+            <div class="d-flex flex-wrap align-items-center mb-3"  >
+              <p style="font-size: 13px; display:none;" id="quantityContainer" class="text-success mb-0">Còn <span id="quantityValue">0</span> sản phẩm</p>
             </div>
 
-            <!-- Price -->
-            <div class="d-flex flex-wrap align-items-center mb-3">
-              <div class="h4 mb-0 me-3">$940.00</div>
-              <div class="d-flex align-items-center text-success fs-sm ms-auto">
-                <i class="ci-check-circle fs-base me-2"></i>
-                Available to order
-              </div>
-            </div>
+            <!-- Lưu trữ toàn bộ biến thể sản phẩm -->
+              @php
+              $variants = $product->variants;
+              @endphp
 
+              
+            
+
+            
+
+            
             <!-- Count + Buttons -->
             <div class="d-flex flex-wrap flex-sm-nowrap flex-md-wrap flex-lg-nowrap gap-3 gap-lg-2 gap-xl-3 mb-4">
               <div class="count-input flex-shrink-0 order-sm-1">

@@ -64,6 +64,7 @@ class ProductController extends Controller
     }
 
 
+
     public function store(Request $request)
     {
         $validateData = $request->validate([
@@ -168,7 +169,7 @@ class ProductController extends Controller
     public function show(string $id)
     {
         // Lấy thông tin sản phẩm
-        $product = Product::with('variants')->findOrFail($id);
+        $product = Product::with('variants.color', 'variants.capacity')->findOrFail($id);
 
         // Tăng lượt xem lên 1
         $product->increment('views');

@@ -6,6 +6,7 @@
         <!-- Product details -->
         <h2 class="h3 pb-2 pb-md-3">Product details</h2>
         <h3 class="h6">General specs</h3>
+        <h3 class="h6">{{$product->description}}</h3>
         <ul class="list-unstyled d-flex flex-column gap-3 fs-sm pb-3 m-0 mb-2 mb-sm-3">
           <li class="d-flex align-items-center position-relative pe-4">
             <span>Model:</span>

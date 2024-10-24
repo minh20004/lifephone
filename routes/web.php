@@ -59,6 +59,7 @@ Route::resource('color', ColorController::class);
 Route::prefix('products')->group(function () {
     Route::get('/trashed', [ProductController::class, 'trashed'])->name('product.trashed');
     Route::post('/restore/{id}', [ProductController::class, 'restore'])->name('product.restore');
+    Route::get('trashed/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
     
 });
 
@@ -66,7 +67,6 @@ Route::prefix('products')->group(function () {
 Route::prefix('categories')->group(function () {
     Route::get('/trashed', [CategoryController::class, 'trashed'])->name('category.trashed');
     Route::post('/restore/{id}', [CategoryController::class, 'restore'])->name('category.restore');
-    Route::get('trashed/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
 
 });
 // Route dung lượng bị xóa 
@@ -81,3 +81,5 @@ Route::prefix('colors')->group(function () {
 });
 // chuyển trang biến thể 
 Route::get('/product/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
+
+
