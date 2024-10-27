@@ -13,10 +13,6 @@ return new class extends Migration
     {
         Schema::table('news', function (Blueprint $table) {
             //
-<<<<<<< Updated upstream
-            $table->string('slug')->unique();
-=======
->>>>>>> Stashed changes
             $table->timestamp('scheduled_at')->nullable();
         });
     }
@@ -28,10 +24,6 @@ return new class extends Migration
     {
         Schema::table('news', function (Blueprint $table) {
             //
-<<<<<<< Updated upstream
-            $table->dropColumn('slug');
-=======
->>>>>>> Stashed changes
             $table->dropColumn('scheduled_at');
 
         });

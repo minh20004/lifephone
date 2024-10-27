@@ -1,10 +1,5 @@
 <?php
-
-use App\Http\Controllers\NewController;
-use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
-<<<<<<< Updated upstream
-=======
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\FrontendControlle;
@@ -16,7 +11,6 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\ClientNewController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\NewController;
->>>>>>> Stashed changes
 
 /*
 |--------------------------------------------------------------------------
@@ -32,16 +26,6 @@ use App\Http\Controllers\NewController;
 // Route::get('/', function ():View {
 //     return view('admin.index');
 // });
-Route::resource('admin/review',ReviewController::class);
-Route::resource('admin/new',NewController::class);
-Route::get('/admin', function () {
-    return view('admin.index');
-});
-Route::get('/', function () {
-    return view('index');
-});
-<<<<<<< Updated upstream
-=======
 
 // Quản lý thành viên admin
 Route::get('/them-thanh-vien', [AuthController::class, 'create'])->name('admin.them-thanh-vien');
@@ -89,5 +73,5 @@ Route::get('/product/{id}/variants', [ProductController::class, 'showVariants'])
 //router review và news
 Route::resource('admin/review',ReviewController::class);
 Route::resource('new_admin',  NewController::class);
->>>>>>> Stashed changes
+
 Route::get('new', [NewController::class, 'clientIndex'])->name('news.index');

@@ -24,34 +24,6 @@ Lifephone
 
             <!-- Article -->
             @if($mostViewedNews)
-<<<<<<< Updated upstream
-            <article class="col-md-6 col-lg-7">
-                <a class="ratio d-flex hover-effect-scale rounded-4 overflow-hidden"
-                    href="{{ route('news.index', $mostViewedNews->id) }}"
-                    style="--cz-aspect-ratio: calc(484 / 746 * 100%)">
-                    <img src="{{ asset('storage/' . $mostViewedNews->image) }}"
-                        class="hover-effect-target"
-                        alt="{{ $mostViewedNews->title }}">
-                </a>
-                <div class="pt-4">
-                    <div class="nav align-items-center gap-2 pb-2 mt-n1 mb-1">
-                        <a class="nav-link text-body fs-xs text-uppercase p-0"
-                            href="#!">{{ $mostViewedNews->category->name ?? 'Category' }}</a>
-                        <hr class="vr my-1 mx-1">
-                        <span class="text-body-tertiary fs-xs">
-                            {{ $mostViewedNews->published_date }}
-                        </span>
-                    </div>
-                    <h3 class="h5 mb-0">
-                        <a class="hover-effect-underline"
-                            href="{{ route('news.index', $mostViewedNews->id) }}">
-                            {{ $mostViewedNews->title }}
-                        </a>
-                    </h3>
-                </div>
-            </article>
-            @endif
-=======
     <article class="col-md-6 col-lg-7">
         <a class="ratio d-flex hover-effect-scale rounded-4 overflow-hidden"
             href="{{ route('news.index', ['slug' => $mostViewedNews->slug]) }}"
@@ -88,19 +60,12 @@ Lifephone
                     <div class="w-100 pe-3 pe-sm-4 pe-lg-3 pe-xl-4">
                         <div class="text-body-tertiary fs-xs pb-2 mb-1">{{ $item->published_at }}</div>
                         <h3 class="h6 mb-2">
-<<<<<<< Updated upstream
-                            <a class="hover-effect-underline stretched-link" href="{{ route('new.show', $item->id) }}">{{ $item->title }}</a>
-                        </h3>
-                    </div>
-                    <div class="ratio w-100 rounded overflow-hidden" style="max-width: 196px; --cz-aspect-ratio: calc(140 / 196 * 100%)">
-                        <img src="{{ asset('storage/uploads/news_img/' . $mostViewedNews->thumbnail) }}" alt="{{ $mostViewedNews->title }}">
-=======
                             <a class="hover-effect-underline stretched-link" href="{{ route('new_admin.show', $item->id) }}">{{ $item->title }}</a>
                         </h3>
                     </div>
                     <div class="ratio w-100 rounded overflow-hidden" style="max-width: 196px; --cz-aspect-ratio: calc(140 / 196 * 100%)">
                         <img  src="{{ Storage::url($item->thumbnail) }}" alt="{{ $item->title }}" alt="{{ $item->title }}">
->>>>>>> Stashed changes
+
                     </div>
                 </article>
                 @endforeach
@@ -123,9 +88,6 @@ Lifephone
                     <article class="col">
                         <a
                             class="ratio d-flex hover-effect-scale rounded overflow-hidden"
-<<<<<<< Updated upstream
-                            href="{{ route('new.show', $news->id) }}"
-=======
                             href="{{ route('new_admin.show', $news->id) }}"
 >>>>>>> Stashed changes
                             style="--cz-aspect-ratio: calc(305 / 416 * 100%)">
@@ -140,11 +102,8 @@ Lifephone
                                 <span class="text-body-tertiary fs-xs">{{ $news->published_at}}</span>
                             </div>
                             <h3 class="h5 mb-0">
-<<<<<<< Updated upstream
-                                <a class="hover-effect-underline" href="{{ route('new.show', $news->id) }}">{{ $news->title }}</a>
-=======
                                 <a class="hover-effect-underline" href="{{ route('new_admin.show', $news->id) }}">{{ $news->title }}</a>
->>>>>>> Stashed changes
+
                             </h3>
                         </div>
                     </article>
@@ -168,11 +127,9 @@ Lifephone
                     <article class="hover-effect-scale position-relative d-flex align-items-center border-bottom py-4">
                         <div class="w-100 pe-3">
                             <h3 class="h6 mb-2">
-<<<<<<< Updated upstream
-                                <a class="hover-effect-underline stretched-link" href="{{ route('new.show', $latest->id) }}">
-=======
+
                                 <a class="hover-effect-underline stretched-link" href="{{ route('new_admin.show', $latest->id) }}">
->>>>>>> Stashed changes
+
                                     {{ $latest->title }}
                                 </a>
                             </h3>

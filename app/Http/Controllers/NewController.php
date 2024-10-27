@@ -6,23 +6,17 @@ use App\Models\News;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-<<<<<<< Updated upstream
-
-class NewController extends Controller
-{
-=======
 use Illuminate\Support\Str;
 
+
 class NewController extends Controller
 {
 
->>>>>>> Stashed changes
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-<<<<<<< Updated upstream
         $listNews = News::all();
         foreach ($listNews as $news) {
             // Kiểm tra xem trạng thái có phải là "Đã lên lịch" không và ngày đã đến chưa
@@ -35,22 +29,6 @@ class NewController extends Controller
         return view('admin.page.new.index', compact('listNews'));
     }
 }
-=======
-
-        $listNews = News::all();
-        // foreach ($listNews as $news) {
-        //     // Kiểm tra xem trạng thái có phải là "Đã lên lịch" không và ngày đã đến chưa
-        //     if ($news->status === 'Đã lên lịch' && $news->scheduled_at <= Carbon::now()) {
-        //         // Cập nhật trạng thái thành "Công khai"
-        //         $news->status = 'Công khai';
-        //         $news->published_at = Carbon::now(); // Ghi lại ngày hiện tại
-        //         $news->save(); // Lưu lại thay đổi
-        //     }
-        // }
-        return view('admin.page.new.index', compact('listNews'));
-    }
->>>>>>> Stashed changes
-
     /**
      * Show the form for creating a new resource.
      */
@@ -66,44 +44,6 @@ class NewController extends Controller
      */
     public function store(Request $request)
     {
-<<<<<<< Updated upstream
-        $validateData = $request->validate([
-            'title' => 'required|string|max:255',
-            'thumbnail' => 'required|file|mimes:jpeg,png,gif|max:2048', // Giới hạn kích thước và kiểu file
-            'content' => 'required|string',
-            'short_content' => 'required|string|max:100',
-            'category_news_id' => 'required|integer|exists:categories,id',
-            'status' => 'required|string|in:Công khai,Đã lên lịch,Bản nháp',
-            'author_id'=>'required'
-        ]);
-
-        if ($request->hasFile('thumbnail')) {
-            // Lưu file vào thư mục 'uploads/news_img' trong 'storage/app/public'
-            $thumbnail = $request->file('thumbnail')->store('uploads/news_img', 'public');
-        }
-        $publishedAt = null;
-$scheduledAt = null;
-        // Xử lý trạng thái
-        if ($validateData['status'] === 'Công khai') {
-            $publishedAt = now(); // Đặt ngày hiện tại
-        } elseif ($validateData['status'] === 'Đã lên lịch') {
-            $scheduledAt = $request->input('scheduled_at'); // Lấy ngày đã lên lịch từ request
-        }
-        $news = News::create([
-            'title' => $validateData['title'],
-            'thumbnail' => $thumbnail, // Sử dụng biến $thumbnail đã được lưu
-            'short_content' => $validateData['short_content'],
-            'content' => $validateData['content'],
-            'category_news_id' => $validateData['category_news_id'],
-            'published_at' => $publishedAt,
-            'status' => $validateData['status'],
-             'author_id'=>$validateData['author_id'],
-             'scheduled_at' => $scheduledAt,
-             
-        ]);
-
-        return redirect()->route('new.index')->with('success', 'Tin tức đã được lưu thành công!');
-=======
         // Validate dữ liệu từ request
         $validateData = $request->validate([
             'title' => 'required',
@@ -164,7 +104,6 @@ $scheduledAt = null;
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Có lỗi xảy ra khi lưu tin tức: ' . $e->getMessage()]);
         }
->>>>>>> Stashed changes
     }
 
     /**
@@ -200,10 +139,6 @@ $scheduledAt = null;
     }
     public function clientIndex()
     {
-<<<<<<< Updated upstream
-=======
-        
->>>>>>> Stashed changes
         // Lấy tất cả các bản tin có trạng thái 'Công khai'
         $allNews = News::where('status', 'Công khai')
             ->paginate(6); // Sử dụng paginate để giới hạn 10 bản tin mỗi trang
@@ -217,19 +152,11 @@ $scheduledAt = null;
             ->orderBy('views', 'desc')
             ->take(3)
             ->get();
-<<<<<<< Updated upstream
-            
-            $latestNews = News::latest()->take(5)->get();
-            
-        // Lấy 3 bản tin có trạng thái 'Công khai' và lượt xem cao nhất
-        return view('client.page.news.news', compact('allNews', 'additionalMostViewedNews', 'mostViewedNews','latestNews'));
-=======
 
         $latestNews = News::latest()->take(5)->get();
 
         // Lấy 3 bản tin có trạng thái 'Công khai' và lượt xem cao nhất
         return view('client.page.news.news', compact('allNews', 'additionalMostViewedNews', 'mostViewedNews', 'latestNews'));
->>>>>>> Stashed changes
     }
 
 
@@ -238,19 +165,11 @@ $scheduledAt = null;
     {
         $news = News::findOrFail(id: $id);
         $latestNews = News::where('id', '!=', $id) // Tránh lấy bài viết hiện tại
-<<<<<<< Updated upstream
-        ->orderBy('published_at', 'desc') // Sắp xếp theo ngày xuất bản giảm dần
-        ->take(6) // Giới hạn số lượng bài viết mới nhất (có thể điều chỉnh theo ý muốn)
-        ->get();
-        
-        return view('client.page.news.news', compact('news','latestNews'));
-=======
             ->orderBy('published_at', 'desc') // Sắp xếp theo ngày xuất bản giảm dần
             ->take(6) // Giới hạn số lượng bài viết mới nhất (có thể điều chỉnh theo ý muốn)
             ->get();
 
         return view('client.page.news.news', compact('news', 'latestNews'));
->>>>>>> Stashed changes
     }
     public function clientShow1($slug)
     {
