@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('news', function (Blueprint $table) {
-            //
-<<<<<<< Updated upstream
-            $table->string('slug')->unique();
-=======
->>>>>>> Stashed changes
-            $table->timestamp('scheduled_at')->nullable();
-        });
+
+            Schema::table('news', function (Blueprint $table) {
+                $table->enum('status', ['Công khai', 'Bản nháp', 'Đã lên lịch'])
+                      ->default('Bản nháp')
+                      ->change();
+            });
     }
 
     /**
@@ -28,12 +26,6 @@ return new class extends Migration
     {
         Schema::table('news', function (Blueprint $table) {
             //
-<<<<<<< Updated upstream
-            $table->dropColumn('slug');
-=======
->>>>>>> Stashed changes
-            $table->dropColumn('scheduled_at');
-
         });
     }
 };

@@ -31,7 +31,11 @@ News
                             </div>
                         </div>
                         <!-- end card header -->
+<<<<<<< Updated upstream
                         <div><button class="btn btn-primary " ><a style="color: yellow;" href="{{route('new.create')}}">thêm</a></button></div>
+=======
+                        <div><button class="btn btn-primary " ><a style="color: yellow;" href="{{route('new_admin.create')}}">thêm</a></button></div>
+>>>>>>> Stashed changes
                         <div class="card-body">
                             <div class="tab-content text-muted">
                                 <div class="tab-pane active" id="productnav-all" role="tabpanel">
@@ -83,16 +87,26 @@ News
         </td>
         <td data-column-id="STT" class="gridjs-td">{{$key+1}}</td>
         <td data-column-id="orders" class="gridjs-td">{{$News->title}}</td>
+<<<<<<< Updated upstream
         <td data-column-id="user" class="gridjs-td">{{$News->loadAlluser->name}}</td>
         <td data-column-id="orders" class="gridjs-td">{{$News->content}}</td>
         <td data-column-id="user" class="gridjs-td">{{$News->loadAllCategoryNews->title}}</td>
+=======
+        <td data-column-id="user" class="gridjs-td">{{$News->author->name}}</td>
+        <td data-column-id="orders" class="gridjs-td">{{$News->content}}</td>
+        <td data-column-id="user" class="gridjs-td">{{$News->categoryNews->title}}</td>
+>>>>>>> Stashed changes
         <td data-column-id="orders" class="gridjs-td">{{$News->status}}</td>
         <td data-column-id="published" class="gridjs-td">
             <span>{{$News->published_at}}</span>
         </td>
         <td data-column-id="action" class="gridjs-td">
             <div>
+<<<<<<< Updated upstream
                 <form action="{{route('new.destroy',$News->id)}}" method="post">
+=======
+                <form action="{{route('new_admin.destroy',$News->id)}}" method="post">
+>>>>>>> Stashed changes
                     @method('DELETE')
                     @csrf
                     <button class="btn btn-danger" onclick="return confirm('xoa')">Delete
