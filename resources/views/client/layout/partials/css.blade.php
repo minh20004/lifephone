@@ -29,3 +29,48 @@
 
 <!-- Customizer -->
 <script src="{{ asset('client/js/customizer.min.js') }}"></script>
+
+{{--  mô tả của chi tiết sản phẩm --}}
+<style>
+    .product-description {
+        font-size: 16px;
+        line-height: 1.6;
+        color: #333;
+    }
+
+    .product-description img {
+        max-width: 100%; 
+        height: auto;
+        display: block;
+        margin: 10px 0; 
+    }
+
+    .product-description p {
+        margin-bottom: 10px; 
+    }
+</style>
+{{-- chọn màu của sản phẩm --}}
+<style>
+              
+    .btn-color {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1;
+        border: 2px solid #ddd; 
+        transition: border-color 0.3s; 
+    }
+
+    
+    .btn-color:hover {
+        border-color: #333;
+    }
+
+    
+    .btn-check:checked + .btn-color {
+        border-color: #000; 
+    }
+</style>

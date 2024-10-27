@@ -9,6 +9,7 @@ use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\CapacityController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,10 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.home');
 });
 
+// -----------------------------USER------------------------------------------------------------------------------
+Route::resource('cart', CartController::class);
+
+// ------------------------------------------------- ADMIN---------------------------------------------------------
 // Quản lý thành viên admin
 Route::get('/them-thanh-vien', [AuthController::class, 'create'])->name('admin.them-thanh-vien');
 Route::get('/thanh-vien', [AuthController::class, 'index'])->name('admin.thanh-vien');
@@ -47,6 +52,7 @@ Route::resource('admins', AuthController::class);
 
 // Route cho Voucher
 Route::resource('vouchers', VoucherController::class);
+
 
 // Route cho sản phẩm
 Route::resource('product', ProductController::class);

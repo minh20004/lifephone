@@ -1,9 +1,9 @@
 <!-- Reviews -->
 <div class="d-flex align-items-center pt-5 mb-4 mt-2 mt-md-3 mt-lg-4" id="reviews" style="scroll-margin-top: 80px">
-    <h2 class="h3 mb-0">Reviews</h2>
+    <h2 class="h3 mb-0">Đánh giá</h2>
     <button type="button" class="btn btn-secondary ms-auto" data-bs-toggle="modal" data-bs-target="#reviewForm">
       <i class="ci-edit-3 fs-base ms-n1 me-2"></i>
-      Leave a review
+      Để lại đánh giá
     </button>
   </div>
 
@@ -21,7 +21,7 @@
           <i class="ci-star-filled text-warning"></i>
           <i class="ci-star text-body-tertiary opacity-60"></i>
         </div>
-        <div class="fs-sm">68 reviews</div>
+        <div class="fs-sm">68 đánh giá</div>
       </div>
     </div>
     <div class="col-sm-8">
@@ -172,7 +172,7 @@
 
   <div class="nav">
     <a class="nav-link text-primary animate-underline px-0" href="shop-product-reviews-electronics.html">
-      <span class="animate-target">See all reviews</span>
+      <span class="animate-target">Xem tất cả đánh giá</span>
       <i class="ci-chevron-right fs-base ms-1"></i>
     </a>
   </div>

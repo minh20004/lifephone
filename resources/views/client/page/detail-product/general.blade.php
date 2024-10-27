@@ -23,13 +23,13 @@
     <div class="d-flex align-items-center border-bottom">
       <ul class="nav nav-underline flex-nowrap gap-4">
         <li class="nav-item me-sm-2">
-          <a class="nav-link pe-none active" href="#!">General info</a>
+          <a class="nav-link pe-none active" href="#!">Thông tin chung</a>
         </li>
         <li class="nav-item me-sm-2">
-          <a class="nav-link" href="#detail">Product details</a>
+          <a class="nav-link" href="#detail">Chi tiết sản phẩm</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="shop-product-reviews-electronics.html">Reviews (68)</a>
+          <a class="nav-link" href="shop-product-reviews-electronics.html">Đánh giá (68)</a>
         </li>
       </ul>
       <a class="d-none d-md-flex align-items-center gap-2 text-decoration-none ms-auto mb-1" href="#reviews">
@@ -49,7 +49,6 @@
   <!-- Gallery + Product options -->
   <section class="container pb-5 mb-1 mb-sm-2 mb-md-3 mb-lg-4 mb-xl-5">
     <div class="row">
-
       <!-- Product gallery -->
       <div class="col-md-6">
 
@@ -64,91 +63,89 @@
             &quot;swiper&quot;: &quot;#thumbs&quot;
           }
         }">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <div class="ratio ratio-1x1">
-                {{-- <img src="{{asset('client/img/shop/electronics/product/gallery/01.png')}}" data-zoom="assets/img/shop/electronics/product/gallery/01.png" data-zoom-options="{
-                  &quot;paneSelector&quot;: &quot;#zoomPane&quot;,
-                  &quot;inlinePane&quot;: 768,
-                  &quot;hoverDelay&quot;: 500,
-                  &quot;touchDisable&quot;: true
-                }" alt="Preview"> --}}
-                <img src="{{ asset('storage/' . $product->image_url) }}" data-zoom="{{ asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}" data-zoom-options="{
-                  &quot;paneSelector&quot;: &quot;#zoomPane&quot;,
-                  &quot;inlinePane&quot;: 768,
-                  &quot;hoverDelay&quot;: 500,
-                  &quot;touchDisable&quot;: true
-                }" alt="Preview">
-              </div>
+        <div class="swiper-wrapper">
+          <!-- Ảnh chính (hiển thị trước) -->
+          <div class="swiper-slide">
+            <div class="ratio ratio-1x1">
+              <img src="{{ asset('storage/' . $product->image_url) }}" data-zoom="{{ asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}" data-zoom-options="{
+                &quot;paneSelector&quot;: &quot;#zoomPane&quot;,
+                &quot;inlinePane&quot;: 768,
+                &quot;hoverDelay&quot;: 500,
+                &quot;touchDisable&quot;: true
+              }">
             </div>
-            <div class="swiper-slide">
-              <div class="ratio ratio-1x1">
-                <img src="{{asset('client/img/shop/electronics/product/gallery/02.png')}}" data-zoom="assets/img/shop/electronics/product/gallery/02.png" data-zoom-options="{
-                  &quot;paneSelector&quot;: &quot;#zoomPane&quot;,
-                  &quot;inlinePane&quot;: 768,
-                  &quot;hoverDelay&quot;: 500,
-                  &quot;touchDisable&quot;: true
-                }" alt="Preview">
-              </div>
-            </div>
-            
           </div>
 
-          <!-- Prev button -->
-          <div class="position-absolute top-50 start-0 z-2 translate-middle-y ms-sm-2 ms-lg-3">
-            <button type="button" class="btn btn-prev btn-icon btn-outline-secondary bg-body rounded-circle animate-slide-start" aria-label="Prev">
-              <i class="ci-chevron-left fs-lg animate-target"></i>
-            </button>
-          </div>
-
-          <!-- Next button -->
-          <div class="position-absolute top-50 end-0 z-2 translate-middle-y me-sm-2 me-lg-3">
-            <button type="button" class="btn btn-next btn-icon btn-outline-secondary bg-body rounded-circle animate-slide-end" aria-label="Next">
-              <i class="ci-chevron-right fs-lg animate-target"></i>
-            </button>
-          </div>
+          <!-- Ảnh gallery -->
+          @foreach (json_decode($product->gallery_image, false) as $galleryImage)
+            <div class="swiper-slide">
+              <div class="ratio ratio-1x1">
+                <img src="{{ asset('storage/' . $galleryImage) }}" data-zoom="{{ asset('storage/' . $galleryImage) }}" alt="{{ $product->name }}">
+              </div>
+            </div>
+          @endforeach
         </div>
 
-        <!-- Thumbnails -->
-        <div class="swiper swiper-load swiper-thumbs pt-2 mt-1" id="thumbs" data-swiper="{
-          &quot;loop&quot;: true,
-          &quot;spaceBetween&quot;: 12,
-          &quot;slidesPerView&quot;: 3,
-          &quot;watchSlidesProgress&quot;: true,
-          &quot;breakpoints&quot;: {
-            &quot;340&quot;: {
-              &quot;slidesPerView&quot;: 4
-            },
-            &quot;500&quot;: {
-              &quot;slidesPerView&quot;: 5
-            },
-            &quot;600&quot;: {
-              &quot;slidesPerView&quot;: 6
-            },
-            &quot;768&quot;: {
-              &quot;slidesPerView&quot;: 4
-            },
-            &quot;992&quot;: {
-              &quot;slidesPerView&quot;: 5
-            },
-            &quot;1200&quot;: {
-              &quot;slidesPerView&quot;: 6
-            }
+        <!-- Prev button -->
+        <div class="position-absolute top-50 start-0 z-2 translate-middle-y ms-sm-2 ms-lg-3">
+          <button type="button" class="btn btn-prev btn-icon btn-outline-secondary bg-body rounded-circle animate-slide-start" aria-label="Prev">
+            <i class="ci-chevron-left fs-lg animate-target"></i>
+          </button>
+        </div>
+
+        <!-- Next button -->
+        <div class="position-absolute top-50 end-0 z-2 translate-middle-y me-sm-2 ms-lg-3">
+          <button type="button" class="btn btn-next btn-icon btn-outline-secondary bg-body rounded-circle animate-slide-end" aria-label="Next">
+            <i class="ci-chevron-right fs-lg animate-target"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Thumbnails -->
+      <div class="swiper swiper-load swiper-thumbs pt-2 mt-1" id="thumbs" data-swiper="{
+        &quot;loop&quot;: false,
+        &quot;spaceBetween&quot;: 12,
+        &quot;slidesPerView&quot;: 3,
+        &quot;watchSlidesProgress&quot;: false,
+        &quot;breakpoints&quot;: {
+          &quot;340&quot;: {
+            &quot;slidesPerView&quot;: 4
+          },
+          &quot;500&quot;: {
+            &quot;slidesPerView&quot;: 5
+          },
+          &quot;600&quot;: {
+            &quot;slidesPerView&quot;: 6
+          },
+          &quot;768&quot;: {
+            &quot;slidesPerView&quot;: 4
+          },
+          &quot;992&quot;: {
+            &quot;slidesPerView&quot;: 5
+          },
+          &quot;1200&quot;: {
+            &quot;slidesPerView&quot;: 6
           }
-        }">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide swiper-thumb">
-              <div class="ratio ratio-1x1" style="max-width: 94px">
-                <img src="{{asset('client/img/shop/electronics/product/gallery/th01.png')}}" class="swiper-thumb-img" alt="Thumbnail">
-              </div>
-            </div>
-            <div class="swiper-slide swiper-thumb">
-              <div class="ratio ratio-1x1" style="max-width: 94px">
-                <img src="{{asset('client/img/shop/electronics/product/gallery/th02.png')}}" class="swiper-thumb-img" alt="Thumbnail">
-              </div>
-            </div>
-            
+        }
+      }">
+      <div class="swiper-wrapper">
+        <!-- ảnh chính -->
+        <div class="swiper-slide swiper-thumb">
+          <div class="ratio ratio-1x1" style="max-width: 94px">
+            <img src="{{ asset('storage/' . $product->image_url) }}" class="swiper-thumb-img" alt="Thumbnail">
           </div>
+        </div>
+      
+        <!-- ảnh gallery -->
+        @foreach (json_decode($product->gallery_image, true) as $galleryImage)
+          <div class="swiper-slide swiper-thumb">
+            <div class="ratio ratio-1x1" style="max-width: 94px">
+              <img src="{{ asset('storage/' . $galleryImage) }}" class="swiper-thumb-img" alt="Thumbnail">
+            </div>
+          </div>
+        @endforeach
+      </div>
+            
         </div>
       </div>
 
@@ -188,12 +185,13 @@
                     </label>
                 @endforeach
             </div>
+            
             <!-- Hiển thị giá -->
             <div class="d-flex flex-wrap align-items-center mb-2">
                 <div class="fs-3 mb-0 text-danger fw-bold" id="productPrice" data-base-price="{{ $minPrice }}">{{ number_format($minPrice, 0, ',', '.') }} đ</div>
                 <div class="d-flex align-items-center text-success fs-sm ms-auto">
                     <i class="ci-check-circle fs-base me-2"></i>
-                    Available to order
+                    Có thể đặt hàng
                 </div>
             </div>
             {{-- số lượng --}}
@@ -205,12 +203,10 @@
               @php
               $variants = $product->variants;
               @endphp
-
+              <script>
+                const variants = @json($variants);
+              </script>
               
-            
-
-            
-
             
             <!-- Count + Buttons -->
             <div class="d-flex flex-wrap flex-sm-nowrap flex-md-wrap flex-lg-nowrap gap-3 gap-lg-2 gap-xl-3 mb-4">
@@ -231,7 +227,7 @@
               </button>
               <button type="button" class="btn btn-lg btn-primary w-100 animate-slide-end order-sm-2 order-md-4 order-lg-2">
                 <i class="ci-shopping-cart fs-lg animate-target ms-n1 me-2"></i>
-                Add to cart
+                Thêm vào giỏ hàng
               </button>
             </div>
 
@@ -239,43 +235,43 @@
             <div class="d-flex flex-wrap gap-3 gap-xl-4 pb-4 pb-lg-5 mb-2 mb-lg-0 mb-xl-2">
               <div class="d-flex align-items-center fs-sm">
                 <svg class="text-warning me-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"><path d="M1.333 9.667H7.5V16h-5c-.64 0-1.167-.527-1.167-1.167V9.667zm13.334 0v5.167c0 .64-.527 1.167-1.167 1.167h-5V9.667h6.167zM0 5.833V7.5c0 .64.527 1.167 1.167 1.167h.167H7.5v-1-3H1.167C.527 4.667 0 5.193 0 5.833zm14.833-1.166H8.5v3 1h6.167.167C15.473 8.667 16 8.14 16 7.5V5.833c0-.64-.527-1.167-1.167-1.167z"></path><path d="M8 5.363a.5.5 0 0 1-.495-.573C7.752 3.123 9.054-.03 12.219-.03c1.807.001 2.447.977 2.447 1.813 0 1.486-2.069 3.58-6.667 3.58zM12.219.971c-2.388 0-3.295 2.27-3.595 3.377 1.884-.088 3.072-.565 3.756-.971.949-.563 1.287-1.193 1.287-1.595 0-.599-.747-.811-1.447-.811z"></path><path d="M8.001 5.363c-4.598 0-6.667-2.094-6.667-3.58 0-.836.641-1.812 2.448-1.812 3.165 0 4.467 3.153 4.713 4.819a.5.5 0 0 1-.495.573zM3.782.971c-.7 0-1.448.213-1.448.812 0 .851 1.489 2.403 5.042 2.566C7.076 3.241 6.169.971 3.782.971z"></path></svg>
-                <div class="text-body-emphasis text-nowrap"><span class="fw-semibold">+32</span> bonuses</div>
+                <div class="text-body-emphasis text-nowrap"><span class="fw-semibold">+32</span> Phần thưởng</div>
               </div>
               <div class="d-flex align-items-center fs-sm">
                 <svg class="text-primary me-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none"><path d="M15.264 8.001l.702-1.831a.5.5 0 0 0-.152-.568l-1.522-1.234-.308-1.937a.5.5 0 0 0-.416-.415l-1.937-.308L10.399.185a.5.5 0 0 0-.567-.152L8 .736 6.169.034a.5.5 0 0 0-.567.152L4.368 1.709l-1.937.308a.5.5 0 0 0-.415.415l-.308 1.937L.185 5.603a.5.5 0 0 0-.152.567l.702 1.831-.702 1.831a.5.5 0 0 0 .152.567l1.523 1.233.308 1.937a.5.5 0 0 0 .415.416l1.937.308 1.234 1.522c.137.17.366.23.568.152L8 15.265l1.831.702a.5.5 0 0 0 .568-.153l1.233-1.522 1.937-.308a.5.5 0 0 0 .416-.416l.308-1.937 1.522-1.233a.5.5 0 0 0 .152-.567l-.702-1.831z" fill="currentColor"></path><path d="M6.5 7.001a1.5 1.5 0 1 1 0-3 1.5 1.5 0 1 1 0 3zm0-2a.5.5 0 1 0 0 1 .5.5 0 1 0 0-1zM9.5 12a1.5 1.5 0 1 1 0-3 1.5 1.5 0 1 1 0 3zm0-2a.5.5 0 1 0 0 1 .5.5 0 1 0 0-1zm-4 2c-.101 0-.202-.03-.29-.093a.5.5 0 0 1-.116-.698l5-7a.5.5 0 1 1 .814.581l-5 7A.5.5 0 0 1 5.5 12z" fill="white"></path></svg>
-                <div class="text-body-emphasis text-nowrap">Interest-free loan</div>
+                <div class="text-body-emphasis text-nowrap">Vay không lãi suất</div>
               </div>
               <div class="d-flex align-items-center fs-sm">
-                <svg class="me-2" xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path class="text-success" d="M7.42169 1.15662C3.3228 1.15662 0 4.47941 0 8.5783C0 12.6772 3.3228 16 7.42169 16C11.5206 16 14.8434 12.6772 14.8434 8.5783H7.42169V1.15662Z" fill="currentColor"></path><path class="text-info" d="M8.57812 0V7.42169H15.9998C15.9998 3.3228 12.677 0 8.57812 0Z" fill="currentColor"></path><defs><rect width="16" height="16" fill="white"></rect></defs></svg>
-                <div class="text-body-emphasis text-nowrap">Pay by installments</div>
+                <svg class="me-1" xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path class="text-success" d="M7.42169 1.15662C3.3228 1.15662 0 4.47941 0 8.5783C0 12.6772 3.3228 16 7.42169 16C11.5206 16 14.8434 12.6772 14.8434 8.5783H7.42169V1.15662Z" fill="currentColor"></path><path class="text-info" d="M8.57812 0V7.42169H15.9998C15.9998 3.3228 12.677 0 8.57812 0Z" fill="currentColor"></path><defs><rect width="16" height="16" fill="white"></rect></defs></svg>
+                <div class="text-body-emphasis text-nowrap">Thanh toán theo từng đợt</div>
               </div>
             </div>
           </div>
 
           <!-- Shipping options -->
           <div class="d-flex align-items-center pb-2">
-            <h3 class="h6 mb-0">Shipping options</h3>
+            <h3 class="h6 mb-0">Tùy chọn vận chuyển</h3>
             <a class="btn btn-sm btn-secondary ms-auto" href="#!">
               <i class="ci-map-pin fs-sm ms-n1 me-1"></i>
-              Find local store
+              Tìm của hàng địa phương
             </a>
           </div>
           <table class="table table-borderless fs-sm mb-2">
             <tbody>
               <tr>
-                <td class="py-2 ps-0">Pickup from the store</td>
-                <td class="py-2">Today</td>
-                <td class="text-body-emphasis fw-semibold text-end py-2 pe-0">Free</td>
+                <td class="py-2 ps-0">Nhận hàng từ của hàng</td>
+                <td class="py-2">Hôm nay</td>
+                <td class="text-body-emphasis fw-semibold text-end py-2 pe-0">Miễn phí</td>
               </tr>
               <tr>
-                <td class="py-2 ps-0">Pickup from postal offices</td>
-                <td class="py-2">Tomorrow</td>
-                <td class="text-body-emphasis fw-semibold text-end py-2 pe-0">$25.00</td>
+                <td class="py-2 ps-0">Nhận hàng từ bưu điện</td>
+                <td class="py-2">Ngày mai</td>
+                <td class="text-body-emphasis fw-semibold text-end py-2 pe-0">50.0000 đ</td>
               </tr>
               <tr>
-                <td class="py-2 ps-0">Delivery by courier</td>
-                <td class="py-2">2-3 days</td>
-                <td class="text-body-emphasis fw-semibold text-end py-2 pe-0">$35.00</td>
+                <td class="py-2 ps-0">Giang hàng bằng chuyển phát nhanh</td>
+                <td class="py-2">2-3 ngày </td>
+                <td class="text-body-emphasis fw-semibold text-end py-2 pe-0">35.000 đ</td>
               </tr>
             </tbody>
           </table>
@@ -285,27 +281,29 @@
             <div class="accordion-item border-top">
               <h3 class="accordion-header" id="headingWarranty">
                 <button type="button" class="accordion-button animate-underline collapsed" data-bs-toggle="collapse" data-bs-target="#warranty" aria-expanded="false" aria-controls="warranty">
-                  <span class="animate-target me-2">Warranty information</span>
+                  <span class="animate-target me-2">Thông tin bảo hành</span>
                 </button>
               </h3>
               <div class="accordion-collapse collapse" id="warranty" aria-labelledby="headingWarranty" data-bs-parent="#infoAccordion">
                 <div class="accordion-body">
                   <div class="alert d-flex alert-info mb-3" role="alert">
                     <i class="ci-check-shield fs-xl mt-1 me-2"></i>
-                    <div class="fs-sm"><span class="fw-semibold">Warranty:</span> 12 months of official manufacturer's warranty. Exchange/return of the product within 14 days.</div>
+                    <div class="fs-sm"><span class="fw-semibold">Bảo hành:</span> Bảo hành chính hãng 12 tháng. Đổi/trả sản phẩm trong vòng 14 ngày.</div>
                   </div>
-                  <p class="mb-0">Explore the details of our <a class="fw-medium" href="#!">product warranties here</a>, including duration, coverage, and any additional protection plans available. We prioritize your satisfaction, and our warranty information is designed to keep you informed and confident in your purchase.</p>
+                  <p class="mb-0">Khám phá thông tin chi tiết về <a class="fw-medium" href="#!">bảo hành sản phẩm của chúng tôi tại đây</a>, bao gồm thời hạn, phạm vi bảo hành và bất kỳ kế hoạch bảo vệ bổ sung nào có sẵn.
+                     Chúng tôi ưu tiên sự hài lòng của bạn và thông tin bảo hành của chúng tôi được thiết kế để giúp bạn được thông báo và tự tin vào việc mua hàng của mình.</p>
                 </div>
               </div>
             </div>
             <div class="accordion-item">
               <h3 class="accordion-header" id="headingPayment">
                 <button type="button" class="accordion-button animate-underline collapsed" data-bs-toggle="collapse" data-bs-target="#payment" aria-expanded="false" aria-controls="payment">
-                  <span class="animate-target me-2">Payment and credit</span>
+                  <span class="animate-target me-2">Thanh toán bằng tín dụng</span>
                 </button>
               </h3>
               <div class="accordion-collapse collapse" id="payment" aria-labelledby="headingPayment" data-bs-parent="#infoAccordion">
-                <div class="accordion-body">Experience hassle-free transactions with our <a class="fw-medium" href="#!">flexible payment options</a> and credit facilities. Learn more about the various payment methods accepted, installment plans, and any exclusive credit offers available to make your shopping experience seamless.</div>
+                <div class="accordion-body">Trải nghiệm giao dịch không rắc rối với <a class="fw-medium" href="#!"> các tùy chọn thanh toán linh hoạt</a> và các tiện ích tín dụng của chúng tôi. Tìm hiểu thêm về 
+                  các phương thức thanh toán khác nhau được chấp nhận, các gói trả góp và bất kỳ ưu đãi tín dụng độc quyền nào có sẵn để giúp trải nghiệm mua sắm của bạn trở nên liền mạch.</div>
               </div>
             </div>
           </div>
@@ -325,7 +323,7 @@
               <img src="{{asset('client/img/shop/electronics/thumbs/10.png')}}" alt="iPhone 14">
             </div>
             <div class="w-100 min-w-0 ps-2">
-              <h4 class="fs-sm fw-medium text-truncate mb-1">Apple iPhone 14 Plus 128GB Blue</h4>
+              <h4 class="fs-sm fw-medium text-truncate mb-1"></h4>
               <div class="h6 mb-0">$940.00</div>
             </div>
           </div>
@@ -441,7 +439,7 @@
 
   <!-- Trending products (Carousel) -->
   <section class="container pb-4 pb-md-5 mb-2 mb-sm-0 mb-lg-2 mb-xl-4">
-    <h2 class="h3 border-bottom pb-4 mb-0">Trending products</h2>
+    <h2 class="h3 border-bottom pb-4 mb-0">Sản phẩm thịnh hành</h2>
 
     <!-- Product carousel -->
     <div class="position-relative mx-md-1">
@@ -625,7 +623,7 @@
 
   <!-- Viewed products (Carousel) -->
   <section class="container pb-4 pb-md-5 mb-2 mb-sm-0 mb-lg-2 mb-xl-4">
-    <h2 class="h3 border-bottom pb-4 mb-0">Viewed products</h2>
+    <h2 class="h3 border-bottom pb-4 mb-0">Sản phẩm đã xem</h2>
 
     <!-- Product carousel -->
     <div class="position-relative mx-md-1">
@@ -745,13 +743,13 @@
     <div class="container pt-sm-2 pt-md-3 pt-lg-4 pt-xl-5">
       <div class="row">
         <div class="col-md-6 col-lg-5 mb-5 mb-md-0">
-          <h2 class="h4 mb-2">Sign up to our newsletter</h2>
-          <p class="text-body pb-2 pb-ms-3">Receive our latest updates about our products &amp; promotions</p>
+          <h2 class="h4 mb-2">Đăng ký nhận bản tin của chúng tôi</h2>
+          <p class="text-body pb-2 pb-ms-3">Nhận thông tin cập nhật mới nhất về sản phẩm và chương trình khuyến mãi của chúng tôi</p>
           <form class="d-flex needs-validation pb-1 pb-sm-2 pb-md-3 pb-lg-0 mb-4 mb-lg-5" novalidate="">
             <div class="position-relative w-100 me-2">
               <input type="email" class="form-control form-control-lg" placeholder="Your email" required="">
             </div>
-            <button type="submit" class="btn btn-lg btn-primary">Subscribe</button>
+            <button type="submit" class="btn btn-lg btn-primary">Đặt mua</button>
           </form>
           <div class="d-flex gap-3">
             <a class="btn btn-icon btn-secondary rounded-circle" href="#!" aria-label="Instagram">

@@ -4,9 +4,14 @@
       <div class="col-md-7">
 
         <!-- Product details -->
-        <h2 class="h3 pb-2 pb-md-3">Product details</h2>
-        <h3 class="h6">General specs</h3>
-        <h3 class="h6">{{$product->description}}</h3>
+        <h2 class="h3 pb-2 pb-md-3">Chi tiết sản phẩm</h2>
+        <h3 class="h6">Thông số kỹ thuật chung</h3>
+        <div class="product-description">
+          {!! $product->description !!}
+      </div>
+      
+      
+      
         <ul class="list-unstyled d-flex flex-column gap-3 fs-sm pb-3 m-0 mb-2 mb-sm-3">
           <li class="d-flex align-items-center position-relative pe-4">
             <span>Model:</span>
@@ -74,7 +79,7 @@
           <div class="border rounded p-3 p-lg-4">
             <div class="d-flex align-items-center mb-3">
               <div class="ratio ratio-1x1 flex-shrink-0" style="width: 110px">
-                <img src="{{asset('client/img/shop/electronics/thumbs/10.png')}}" width="110" alt="iPhone 14">
+                <img src="{{ asset('storage/' . $product->image_url) }}" width="110" alt="iPhone 14">
               </div>
               <div class="w-100 min-w-0 ps-2 ps-sm-3">
                 <div class="d-flex align-items-center gap-2 mb-2">
@@ -87,14 +92,14 @@
                   </div>
                   <span class="text-body-tertiary fs-xs">68</span>
                 </div>
-                <h4 class="fs-sm fw-medium mb-2">Apple iPhone 14 Plus 128GB Blue</h4>
-                <div class="h5 mb-0">$940.00</div>
+                <h4 class="fs-sm fw-medium mb-2">{{$product->name}}</h4>
+                <div class="h5 mb-0 text-danger">{{ number_format($minPrice, 0, ',', '.') }} đ</div>
               </div>
             </div>
             <div class="d-flex gap-2 gap-lg-3">
               <button type="button" class="btn btn-primary w-100 animate-slide-end">
                 <i class="ci-shopping-cart fs-base animate-target ms-n1 me-2"></i>
-                Add to cart
+                Thêm vào giỏ hàng
               </button>
               <button type="button" class="btn btn-icon btn-secondary animate-pulse" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Add to Wishlist" aria-label="Add to Wishlist">
                 <i class="ci-heart fs-base animate-target"></i>
