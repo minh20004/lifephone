@@ -324,8 +324,8 @@
               <div class="nav d-block mt-n2">
                 @foreach ($colors as $color)
                 <button type="button" class="nav-link w-auto animate-underline fw-normal pt-2 pb-0 px-0">
-                  <span class="rounded-circle me-2" style="width: .875rem; height: .875rem; margin-top: .125rem; background-color: {{ $color->code }}"></span> <!-- Giả sử màu được lưu trong trường hex_code -->
-                  <span class="animate-target">{{ $color->name }}</span>
+                <span class="rounded-circle me-2" style="width: .875rem; height: .875rem; margin-top: .125rem; background-color: {{ $color->code }}"></span>
+                <span class="animate-target">{{ $color->name }}</span>
                 </button>
                 @endforeach
 
@@ -403,9 +403,9 @@
                   </ul>
                 </div>
                 <a class="d-block rounded-top overflow-hidden p-3 p-sm-4" href="shop-product-general-electronics.html">
-                  <span class="badge bg-danger position-absolute top-0 start-0 mt-2 ms-2 mt-lg-3 ms-lg-3">-21%</span>
+                  <!-- <span class="badge bg-danger position-absolute top-0 start-0 mt-2 ms-2 mt-lg-3 ms-lg-3">-21%</span> -->
                   <div class="ratio" style="--cz-aspect-ratio: calc(240 / 258 * 100%)">
-                    <img src="assets/img/shop/electronics/01.png" alt="VR Glasses">
+                    <img src="{{ asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}">
                   </div>
                 </a>
               </div>
