@@ -31,11 +31,9 @@ News
                             </div>
                         </div>
                         <!-- end card header -->
-<<<<<<< Updated upstream
-                        <div><button class="btn btn-primary " ><a style="color: yellow;" href="{{route('new.create')}}">thêm</a></button></div>
-=======
+
                         <div><button class="btn btn-primary " ><a style="color: yellow;" href="{{route('new_admin.create')}}">thêm</a></button></div>
->>>>>>> Stashed changes
+
                         <div class="card-body">
                             <div class="tab-content text-muted">
                                 <div class="tab-pane active" id="productnav-all" role="tabpanel">
