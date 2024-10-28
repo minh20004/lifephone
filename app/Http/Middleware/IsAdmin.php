@@ -15,18 +15,9 @@ class IsAdmin
      */
     public function handle(Request $request, Closure $next): Response
     {
-<<<<<<< HEAD
-        // Kiểm tra nếu người dùng là admin
-        if (Auth::check() && Auth::user()->role === 'admin') {
-            return $next($request);
-        }
-        
-        return redirect()->route('user.home')->with('error', 'Bạn không có quyền truy cập.');
-=======
         if (Auth::check() && Auth::user()->role === 'admin') {
             return $next($request);
         }
         return redirect('/login')->withErrors('Bạn không có quyền truy cập.');
->>>>>>> c32c957ea283f4266867dc34e802189c042da2ab
     }
 }

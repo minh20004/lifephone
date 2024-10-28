@@ -21,15 +21,9 @@
                         <div class="btn btn-light mb-4 border ">
                             <form action="{{ route('product.index') }}" method="GET">
                                 <div class="input-group">
-<<<<<<< HEAD
-                                    <input type="text" class="form-control" name="search" value="{{ $search }}"
-                                        placeholder="Tìm kiếm...">
-                                    <button class="btn btn-primary" type="submit"><i class="mdi mdi-magnify"></i></button>
-=======
                                     <input type="text" class="form-control search_input" name="search" value="{{ $search }}"
                                         placeholder="Tìm kiếm...">
                                     <button class="btn btn-primary btn-search" type="submit"><i class="mdi mdi-magnify"></i></button>
->>>>>>> c32c957ea283f4266867dc34e802189c042da2ab
                                 </div>
                             </form>
                         </div>

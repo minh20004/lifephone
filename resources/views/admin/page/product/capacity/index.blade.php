@@ -25,11 +25,7 @@
                     <div class="mb-3" style=" border-bottom: 1px solid #ddd; padding-bottom: 10px;margin-bottom: 10px;">
                         <a href="{{ route('capacity.create') }}" class="btn mb-3 fs-6 fw-bold text-dark"
                             style="background:#9df99d ">Thêm dung lượng</a>
-<<<<<<< HEAD
-                        <a href="{{ route('capacity.trashed') }}" class="btn btn-danger mb-3">Xem danh mục đã bị xóa</a>
-=======
                         <a href="{{ route('capacity.trashed') }}" class="btn btn-danger mb-3">Xem dung lượng đã bị xóa</a>
->>>>>>> c32c957ea283f4266867dc34e802189c042da2ab
                     </div>
                     
 

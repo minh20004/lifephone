@@ -1243,14 +1243,8 @@
                   Trang chủ</a>
                 </li>
                 <li class="nav-item dropdown position-static me-lg-n1 me-xl-0">
-<<<<<<< HEAD
                   <a class="nav-link dropdown-toggle" href="{{route('shop')}}" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">Shop</a>
                   <!-- <div class="dropdown-menu rounded-4 p-4">
-=======
-                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">
-                  Shop</a>
-                  <div class="dropdown-menu rounded-4 p-4">
->>>>>>> c32c957ea283f4266867dc34e802189c042da2ab
                     <div class="d-flex flex-column flex-lg-row gap-4">
                       <div style="min-width: 190px">
                         <div class="h6 mb-2">Electronics Store</div>

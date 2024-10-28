@@ -58,12 +58,9 @@
                         <li class="nav-item">
                             <a href="dashboard-job.html" class="nav-link" data-key="t-job">Job</a>
                         </li>
-<<<<<<< HEAD
                         <li class="nav-item">
                             <a href="{{ route('vouchers.index') }}" class="nav-link" data-key="t-job">Vouchers</a>
                         </li>
-=======
->>>>>>> c32c957ea283f4266867dc34e802189c042da2ab
                     </ul>
                 </div>
             </li> <!-- end Dashboard Menu -->

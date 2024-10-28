@@ -5,16 +5,17 @@
 
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CapacityController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\FrontendControlle;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VoucherController;
-use App\Http\Controllers\CapacityController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\CartController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -93,3 +94,8 @@ Route::prefix('colors')->group(function () {
 Route::get('/product/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
 
 
+Route::resource('vouchers', VoucherController::class);
+
+Route::get('/shop', [ClientCategoryController::class, 'shop'])->name('shop');
+
+Route::get('/categories/{id}/products', [ClientCategoryController::class, 'getProductsByCategory']);

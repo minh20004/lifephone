@@ -6,11 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-<<<<<<< HEAD
-
-=======
 use Illuminate\Support\Facades\Auth;
->>>>>>> c32c957ea283f4266867dc34e802189c042da2ab
 class AuthController extends Controller
 {
     public function index()
@@ -95,8 +91,6 @@ class AuthController extends Controller
 
         return redirect()->route('admin.thanh-vien')->with('success', 'User deleted successfully.');
     }
-<<<<<<< HEAD
-=======
     public function showLoginForm()
     {
         return view('admin.auth.login');
@@ -129,5 +123,4 @@ class AuthController extends Controller
         Auth::logout();
         return redirect()->route('login');
     }
->>>>>>> c32c957ea283f4266867dc34e802189c042da2ab
 }

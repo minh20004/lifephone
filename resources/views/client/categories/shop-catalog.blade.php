@@ -614,15 +614,4 @@
   </main>
 </div>
 <!-- Thêm jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script>
-$('.capacity-checkbox').on('change', function() {
-    let selected = $('.capacity-checkbox:checked').map((_, el) => el.value).get();
-
-    $.get("{{ route('products.filter') }}", {capacities: selected}, function(data) {
-        $('#filtered-products').html(data.map(p => `<div>${p.name}</div>`).join(''));
-    });
-});
-</script>
 @endsection

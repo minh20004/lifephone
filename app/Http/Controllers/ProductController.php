@@ -129,6 +129,7 @@ class ProductController extends Controller
         $product = Product::create([
             'product_code' => $validateData['product_code'],
             'name' => $validateData['name'],
+            'price' => $validateData['variants'][0]['price_difference'],
             'image_url' => $coverImage,
             'description' => $validateData['description'],
             'category_id' => $validateData['category_id'],
@@ -151,6 +152,7 @@ class ProductController extends Controller
             ProductVariant::create([
                 'product_id' => $product->id,
                 'color_id' => $variant['color_id'],
+                'price' => $variant['price_difference'],
                 'capacity_id' => $variant['capacity_id'],
                 'price_difference' => $variant['price_difference'] ?? 0,
                 'stock' => $variant['stock'],
