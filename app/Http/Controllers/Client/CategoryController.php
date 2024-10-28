@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Capacity;
 use App\Models\Category;
 use App\Models\Color;
 use App\Models\Product;
@@ -14,26 +15,43 @@ class CategoryController extends Controller
 
     // Phương thức lấy 10 sản phẩm mới nhất cùng với thông tin danh mục của chúng
     public function shop()
+    {
+        // Lấy danh sách các danh mục và đếm số lượng sản phẩm trong mỗi danh mục
+        $categories = Category::withCount('products')->get();
+        $colors = Color::all();
+        $capacities = Capacity::withCount('products')->get();
+
+        // Lấy 10 sản phẩm mới nhất và load danh mục và biến thể sản phẩm với màu sắc
+        $latestProducts = Product::with([
+            'category:id,name', // Eager load danh mục với id và name
+            'variants.color:id,name', // Eager load màu sắc (color) thông qua biến thể sản phẩm
+            'variants.capacity:id,name'
+        ])
+            ->orderBy('created_at', 'desc') // Lấy theo thứ tự mới nhất
+            ->take(10) // Giới hạn 10 sản phẩm
+            ->get();
+
+        // Trả về view với các dữ liệu cần thiết
+        return view('client.categories.shop-catalog', compact('latestProducts', 'categories', 'colors', 'capacities'));
+    }
+    public function filterByCategory(Request $request)
+    {
+        $categoryId = $request->get('category_id');
+
+        // Lấy danh sách sản phẩm theo danh mục
+        $products = Product::where('category_id', $categoryId)->with('variants.color', 'variants.capacity')->get();
+
+        return response()->json($products);
+    }
+    public function filter(Request $request)
 {
-    // Lấy danh sách các danh mục và đếm số lượng sản phẩm trong mỗi danh mục
-    $categories = Category::withCount('products')->get();
-    $colors = Color::all();
-
-    // Lấy 10 sản phẩm mới nhất và load danh mục và biến thể sản phẩm với màu sắc
-    $latestProducts = Product::with([
-        'category:id,name', // Eager load danh mục với id và name
-        'variants.color:id,name', // Eager load màu sắc (color) thông qua biến thể sản phẩm
-        'variants.capacity:id,name'
-    ])
-    ->orderBy('created_at', 'desc') // Lấy theo thứ tự mới nhất
-    ->take(10) // Giới hạn 10 sản phẩm
-    ->get();
-
-    // Trả về view với các dữ liệu cần thiết
-    return view('client.categories.shop-catalog', compact('latestProducts', 'categories', 'colors'));
+    $products = Product::whereIn('capacity_id', $request->capacities)->get();
+    return response()->json($products);
 }
 
-    
+
+
+
 
     // public function getProductsByCategory($id)
     // {

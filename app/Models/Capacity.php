@@ -9,30 +9,33 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Capacity extends Model
 {
-    use HasFactory, SoftDeletes; 
+    use HasFactory, SoftDeletes;
     protected $table = 'capacities';
 
     protected $fillable = [
         'name',
     ];
 
-    public function getAll(){
+    public function getAll()
+    {
         return self::all(); // Sử dụng Eloquent
     }
 
-    public function updateCapacity($data, $id){
+    public function updateCapacity($data, $id)
+    {
         DB::table('capacities')
-        ->where('id', $id)
-        ->update($data);
+            ->where('id', $id)
+            ->update($data);
     }
 
 
     public function products()
     {
-        return $this->hasMany(Product::class);
+        return $this->hasManyThrough(Product::class, ProductVariant::class, 'capacity_id', 'id', 'id', 'product_id');
     }
 
-    public function productVariants() {
+    public function productVariants()
+    {
         return $this->hasMany(ProductVariant::class);
     }
 }

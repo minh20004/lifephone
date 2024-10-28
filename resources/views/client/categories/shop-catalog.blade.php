@@ -67,7 +67,7 @@
 
 
   <!-- Selected filters + Sorting -->
-  <section class="container mb-4">
+  <!-- <section class="container mb-4">
     <div class="row">
       <div class="col-lg-9">
         <div class="d-md-flex align-items-start">
@@ -116,7 +116,7 @@
       </div>
     </div>
     <hr class="d-lg-none my-3">
-  </section>
+  </section> -->
 
 
   <!-- Products grid + Sidebar with filters -->
@@ -151,11 +151,11 @@
               <ul class="list-unstyled d-block m-0">
                 @foreach ($categories as $item)
                 <li class="nav d-block pt-2 mt-1">
-                  <a class="nav-link animate-underline fw-normal p-0 category-link" href="javascript:void(0);" data-id="{{ $item->id }}">
+                  <button type="button" class="nav-link w-auto category-filter" data-category-id="{{ $item->id }}">
                     <span class="animate-target text-truncate me-3">{{ $item->name }}</span>
                     <!-- Hiển thị số lượng sản phẩm hoặc biến thể -->
                     <span class="text-body-secondary fs-xs ms-auto">{{ $item->product_variants_count ?? $item->products_count }}</span>
-                  </a>
+                    </a>
                 </li>
                 @endforeach
               </ul>
@@ -184,7 +184,7 @@
 
 
             <!-- Brand (checkboxes) -->
-            <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
+            <!-- <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
               <h4 class="h6">Brand</h4>
               <div class="d-flex flex-column gap-1">
                 <div class="d-flex align-items-center justify-content-between">
@@ -299,54 +299,21 @@
                   </div>
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <!-- SSD size (checkboxes) -->
             <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
-              <h4 class="h6">SSD size</h4>
+              <h4 class="h6">Capacity</h4>
               <div class="d-flex flex-column gap-1">
+                @foreach ($capacities as $item)
                 <div class="d-flex align-items-center justify-content-between">
                   <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="tb-2">
-                    <label for="tb-2" class="form-check-label text-body-emphasis">2 TB</label>
+                    <input type="checkbox" class="form-check-input capacity-checkbox" id="tb-{{$item->id}}" value="{{ $item->id }}">
+                    <label for="tb-{{$item->id}}" class="form-check-label text-body-emphasis">{{$item->name}}</label>
                   </div>
-                  <span class="text-body-secondary fs-xs">13</span>
+                  <span class="text-body-secondary fs-xs">{{$item->products_count}}</span>
                 </div>
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="tb-1">
-                    <label for="tb-1" class="form-check-label text-body-emphasis">1 TB</label>
-                  </div>
-                  <span class="text-body-secondary fs-xs">28</span>
-                </div>
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="gb-512" checked="">
-                    <label for="gb-512" class="form-check-label text-body-emphasis">512 GB</label>
-                  </div>
-                  <span class="text-body-secondary fs-xs">47</span>
-                </div>
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="gb-256">
-                    <label for="gb-256" class="form-check-label text-body-emphasis">256 GB</label>
-                  </div>
-                  <span class="text-body-secondary fs-xs">56</span>
-                </div>
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="gb-128">
-                    <label for="gb-128" class="form-check-label text-body-emphasis">128 GB</label>
-                  </div>
-                  <span class="text-body-secondary fs-xs">69</span>
-                </div>
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="gb-64">
-                    <label for="gb-64" class="form-check-label text-body-emphasis">64 GB or less</label>
-                  </div>
-                  <span class="text-body-secondary fs-xs">141</span>
-                </div>
+                @endforeach
               </div>
             </div>
 
@@ -393,8 +360,13 @@
       <!-- Product grid -->
       <div class="col-lg-9">
         <div class="row row-cols-2 row-cols-md-3 g-4 pb-3 mb-3">
-          <div id="product-list">
-            <!-- Sản phẩm sẽ được load vào đây qua Ajax -->
+          <div class="row row-cols-2 row-cols-md-3 g-4 pb-3 mb-3">
+            <div id="product-list">
+              <!-- Sản phẩm sẽ được load vào đây qua Ajax -->
+            </div>
+          </div>
+          <div id="filtered-products">
+            <!-- Danh sách sản phẩm sẽ được cập nhật ở đây -->
           </div>
           <!-- Item -->
           @foreach ($latestProducts as $item)
@@ -446,7 +418,7 @@
                     <i class="ci-star-filled text-warning"></i>
                     <i class="ci-star text-body-tertiary opacity-75"></i>
                   </div>
-                  <span class="text-body-tertiary fs-xs">(123)</span>
+                  <!-- <span class="text-body-tertiary fs-xs">(123)</span> -->
                 </div>
                 <h3 class="pb-1 mb-2">
                   <a class="d-block fs-sm fw-medium text-truncate" href="shop-product-general-electronics.html">
@@ -641,30 +613,16 @@
   </section>
   </main>
 </div>
+<!-- Thêm jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
-  $(document).ready(function() {
-    $('.category-link').click(function() {
-      var categoryId = $(this).data('id');
+$('.capacity-checkbox').on('change', function() {
+    let selected = $('.capacity-checkbox:checked').map((_, el) => el.value).get();
 
-      $.ajax({
-        url: '/categories/' + categoryId + '/products',
-        method: 'GET',
-        success: function(data) {
-          // Xóa sản phẩm cũ (nếu cần)
-          $('#product-list').empty();
-
-          // Hiển thị sản phẩm mới
-          $.each(data, function(index, product) {
-            $('#product-list').append('<div>' + product.name + '</div>');
-          });
-        },
-        error: function(xhr) {
-          console.log(xhr.responseText);
-        }
-      });
+    $.get("{{ route('products.filter') }}", {capacities: selected}, function(data) {
+        $('#filtered-products').html(data.map(p => `<div>${p.name}</div>`).join(''));
     });
-  });
+});
 </script>
-
 @endsection
