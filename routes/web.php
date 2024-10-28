@@ -15,9 +15,6 @@ use App\Http\Controllers\CapacityController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\Client\CategoryController as ClientCategoryController; 
-
 
 /*
 |--------------------------------------------------------------------------
@@ -48,7 +45,7 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 });
 
 // -----------------------------USER------------------------------------------------------------------------------
-// Route::resource('cart', CartController::class);
+Route::resource('cart', CartController::class);
 
 // ------------------------------------------------- ADMIN---------------------------------------------------------
 // Quản lý thành viên admin
@@ -74,6 +71,7 @@ Route::prefix('products')->group(function () {
     Route::get('/trashed', [ProductController::class, 'trashed'])->name('product.trashed');
     Route::post('/restore/{id}', [ProductController::class, 'restore'])->name('product.restore');
     Route::get('trashed/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
+    
 });
 
 // Route danh mục bị xóa 
@@ -95,6 +93,3 @@ Route::prefix('colors')->group(function () {
 Route::get('/product/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
 
 
-
-Route::get('/shop', [ClientCategoryController::class, 'shop'])->name('shop');
-Route::get('/products/filter', [ClientCategoryController::class, 'filter'])->name('products.filter');

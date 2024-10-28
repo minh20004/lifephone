@@ -6,7 +6,11 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+<<<<<<< HEAD
 
+=======
+use Illuminate\Support\Facades\Auth;
+>>>>>>> c32c957ea283f4266867dc34e802189c042da2ab
 class AuthController extends Controller
 {
     public function index()
@@ -91,4 +95,39 @@ class AuthController extends Controller
 
         return redirect()->route('admin.thanh-vien')->with('success', 'User deleted successfully.');
     }
+<<<<<<< HEAD
+=======
+    public function showLoginForm()
+    {
+        return view('admin.auth.login');
+    }
+
+    public function adminLogin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|string|email',
+            'password' => 'required|string',
+        ]);
+
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.home')->with('success', 'Đăng nhập thành công!');
+            } else {
+                Auth::logout();
+                return redirect()->route('login')->withErrors('Bạn không có quyền truy cập trang admin.');
+            }
+        } else {
+            return redirect()->back()->withErrors('Thông tin đăng nhập không đúng.');
+        }
+    }
+
+    public function adminLogout()
+    {
+        Auth::logout();
+        return redirect()->route('login');
+    }
+>>>>>>> c32c957ea283f4266867dc34e802189c042da2ab
 }

@@ -9,11 +9,11 @@
         </button>
 
         <!-- Navbar brand (Logo) -->
-        <a href="index.html" class="navbar-brand me-0">
+        <a href="{{ route('home') }}" class="navbar-brand me-0">
           <span class="d-none d-sm-flex flex-shrink-0 text-primary me-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36"><path d="M36 18.01c0 8.097-5.355 14.949-12.705 17.2a18.12 18.12 0 0 1-5.315.79C9.622 36 2.608 30.313.573 22.611.257 21.407.059 20.162 0 18.879v-1.758c.02-.395.059-.79.099-1.185.099-.908.277-1.817.514-2.686C2.687 5.628 9.682 0 18 0c5.572 0 10.551 2.528 13.871 6.517 1.502 1.797 2.648 3.91 3.359 6.201.494 1.659.771 3.436.771 5.292z" fill="currentColor"></path><g fill="#fff"><path d="M17.466 21.624c-.514 0-.988-.316-1.146-.829-.198-.632.138-1.303.771-1.501l7.666-2.469-1.205-8.254-13.317 4.621a1.19 1.19 0 0 1-1.521-.75 1.19 1.19 0 0 1 .751-1.521l13.89-4.818c.553-.197 1.166-.138 1.64.158a1.82 1.82 0 0 1 .85 1.284l1.344 9.183c.138.987-.494 1.994-1.482 2.33l-7.864 2.528-.375.04zm7.31.138c-.178-.632-.85-1.007-1.482-.81l-5.177 1.58c-2.331.79-3.28.02-3.418-.099l-6.56-8.412a4.25 4.25 0 0 0-4.406-1.758l-3.122.987c-.237.889-.415 1.777-.514 2.686l4.228-1.363a1.84 1.84 0 0 1 1.857.81l6.659 8.551c.751.948 2.015 1.323 3.359 1.323.909 0 1.857-.178 2.687-.474l5.078-1.54c.632-.178 1.008-.829.81-1.481z"></path><use href="#czlogo"></use><use href="#czlogo" x="8.516" y="-2.172"></use></g><defs><path id="czlogo" d="M18.689 28.654a1.94 1.94 0 0 1-1.936 1.935 1.94 1.94 0 0 1-1.936-1.935 1.94 1.94 0 0 1 1.936-1.935 1.94 1.94 0 0 1 1.936 1.935z"></path></defs></svg>
           </span>
-          Cartzilla
+          LifePhone
         </a>
       </div>
       <div class="col col-lg-9 d-flex align-items-center justify-content-end">
@@ -30,8 +30,8 @@
             <i class="ci-percent animate-target"></i>
           </div>
           <div class="ps-2 text-nowrap">
-            <div class="fs-xs text-body">Only this month</div>
-            <div class="fw-medium text-white">Super Sale 20%</div>
+            <div class="fs-xs text-body">Chỉ trong tháng này</div>
+            <div class="fw-medium text-white">siêu giảm giá 20%</div>
           </div>
         </a>
 
@@ -56,7 +56,7 @@
                   <span class="theme-icon d-flex fs-base me-2">
                     <i class="ci-sun"></i>
                   </span>
-                  <span class="theme-label">Light</span>
+                  <span class="theme-label">Trắng</span>
                   <i class="item-active-indicator ci-check ms-auto"></i>
                 </button>
               </li>
@@ -65,7 +65,7 @@
                   <span class="theme-icon d-flex fs-base me-2">
                     <i class="ci-moon"></i>
                   </span>
-                  <span class="theme-label">Dark</span>
+                  <span class="theme-label">Đen</span>
                   <i class="item-active-indicator ci-check ms-auto"></i>
                 </button>
               </li>
@@ -74,7 +74,7 @@
                   <span class="theme-icon d-flex fs-base me-2">
                     <i class="ci-auto"></i>
                   </span>
-                  <span class="theme-label">Auto</span>
+                  <span class="theme-label">Tự động</span>
                   <i class="item-active-indicator ci-check ms-auto"></i>
                 </button>
               </li>
@@ -137,27 +137,27 @@
 
                   <!-- Buttton visible on screens > 991px wide (lg breakpoint) -->
                   <div class="cursor-pointer d-none d-lg-block" data-bs-toggle="dropdown" data-bs-trigger="hover" data-bs-theme="dark">
-                    <a class="position-absolute top-0 start-0 w-100 h-100" href="shop-categories-electronics.html">
-                      <span class="visually-hidden">Categories</span>
+                    <a class="position-absolute top-0 start-0 w-100 h-100" href="">
+                      <span class="visually-hidden">Danh mục</span>
                     </a>
                     <button type="button" class="btn btn-lg btn-secondary dropdown-toggle w-100 rounded-bottom-0 justify-content-start pe-none">
                       <i class="ci-grid fs-lg"></i>
-                      <span class="ms-2 me-auto">Categories</span>
+                      <span class="ms-2 me-auto">Danh mục</span>
                     </button>
                   </div>
 
                   <!-- Buttton visible on screens < 992px wide (lg breakpoint) -->
                   <button type="button" class="btn btn-lg btn-secondary dropdown-toggle w-100 justify-content-start d-lg-none mb-2" data-bs-toggle="dropdown" data-bs-auto-close="outside">
                     <i class="ci-grid fs-lg"></i>
-                    <span class="ms-2 me-auto">Categories</span>
+                    <span class="ms-2 me-auto">Danh mục</span>
                   </button>
 
                   <!-- Mega menu -->
-                  <ul class="dropdown-menu dropdown-menu-static w-100 rounded-top-0 rounded-bottom-4 py-1 p-lg-1" style="--cz-dropdown-spacer: 0; --cz-dropdown-item-padding-y: .625rem; --cz-dropdown-item-spacer: 0">
+                  <ul class="dropdown-menu w-100 rounded-top-0 rounded-bottom-4 py-1 p-lg-1" style="--cz-dropdown-spacer: 0; --cz-dropdown-item-padding-y: .625rem; --cz-dropdown-item-spacer: 0">
                     <li class="d-lg-none pt-2">
                       <a class="dropdown-item fw-medium" href="shop-categories-electronics.html">
                         <i class="ci-grid fs-xl opacity-60 pe-1 me-2"></i>
-                        All Categories
+                        Tất cả danh mục
                         <i class="ci-chevron-right fs-base ms-auto me-n1"></i>
                       </a>
                     </li>
@@ -1239,73 +1239,18 @@
             <div class="col-lg-9 d-lg-flex pt-3 pt-lg-0 ps-lg-0">
               <ul class="navbar-nav position-relative">
                 <li class="nav-item dropdown me-lg-n1 me-xl-0">
-                  <a class="nav-link dropdown-toggle active" aria-current="page" href="#" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">Home</a>
-                  <ul class="dropdown-menu">
-                    <li class="hover-effect-opacity px-2 mx-n2">
-                      <a class="dropdown-item d-block mb-0" href="home-electronics.html">
-                        <span class="fw-medium">Electronics Store</span>
-                        <span class="d-block fs-xs text-body-secondary">Megamenu + Hero slider</span>
-                        <div class="d-none d-lg-block hover-effect-target position-absolute top-0 start-100 bg-body border border-light-subtle rounded rounded-start-0 transition-none invisible opacity-0 pt-2 px-2 ms-n2" style="width: 212px; height: calc(100% + 2px); margin-top: -1px">
-                          <img class="position-relative z-2 d-none-dark" src="client/img/mega-menu/demo-preview/electronics-light.jpg" alt="Electronics Store">
-                          <img class="position-relative z-2 d-none d-block-dark" src="client/img/mega-menu/demo-preview/electronics-dark.jpg" alt="Electronics Store">
-                          <span class="position-absolute top-0 start-0 w-100 h-100 rounded rounded-start-0 d-none-dark" style="box-shadow: .875rem .5rem 2rem -.5rem #676f7b; opacity: .1"></span>
-                          <span class="position-absolute top-0 start-0 w-100 h-100 rounded rounded-start-0 d-none d-block-dark" style="box-shadow: .875rem .5rem 1.875rem -.5rem #080b12; opacity: .25"></span>
-                        </div>
-                      </a>
-                    </li>
-                    <li class="hover-effect-opacity px-2 mx-n2">
-                      <a class="dropdown-item d-block mb-0" href="home-fashion-v1.html">
-                        <span class="fw-medium">Fashion Store v.1</span>
-                        <span class="d-block fs-xs text-body-secondary">Hero promo slider</span>
-                        <div class="d-none d-lg-block hover-effect-target position-absolute top-0 start-100 bg-body border border-light-subtle rounded rounded-start-0 transition-none invisible opacity-0 pt-2 px-2 ms-n2" style="width: 212px; height: calc(100% + 2px); margin-top: -1px">
-                          <img class="position-relative z-2 d-none-dark" src="client/img/mega-menu/demo-preview/fashion-1-light.jpg" alt="Fashion Store v.1">
-                          <img class="position-relative z-2 d-none d-block-dark" src="client/img/mega-menu/demo-preview/fashion-1-dark.jpg" alt="Fashion Store v.1">
-                          <span class="position-absolute top-0 start-0 w-100 h-100 rounded rounded-start-0 d-none-dark" style="box-shadow: .875rem .5rem 2rem -.5rem #676f7b; opacity: .1"></span>
-                          <span class="position-absolute top-0 start-0 w-100 h-100 rounded rounded-start-0 d-none d-block-dark" style="box-shadow: .875rem .5rem 1.875rem -.5rem #080b12; opacity: .25"></span>
-                        </div>
-                      </a>
-                    </li>
-                    <li class="hover-effect-opacity px-2 mx-n2">
-                      <a class="dropdown-item d-block mb-0" href="home-fashion-v2.html">
-                        <span class="fw-medium">Fashion Store v.2</span>
-                        <span class="d-block fs-xs text-body-secondary">Hero banner with hotspots</span>
-                        <div class="d-none d-lg-block hover-effect-target position-absolute top-0 start-100 bg-body border border-light-subtle rounded rounded-start-0 transition-none invisible opacity-0 pt-2 px-2 ms-n2" style="width: 212px; height: calc(100% + 2px); margin-top: -1px">
-                          <img class="position-relative z-2 d-none-dark" src="client/img/mega-menu/demo-preview/fashion-2-light.jpg" alt="Fashion Store v.2">
-                          <img class="position-relative z-2 d-none d-block-dark" src="client/img/mega-menu/demo-preview/fashion-2-dark.jpg" alt="Fashion Store v.2">
-                          <span class="position-absolute top-0 start-0 w-100 h-100 rounded rounded-start-0 d-none-dark" style="box-shadow: .875rem .5rem 2rem -.5rem #676f7b; opacity: .1"></span>
-                          <span class="position-absolute top-0 start-0 w-100 h-100 rounded rounded-start-0 d-none d-block-dark" style="box-shadow: .875rem .5rem 1.875rem -.5rem #080b12; opacity: .25"></span>
-                        </div>
-                      </a>
-                    </li>
-                    <li class="hover-effect-opacity px-2 mx-n2">
-                      <a class="dropdown-item d-block mb-0" href="home-furniture.html">
-                        <span class="fw-medium">Furniture Store</span>
-                        <span class="d-block fs-xs text-body-secondary">Fancy product carousel</span>
-                        <div class="d-none d-lg-block hover-effect-target position-absolute top-0 start-100 bg-body border border-light-subtle rounded rounded-start-0 transition-none invisible opacity-0 pt-2 px-2 ms-n2" style="width: 212px; height: calc(100% + 2px); margin-top: -1px">
-                          <img class="position-relative z-2 d-none-dark" src="client/img/mega-menu/demo-preview/furniture-light.jpg" alt="Furniture Store">
-                          <img class="position-relative z-2 d-none d-block-dark" src="client/img/mega-menu/demo-preview/furniture-dark.jpg" alt="Furniture Store">
-                          <span class="position-absolute top-0 start-0 w-100 h-100 rounded rounded-start-0 d-none-dark" style="box-shadow: .875rem .5rem 2rem -.5rem #676f7b; opacity: .1"></span>
-                          <span class="position-absolute top-0 start-0 w-100 h-100 rounded rounded-start-0 d-none d-block-dark" style="box-shadow: .875rem .5rem 1.875rem -.5rem #080b12; opacity: .25"></span>
-                        </div>
-                      </a>
-                    </li>
-                    <li class="hover-effect-opacity px-2 mx-n2">
-                      <a class="dropdown-item d-block mb-0" href="home-grocery.html">
-                        <span class="fw-medium">Grocery Store</span>
-                        <span class="d-block fs-xs text-body-secondary">Hero slider + Category cards</span>
-                        <div class="d-none d-lg-block hover-effect-target position-absolute top-0 start-100 bg-body border border-light-subtle rounded rounded-start-0 transition-none invisible opacity-0 pt-2 px-2 ms-n2" style="width: 212px; height: calc(100% + 2px); margin-top: -1px">
-                          <img class="position-relative z-2 d-none-dark" src="client/img/mega-menu/demo-preview/grocery-light.jpg" alt="Grocery Store">
-                          <img class="position-relative z-2 d-none d-block-dark" src="client/img/mega-menu/demo-preview/grocery-dark.jpg" alt="Grocery Store">
-                          <span class="position-absolute top-0 start-0 w-100 h-100 rounded rounded-start-0 d-none-dark" style="box-shadow: .875rem .5rem 2rem -.5rem #676f7b; opacity: .1"></span>
-                          <span class="position-absolute top-0 start-0 w-100 h-100 rounded rounded-start-0 d-none d-block-dark" style="box-shadow: .875rem .5rem 1.875rem -.5rem #080b12; opacity: .25"></span>
-                        </div>
-                      </a>
-                    </li>
-                  </ul>
+                  <a class="nav-link dropdown-toggle active" aria-current="page" href="{{ route('home') }}" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">
+                  Trang chủ</a>
                 </li>
                 <li class="nav-item dropdown position-static me-lg-n1 me-xl-0">
+<<<<<<< HEAD
                   <a class="nav-link dropdown-toggle" href="{{route('shop')}}" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">Shop</a>
                   <!-- <div class="dropdown-menu rounded-4 p-4">
+=======
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">
+                  Shop</a>
+                  <div class="dropdown-menu rounded-4 p-4">
+>>>>>>> c32c957ea283f4266867dc34e802189c042da2ab
                     <div class="d-flex flex-column flex-lg-row gap-4">
                       <div style="min-width: 190px">
                         <div class="h6 mb-2">Electronics Store</div>
@@ -1417,6 +1362,7 @@
                     <li><a class="dropdown-item" href="account-notifications.html">Notifications</a></li>
                   </ul>
                 </li>
+                {{-- Pages --}}
                 <li class="nav-item dropdown me-lg-n1 me-xl-0">
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" data-bs-auto-close="outside" aria-expanded="false">Pages</a>
                   <ul class="dropdown-menu">
