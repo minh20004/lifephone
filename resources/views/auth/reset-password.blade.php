@@ -209,7 +209,7 @@
           </div>
           @if (session('msg'))
                     <div class="alert alert-success">
-                        <strong>{{session('msg')}} - Vui lòng <a class="btn btn-primary" href="{{ route('signin') }}">Đăng nhập</a></strong>
+                        <strong>{{session('msg')}} - Vui lòng <a class="btn btn-primary" href="{{ route('login') }}">Đăng nhập</a></strong>
                     </div>
                 @endif
           <div class="nav fs-sm mb-4 d-lg-none">
@@ -218,43 +218,45 @@
           </div>
 
           <!-- Form -->
-          <form class="needs-validation" novalidate="" method="POST">
-            @csrf
-            <div class="position-relative mb-4">
-              <label for="register-name" class="form-label">Full Name</label>
-              <input type="text" class="form-control form-control-lg" id="register-name" name="name" required="">
-              <div class="invalid-tooltip bg-transparent py-0">Enter a valid name address!</div>
-            </div>
-            <div class="position-relative mb-4">
-              <label for="register-email" class="form-label">Email</label>
-              <input type="email" class="form-control form-control-lg" id="register-email" name="email" required="">
-              <div class="invalid-tooltip bg-transparent py-0">Enter a valid email address!</div>
-            </div>
-            <div class="mb-4">
-              <label for="register-password" class="form-label">Password</label>
-              <div class="password-toggle">
-                <input type="password" class="form-control form-control-lg" id="register-password" minlength="8" placeholder="Minimum 8 characters" name="password" required="">
-                <div class="invalid-tooltip bg-transparent py-0">Password does not meet the required criteria!</div>
-                <label class="password-toggle-button fs-lg" aria-label="Show/hide password">
-                  <input type="checkbox" class="btn-check">
-                </label>
-              </div>
-            </div>
-            <div class="d-flex flex-column gap-2 mb-4">
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="save-pass">
-                <label for="save-pass" class="form-check-label">Save the password</label>
-              </div>
-              <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="privacy" required="">
-                <label for="privacy" class="form-check-label">I have read and accept the <a class="text-dark-emphasis" href="{{ asset('client/template') }}/#!">Privacy Policy</a></label>
-              </div>
-            </div>
-            <button type="submit" class="btn btn-lg btn-primary w-100">
-              Create an account
-              <i class="ci-chevron-right fs-lg ms-1 me-n1"></i>
-            </button>
-          </form>
+          <x-guest-layout>
+    <form method="POST" action="{{ route('password.store') }}">
+        @csrf
+
+        <!-- Password Reset Token -->
+        <input type="hidden" name="token" value="{{ $request->route('token') }}">
+
+        <!-- Email Address -->
+        <div>
+            <x-input-label for="email" :value="__('Email')" />
+            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        </div>
+
+        <!-- Password -->
+        <div class="mt-4">
+            <x-input-label for="password" :value="__('Password')" />
+            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
+            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="mt-4">
+            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+
+            <x-text-input id="password_confirmation" class="block mt-1 w-full"
+                                type="password"
+                                name="password_confirmation" required autocomplete="new-password" />
+
+            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+        </div>
+
+        <div class="flex items-center justify-end mt-4">
+            <x-primary-button>
+                {{ __('Reset Password') }}
+            </x-primary-button>
+        </div>
+    </form>
+</x-guest-layout>
 
           <!-- Divider -->
           <div class="d-flex align-items-center my-4">

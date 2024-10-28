@@ -39,11 +39,11 @@ class AccountController extends Controller
         $status = Auth::attempt(['email' => $email, 'password' => $password]);
         if ($status) {
             $user = Auth::user();
-            if ($user->role == 'admin') {
+            if ($user->role == 'user') {
                 // return redirect()->route('admin.home');
-                return redirect()->route('admin.home');
-            }else {
                 return redirect()->route('user.home');
+            }else {
+                return redirect()->route('admin.home');
             }
         }
         return redirect()->back()->with('msg', 'Lỗi đăng nhập!. Vui lòng kiểm tra lại tài khoản.');

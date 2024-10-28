@@ -14,7 +14,7 @@ class Authenticate extends Middleware
     {
         $user = auth()->user();
         if (!$user->role == 'admin') {
-            return redirect('admin.home');
+            return redirect('/');
         }
         return $request;
         // return $request->expectsJson() ? null : route('login');

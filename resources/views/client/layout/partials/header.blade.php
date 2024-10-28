@@ -116,14 +116,11 @@
               </li>
             </ul>
           </div>
-=======
             <!-- Mobile offcanvas menu toggler (Hamburger) -->
             <button type="button" class="navbar-toggler me-4 me-lg-0" data-bs-toggle="offcanvas"
                 data-bs-target="#navbarNav" aria-controls="navbarNav" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
->>>>>>> Stashed changes
-
             <!-- Navbar brand (Logo) -->
             <a href="{{ asset('client/template') }}/index.html" class="navbar-brand me-0">
                 <span class="d-none d-sm-flex flex-shrink-0 text-primary me-2">
@@ -1500,9 +1497,9 @@
                     <li class="dropend">
                       <a class="dropdown-item dropdown-toggle" href="#!" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">Auth Pages</a>
                       <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="account-signin.html">Sign In</a></li>
-                        <li><a class="dropdown-item" href="account-signup.html">Sign Up</a></li>
-                        <li><a class="dropdown-item" href="account-password-recovery.html">Password Recovery</a></li>
+                        <li><a class="dropdown-item" href="{{ route('login') }}">Sign In</a></li>
+                        <li><a class="dropdown-item" href="{{ route('register') }}">Sign Up</a></li>
+                        <li><a class="dropdown-item" href="{{ route('forgot-password') }}">Password Recovery</a></li>
                       </ul>
                     </li>
                     <li><a class="dropdown-item" href="account-orders.html">Orders History</a></li>
