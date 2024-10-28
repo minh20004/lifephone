@@ -41,6 +41,9 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 
 // -----------------------------USER------------------------------------------------------------------------------
 Route::resource('cart', CartController::class);
+Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
 // ------------------------------------------------- ADMIN---------------------------------------------------------
 // Quản lý thành viên admin

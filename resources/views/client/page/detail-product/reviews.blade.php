@@ -177,3 +177,57 @@
     </a>
   </div>
 </div>
+{{-- <form action="{{ route('cart.add') }}" method="POST">
+  @csrf
+  <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+  <!-- Model dung lượng -->
+  <div class="pb-3 mb-2 mb-lg-3">
+      <label class="form-label fw-semibold pb-1 mb-2">Model</label>
+      <div class="d-flex flex-wrap gap-2">
+          @php
+              $capacities = $product->variants->unique('capacity_id');
+          @endphp
+          @foreach ($capacities as $variant)
+              <input type="radio" class="btn-check model-option" name="model-options" id="model-{{ $variant->capacity->id }}" 
+                     value="{{ $variant->capacity->id }}" {{ $loop->first ? 'checked' : '' }}>
+              <label for="model-{{ $variant->capacity->id }}" class="btn btn-sm btn-outline-secondary">
+                  {{ $variant->capacity->name }} GB
+              </label>
+          @endforeach
+      </div>
+  </div>
+
+  <!-- Color màu sắc -->
+  <div class="pb-3 mb-3 mb-lg-3">
+      <label class="form-label fw-semibold pb-1 mb-2">Color: 
+          <span class="text-body fw-normal fs-6" id="colorOption">{{ $product->variants->first()->color->name }}</span>
+      </label>
+      <div class="d-flex flex-wrap gap-2 mb-2">
+          @php
+              $colors = $product->variants->unique('color_id');
+          @endphp
+          @foreach ($colors as $variant)
+              <input type="radio" class="btn-check color-option" name="color-options" id="color-{{ $variant->color->id }}" 
+                     value="{{ $variant->color->id }}" data-color-name="{{ $variant->color->name }}">
+              <label for="color-{{ $variant->color->id }}" class="btn btn-color fs-xl" style="color: {{ $variant->color->code }};">
+                  <span class="visually-hidden">{{ $variant->color->name }}</span>
+              </label>
+          @endforeach
+      </div>
+  </div>
+  <div class="d-flex flex-wrap align-items-center mb-2">
+                <div class="fs-3 mb-0 text-danger fw-bold" id="productPrice" data-base-price="{{ $minPrice }}">{{ number_format($minPrice, 0, ',', '.') }} đ</div>
+                <div class="d-flex align-items-center text-success fs-sm ms-auto">
+                    <i class="ci-check-circle fs-base me-2"></i>
+                    Có thể đặt hàng
+                </div>
+            </div>
+
+  <div class="mb-3">
+      <label for="quantity" class="form-label">Số lượng</label>
+      <input type="number" name="quantity" class="form-control" value="1" min="1" required>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Thêm vào giỏ hàng</button>
+</form> --}}

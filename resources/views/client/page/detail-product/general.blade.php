@@ -154,7 +154,6 @@
       <div class="col-md-6 col-xl-5 offset-xl-1 pt-4">
         <div class="ps-md-4 ps-xl-0">
           <div class="position-relative" id="zoomPane">
-
             <!-- Model dung lượng -->
             <div class="pb-3 mb-2 mb-lg-3">
               <label class="form-label fw-semibold pb-1 mb-2">Model</label>
@@ -225,10 +224,10 @@
               <button type="button" class="btn btn-icon btn-lg btn-secondary animate-rotate order-sm-4 order-md-3 order-lg-4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Compare" aria-label="Compare">
                 <i class="ci-refresh-cw fs-lg animate-target"></i>
               </button>
-              <button type="button" class="btn btn-lg btn-primary w-100 animate-slide-end order-sm-2 order-md-4 order-lg-2">
+              <a href="{{route('cart.index')}}" class="btn btn-lg btn-primary w-100 animate-slide-end order-sm-2 order-md-4 order-lg-2">
                 <i class="ci-shopping-cart fs-lg animate-target ms-n1 me-2"></i>
                 Thêm vào giỏ hàng
-              </button>
+              </a>
             </div>
 
             <!-- Features -->

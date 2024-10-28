@@ -2,7 +2,7 @@
 @section('title')
     Lifephone
 @endsection
-@section('content')
+{{-- @section('content')
 <main class="content-wrapper">
 
     <!-- Breadcrumb -->
@@ -370,4 +370,47 @@
       Customize<i class="ci-settings fs-base ms-1 me-n2 animate-target"></i>
     </a>
   </div>
+@endsection --}}
+
+
+
+@section('content')
+<div class="container">
+    <h1 class="my-4">Giỏ Hàng</h1>
+
+    @if(session()->has('cart') && count(session('cart')) > 0)
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Tên Sản Phẩm</th>
+                    <th>Dung Lượng</th>
+                    <th>Màu Sắc</th>
+                    <th>Số Lượng</th>
+                    <th>Giá</th>
+                    <th>Thao Tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($cartItems as $item)
+                    <tr>
+                        <td>{{ $item['product']->name }}</td>
+                        <td>{{ $item['capacity']->name }} GB</td>
+                        <td style="color: {{ $item['color']->code }}">{{ $item['color']->name }}</td>
+                        <td>{{ $item['quantity'] }}</td>
+                        <td>{{ number_format($item['price'], 0, ',', '.') }} đ</td>
+
+                        <td>
+                            <form action="{{ route('cart.remove', $item['product']->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-danger">Xóa</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @else
+        <p>Giỏ hàng của bạn hiện đang trống.</p>
+    @endif
+</div>
 @endsection
