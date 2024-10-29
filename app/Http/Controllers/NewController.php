@@ -119,7 +119,10 @@ class NewController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $news = News::findOrFail($id);
+        $category_news = DB::table('category_news')->get();
+        $author_id = DB::table('users')->get();
+        return view('admin.page.new.update', compact('news', 'category_news', 'author_id'));
     }
 
     /**
@@ -127,7 +130,76 @@ class NewController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        // dd($request->all());
+        $news = News::findOrFail($id);
+
+        // Validate dữ liệu từ request
+        $validateData = $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'author_id' => 'required|exists:users,id',
+            'thumbnail' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048',
+            'category_news_id' => 'required|exists:category_news,id',
+            'status' => 'required|in:Công khai,Đã lên lịch,Bản nháp',
+            'published_at' => 'nullable|date',
+            'views' => 'nullable|integer|min:0',
+            'short_content' => 'nullable|string',
+            'scheduled_at' => 'nullable|date|after_or_equal:today',
+            'slug' => 'required|unique:news,slug,' . $news->id,
+        ], [
+            'title.required' => 'Tiêu đề không được để trống.',
+            'content.required' => 'Nội dung không được để trống.',
+            'author_id.required' => 'Tác giả không được để trống.',
+            'author_id.exists' => 'Tác giả không tồn tại trong cơ sở dữ liệu.',
+            'thumbnail.file' => 'Ảnh đại diện phải là một file.',
+            'thumbnail.mimes' => 'Ảnh đại diện phải có định dạng: png, jpg, jpeg, hoặc gif.',
+            'thumbnail.max' => 'Ảnh đại diện không được vượt quá 2MB.',
+            'category_news_id.required' => 'Danh mục tin tức không được để trống.',
+            'category_news_id.exists' => 'Danh mục tin tức không tồn tại trong cơ sở dữ liệu.',
+            'status.required' => 'Tình trạng tin tức không được để trống.',
+            'status.in' => 'Tình trạng tin tức không hợp lệ.',
+            'published_at.date' => 'Ngày đăng phải là một ngày hợp lệ.',
+            'views.integer' => 'Lượt xem phải là một số nguyên.',
+            'views.min' => 'Lượt xem không được nhỏ hơn 0.',
+            'short_content.string' => 'Tóm tắt nội dung phải là một chuỗi.',
+            'scheduled_at.date' => 'Ngày đăng tin phải là một ngày hợp lệ.',
+            'scheduled_at.after_or_equal' => 'Ngày đăng tin phải là hôm nay hoặc sau hôm nay.',
+            'slug.required' => 'Slug không được để trống.',
+            'slug.unique' => 'Slug đã tồn tại. Vui lòng chọn một slug khác.',
+        ]);
+    
+        // Xử lý file thumbnail nếu có
+        if ($request->hasFile('thumbnail')) {
+            $thumbnail = $request->file('thumbnail')->store('uploads/thumbnail', 'public');
+        } else {
+            $thumbnail = $news->thumbnail; // Giữ lại thumbnail cũ nếu không có file mới
+        }
+    
+        $slug = Str::slug($validateData['title']);
+        $publishedAt = $request->status == 'Công khai' ? now() : $news->published_at;
+        $scheduledAt = $request->status == 'Đã lên lịch' ? $validateData['scheduled_at'] : null;
+    
+        try {
+            // Cập nhật dữ liệu của bài viết
+            $news->update([
+                'title' => $validateData['title'],
+                'thumbnail' => $thumbnail,
+                'short_content' => $validateData['short_content'],
+                'content' => $validateData['content'],
+                'category_news_id' => $validateData['category_news_id'],
+                'published_at' => $publishedAt,
+                'status' => $validateData['status'],
+                'author_id' => $validateData['author_id'],
+                'scheduled_at' => $scheduledAt,
+                'slug' => $slug,
+                'views' => $validateData['views'] ?? $news->views,
+            ]);
+    
+            return redirect()->route('new_admin.index')->with('success', 'Tin tức đã được cập nhật thành công!');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Có lỗi xảy ra khi cập nhật tin tức: ' . $e->getMessage()]);
+            // dd($e->getMessage());
+        }
     }
 
     /**
@@ -135,7 +207,10 @@ class NewController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+   
+        $News=News::findOrFail($id);
+        $News->delete();
+        return redirect()->route('new_admin.index');
     }
     public function clientIndex()
     {

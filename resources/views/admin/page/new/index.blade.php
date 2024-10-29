@@ -95,7 +95,7 @@ News
         </td>
         <td data-column-id="action" class="gridjs-td">
             <div>
-
+            <a href="{{ route('new_admin.edit', $News->id) }}" class="btn btn-warning me-2">Edit</a>
                 <form action="{{route('new_admin.destroy',$News->id)}}" method="post">
 
                     @method('DELETE')
