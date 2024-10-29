@@ -154,81 +154,85 @@
       <div class="col-md-6 col-xl-5 offset-xl-1 pt-4">
         <div class="ps-md-4 ps-xl-0">
           <div class="position-relative" id="zoomPane">
-            <!-- Model dung lượng -->
-            <div class="pb-3 mb-2 mb-lg-3">
-              <label class="form-label fw-semibold pb-1 mb-2">Model</label>
-              <div class="d-flex flex-wrap gap-2">
-                @php
-                    $capacities = $product->variants->unique('capacity_id');
-                @endphp
-                @foreach ($capacities as $variant)
-                    <input type="radio" class="btn-check model-option" name="model-options" id="model-{{ $variant->capacity->id }}" 
-                          value="{{ $variant->capacity->id }}" {{ $loop->first ? 'checked' : '' }}>
-                    <label for="model-{{ $variant->capacity->id }}" class="btn btn-sm btn-outline-secondary">{{ $variant->capacity->name }} GB</label>
-                @endforeach
-              </div>
-            </div>
-
-            <!-- Color màu sắc -->
-            <div class="pb-3 mb-3 mb-lg-3">
-              <label class="form-label fw-semibold pb-1 mb-2">Color: <span class="text-body fw-normal fs-6" id="colorOption">{{ $product->variants->first()->color->name }}</span></label>
-              <div class="d-flex flex-wrap gap-2 mb-2" >
-                @php
-                    $colors = $product->variants->unique('color_id');
-                @endphp
-                @foreach ($colors as $variant)
-                    <input type="radio" class="btn-check color-option" name="color-options" id="color-{{ $variant->color->id }}" 
-                          value="{{ $variant->color->id }}" data-color-name="{{ $variant->color->name }}">
-                    <label for="color-{{ $variant->color->id }}" class="btn btn-color fs-xl" style="color: {{ $variant->color->code }};">
-                        <span class="visually-hidden">{{ $variant->color->name }}</span>
-                    </label>
-                @endforeach
-            </div>
-            
-            <!-- Hiển thị giá -->
-            <div class="d-flex flex-wrap align-items-center mb-2">
-                <div class="fs-3 mb-0 text-danger fw-bold" id="productPrice" data-base-price="{{ $minPrice }}">{{ number_format($minPrice, 0, ',', '.') }} đ</div>
-                <div class="d-flex align-items-center text-success fs-sm ms-auto">
-                    <i class="ci-check-circle fs-base me-2"></i>
-                    Có thể đặt hàng
+            <form action="{{ route('cart.add') }}" method="POST">
+              @csrf
+                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                <!-- Model dung lượng -->
+                <div class="pb-3 mb-2 mb-lg-3">
+                  <label class="form-label fw-semibold pb-1 mb-2">Model</label>
+                  <div class="d-flex flex-wrap gap-2">
+                    @php
+                        $capacities = $product->variants->unique('capacity_id');
+                    @endphp
+                    @foreach ($capacities as $variant)
+                        <input type="radio" class="btn-check model-option" name="model-options" id="model-{{ $variant->capacity->id }}" 
+                              value="{{ $variant->capacity->id }}" {{ $loop->first ? 'checked' : '' }}>
+                        <label for="model-{{ $variant->capacity->id }}" class="btn btn-sm btn-outline-secondary">{{ $variant->capacity->name }} GB</label>
+                    @endforeach
+                  </div>
                 </div>
-            </div>
-            {{-- số lượng --}}
-            <div class="d-flex flex-wrap align-items-center mb-3"  >
-              <p style="font-size: 13px; display:none;" id="quantityContainer" class="text-success mb-0">Còn <span id="quantityValue">0</span> sản phẩm</p>
-            </div>
 
-            <!-- Lưu trữ toàn bộ biến thể sản phẩm -->
-              @php
-              $variants = $product->variants;
-              @endphp
-              <script>
-                const variants = @json($variants);
-              </script>
+                <!-- Color màu sắc -->
+                <div class="pb-3 mb-3 mb-lg-3">
+                  <label class="form-label fw-semibold pb-1 mb-2">Color: <span class="text-body fw-normal fs-6" id="colorOption">{{ $product->variants->first()->color->name }}</span></label>
+                  <div class="d-flex flex-wrap gap-2 mb-2" >
+                    @php
+                        $colors = $product->variants->unique('color_id');
+                    @endphp
+                    @foreach ($colors as $variant)
+                        <input type="radio" class="btn-check color-option" name="color-options" id="color-{{ $variant->color->id }}" 
+                              value="{{ $variant->color->id }}" data-color-name="{{ $variant->color->name }}">
+                        <label for="color-{{ $variant->color->id }}" class="btn btn-color fs-xl" style="color: {{ $variant->color->code }};">
+                            <span class="visually-hidden">{{ $variant->color->name }}</span>
+                        </label>
+                    @endforeach
+                </div>
+                
+                <!-- Hiển thị giá -->
+                <div class="d-flex flex-wrap align-items-center mb-2">
+                    <div class="fs-3 mb-0 text-danger fw-bold" id="productPrice" data-base-price="{{ $minPrice }}">{{ number_format($minPrice, 0, ',', '.') }} đ</div>
+                    <div class="d-flex align-items-center text-success fs-sm ms-auto">
+                        <i class="ci-check-circle fs-base me-2"></i>
+                        Có thể đặt hàng
+                    </div>
+                </div>
+                {{-- số lượng --}}
+                <div class="d-flex flex-wrap align-items-center mb-3"  >
+                  <p style="font-size: 13px; display:none;" id="quantityContainer" class="text-success mb-0">Còn <span id="quantityValue">0</span> sản phẩm</p>
+                </div>
+
+                <!-- Lưu trữ toàn bộ biến thể sản phẩm -->
+                  @php
+                  $variants = $product->variants;
+                  @endphp
+                  <script>
+                    const variants = @json($variants);
+                  </script>
               
             
-            <!-- Count + Buttons -->
-            <div class="d-flex flex-wrap flex-sm-nowrap flex-md-wrap flex-lg-nowrap gap-3 gap-lg-2 gap-xl-3 mb-4">
-              <div class="count-input flex-shrink-0 order-sm-1">
-                <button type="button" class="btn btn-icon btn-lg" data-decrement="" aria-label="Decrement quantity">
-                  <i class="ci-minus"></i>
-                </button>
-                <input type="number" class="form-control form-control-lg" value="1" min="1" max="5" readonly="">
-                <button type="button" class="btn btn-icon btn-lg" data-increment="" aria-label="Increment quantity">
-                  <i class="ci-plus"></i>
-                </button>
-              </div>
-              <button type="button" class="btn btn-icon btn-lg btn-secondary animate-pulse order-sm-3 order-md-2 order-lg-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Add to Wishlist" aria-label="Add to Wishlist">
-                <i class="ci-heart fs-lg animate-target"></i>
-              </button>
-              <button type="button" class="btn btn-icon btn-lg btn-secondary animate-rotate order-sm-4 order-md-3 order-lg-4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Compare" aria-label="Compare">
-                <i class="ci-refresh-cw fs-lg animate-target"></i>
-              </button>
-              <a href="{{route('cart.index')}}" class="btn btn-lg btn-primary w-100 animate-slide-end order-sm-2 order-md-4 order-lg-2">
-                <i class="ci-shopping-cart fs-lg animate-target ms-n1 me-2"></i>
-                Thêm vào giỏ hàng
-              </a>
-            </div>
+                <!-- Count + Buttons -->
+                <div class="d-flex flex-wrap flex-sm-nowrap flex-md-wrap flex-lg-nowrap gap-3 gap-lg-2 gap-xl-3 mb-4">
+                  <div class="count-input flex-shrink-0 order-sm-1">
+                    <button type="button" class="btn btn-icon btn-lg" data-decrement="" aria-label="Decrement quantity">
+                      <i class="ci-minus"></i>
+                    </button>
+                    <input type="number" class="form-control form-control-lg" value="1" min="1" max="5" readonly=""  name="quantity">
+                    <button type="button" class="btn btn-icon btn-lg" data-increment="" aria-label="Increment quantity">
+                      <i class="ci-plus"></i>
+                    </button>
+                  </div>
+                  <button type="button" class="btn btn-icon btn-lg btn-secondary animate-pulse order-sm-3 order-md-2 order-lg-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Add to Wishlist" aria-label="Add to Wishlist">
+                    <i class="ci-heart fs-lg animate-target"></i>
+                  </button>
+                  <button type="button" class="btn btn-icon btn-lg btn-secondary animate-rotate order-sm-4 order-md-3 order-lg-4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Compare" aria-label="Compare">
+                    <i class="ci-refresh-cw fs-lg animate-target"></i>
+                  </button>
+                  <button type="submit" class="btn btn-lg btn-primary w-100 animate-slide-end order-sm-2 order-md-4 order-lg-2">
+                    <i class="ci-shopping-cart fs-lg animate-target ms-n1 me-2"></i>
+                    Thêm vào giỏ hàng
+                  </button>
+                </div>
+            </form>
 
             <!-- Features -->
             <div class="d-flex flex-wrap gap-3 gap-xl-4 pb-4 pb-lg-5 mb-2 mb-lg-0 mb-xl-2">

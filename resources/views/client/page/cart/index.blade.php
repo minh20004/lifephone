@@ -2,7 +2,7 @@
 @section('title')
     Lifephone
 @endsection
-{{-- @section('content')
+@section('content')
 <main class="content-wrapper">
 
     <!-- Breadcrumb -->
@@ -33,72 +33,78 @@
             </div>
 
             <!-- Table of items -->
-            <table class="table position-relative z-2 mb-4">
-              <thead>
-                <tr>
-                  <th scope="col" class="fs-sm fw-normal py-3 ps-0"><span class="text-body">Sản phẩm</span></th>
-                  <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-xl-table-cell"><span class="text-body">Giá</span></th>
-                  <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-md-table-cell"><span class="text-body">Số lượng</span></th>
-                  <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-md-table-cell"><span class="text-body">Tổng cộng</span></th>
-                  <th scope="col" class="py-0 px-0">
-                    <div class="nav justify-content-end">
-                      <button type="button" class="nav-link d-inline-block text-decoration-underline text-nowrap py-3 px-0">Xóa giỏ hàng</button>
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="align-middle">
+            @if(session()->has('cart') && count(session('cart')) > 0)
+              <table class="table position-relative z-2 mb-4">
+                <thead>
+                  <tr>
+                    <th scope="col" class="fs-sm fw-normal py-3 ps-0"><span class="text-body">Sản phẩm</span></th>
+                    <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-xl-table-cell"><span class="text-body">Giá</span></th>
+                    <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-md-table-cell"><span class="text-body">Số lượng</span></th>
+                    <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-md-table-cell"><span class="text-body">Tổng cộng</span></th>
+                    <th scope="col" class="py-0 px-0">
+                      <div class="nav justify-content-end">
+                        <button type="button" class="nav-link d-inline-block text-decoration-underline text-nowrap py-3 px-0">Xóa giỏ hàng</button>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="align-middle">
 
-                <!-- Item -->
-                <tr>
-                  <td class="py-3 ps-0">
-                    <div class="d-flex align-items-center">
-                      <a class="flex-shrink-0" href="shop-product-general-electronics.html">
-                        <img src="{{asset('client/img/shop/electronics/thumbs/08.png')}}" width="110" alt="iPhone 14">
-                      </a>
-                      <div class="w-100 min-w-0 ps-2 ps-xl-3">
-                        <h5 class="d-flex animate-underline mb-2">
-                          <a class="d-block fs-sm fw-medium text-truncate animate-target" href="shop-product-general-electronics.html">Apple iPhone 14 128GB</a>
-                        </h5>
-                        <ul class="list-unstyled gap-1 fs-xs mb-0">
-                          <li><span class="text-body-secondary">Màu sắc:</span> <span class="text-dark-emphasis fw-medium">White</span></li>
-                          <li><span class="text-body-secondary">Dung lượng:</span> <span class="text-dark-emphasis fw-medium">128GB</span></li>
-                          <li class="d-xl-none"><span class="text-body-secondary">Price:</span> <span class="text-dark-emphasis fw-medium">$899.00</span></li>
-                        </ul>
-                        <div class="count-input rounded-2 d-md-none mt-3">
-                          <button type="button" class="btn btn-sm btn-icon" data-decrement="" aria-label="Decrement quantity">
+                  <!-- Item -->
+                  @foreach ($cartItems as $item)
+                    <tr>
+                      <td class="py-3 ps-0">
+                        <div class="d-flex align-items-center">
+                          <a class="flex-shrink-0" href="shop-product-general-electronics.html">
+                            <img src="{{ asset('storage/' . $item['product']->image_url) }}" width="110" alt="iPhone 14">
+                          </a>
+                          <div class="w-100 min-w-0 ps-2 ps-xl-3">
+                            <h5 class="d-flex animate-underline mb-2">
+                              <a class="d-block fs-sm fw-medium text-truncate animate-target" href="shop-product-general-electronics.html">{{ $item['product']->name }}</a>
+                            </h5>
+                            <ul class="list-unstyled gap-1 fs-xs mb-0">
+                              <li><span class="text-body-secondary">Màu sắc:</span> <span class="text-dark-emphasis fw-medium">{{ $item['color']->name }}</span></li>
+                              <li><span class="text-body-secondary">Dung lượng:</span> <span class="text-dark-emphasis fw-medium">{{ $item['capacity']->name }}</span></li>
+                            </ul>
+                            <div class="count-input rounded-2 d-md-none mt-3">
+                              <button type="button" class="btn btn-sm btn-icon" data-decrement="" aria-label="Decrement quantity">
+                                <i class="ci-minus"></i>
+                              </button>
+                              <input type="number" class="form-control form-control-sm" value="{{ $item['quantity'] }}" readonly="">
+                              <button type="button" class="btn btn-sm btn-icon" data-increment="" aria-label="Increment quantity">
+                                <i class="ci-plus"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="h6 py-3 d-none d-xl-table-cell">{{ number_format($item['price'], 0, ',', '.') }} đ</td>
+                      <td class="py-3 d-none d-md-table-cell">
+                        <div class="count-input">
+                          <button type="button" class="btn btn-icon" data-decrement="" aria-label="Decrement quantity">
                             <i class="ci-minus"></i>
                           </button>
-                          <input type="number" class="form-control form-control-sm" value="1" readonly="">
-                          <button type="button" class="btn btn-sm btn-icon" data-increment="" aria-label="Increment quantity">
+                          <input type="number" class="form-control" value="1" readonly="">
+                          <button type="button" class="btn btn-icon" data-increment="" aria-label="Increment quantity">
                             <i class="ci-plus"></i>
                           </button>
                         </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="h6 py-3 d-none d-xl-table-cell">$899.00</td>
-                  <td class="py-3 d-none d-md-table-cell">
-                    <div class="count-input">
-                      <button type="button" class="btn btn-icon" data-decrement="" aria-label="Decrement quantity">
-                        <i class="ci-minus"></i>
-                      </button>
-                      <input type="number" class="form-control" value="1" readonly="">
-                      <button type="button" class="btn btn-icon" data-increment="" aria-label="Increment quantity">
-                        <i class="ci-plus"></i>
-                      </button>
-                    </div>
-                  </td>
-                  <td class="h6 py-3 d-none d-md-table-cell">$899.00</td>
-                  <td class="text-end py-3 px-0">
-                    <button type="button" class="btn-close fs-sm" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-sm" data-bs-title="Remove" aria-label="Remove from cart"></button>
-                  </td>
-                </tr>
-
-                
-              </tbody>
-            </table>
-
+                      </td>
+                      <td class="h6 py-3 d-none d-md-table-cell">{{ number_format($item['price'], 0, ',', '.') }} đ</td>
+                      <td class="text-end py-3 px-0">
+                        <form action="{{ route('cart.remove', ['productId' => $item['product']->id, 'modelId' => $item['capacity']->id, 'colorId' => $item['color']->id]) }}" method="POST">
+                          @csrf
+                          <button type="submit" class="btn-close fs-sm" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-sm" data-bs-title="Remove" aria-label="Remove from cart"></button>
+                        </form>
+                      </td>
+                    </tr>
+                  @endforeach
+                  
+                </tbody>
+              </table>
+            @else
+            <p>Giỏ hàng của bạn hiện đang trống.</p>
+            @endif
             <div class="nav position-relative z-2 mb-4 mb-lg-0">
               <a class="nav-link animate-underline px-0" href="shop-catalog-electronics.html">
                 <i class="ci-chevron-left fs-lg me-1"></i>
@@ -370,47 +376,8 @@
       Customize<i class="ci-settings fs-base ms-1 me-n2 animate-target"></i>
     </a>
   </div>
-@endsection --}}
-
-
-
-@section('content')
-<div class="container">
-    <h1 class="my-4">Giỏ Hàng</h1>
-
-    @if(session()->has('cart') && count(session('cart')) > 0)
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Tên Sản Phẩm</th>
-                    <th>Dung Lượng</th>
-                    <th>Màu Sắc</th>
-                    <th>Số Lượng</th>
-                    <th>Giá</th>
-                    <th>Thao Tác</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($cartItems as $item)
-                    <tr>
-                        <td>{{ $item['product']->name }}</td>
-                        <td>{{ $item['capacity']->name }} GB</td>
-                        <td style="color: {{ $item['color']->code }}">{{ $item['color']->name }}</td>
-                        <td>{{ $item['quantity'] }}</td>
-                        <td>{{ number_format($item['price'], 0, ',', '.') }} đ</td>
-
-                        <td>
-                            <form action="{{ route('cart.remove', $item['product']->id) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="btn btn-danger">Xóa</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    @else
-        <p>Giỏ hàng của bạn hiện đang trống.</p>
-    @endif
-</div>
 @endsection
+
+
+
+
