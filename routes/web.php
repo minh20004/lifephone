@@ -8,6 +8,7 @@ use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\CapacityController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\CategoryNewsController;
 use App\Http\Controllers\ClientNewController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\NewController;
@@ -75,3 +76,5 @@ Route::resource('admin/review',ReviewController::class);
 Route::resource('new_admin',  NewController::class);
 
 Route::get('new', [NewController::class, 'clientIndex'])->name('news.index');
+
+Route::resource('category_news', CategoryNewsController::class);
