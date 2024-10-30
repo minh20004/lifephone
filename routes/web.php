@@ -28,7 +28,6 @@ Route::get('/', function () {
 
 // font end trang chủ
 Route::get('/', [FrontendControlle::class, 'index'])->name('home');
-// Route::get('product/{id}', [FrontendControlle::class, 'showProduct'])->name('product.show');
 
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -40,11 +39,11 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 });
 
 // -----------------------------USER------------------------------------------------------------------------------
-Route::resource('cart', CartController::class);
+//giỏ hàng
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-// Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 Route::post('cart/remove/{productId}/{modelId}/{colorId}', [CartController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/update', [CartController::class, 'updateQuantity'])->name('cart.update');
 
 // ------------------------------------------------- ADMIN---------------------------------------------------------
 // Quản lý thành viên admin

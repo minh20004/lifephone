@@ -15,45 +15,56 @@ class CartController extends Controller
      */
 
 
-
     public function index()
-    {
-        $cart = session()->get('cart', []);
-        $cartItems = [];
+{
+    $cart = session()->get('cart', []);
+    $cartItems = [];
+    $totalQuantity = 0; 
+    $totalPrice = 0; 
 
-        // Lấy danh sách sản phẩm, màu sắc và dung lượng từ cơ sở dữ liệu
-        $productIds = array_keys($cart);
-        $products = Product::findMany($productIds);
-        $capacities = Capacity::all()->keyBy('id');
-        $colors = Color::all()->keyBy('id');
+    // Lấy danh sách sản phẩm, màu sắc và dung lượng từ cơ sở dữ liệu
+    $productIds = array_keys($cart);
+    $products = Product::findMany($productIds);
+    $capacities = Capacity::all()->keyBy('id');
+    $colors = Color::all()->keyBy('id');
 
+    foreach ($cart as $productId => $models) {
+        foreach ($models as $modelId => $colorModels) {
+            foreach ($colorModels as $colorId => $item) {
+                $product = $products->find($productId);
+                $capacity = $capacities->get($item['model_id']);
+                $color = $colors->get($colorId);
 
-        foreach ($cart as $productId => $models) {
-            foreach ($models as $modelId => $colorModels) { // Đổi tên biến từ $colors thành $colorModels để tránh nhầm lẫn
-                foreach ($colorModels as $colorId => $item) {
-                    // Tìm sản phẩm, dung lượng và màu sắc
-                    $product = $products->find($productId);
-                    $capacity = $capacities->get($item['model_id']);
-                    $color = $colors->get($colorId); // Sử dụng $colors để lấy màu sắc
+                if ($product && $capacity && $color) {
+                    // Tính tổng tiền cho sản phẩm hiện tại và thêm vào tổng tiền giỏ hàng
+                    $itemTotal = $item['quantity'] * $item['price'];
+                    $totalPrice += $itemTotal;
 
-                    // Kiểm tra nếu không phải là null
-                    if ($product && $capacity && $color) {
-                        // thêm
-                        $cartItems[] = [
-                            'product' => $product,
-                            'capacity' => $capacity,
-                            'color' => $color,
-                            'quantity' => $item['quantity'],
-                            'price' => $item['price'], // Lấy giá từ item
-                            'image_url' => $item['image_url'] ?? '',
-                        ];
-                    }
+                    // Cập nhật tổng số lượng
+                    $totalQuantity += $item['quantity'];
+
+                    // Thêm sản phẩm vào giỏ hàng
+                    $cartItems[] = [
+                        'product' => $product,
+                        'capacity' => $capacity,
+                        'color' => $color,
+                        'quantity' => $item['quantity'],
+                        'price' => $item['price'],
+                        'itemTotal' => $itemTotal, // Tổng tiền của sản phẩm này
+                        'image_url' => $item['image_url'] ?? '',
+                    ];
                 }
             }
         }
-
-        return view('client.page.cart.index', compact('cartItems'));
     }
+
+    // Tính tổng ước tính (có thể thêm logic cho giảm giá ở đây)
+    // $estimatedTotal = $totalPrice - 110; // Ví dụ giảm giá $110
+
+    // Truyền các biến vào view để hiển thị
+    return view('client.page.cart.index', compact('cartItems', 'totalQuantity', 'totalPrice', ));
+}
+
 
     public function addToCart(Request $request)
     {
@@ -109,6 +120,39 @@ class CartController extends Controller
         session()->put('cart', $cart);
 
         return redirect()->route('cart.index')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
+    }
+
+
+    public function updateQuantity(Request $request)
+    {
+        $productId = $request->input('productId');
+        $modelId = $request->input('modelId');
+        $colorId = $request->input('colorId');
+        $quantity = (int) $request->input('quantity');
+
+        $cart = session()->get('cart', []);
+        if (isset($cart[$productId][$modelId][$colorId])) {
+            // Cập nhật số lượng trong giỏ hàng nếu có sản phẩm tồn tại
+            $cart[$productId][$modelId][$colorId]['quantity'] = $quantity;
+            session()->put('cart', $cart); // Lưu lại giỏ hàng mới vào session
+        }
+
+        $itemTotal = $cart[$productId][$modelId][$colorId]['price'] * $quantity;
+
+        // Tính tổng tiền của tất cả sản phẩm trong giỏ hàng
+        $totalPrice = 0;
+        foreach ($cart as $product) {
+            foreach ($product as $model) {
+                foreach ($model as $color) {
+                    $totalPrice += $color['price'] * $color['quantity'];
+                }
+            }
+        }
+
+        return response()->json([
+            'itemTotal' => number_format($itemTotal, 0, ',', '.') . ' đ',
+            'totalPrice' => number_format($totalPrice, 0, ',', '.') . ' đ',
+        ]);
     }
 
 

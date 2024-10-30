@@ -52,7 +52,7 @@
 
                   <!-- Item -->
                   @foreach ($cartItems as $item)
-                    <tr>
+                    <tr data-product-id="{{ $item['product']->id }}" data-model-id="{{ $item['capacity']->id }}" data-color-id="{{ $item['color']->id }}">
                       <td class="py-3 ps-0">
                         <div class="d-flex align-items-center">
                           <a class="flex-shrink-0" href="shop-product-general-electronics.html">
@@ -90,7 +90,7 @@
                           </button>
                         </div>
                       </td>
-                      <td class="h6 py-3 d-none d-md-table-cell">{{ number_format($item['price'], 0, ',', '.') }} đ</td>
+                      <td class="h6 py-3 d-none d-md-table-cell" id="itemTotal-{{ $item['product']->id }}-{{ $item['capacity']->id }}-{{ $item['color']->id }}">{{ number_format($item['itemTotal'], 0, ',', '.') }} đ</td>
                       <td class="text-end py-3 px-0">
                         <form action="{{ route('cart.remove', ['productId' => $item['product']->id, 'modelId' => $item['capacity']->id, 'colorId' => $item['color']->id]) }}" method="POST">
                           @csrf
@@ -106,15 +106,14 @@
             <p>Giỏ hàng của bạn hiện đang trống.</p>
             @endif
             <div class="nav position-relative z-2 mb-4 mb-lg-0">
-              <a class="nav-link animate-underline px-0" href="shop-catalog-electronics.html">
+              <a class="nav-link animate-underline px-0" href="{{route('home')}}">
                 <i class="ci-chevron-left fs-lg me-1"></i>
                 <span class="animate-target">Tiếp tục mua sắm</span>
               </a>
             </div>
           </div>
         </div>
-
-
+        
         <!-- Tóm tắt đơn hàng (sticky sidebar) -->
         <aside class="col-lg-4" style="margin-top: -100px">
           <div class="position-sticky top-0" style="padding-top: 100px">
@@ -177,8 +176,6 @@
         </aside>
       </div>
     </section>
-
-
     <!-- Trending products (Carousel) -->
     <section class="container pb-4 pb-md-5 mb-2 mb-sm-0 mb-lg-2 mb-xl-4">
       <h2 class="h3 border-bottom pb-4 mb-0">Trending products</h2>

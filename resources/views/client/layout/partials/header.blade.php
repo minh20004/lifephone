@@ -1408,7 +1408,7 @@
                   </ul>
                 </li>
                 <li class="nav-item me-lg-n2 me-xl-0">
-                  <a class="nav-link" href="docs/installation.html">Docs</a>
+                  <a class="nav-link" href="{{route('cart.index')}}">Docs</a>
                 </li>
                 <li class="nav-item me-lg-n2 me-xl-0">
                   <a class="nav-link" href="docs/typography.html">Components</a>

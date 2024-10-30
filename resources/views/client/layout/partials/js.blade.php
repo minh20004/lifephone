@@ -149,3 +149,59 @@
         updateCapacityOptions();
     });
 </script>
+
+{{-- tăng số lượng sản phẩm trong giỏ hàng --}}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+          document.querySelectorAll('.btn-icon').forEach(function (button) {
+              button.addEventListener('click', function () {
+                  const isIncrement = this.hasAttribute('data-increment');
+                  const input = this.closest('.count-input').querySelector('input');
+                  let quantity = parseInt(input.value);
+
+                  if (isIncrement) {
+                      quantity++;
+                  } else if (quantity > 1) {
+                      quantity--;
+                  }
+
+                  // Ngăn gọi lại sự kiện khi đang xử lý
+                  this.setAttribute('disabled', 'true');
+                  input.value = quantity;
+
+                  // Dữ liệu để gửi AJAX
+                  const productId = this.closest('tr').dataset.productId;
+                  const modelId = this.closest('tr').dataset.modelId;
+                  const colorId = this.closest('tr').dataset.colorId;
+
+                  // Cập nhật giỏ hàng qua AJAX
+                  updateCart(productId, modelId, colorId, quantity)
+                      .finally(() => {
+                          // Bỏ thuộc tính disabled sau khi hoàn thành
+                          this.removeAttribute('disabled');
+                      });
+              });
+          });
+      });
+
+      function updateCart(productId, modelId, colorId, quantity) {
+          return fetch('{{ route("cart.update") }}', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRF-TOKEN': '{{ csrf_token() }}'
+              },
+              body: JSON.stringify({ productId, modelId, colorId, quantity })
+          })
+          .then(response => response.json())
+          .then(data => {
+              // Cập nhật giao diện
+              document.querySelector(`#itemTotal-${productId}-${modelId}-${colorId}`).textContent = data.itemTotal;
+              document.querySelector(`#totalPrice`).textContent = data.totalPrice;
+          })
+          .catch(error => console.error('Error:', error));
+      }
+
+</script>
+
+
