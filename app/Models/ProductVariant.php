@@ -10,7 +10,6 @@ class ProductVariant extends Model
     use HasFactory;
     protected $fillable = ['product_id', 'color_id', 'capacity_id', 'price_difference', 'stock'];
 
-
     public function product()
     {
         return $this->belongsTo(Product::class);
@@ -20,10 +19,16 @@ class ProductVariant extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
-    public function capacity() {
-        return $this->belongsTo(Capacity::class);
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
-    public function color() {
-        return $this->belongsTo(Color::class);
+    public function color()
+    {
+        return $this->belongsTo(Color::class, 'color_id'); // 'color_id' là khoá ngoại trong bảng product_variants
+    }
+    public function capacity()
+    {
+        return $this->belongsTo(Capacity::class, 'capacity_id'); // 'capacity_id' là khoá ngoại trong bảng product_variants
     }
 }
