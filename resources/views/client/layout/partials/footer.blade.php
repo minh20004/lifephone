@@ -1,42 +1,71 @@
 {{-- chat --}}
 <div class="chat-button container" onclick="toggleChatPopup()">
-  <i class="ri-chat-3-line"></i> Chat với nhân viên tư vấn
+  <i class="ri-chat-3-line"></i> CHAT NGAY
 </div>
-
 <!-- Pop-up Chat -->
 <div class="container chat-popup" id="chatPopup">
-  <!-- Khung Chat -->
-<div class="chat-container">
-  <!-- Thanh điều hướng trên cùng -->
-  <div class="chat-header">
-      <div class="user-info">
-          <img src="assets/images/users/avatar-2.jpg" alt="User Avatar" class="user-avatar">
-          <div class="user-details">
-              <h5 class="username">Lisa Parker</h5>
-              <p class="status">Online</p>
-          </div>
-      </div>
-  </div>
+  <!-- Form yêu cầu thông tin người dùng -->
+  <div class="info-form" id="infoForm">
+    <h3>Thông tin cơ bản</h3>
+    <label for="userName">Nhập tên của bạn*</label>
+    <input type="text" id="userName" required>
 
-  <!-- Khu vực danh sách tin nhắn -->
-  <div class="chat-messages" id="chatMessages">
-      <div class="message received">
-          <p>Chào bạn! Có thể giúp mình được không?</p>
-          <span class="timestamp">10:00 AM</span>
+    <label for="userEmail">Nhập email của bạn</label>
+    <input type="email" id="userEmail">
+
+    <label for="userPhone">Nhập số điện thoại của bạn*</label>
+    <input type="tel" id="userPhone" required>
+
+    <h4>Thông tin bổ sung</h4>
+    <label for="userGender">Giới tính</label>
+    <select id="userGender">
+        <option value="male">Nam</option>
+        <option value="female">Nữ</option>
+        <option value="other">Khác</option>
+    </select>
+
+    <label for="userMessage">Tin nhắn</label>
+    <textarea id="userMessage" placeholder="Nhập tin nhắn"></textarea>
+
+    <button onclick="startChat()">Bắt đầu trò chuyện</button>
+</div>
+
+  <!-- Khung Chat -->
+  <div class="chat-container" style="display: none;">
+    <!-- Thanh điều hướng trên cùng -->
+    <div class="chat-header">
+      <div class="user-info">
+        <img src="assets/images/users/avatar-2.jpg" alt="User Avatar" class="user-avatar">
+        <div class="user-details">
+          <h5 class="username">Xin chào</h5>
+          <p class="status">Em ở đây để hỗ trợ cho mình ạ</p>
+        </div>
       </div>
-      
+    </div>
+    <!-- Khu vực danh sách tin nhắn -->
+    <div class="chat-messages" id="chatMessages">
+      <div class="message received">
+        <p>Chào bạn! Có thể giúp mình được không?</p>
+        <span class="timestamp">10:00 AM</span>
+      </div>
+      <div class="message received">
+        <p>Chào bạn! Có thể giúp mình được không?</p>
+        <span class="timestamp">10:00 AM</span>
+      </div>
       <div class="message sent">
-          <p>Xin chào! Mình có thể giúp gì cho bạn?</p>
-          <span class="timestamp">10:01 AM</span>
+        <p>Xin chào! Mình có thể giúp gì cho bạn?</p>
+        <span class="timestamp">10:01 AM</span>
       </div>
       <!-- Thêm các tin nhắn khác tại đây -->
-  <!-- Khu vực nhập tin nhắn -->
+    </div>
+    <!-- Khu vực nhập tin nhắn -->
+    <div class="chat-input">
+      <input type="text" id="messageInput" placeholder="Nhập tin nhắn...">
+      <button onclick="sendMessage()" class="send-button"><i class="ri-send-plane-2-line"></i> Gửi</button>
+    </div>
+  </div>
 </div>
-<div class="chat-input">
-  <input type="text" id="messageInput" placeholder="Nhập tin nhắn...">
-  <button onclick="sendMessage()" class="send-button"><i class="ri-send-plane-2-line"></i>Gửi</button>
-</div>
-</div>
+
 <span class="position-absolute top-0 start-0 w-100 h-100 bg-body d-none d-block-dark"></span>
       <div class="container position-relative z-1 pt-sm-2 pt-md-3 pt-lg-4" data-bs-theme="dark">
 

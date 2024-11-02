@@ -29,7 +29,7 @@ function sendMessage() {
 
     if (messageInput.value.trim() !== "") {
         const newMessage = document.createElement("div");
-        newMessage.classList.add("message", "sent");
+        newMessage.classList.add("message", "received");
         newMessage.innerHTML = `<p>${messageInput.value}</p><span class="timestamp">${new Date().toLocaleTimeString()}</span>`;
         
         chatMessages.appendChild(newMessage);
@@ -37,5 +37,28 @@ function sendMessage() {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 }
+// kiểm tra thông tin đăng nhập
+// Hiển thị form thông tin
+function toggleInfoForm() {
+    document.getElementById("infoForm").style.display = "flex";
+    document.getElementById("chatContainer").style.display = "none"; // Ẩn khung chat
+}
+
+// Bắt đầu trò chuyện sau khi kiểm tra thông tin
+function startChat() {
+    const userName = document.getElementById("userName").value.trim();
+    const userPhone = document.getElementById("userPhone").value.trim();
+
+    // Kiểm tra các trường bắt buộc
+    if (userName === "" || userPhone === "") {
+        alert("Vui lòng điền tên và số điện thoại.");
+        return;
+    }
+
+    // Nếu thông tin hợp lệ, ẩn form yêu cầu và hiển thị khung chat
+    document.getElementById("infoForm").style.display = "none";
+    document.getElementById("chatContainer").style.display = "flex";
+}
+
 
 </script>
