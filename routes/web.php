@@ -10,6 +10,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CapacityController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\chatController;
 use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\FrontendControlle;
@@ -99,3 +100,6 @@ Route::resource('vouchers', VoucherController::class);
 Route::get('/shop', [ClientCategoryController::class, 'shop'])->name('shop');
 
 Route::get('/categories/{id}/products', [ClientCategoryController::class, 'getProductsByCategory']);
+
+// chat
+Route::get('/chat', [chatController::class, 'index'])->name('chat');

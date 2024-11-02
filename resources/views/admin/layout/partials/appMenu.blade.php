@@ -494,7 +494,7 @@
                 <div class="collapse menu-dropdown" id="sidebarLanding">
                     <ul class="nav nav-sm flex-column">
                         <li class="nav-item">
-                            <a href="landing.html" class="nav-link" data-key="t-one-page"> One Page </a>
+                            <a href="{{ route('chat') }}" class="nav-link" data-key="t-one-page"> chat </a>
                         </li>
                         <li class="nav-item">
                             <a href="nft-landing.html" class="nav-link" data-key="t-nft-landing"> NFT Landing </a>
