@@ -107,21 +107,7 @@
     display: none;
     z-index: 1000;
     overflow: hidden;
-    overflow-y: auto;
 }
-
-/* Định dạng cho phần nội dung chat */
-/* .chat-popup .user-chat-topbar,
-.chat-popup .chat-conversation {
-    height: calc(100% - 40px);
-}
-.chat-popup .user-chat-topbar {
-    border-bottom: 1px solid #f1f1f1;
-}
-.chat-popup #chat-conversation {
-    height: calc(100% - 60px);
-    overflow-y: auto;
-} */
 /* Tổng thể khung chat */
 .chat-container {
     width: 100%;
@@ -168,7 +154,8 @@
 .chat-messages {
     flex-grow: 1;
     padding: 20px;
-    overflow-y: auto; /* Cho phép cuộn khi có nhiều tin nhắn */
+    overflow-y: auto;
+    height: 360px;
     background-color: #f5f7fa;
 }
 
@@ -191,7 +178,9 @@
     margin-left: auto; /* Đẩy tin nhắn nhận được sang bên trái */
     align-self: flex-start; /* Căn trái cho tin nhắn nhận */
 }
-
+.received .timestamp{
+    color: #fff;
+}
 /* Tin nhắn gửi đi */
 .sent {
     background-color: #e9ecef;
@@ -203,7 +192,7 @@
     font-size: 12px;
     color: #888;
     position: absolute;
-    bottom: -15px;
+    bottom: 5px;
     right: 10px;
 }
 
@@ -217,7 +206,7 @@
 }
 
 #messageInput {
-    flex-grow: 1; /* Làm cho ô nhập tin nhắn chiếm không gian còn lại */
+    flex-grow: 1;
     padding: 10px;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -240,14 +229,18 @@
 {{-- form kiểm tra thong tin chat --}}
 <style>
     .info-form {
-    padding: 20px;
-    background-color: #fff;
+    padding: 10px;
+    /* background-color: #fff; */
     border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
     display: flex;
     flex-direction: column;
+    overflow-y: hidden;
 }
-
+.info{
+    height: 395px;
+    overflow-y: auto;
+}
 .info-form label {
     display: block;
     margin-top: 10px;

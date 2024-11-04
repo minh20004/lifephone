@@ -103,3 +103,9 @@ Route::get('/categories/{id}/products', [ClientCategoryController::class, 'getPr
 
 // chat
 Route::get('/chat', [chatController::class, 'index'])->name('chat');
+
+Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+Route::post('/chat/start', [ChatController::class, 'startConversation'])->name('chat.start');
+Route::post('/chat/send', [ChatController::class, 'sendMessage'])->name('chat.send');
+Route::get('/chat/messages/{conversationId}', [ChatController::class, 'getMessages'])->name('chat.messages');
+Route::post('/chat/messages/read/{conversationId}', [ChatController::class, 'markMessagesAsRead'])->name('chat.read');

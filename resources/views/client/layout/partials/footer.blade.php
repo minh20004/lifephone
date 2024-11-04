@@ -2,36 +2,38 @@
 <div class="chat-button container" onclick="toggleChatPopup()">
   <i class="ri-chat-3-line"></i> CHAT NGAY
 </div>
+
 <!-- Pop-up Chat -->
-<div class="container chat-popup" id="chatPopup">
+<div class=" chat-popup" id="chatPopup">
   <!-- Form yêu cầu thông tin người dùng -->
   <div class="info-form" id="infoForm">
     <h3>Thông tin cơ bản</h3>
-    <label for="userName">Nhập tên của bạn*</label>
-    <input type="text" id="userName" required>
-
-    <label for="userEmail">Nhập email của bạn</label>
-    <input type="email" id="userEmail">
-
-    <label for="userPhone">Nhập số điện thoại của bạn*</label>
-    <input type="tel" id="userPhone" required>
-
-    <h4>Thông tin bổ sung</h4>
-    <label for="userGender">Giới tính</label>
-    <select id="userGender">
-        <option value="male">Nam</option>
-        <option value="female">Nữ</option>
-        <option value="other">Khác</option>
-    </select>
-
-    <label for="userMessage">Tin nhắn</label>
-    <textarea id="userMessage" placeholder="Nhập tin nhắn"></textarea>
-
-    <button onclick="startChat()">Bắt đầu trò chuyện</button>
-</div>
+    <div class="info">
+      <label for="userName">Nhập tên của bạn*</label>
+      <input type="text" id="userName" required>
+  
+      <label for="userEmail">Nhập email của bạn</label>
+      <input type="email" id="userEmail">
+  
+      <label for="userPhone">Nhập số điện thoại của bạn*</label>
+      <input type="tel" id="userPhone" required>
+  
+      <h4>Thông tin bổ sung</h4>
+      <label for="userGender">Giới tính</label>
+      <select id="userGender">
+          <option value="male">Nam</option>
+          <option value="female">Nữ</option>
+          <option value="other">Khác</option>
+      </select>
+  
+      <label for="userMessage">Tin nhắn</label>
+      <textarea id="userMessage" placeholder="Nhập tin nhắn"></textarea>
+    </div>
+    <button class="chat-input" onclick="startChat()">Bắt đầu trò chuyện</button>
+  </div>
 
   <!-- Khung Chat -->
-  <div class="chat-container" style="display: none;">
+  <div class="chat-container" id="chatContainer" style="display: none;">
     <!-- Thanh điều hướng trên cùng -->
     <div class="chat-header">
       <div class="user-info">
