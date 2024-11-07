@@ -29,5 +29,7 @@ class FrontendControlle extends Controller
           return view('index', compact('latestProducts', 'trendingProducts'));
     }
       
-    
+    public function checkout(){
+        return view('client.page.checkout.index');
+    }
 }

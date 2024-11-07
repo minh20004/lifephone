@@ -122,12 +122,12 @@
                 <h5 class="border-bottom pb-4 mb-4">Tóm tắt đơn hàng</h5>
                 <ul class="list-unstyled fs-sm gap-3 mb-0">
                   <li class="d-flex justify-content-between">
-                    Tổng cộng (3 mục):
-                    <span class="text-dark-emphasis fw-medium">$2,427.00</span>
+                    <span id="totalQuantity">(Tổng cộng <b>{{ $totalQuantity }}</b> sản phẩm):</span> 
+                    <span class="text-dark-emphasis fw-medium"><span id="totalPrice">{{ number_format($totalPrice, 0, ',', '.') }} đ</span>
                   </li>
                   <li class="d-flex justify-content-between">
                     Giảm giá:
-                    <span class="text-danger fw-medium">-$110.00</span>
+                    <span class="text-danger fw-medium">{{ number_format($discount, 0, ',', '.') }} đ</span>
                   </li>
                   <li class="d-flex justify-content-between">
                     Vận chuyển:
@@ -137,9 +137,9 @@
                 <div class="border-top pt-4 mt-4">
                   <div class="d-flex justify-content-between mb-3">
                     <span class="fs-sm">Tổng ước tính:</span>
-                    <span class="h5 mb-0">$2,390.40</span>
+                    <span class="h5 mb-0"><span id="totalAfterDiscount">{{ number_format($totalAfterDiscount, 0, ',', '.') }} đ</span>
                   </div>
-                  <a class="btn btn-lg btn-primary w-100" href="checkout-v1-delivery-1.html">
+                  <a class="btn btn-lg btn-primary w-100" href="{{route('checkout.index')}}">
                     Tiến hành thanh toán
                     <i class="ci-chevron-right fs-lg ms-1 me-n1"></i>
                   </a>
@@ -161,9 +161,10 @@
                 </h3>
                 <div class="accordion-collapse collapse" id="promoCode" aria-labelledby="promoCodeHeading">
                   <div class="accordion-body pt-3 pb-2 ps-sm-2 px-lg-0 px-xl-2">
-                    <form class="needs-validation d-flex gap-2" novalidate="">
+                    <form action="{{ route('cart.apply-voucher') }}" method="POST" class="needs-validation d-flex gap-2" novalidate="">
+                      @csrf
                       <div class="position-relative w-100">
-                        <input type="text" class="form-control" placeholder="Nhập mã khuyến mãi" required="">
+                        <input type="text" name="voucher_code" id="voucher_code" class="form-control" placeholder="Nhập mã khuyến mãi" required="">
                         <div class="invalid-tooltip bg-transparent py-0">Enter a valid promo code!</div>
                       </div>
                       <button type="submit" class="btn btn-dark">Áp dụng</button>
@@ -174,6 +175,9 @@
             </div>
           </div>
         </aside>
+        
+      
+      
       </div>
     </section>
     <!-- Trending products (Carousel) -->

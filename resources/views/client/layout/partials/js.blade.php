@@ -205,3 +205,41 @@
 </script>
 
 
+{{-- tính tóm tắt đơn hàng trong giỏ hàng  --}}
+<script>
+    // Hàm cập nhật số lượng sản phẩm trong giỏ hàng
+    function updateCartQuantity(productId, modelId, colorId, quantity) {
+      $.ajax({
+          url: '/cart/update-quantity',
+          type: 'POST',
+          data: {
+              productId: productId,
+              modelId: modelId,
+              colorId: colorId,
+              quantity: quantity,
+              _token: '{{ csrf_token() }}' // Token bảo mật cho yêu cầu POST
+          },
+          success: function(response) {
+              // Cập nhật tổng tiền của sản phẩm
+              $('#itemTotal-' + productId + '-' + modelId + '-' + colorId).text(response.itemTotal);
+
+              // Cập nhật tổng tiền và tổng số lượng trong phần tóm tắt đơn hàng
+              $('#totalQuantity').text(response.totalQuantity);
+              $('#totalPrice').text(response.totalPrice);
+          },
+          error: function() {
+              alert('Có lỗi xảy ra. Vui lòng thử lại.');
+          }
+    });
+    }
+
+    // Gọi hàm updateCartQuantity khi thay đổi số lượng
+    $('.quantity-input').on('change', function() {
+        const productId = $(this).data('product-id');
+        const modelId = $(this).data('model-id');
+        const colorId = $(this).data('color-id');
+        const quantity = $(this).val();
+
+        updateCartQuantity(productId, modelId, colorId, quantity);
+    });
+</script>

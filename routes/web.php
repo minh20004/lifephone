@@ -10,6 +10,7 @@ use App\Http\Controllers\CapacityController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,7 +45,10 @@ Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add')
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('cart/remove/{productId}/{modelId}/{colorId}', [CartController::class, 'remove'])->name('cart.remove');
 Route::post('/cart/update', [CartController::class, 'updateQuantity'])->name('cart.update');
-
+Route::post('/cart/apply-voucher', [CartController::class, 'applyVoucher'])->name('cart.apply-voucher');
+Route::get('/cart/offcanvas', [CartController::class, 'getCart'])->name('cart.offcanvas');
+// thanh toán
+Route::resource('checkout', CheckoutController::class);
 // ------------------------------------------------- ADMIN---------------------------------------------------------
 // Quản lý thành viên admin
 Route::get('/them-thanh-vien', [AuthController::class, 'create'])->name('admin.them-thanh-vien');
