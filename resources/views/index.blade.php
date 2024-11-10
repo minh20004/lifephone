@@ -6,7 +6,8 @@
     <!-- Hero slider -->
     <section class="container pt-4">
         <div class="row">
-            <div class="col-lg-9 offset-lg-3">
+            {{-- col-lg-9 offset-lg-3 --}}
+            <div class="">
                 <div class="position-relative">
                     <span class="position-absolute top-0 start-0 w-100 h-100 rounded-5 d-none-dark rtl-flip"
                         style="background: linear-gradient(90deg, #accbee 0%, #e7f0fd 100%)"></span>
@@ -455,7 +456,7 @@
             </div>
             <div class="nav ms-3">
                 <a class="nav-link animate-underline px-0 py-2" href="shop-catalog-electronics.html">
-                    <span class="animate-target text-nowrap">View all</span>
+                    <span class="animate-target text-nowrap">Xem tất cả</span>
                     <i class="ci-chevron-right fs-base ms-1"></i>
                 </a>
             </div>
