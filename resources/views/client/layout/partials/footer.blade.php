@@ -1,3 +1,51 @@
+<?php
+session_start();
+$timeLimit = 3600; // Thời gian tối đa cho phiên chat (1 giờ)
+
+if (!isset($_SESSION['chat_start_time'])) {
+    $_SESSION['chat_start_time'] = time(); // Khởi tạo thời gian bắt đầu nếu chưa có
+}
+
+// Kiểm tra thời gian đã trôi qua
+$current_time = time();
+$time_elapsed = $current_time - $_SESSION['chat_start_time'];
+
+if ($time_elapsed > $timeLimit) {
+    // Nếu thời gian phiên đã hết
+    session_destroy(); // Hủy phiên chat
+    echo json_encode(['status' => 'error', 'message' => 'Phiên chat đã hết hạn.']);
+    exit;
+}
+
+// Khởi tạo mảng tin nhắn nếu chưa có
+if (!isset($_SESSION['messages'])) {
+    $_SESSION['messages'] = [];
+}
+
+// Xử lý yêu cầu gửi tin nhắn
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $userMessage = trim($_POST['message']);
+    if (!empty($userMessage)) {
+        // Lưu tin nhắn của người dùng
+        $_SESSION['messages'][] = [
+            'type' => 'sent',
+            'message' => htmlspecialchars($userMessage),
+            'timestamp' => date('H:i')
+        ];
+
+        // Phản hồi từ admin (mô phỏng)
+        $adminResponse = "Admin: " . htmlspecialchars($userMessage) . " đã nhận.";
+        $_SESSION['messages'][] = [
+            'type' => 'received',
+            'message' => htmlspecialchars($adminResponse),
+            'timestamp' => date('H:i')
+        ];
+    }
+}
+
+// Trả về danh sách tin nhắn
+echo json_encode(['status' => 'success', 'messages' => $_SESSION['messages']]);
+?>
 {{-- chat --}}
 <div class="chat-button container" onclick="toggleChatPopup()">
   <i class="ri-chat-3-line"></i> CHAT NGAY
@@ -309,3 +357,81 @@
           <p class="text-body fs-xs text-center text-md-start mb-0 me-4 order-md-1">© All rights reserved. Made by <span class="animate-underline"><a class="animate-target text-dark-emphasis fw-medium text-decoration-none" href="https://createx.studio/" target="_blank" rel="noreferrer">Createx Studio</a></span></p>
         </div>
       </div>
+      <script>
+        function toggleChatPopup() {
+            const chatPopup = document.getElementById('chatPopup');
+            const infoForm = document.getElementById('infoForm');
+            const chatContainer = document.getElementById('chatContainer');
+    
+            // Bật/tắt hộp thoại chat
+            if (chatPopup.style.display === 'none' || chatPopup.style.display === '') {
+                chatPopup.style.display = 'block';
+                infoForm.style.display = 'block';  // Hiển thị form nhập thông tin
+                chatContainer.style.display = 'none'; // Ẩn khung chat
+            } else {
+                chatPopup.style.display = 'none';
+            }
+        }
+    
+        function startChat() {
+            const userName = document.getElementById('userName').value.trim();
+            const userPhone = document.getElementById('userPhone').value.trim();
+    
+            if (userName === '' || userPhone === '') {
+                alert('Vui lòng nhập tên và số điện thoại của bạn');
+                return;
+            }
+    
+            // Ẩn form nhập thông tin và hiển thị hộp thoại chat
+            document.getElementById('infoForm').style.display = 'none';
+            document.getElementById('chatContainer').style.display = 'block';
+        }
+    
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+            const conversationId = 1; // ID của cuộc hội thoại
+            const adminId = 1; // ID của admin
+    
+            if (!message) return;
+    
+            fetch('/chat/received', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    message: message,
+                    conversation_id: conversationId,
+                    admin_id: adminId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    loadMessages(conversationId); // Tải lại các tin nhắn
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    
+            messageInput.value = ''; // Xóa nội dung ô nhập tin nhắn
+        }
+    
+        function loadMessages(conversationId) {
+            fetch(`/chat/messages/${conversationId}`)
+            .then(response => response.json())
+            .then(data => {
+                const chatMessages = document.getElementById('chatMessages');
+                chatMessages.innerHTML = ''; // Xóa nội dung cũ
+                data.messages.forEach(msg => {
+                    const newMessage = document.createElement('div');
+                    newMessage.className = 'message received';
+                    newMessage.innerHTML = `<p>${msg.content}</p><span class="timestamp">${new Date(msg.timestamp).toLocaleTimeString()}</span>`;
+                    chatMessages.appendChild(newMessage);
+                });
+                chatMessages.scrollTop = chatMessages.scrollHeight; // Cuộn xuống cuối khi có tin nhắn mới
+            })
+            .catch(error => console.error('Error loading messages:', error));
+        }
+    </script>
