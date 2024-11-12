@@ -15,7 +15,7 @@
               <div class="flex-grow-0 flex-shrink-0 ps-3 ps-md-4" style="width: calc(100% - 2rem)">
                 <h1 class="h5 mb-md-4">Thông tin giao hàng</h1>
                 <div class="ms-n5 ms-sm-0">
-                  <h3 class="h6 border-bottom pb-4 mb-0">Chọn phương thức vận chuyển</h3>
+                  {{-- <h3 class="h6 border-bottom pb-4 mb-0">Chọn phương thức vận chuyển</h3>
                   <div class="mb-lg-4" id="shippingMethod" role="list">
 
                     <!-- Giao hàng chuyển phát nhanh -->
@@ -40,15 +40,29 @@
                         </label>
                       </div>
                     </div>
-                  </div>
+                  </div> --}}
+                  {{-- <h3 class="h6 border-bottom pb-4 mb-0">Chọn phương thức vận chuyển</h3>
+                  <div class="mb-lg-4" id="shippingMethod" role="list">
+                      @foreach ($shippingMethods as $method)
+                          <div class="border-bottom">
+                              <div class="form-check mb-0" role="listitem">
+                                  <label class="form-check-label d-flex align-items-center text-dark-emphasis fw-semibold py-4">
+                                      <input type="radio" class="form-check-input fs-base me-2 me-sm-3" name="shipping-method"
+                                            data-cost="{{ $method['cost'] }}" {{ $method['cost'] == $shippingCost ? 'checked' : '' }}>
+                                      {{ $method['name'] }}
+                                      <span class="fw-normal ms-auto">{{ number_format($method['cost'], 0, ',', '.') }} đ</span>
+                                  </label>
+                              </div>
+                          </div>
+                      @endforeach
+                  </div> --}}
                 </div>
               </div>
             </div>
 
             <!-- Shipping address -->
-            <div class="d-flex align-items-start">
+            {{-- <div class="d-flex align-items-start">
               <div class="d-flex align-items-center justify-content-center bg-primary text-white rounded-circle fs-sm fw-semibold lh-1 flex-shrink-0" style="width: 2rem; height: 2rem; margin-top: -.125rem">2</div>
-              {{-- <h2 class="h5 text-body-secondary ps-3 ps-md-4 mb-0">Địa chỉ nhận hàng</h2> --}}
               <div class="w-100 ps-3 ps-md-4">
                 <h1 class="h5 mb-md-4">Địa chỉ giao hàng</h1>
                 <form class="needs-validation" novalidate="">
@@ -65,20 +79,6 @@
                       <label for="shipping-email" class="form-label">Email <span class="text-danger">*</span></label>
                       <input type="email" class="form-control form-control-lg" id="shipping-email" required="">
                     </div>
-                    <div class="col">
-                      <label class="form-label">Thành phố <span class="text-danger">*</span></label>
-                      <select class="form-select" data-select="{
-                        &quot;searchEnabled&quot;: true,
-                        &quot;classNames&quot;: {
-                          &quot;containerInner&quot;: &quot;form-select form-select-lg&quot;
-                        }
-                      }" required="">
-                        <option value="">Chọn thành phố của bạn</option>
-                        <option value="New York City">Hà nội</option>
-                        <option value="Los Angeles">Bắc Giang</option>
-                        <option value="Chicago">Bắc Ninh</option>
-                      </select>
-                    </div>
                   </div>
                   <div class="mb-3">
                     <label for="shipping-address" class="form-label">Địa chỉ chi tiết (nhà/ngõ/ngách/đường/quận)<span class="text-danger">*</span></label>
@@ -86,10 +86,10 @@
                   </div>
                 </form>
               </div>
-            </div>
+            </div> --}}
 
             <!-- Payment -->
-            <div class="d-flex align-items-start">
+            {{-- <div class="d-flex align-items-start">
               <div class="d-flex align-items-center justify-content-center bg-primary text-white rounded-circle fs-sm fw-semibold lh-1 flex-shrink-0" style="width: 2rem; height: 2rem; margin-top: -.125rem">3</div>
               <div class="w-100 ps-3 ps-md-4">
                 <h2 class="h5 mb-0">Phương thức thanh toán</h2>
@@ -107,7 +107,7 @@
                   </div>
 
 
-                  <!-- PayPal -->
+                  <!-- Thanh toán online -->
                   <div class="mt-4">
                     <div class="form-check mb-0" role="listitem" data-bs-toggle="collapse" data-bs-target="#paypal" aria-expanded="false" aria-controls="paypal">
                       <label class="form-check-label d-flex align-items-center text-dark-emphasis fw-semibold">
@@ -128,19 +128,137 @@
                   </a>
                 </div>
 
-                <!-- Additional comments -->
-                <textarea class="form-control form-control-lg mb-4" rows="3" placeholder="Additional comments"></textarea>
+                <!-- Nội dung -->
+                <textarea class="form-control form-control-lg mb-4" rows="3" placeholder="Nội dung"></textarea>
 
-                <!-- Pay button visible on screens > 991px wide (lg breakpoint) -->
-                <a class="btn btn-lg btn-primary w-100 d-none d-lg-flex" href="checkout-v1-thankyou.html">Đặt Hàng</a>
+                <a class="btn btn-lg btn-primary w-100 d-none d-lg-flex" href="#">Đặt Hàng</a>
               </div>
-            </div>
+            </div> --}}
           </div>
         </div>
 
+       
+      
+        <form action="{{ route('order.store') }}" method="POST" class="needs-validation" novalidate>
+          @csrf
+          <h3 class="h6 border-bottom pb-4 mb-0">Chọn phương thức vận chuyển</h3>
+          <div class="mb-lg-4" id="shippingMethod" role="list">
 
+            <!-- Giao hàng chuyển phát nhanh -->
+            <div class="border-bottom">
+              <div class="form-check mb-0" role="listitem">
+                <input type="radio" class="form-check-input fs-base me-2 me-sm-3" name="shipping_method" value="courier" id="courier" checked="">
+                <label class="form-check-label d-flex align-items-center text-dark-emphasis fw-semibold py-4" for="courier">
+                  Giao hàng chuyển phát nhanh
+                  <span class="fw-normal ms-auto">35.000 đ</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Nhận hàng từ cửa hàng -->
+            <div class="border-bottom">
+              <div class="form-check mb-0" role="listitem">
+                <input type="radio" class="form-check-input fs-base me-2 me-sm-3" name="shipping_method" value="pickup" id="pickup">
+                <label class="form-check-label d-flex align-items-center text-dark-emphasis fw-semibold py-4" for="pickup">
+                  Nhận hàng từ cửa hàng
+                  <span class="fw-normal ms-auto">Miễn phí</span>
+                </label>
+              </div>
+            </div>
+
+          </div>
+
+        
+          <!-- Địa chỉ giao hàng -->
+          <h1 class="h5 mb-md-4">Địa chỉ giao hàng</h1>
+          <div class="row row-cols-1 row-cols-sm-2 g-3 g-sm-4 mb-4">
+            <div class="col">
+              <label for="shipping-name" class="form-label">Họ và tên <span class="text-danger">*</span></label>
+              <input type="text" class="form-control form-control-lg" id="shipping-name" name="name" required>
+            </div>
+            <div class="col">
+              <label for="shipping-phone" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+              <input type="text" class="form-control form-control-lg" id="shipping-phone" name="phone" required>
+            </div>
+            <div class="col">
+              <label for="shipping-email" class="form-label">Email <span class="text-danger">*</span></label>
+              <input type="email" class="form-control form-control-lg" id="shipping-email" name="email" required>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="shipping-address" class="form-label">Địa chỉ chi tiết <span class="text-danger">*</span></label>
+            <input type="text" class="form-control form-control-lg" id="shipping-address" name="address" required>
+          </div>
+        
+          <!-- Phương thức thanh toán -->
+          <h2 class="h5 mb-0">Phương thức thanh toán</h2>
+          <div class="mb-4" id="paymentMethod" role="list">
+            <div class="form-check">
+              <input type="radio" class="form-check-input" name="payment_method" value="COD" required>
+              <label class="form-check-label">Thanh toán khi nhận hàng (COD)</label>
+            </div>
+            <div class="form-check">
+              <input type="radio" class="form-check-input" name="payment_method" value="Online">
+              <label class="form-check-label">Thanh Toán Online</label>
+            </div>
+          </div>
+        
+          <!-- Ghi chú -->
+          <textarea class="form-control form-control-lg mb-4" rows="3" name="description" placeholder="Nội dung"></textarea>
+        
+          
+          {{-- tóm tắt --}}
+          <div class="order-summary">
+            <h4>Tóm tắt đơn hàng</h4>
+        
+            @foreach ($cart as $product)
+                @foreach ($product as $model)
+                    @foreach ($model as $item)
+                        <div class="product-info">
+                            <img src="{{ asset('storage/' . $item['image_url']) }}" width="110" alt="iPhone 14">
+                            {{-- <span>{{ $item['product_name'] }}</span> --}}
+                        </div>
+                    @endforeach
+                @endforeach
+            @endforeach
+        
+            <hr>
+            <p>Tổng cộng ({{ $totalQuantity }} sản phẩm): <span>{{ number_format($totalPrice, 0, ',', '.') }} đ</span></p>
+            <p>Giảm giá: <span style="color: red;">{{ number_format($discount, 0, ',', '.') }} đ</span></p>
+            <p>Vận chuyển: <span id="shippingCostDisplay">{{ number_format($shippingCost, 0, ',', '.') }} đ</span></p>
+            <p><strong>Tổng ước tính: <span id="estimatedTotalDisplay">{{ number_format($estimatedTotal, 0, ',', '.') }} đ</span></strong></p>
+        </div>
+        <!-- Nút đặt hàng -->
+        <button type="submit" class="btn btn-lg btn-primary w-100">Đặt Hàng</button>
+        </form>
+        
+        
+      
+      <script>
+          document.addEventListener('DOMContentLoaded', function () {
+              const shippingOptions = document.querySelectorAll('input[name="shipping-method"]');
+              const shippingCostDisplay = document.getElementById('shippingCostDisplay');
+              const estimatedTotalDisplay = document.getElementById('estimatedTotalDisplay');
+              let totalPrice = {{ $totalPrice }} - {{ $discount }};
+          
+              function updateShippingCost() {
+                  const selectedOption = document.querySelector('input[name="shipping-method"]:checked');
+                  const shippingCost = parseInt(selectedOption.getAttribute('data-cost'));
+                  const estimatedTotal = totalPrice + shippingCost;
+          
+                  shippingCostDisplay.textContent = new Intl.NumberFormat('vi-VN').format(shippingCost) + ' đ';
+                  estimatedTotalDisplay.textContent = new Intl.NumberFormat('vi-VN').format(estimatedTotal) + ' đ';
+              }
+          
+              shippingOptions.forEach(option => {
+                  option.addEventListener('change', updateShippingCost);
+              });
+          
+              updateShippingCost();
+          });
+      </script>
         <!-- Order summary (sticky sidebar) -->
-        <aside class="col-lg-4 offset-xl-1" style="margin-top: -100px">
+        {{-- <aside class="col-lg-4 offset-xl-1" style="margin-top: -100px">
           <div class="position-sticky top-0" style="padding-top: 100px">
             <div class="bg-body-tertiary rounded-5 p-4 mb-3">
               <div class="p-sm-2 p-lg-0 p-xl-2">
@@ -154,12 +272,6 @@
                   <a class="d-flex align-items-center gap-2 text-decoration-none" href="#orderPreview" data-bs-toggle="offcanvas">
                     <div class="ratio ratio-1x1" style="max-width: 64px">
                       <img src="{{asset('client/img/shop/electronics/thumbs/08.png')}}" class="d-block p-1" alt="iPhone">
-                    </div>
-                    <div class="ratio ratio-1x1" style="max-width: 64px">
-                      <img src="{{asset('client/img/shop/electronics/thumbs/09.png')}}" class="d-block p-1" alt="iPad Pro">
-                    </div>
-                    <div class="ratio ratio-1x1" style="max-width: 64px">
-                      <img src="{{asset('client/img/shop/electronics/thumbs/01.png')}}" class="d-block p-1" alt="Smart Watch">
                     </div>
                     <i class="ci-chevron-right text-body fs-xl p-0 ms-auto"></i>
                   </a>
@@ -193,9 +305,11 @@
               </div>
             </div>
           </div>
-        </aside>
+        </aside> --}}
+        
+      
       </div>
     </div>
-  </main>
+</main>
 
 @endsection

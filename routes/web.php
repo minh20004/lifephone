@@ -48,7 +48,13 @@ Route::post('/cart/update', [CartController::class, 'updateQuantity'])->name('ca
 Route::post('/cart/apply-voucher', [CartController::class, 'applyVoucher'])->name('cart.apply-voucher');
 Route::get('/cart/offcanvas', [CartController::class, 'getCart'])->name('cart.offcanvas');
 // thanh toán
-Route::resource('checkout', CheckoutController::class);
+// Route::resource('checkout', CheckoutController::class);
+Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
+Route::post('/checkout/placeOrder', [CheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');
+Route::get('/order/confirmation/{orderId}', [CheckoutController::class, 'orderConfirmation'])->name('order.confirmation');
+Route::post('/order', [CheckoutController::class, 'store'])->name('order.store');
+
+
 // ------------------------------------------------- ADMIN---------------------------------------------------------
 // Quản lý thành viên admin
 Route::get('/them-thanh-vien', [AuthController::class, 'create'])->name('admin.them-thanh-vien');

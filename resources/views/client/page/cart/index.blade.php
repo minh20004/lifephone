@@ -139,15 +139,12 @@
                     <span class="fs-sm">Tổng ước tính:</span>
                     <span class="h5 mb-0"><span id="totalAfterDiscount">{{ number_format($totalAfterDiscount, 0, ',', '.') }} đ</span>
                   </div>
-                  <a class="btn btn-lg btn-primary w-100" href="{{route('checkout.index')}}">
+                  {{-- <a class="btn btn-lg btn-primary w-100" href="{{route('checkout.index')}}">
                     Tiến hành thanh toán
                     <i class="ci-chevron-right fs-lg ms-1 me-n1"></i>
-                  </a>
-                  <div class="nav justify-content-center fs-sm mt-3">
-                    <a class="nav-link text-decoration-underline p-0 me-1" href="#authForm" data-bs-toggle="offcanvas" role="button">Tạo một tài khoản</a>
-                    và nhận được
-                    <span class="text-dark-emphasis fw-medium ms-1">239 phần thưởng</span>
-                  </div>
+                  </a> --}}
+                  <a href="{{ route('checkout') }}" class="btn btn-primary">Tiếp tục thanh toán</a>
+
                 </div>
               </div>
             </div>
