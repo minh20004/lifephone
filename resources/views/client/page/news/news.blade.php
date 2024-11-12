@@ -50,8 +50,6 @@ Lifephone
     </article>
 @endif
 
->>>>>>> Stashed changes
-
             <!-- Side list -->
             <div class="col-md-6 col-lg-5 d-flex flex-column align-content-between gap-4">
 
@@ -89,7 +87,6 @@ Lifephone
                         <a
                             class="ratio d-flex hover-effect-scale rounded overflow-hidden"
                             href="{{ route('new_admin.show', $news->id) }}"
->>>>>>> Stashed changes
                             style="--cz-aspect-ratio: calc(305 / 416 * 100%)">
                             <img src="{{ Storage::url(  $news->thumbnail)  }}" alt="{{ $news->title }}" class="hover-effect-target">
                         </a>

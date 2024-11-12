@@ -99,21 +99,7 @@ Cập nhật Tin Tức
                             </div>
                         </div>
 
-                        <!-- <div class="card">
-                            <div class="card-header">
-                                <h5 class="card-title mb-0">Người đăng</h5>
-                            </div>
-                            <div class="card-body">
-                                <p class="text-muted mb-2"> <a href="#" class="float-end text-decoration-underline">Người đăng</a></p>
-                                <select class="form-select" id="choices-author-input" name="author_id" data-choices data-choices-search-false>
-                                    @foreach ($author_id as $item)
-                                    <option value="{{ $item->id }}" {{ old('author_id', $news->author_id) == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div> -->
-
+                     
                     <div class="card">
                         <div class="card-header">
                             <h5 class="card-title mb-0">Danh mục tin tức</h5>
@@ -153,7 +139,40 @@ Cập nhật Tin Tức
     </div>
 
     <script>
-        // Tương tự script ở trên...
+         function previewImage(event) {
+            const img = document.getElementById('product-img');
+            img.src = URL.createObjectURL(event.target.files[0]);
+        }
+
+        function toggleScheduledDate() {
+            const statusSelect = document.getElementById('choices-publish-status-input');
+            const scheduledDateCard = document.getElementById('scheduled-date-card');
+
+            // Kiểm tra xem trạng thái có phải là "Đã lên lịch" không
+            if (statusSelect.value === 'Đã lên lịch') {
+                scheduledDateCard.style.display = 'block'; // Hiện phần ngày
+            } else {
+                scheduledDateCard.style.display = 'none'; // Ẩn phần ngày
+            }
+        }
+
+        // Gọi hàm ngay khi tải trang để xác định trạng thái ban đầu
+        document.addEventListener('DOMContentLoaded', toggleScheduledDate);
+
+        function previewImage(event) {
+            const img = document.getElementById('thumbimage');
+            img.src = URL.createObjectURL(event.target.files[0]);
+            img.style.display = 'block'; // Hiển thị ảnh khi chọn
+            document.querySelector('.removeimg').style.display = 'inline'; // Hiển thị nút xóa ảnh
+        }
+
+        function removeImage() {
+            const img = document.getElementById('thumbimage');
+            img.src = '';
+            img.style.display = 'none';
+            document.getElementById('image_url').value = ''; // Xóa giá trị input file
+            document.querySelector('.removeimg').style.display = 'none'; // Ẩn nút xóa ảnh
+        }
         document.addEventListener('DOMContentLoaded', toggleScheduledDate);
     </script>
 @endsection
