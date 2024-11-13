@@ -127,6 +127,34 @@ Cập nhật Tin Tức
                         </div>
                     </div>
                 </div>
+                <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Tác giả</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted mb-2"> <a href="#" class="float-end text-decoration-underline">Tác giả tin tức</a></p>
+                            <select class="form-select" id="choices-category-input" name="author_id" data-choices data-choices-search-false disabled>
+                                @foreach ($author_id as $item)
+                                <option value="{{ $item->id }}" {{ old('author_id', $news->author_id) == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+
+                <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">slug</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted mb-2">hãy viết slug</p>
+                            <textarea class="form-control" placeholder="" name="slug" rows="3">{{ old('slug', $news->slug) }}</textarea>
+                            @error('slug')
+                            <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
 
                 <div class="mb-3 d-flex justify-content-between">
                     <div>

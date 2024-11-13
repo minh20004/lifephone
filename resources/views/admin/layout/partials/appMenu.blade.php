@@ -487,7 +487,21 @@
                     </ul>
                 </div>
             </li>
-
+            <li class="nav-item">
+                <a class="nav-link menu-link" href="#sidebarPages1" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarPages1">
+                    <i class="ri-pages-line"></i> <span data-key="t-pages">Quản lý tin tức</span>
+                </a>
+                <div class="collapse menu-dropdown" id="sidebarPages1">
+                    <ul class="nav nav-sm flex-column">
+                        <li class="nav-item">
+                            <a href="{{route('category_news.index')}}" class="nav-link" data-key="t-starter"> Danh mục tin tức </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('new_admin.index')}}" class="nav-link" data-key="t-team"> Tin tức </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
             <li class="nav-item">
                 <a class="nav-link menu-link" href="#sidebarLanding" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLanding">
                     <i class="ri-rocket-line"></i> <span data-key="t-landing">Landing</span>
