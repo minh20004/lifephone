@@ -17,7 +17,7 @@ class NewController extends Controller
      */
     public function index()
     {
-        $listNews = News::all();
+        $listNews = News::paginate(10);
         foreach ($listNews as $news) {
             // Kiểm tra xem trạng thái có phải là "Đã lên lịch" không và ngày đã đến chưa
             if ($news->status === 'Đã lên lịch' && $news->scheduled_at <= Carbon::now()) {

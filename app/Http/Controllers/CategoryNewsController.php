@@ -13,12 +13,16 @@ class CategoryNewsController extends Controller
     {
         $this->Category_new = $Category_new;
     }
+    
     public function index()
     {
-        $cate = Category_new::all();
-        return view('admin.page.category_news.index', compact('cate'));
+        // Sử dụng paginate để phân trang với 10 mục mỗi trang
+        $cate_news = $this->Category_new->paginate(5);
+    
+        // Trả về view với dữ liệu phân trang
+        return view('admin.page.category_news.index', compact('cate_news'));
     }
-
+    
     /**
      * Show the form for creating a new resource.
      */

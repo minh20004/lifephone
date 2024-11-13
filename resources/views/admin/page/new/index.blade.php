@@ -32,7 +32,7 @@ News
                         </div>
                         <!-- end card header -->
 
-                        <div><button class="btn btn-primary " ><a style="color: yellow;" href="{{route('new_admin.create')}}">thêm</a></button></div>
+                        <div><button class="btn btn-primary "><a style="color: yellow;" href="{{route('new_admin.create')}}">thêm</a></button></div>
 
                         <div class="card-body">
                             <div class="tab-content text-muted">
@@ -73,75 +73,66 @@ News
                                                         </tr>
                                                     </thead>
                                                     <tbody class="gridjs-tbody">
-    @foreach ($listNews as $key => $News)
-    <tr class="gridjs-tr">
-        <td data-column-id="#" class="gridjs-td">
-            <span>
-                <div class="form-check checkbox-product-list">
-                    <input class="form-check-input" type="checkbox" value="3" id="checkbox-3">
-                    <label class="form-check-label" for="checkbox-3"></label>
-                </div>
-            </span>
-        </td>
-        <td data-column-id="STT" class="gridjs-td">{{$key+1}}</td>
-        <td data-column-id="orders" class="gridjs-td">{{$News->title}}</td>
-        <td data-column-id="user" class="gridjs-td">{{$News->author->name}}</td>
-        <td data-column-id="orders" class="gridjs-td">{{$News->content}}</td>
-        <td data-column-id="user" class="gridjs-td">{{$News->categoryNews->title}}</td>
+                                                        @foreach ($listNews as $key => $News)
+                                                        <tr class="gridjs-tr">
+                                                            <td data-column-id="#" class="gridjs-td">
+                                                                <span>
+                                                                    <div class="form-check checkbox-product-list">
+                                                                        <input class="form-check-input" type="checkbox" value="3" id="checkbox-3">
+                                                                        <label class="form-check-label" for="checkbox-3"></label>
+                                                                    </div>
+                                                                </span>
+                                                            </td>
+                                                            <td data-column-id="STT" class="gridjs-td">{{$key+1}}</td>
+                                                            <td data-column-id="orders" class="gridjs-td">{{$News->title}}</td>
+                                                            <td data-column-id="user" class="gridjs-td">{{$News->author->name}}</td>
+                                                            <td data-column-id="orders" class="gridjs-td">{{$News->content}}</td>
+                                                            <td data-column-id="user" class="gridjs-td">{{$News->categoryNews->title}}</td>
 
-        <td data-column-id="orders" class="gridjs-td">{{$News->status}}</td>
-        <td data-column-id="published" class="gridjs-td">
-            <span>{{$News->published_at}}</span>
-        </td>
-        <td data-column-id="action" class="gridjs-td">
-            <div>
-            <a href="{{ route('new_admin.edit', $News->id) }}" class="btn btn-warning me-2">Edit</a>
-                <form action="{{route('new_admin.destroy',$News->id)}}" method="post">
+                                                            <td data-column-id="orders" class="gridjs-td">{{$News->status}}</td>
+                                                            <td data-column-id="published" class="gridjs-td">
+                                                                <span>{{$News->published_at}}</span>
+                                                            </td>
+                                                            <td data-column-id="action" class="gridjs-td">
+                                                                <div>
+                                                                    <a href="{{ route('new_admin.edit', $News->id) }}" class="btn btn-warning me-2">Edit</a>
+                                                                    <form action="{{route('new_admin.destroy',$News->id)}}" method="post">
 
-                    @method('DELETE')
-                    @csrf
-                    <button class="btn btn-danger" onclick="return confirm('xoa')">Delete
-                    </button>
-                </form>
-            </div>
-        </td>
-    </tr>
-    @endforeach
-</tbody>
+                                                                        @method('DELETE')
+                                                                        @csrf
+                                                                        <button class="btn btn-danger" onclick="return confirm('xoa')">Delete
+                                                                        </button>
+                                                                    </form>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
+                                                    </tbody>
 
-                                            </table>
-                                        </div>
-                                        <div class="gridjs-footer">
-                                            <div class="gridjs-pagination">
-                                                <div role="status" aria-live="polite" class="gridjs-summary" title="Page 1 of 2">Showing <b>1</b> to <b>10</b> of <b>12</b> results</div>
-                                                <div class="gridjs-pages"><button tabindex="0" role="button" disabled="" title="Previous" aria-label="Previous" class="">Previous</button><button tabindex="0" role="button" class="gridjs-currentPage" title="Page 1" aria-label="Page 1">1</button><button tabindex="0" role="button" class="" title="Page 2" aria-label="Page 2">2</button><button tabindex="0" role="button" title="Next" aria-label="Next" class="">Next</button></div>
+                                                </table>
                                             </div>
+                                            <div>
+                                                {{ $listNews->links() }}
+                                            </div>
+                                            <div id="gridjs-temp" class="gridjs-temp"></div>
                                         </div>
-                                        <div id="gridjs-temp" class="gridjs-temp"></div>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- end tab pane -->
+                                <!-- end tab pane -->
 
-                            <div class="tab-pane" id="productnav-draft" role="tabpanel">
-                                <div class="py-4 text-center">
-                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style="width:72px;height:72px">
-                                    </lord-icon>
-                                    <h5 class="mt-4">Sorry! No Result Found</h5>
-                                </div>
+
+                                <!-- end tab pane -->
                             </div>
-                            <!-- end tab pane -->
+                            <!-- end tab content -->
+
                         </div>
-                        <!-- end tab content -->
-
+                        <!-- end card body -->
                     </div>
-                    <!-- end card body -->
+                    <!-- end card -->
                 </div>
-                <!-- end card -->
             </div>
+            <!-- end col -->
         </div>
-        <!-- end col -->
     </div>
-</div>
 </div>
 @endsection

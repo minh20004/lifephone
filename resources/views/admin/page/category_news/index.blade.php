@@ -58,7 +58,7 @@ News
                                                         </tr>
                                                     </thead>
                                                     <tbody class="gridjs-tbody">
-                                                        @foreach ($cate as $key => $cate_news)
+                                                        @foreach ($cate_news as $key => $cate)
                                                         <tr class="gridjs-tr">
                                                             <td data-column-id="#" class="gridjs-td">
                                                                 <span>
@@ -69,11 +69,11 @@ News
                                                                 </span>
                                                             </td>
                                                             <td data-column-id="STT" class="gridjs-td">{{$key+1}}</td>
-                                                            <td data-column-id="orders" class="gridjs-td">{{$cate_news->title}}</td>
+                                                            <td data-column-id="orders" class="gridjs-td">{{$cate->title}}</td>
                                                             <td data-column-id="action" class="gridjs-td">
                                                                 <div>
-                                                                    <a href="{{ route('category_news.edit', $cate_news->id) }}" class="btn btn-warning me-2">Edit</a>
-                                                                    <form action="{{route('category_news.destroy',$cate_news->id)}}" method="post">
+                                                                    <a href="{{ route('category_news.edit', $cate->id) }}" class="btn btn-warning me-2">Edit</a>
+                                                                    <form action="{{route('category_news.destroy',$cate->id)}}" method="post">
 
                                                                         @method('DELETE')
                                                                         @csrf
@@ -87,37 +87,23 @@ News
                                                     </tbody>
 
                                                 </table>
-                                            </div>
-                                            <div class="gridjs-footer">
-                                                <div class="gridjs-pagination">
-                                            
+                                                <div class="d-flex justify-content-end mt-3">
+                                                    {{ $cate_news->links() }}
                                                 </div>
+
+
                                             </div>
-                                            <div id="gridjs-temp" class="gridjs-temp"></div>
                                         </div>
+                                        <!-- end col -->
                                     </div>
                                 </div>
-                                <!-- end tab pane -->
-
-                                <div class="tab-pane" id="productnav-draft" role="tabpanel">
-                                    <div class="py-4 text-center">
-                                        <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style="width:72px;height:72px">
-                                        </lord-icon>
-                                        <h5 class="mt-4">Sorry! No Result Found</h5>
-                                    </div>
-                                </div>
-                                <!-- end tab pane -->
                             </div>
-                            <!-- end tab content -->
-
                         </div>
-                        <!-- end card body -->
                     </div>
-                    <!-- end card -->
                 </div>
             </div>
-            <!-- end col -->
         </div>
     </div>
 </div>
+
 @endsection
