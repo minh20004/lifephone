@@ -1,121 +1,20 @@
-<?php
-session_start();
-$timeLimit = 3600; // Thời gian tối đa cho phiên chat (1 giờ)
+  <!-- Thanh điều hướng trên cùng -->
+<!-- Login and Signup Forms -->
+<h2>Login or Sign Up</h2>
+<input type="email" id="email" placeholder="Enter email">
+<input type="password" id="password" placeholder="Enter password">
+<button onclick="signIn()">Sign In</button>
+<button onclick="signUp()">Sign Up</button>
 
-if (!isset($_SESSION['chat_start_time'])) {
-    $_SESSION['chat_start_time'] = time(); // Khởi tạo thời gian bắt đầu nếu chưa có
-}
+<h3>Already have an account?</h3>
+<button onclick="signOutUser()">Sign Out</button>
 
-// Kiểm tra thời gian đã trôi qua
-$current_time = time();
-$time_elapsed = $current_time - $_SESSION['chat_start_time'];
-
-if ($time_elapsed > $timeLimit) {
-    // Nếu thời gian phiên đã hết
-    session_destroy(); // Hủy phiên chat
-    echo json_encode(['status' => 'error', 'message' => 'Phiên chat đã hết hạn.']);
-    exit;
-}
-
-// Khởi tạo mảng tin nhắn nếu chưa có
-if (!isset($_SESSION['messages'])) {
-    $_SESSION['messages'] = [];
-}
-
-// Xử lý yêu cầu gửi tin nhắn
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $userMessage = trim($_POST['message']);
-    if (!empty($userMessage)) {
-        // Lưu tin nhắn của người dùng
-        $_SESSION['messages'][] = [
-            'type' => 'sent',
-            'message' => htmlspecialchars($userMessage),
-            'timestamp' => date('H:i')
-        ];
-
-        // Phản hồi từ admin (mô phỏng)
-        $adminResponse = "Admin: " . htmlspecialchars($userMessage) . " đã nhận.";
-        $_SESSION['messages'][] = [
-            'type' => 'received',
-            'message' => htmlspecialchars($adminResponse),
-            'timestamp' => date('H:i')
-        ];
-    }
-}
-
-// Trả về danh sách tin nhắn
-echo json_encode(['status' => 'success', 'messages' => $_SESSION['messages']]);
-?>
-{{-- chat --}}
-<div class="chat-button container" onclick="toggleChatPopup()">
-  <i class="ri-chat-3-line"></i> CHAT NGAY
+<!-- Chat Box (Visible only when logged in) -->
+<div id="chatContainer" style="display: none;">
+    <div id="chatBox" style="max-height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;"></div>
+    <input type="text" id="messageInput" placeholder="Type your message here">
+    <button id="sendButton" onclick="sendMessage()">Send</button>
 </div>
-
-<!-- Pop-up Chat -->
-<div class=" chat-popup" id="chatPopup">
-  <!-- Form yêu cầu thông tin người dùng -->
-  <div class="info-form" id="infoForm">
-    <h3>Thông tin cơ bản</h3>
-    <div class="info">
-      <label for="userName">Nhập tên của bạn*</label>
-      <input type="text" id="userName" required>
-  
-      <label for="userEmail">Nhập email của bạn</label>
-      <input type="email" id="userEmail">
-  
-      <label for="userPhone">Nhập số điện thoại của bạn*</label>
-      <input type="tel" id="userPhone" required>
-  
-      <h4>Thông tin bổ sung</h4>
-      <label for="userGender">Giới tính</label>
-      <select id="userGender">
-          <option value="male">Nam</option>
-          <option value="female">Nữ</option>
-          <option value="other">Khác</option>
-      </select>
-  
-      <label for="userMessage">Tin nhắn</label>
-      <textarea id="userMessage" placeholder="Nhập tin nhắn"></textarea>
-    </div>
-    <button class="chat-input" onclick="startChat()">Bắt đầu trò chuyện</button>
-  </div>
-
-  <!-- Khung Chat -->
-  <div class="chat-container" id="chatContainer" style="display: none;">
-    <!-- Thanh điều hướng trên cùng -->
-    <div class="chat-header">
-      <div class="user-info">
-        <img src="assets/images/users/avatar-2.jpg" alt="User Avatar" class="user-avatar">
-        <div class="user-details">
-          <h5 class="username">Xin chào</h5>
-          <p class="status">Em ở đây để hỗ trợ cho mình ạ</p>
-        </div>
-      </div>
-    </div>
-    <!-- Khu vực danh sách tin nhắn -->
-    <div class="chat-messages" id="chatMessages">
-      <div class="message received">
-        <p>Chào bạn! Có thể giúp mình được không?</p>
-        <span class="timestamp">10:00 AM</span>
-      </div>
-      <div class="message received">
-        <p>Chào bạn! Có thể giúp mình được không?</p>
-        <span class="timestamp">10:00 AM</span>
-      </div>
-      <div class="message sent">
-        <p>Xin chào! Mình có thể giúp gì cho bạn?</p>
-        <span class="timestamp">10:01 AM</span>
-      </div>
-      <!-- Thêm các tin nhắn khác tại đây -->
-    </div>
-    <!-- Khu vực nhập tin nhắn -->
-    <div class="chat-input">
-      <input type="text" id="messageInput" placeholder="Nhập tin nhắn...">
-      <button onclick="sendMessage()" class="send-button"><i class="ri-send-plane-2-line"></i> Gửi</button>
-    </div>
-  </div>
-</div>
-
 <span class="position-absolute top-0 start-0 w-100 h-100 bg-body d-none d-block-dark"></span>
       <div class="container position-relative z-1 pt-sm-2 pt-md-3 pt-lg-4" data-bs-theme="dark">
 
@@ -357,81 +256,117 @@ echo json_encode(['status' => 'success', 'messages' => $_SESSION['messages']]);
           <p class="text-body fs-xs text-center text-md-start mb-0 me-4 order-md-1">© All rights reserved. Made by <span class="animate-underline"><a class="animate-target text-dark-emphasis fw-medium text-decoration-none" href="https://createx.studio/" target="_blank" rel="noreferrer">Createx Studio</a></span></p>
         </div>
       </div>
-      <script>
-        function toggleChatPopup() {
-            const chatPopup = document.getElementById('chatPopup');
-            const infoForm = document.getElementById('infoForm');
+      <script type="module">
+        // Import Firebase SDKs
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+        import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBLLwzBZbaTTFXyFQivnv5Nr3PQSNU-Gaw",
+            authDomain: "lifephone-3cf47.firebaseapp.com",
+            projectId: "lifephone-3cf47",
+            storageBucket: "lifephone-3cf47.firebasestorage.app",
+            messagingSenderId: "327624309067",
+            appId: "1:327624309067:web:1dacaecec6351c889750ce",
+            measurementId: "G-0L8MLP1BX9"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+
+        // Handle User Sign Up
+        function signUp() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    console.log('User signed up: ', user);
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.error(errorCode, errorMessage);
+                });
+        }
+
+        // Handle User Sign In
+        function signIn() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    console.log('User signed in: ', user);
+                })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.error(errorCode, errorMessage);
+                });
+        }
+
+        // Listen for Auth State Change (if user is logged in)
+        onAuthStateChanged(auth, (user) => {
             const chatContainer = document.getElementById('chatContainer');
-    
-            // Bật/tắt hộp thoại chat
-            if (chatPopup.style.display === 'none' || chatPopup.style.display === '') {
-                chatPopup.style.display = 'block';
-                infoForm.style.display = 'block';  // Hiển thị form nhập thông tin
-                chatContainer.style.display = 'none'; // Ẩn khung chat
+            if (user) {
+                chatContainer.style.display = 'block'; // Show chat container when logged in
             } else {
-                chatPopup.style.display = 'none';
+                chatContainer.style.display = 'none'; // Hide chat when not logged in
             }
+        });
+
+        // Handle Sign Out
+        function signOutUser() {
+            signOut(auth).then(() => {
+                console.log('User signed out');
+            }).catch((error) => {
+                console.error('Error signing out:', error);
+            });
         }
-    
-        function startChat() {
-            const userName = document.getElementById('userName').value.trim();
-            const userPhone = document.getElementById('userPhone').value.trim();
-    
-            if (userName === '' || userPhone === '') {
-                alert('Vui lòng nhập tên và số điện thoại của bạn');
-                return;
-            }
-    
-            // Ẩn form nhập thông tin và hiển thị hộp thoại chat
-            document.getElementById('infoForm').style.display = 'none';
-            document.getElementById('chatContainer').style.display = 'block';
-        }
-    
+
+        // Send Message Function
         function sendMessage() {
             const messageInput = document.getElementById('messageInput');
-            const message = messageInput.value.trim();
-            const conversationId = 1; // ID của cuộc hội thoại
-            const adminId = 1; // ID của admin
-    
-            if (!message) return;
-    
-            fetch('/chat/received', {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify({
-                    message: message,
-                    conversation_id: conversationId,
-                    admin_id: adminId
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    loadMessages(conversationId); // Tải lại các tin nhắn
-                }
-            })
-            .catch(error => console.error('Error:', error));
-    
-            messageInput.value = ''; // Xóa nội dung ô nhập tin nhắn
-        }
-    
-        function loadMessages(conversationId) {
-            fetch(`/chat/messages/${conversationId}`)
-            .then(response => response.json())
-            .then(data => {
-                const chatMessages = document.getElementById('chatMessages');
-                chatMessages.innerHTML = ''; // Xóa nội dung cũ
-                data.messages.forEach(msg => {
-                    const newMessage = document.createElement('div');
-                    newMessage.className = 'message received';
-                    newMessage.innerHTML = `<p>${msg.content}</p><span class="timestamp">${new Date(msg.timestamp).toLocaleTimeString()}</span>`;
-                    chatMessages.appendChild(newMessage);
+            const messageContent = messageInput.value;
+
+            if (messageContent.trim() !== "") {
+                const messagesRef = ref(database, 'messages');
+                const newMessageRef = push(messagesRef);
+                set(newMessageRef, {
+                    content: messageContent,
+                    timestamp: Date.now()
                 });
-                chatMessages.scrollTop = chatMessages.scrollHeight; // Cuộn xuống cuối khi có tin nhắn mới
-            })
-            .catch(error => console.error('Error loading messages:', error));
+
+                // Clear the input field
+                messageInput.value = "";
+            }
         }
+
+        // Listen for New Messages
+        function listenForMessages() {
+            const messagesRef = ref(database, 'messages');
+            onValue(messagesRef, (snapshot) => {
+                const messages = snapshot.val();
+                const chatBox = document.getElementById('chatBox');
+                chatBox.innerHTML = ""; // Clear existing messages
+
+                // Display each message
+                for (const messageId in messages) {
+                    const message = messages[messageId];
+                    const messageElement = document.createElement('div');
+                    messageElement.textContent = message.content;
+                    chatBox.appendChild(messageElement);
+                }
+            });
+        }
+
+        // Listen for new messages when the page loads
+        window.onload = listenForMessages;
     </script>

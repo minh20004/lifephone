@@ -193,6 +193,8 @@
                   @foreach ($latestProducts as $product)
                       <div class="col-sm-6 col-lg-6 d-flex flex-column gap-3 pt-4 py-lg-4">
                           <div class="position-relative animate-underline d-flex align-items-center ps-xl-3">
+                            {{-- <a class="stretched-link d-block fs-sm fw-medium text-truncate" --}}
+                                          {{-- href="{{ route('product.show', $product->id) }}"> --}}
                               <div class="ratio ratio-1x1 flex-shrink-0" style="width: 110px">
                                   <img class="rounded" src="{{ asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}">
                               </div>
@@ -222,6 +224,7 @@
                                       {{ number_format($minPrice, 0, ',', '.') }} VNĐ
                                   </div>
                               </div>
+                            {{-- </a> --}}
                           </div>
                       </div>
                   @endforeach
@@ -318,7 +321,7 @@
                                 </a>
                             </h3>
                             <div class="d-flex align-items-center justify-content-between">
-                                <div class="h5 lh-1 mb-0">${{ number_format($product->price, 2) }}</div>
+                                <div class="h5 lh-1 mb-0">{{ number_format($minPrice, 0, ',', '.') }} VNĐ</div>
                                 <button type="button"
                                     class="product-card-button btn btn-icon btn-secondary animate-slide-end ms-2"
                                     aria-label="Add to Cart">
