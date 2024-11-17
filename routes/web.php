@@ -2,15 +2,16 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ColorController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\FrontendControlle;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\CapacityController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\Admin\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,11 +49,11 @@ Route::post('/cart/update', [CartController::class, 'updateQuantity'])->name('ca
 Route::post('/cart/apply-voucher', [CartController::class, 'applyVoucher'])->name('cart.apply-voucher');
 Route::get('/cart/offcanvas', [CartController::class, 'getCart'])->name('cart.offcanvas');
 // thanh toán
-// Route::resource('checkout', CheckoutController::class);
 Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
-Route::post('/checkout/placeOrder', [CheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');
-Route::get('/order/confirmation/{orderId}', [CheckoutController::class, 'orderConfirmation'])->name('order.confirmation');
-Route::post('/order', [CheckoutController::class, 'store'])->name('order.store');
+// Route::post('/order', [CheckoutController::class, 'store'])->name('order.store');
+Route::post('/order/store', [OrderController::class, 'storeOrder'])->name('order.store');
+
+
 
 
 // ------------------------------------------------- ADMIN---------------------------------------------------------

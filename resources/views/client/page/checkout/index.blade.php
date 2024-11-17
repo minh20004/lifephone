@@ -141,100 +141,82 @@
       
         <form action="{{ route('order.store') }}" method="POST" class="needs-validation" novalidate>
           @csrf
-          <h3 class="h6 border-bottom pb-4 mb-0">Chọn phương thức vận chuyển</h3>
-          <div class="mb-lg-4" id="shippingMethod" role="list">
-
-            <!-- Giao hàng chuyển phát nhanh -->
-            <div class="border-bottom">
-              <div class="form-check mb-0" role="listitem">
-                <input type="radio" class="form-check-input fs-base me-2 me-sm-3" name="shipping_method" value="courier" id="courier" checked="">
-                <label class="form-check-label d-flex align-items-center text-dark-emphasis fw-semibold py-4" for="courier">
-                  Giao hàng chuyển phát nhanh
-                  <span class="fw-normal ms-auto">35.000 đ</span>
-                </label>
-              </div>
-            </div>
-
-            <!-- Nhận hàng từ cửa hàng -->
-            <div class="border-bottom">
-              <div class="form-check mb-0" role="listitem">
-                <input type="radio" class="form-check-input fs-base me-2 me-sm-3" name="shipping_method" value="pickup" id="pickup">
-                <label class="form-check-label d-flex align-items-center text-dark-emphasis fw-semibold py-4" for="pickup">
-                  Nhận hàng từ cửa hàng
-                  <span class="fw-normal ms-auto">Miễn phí</span>
-                </label>
-              </div>
-            </div>
-
-          </div>
-
-        
           <!-- Địa chỉ giao hàng -->
           <h1 class="h5 mb-md-4">Địa chỉ giao hàng</h1>
           <div class="row row-cols-1 row-cols-sm-2 g-3 g-sm-4 mb-4">
-            <div class="col">
-              <label for="shipping-name" class="form-label">Họ và tên <span class="text-danger">*</span></label>
-              <input type="text" class="form-control form-control-lg" id="shipping-name" name="name" required>
-            </div>
-            <div class="col">
-              <label for="shipping-phone" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
-              <input type="text" class="form-control form-control-lg" id="shipping-phone" name="phone" required>
-            </div>
-            <div class="col">
-              <label for="shipping-email" class="form-label">Email <span class="text-danger">*</span></label>
-              <input type="email" class="form-control form-control-lg" id="shipping-email" name="email" required>
-            </div>
+              <div class="col">
+                  <label for="shipping-name" class="form-label">Họ và tên <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control form-control-lg" id="shipping-name" name="name" required>
+              </div>
+              <div class="col">
+                  <label for="shipping-phone" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control form-control-lg" id="shipping-phone" name="phone" required>
+              </div>
+              <div class="col">
+                  <label for="shipping-email" class="form-label">Email <span class="text-danger">*</span></label>
+                  <input type="email" class="form-control form-control-lg" id="shipping-email" name="email" required>
+              </div>
           </div>
           <div class="mb-3">
-            <label for="shipping-address" class="form-label">Địa chỉ chi tiết <span class="text-danger">*</span></label>
-            <input type="text" class="form-control form-control-lg" id="shipping-address" name="address" required>
+              <label for="shipping-address" class="form-label">Địa chỉ chi tiết <span class="text-danger">*</span></label>
+              <input type="text" class="form-control form-control-lg" id="shipping-address" name="address" required>
           </div>
-        
+      
           <!-- Phương thức thanh toán -->
           <h2 class="h5 mb-0">Phương thức thanh toán</h2>
           <div class="mb-4" id="paymentMethod" role="list">
-            <div class="form-check">
-              <input type="radio" class="form-check-input" name="payment_method" value="COD" required>
-              <label class="form-check-label">Thanh toán khi nhận hàng (COD)</label>
-            </div>
-            <div class="form-check">
-              <input type="radio" class="form-check-input" name="payment_method" value="Online">
-              <label class="form-check-label">Thanh Toán Online</label>
-            </div>
+              <div class="form-check">
+                  <input type="radio" class="form-check-input" name="payment_method" value="COD" required>
+                  <label class="form-check-label">Thanh toán khi nhận hàng (COD)</label>
+              </div>
+              <div class="form-check">
+                  <input type="radio" class="form-check-input" name="payment_method" value="Online">
+                  <label class="form-check-label">Thanh Toán Online</label>
+              </div>
           </div>
-        
+      
           <!-- Ghi chú -->
           <textarea class="form-control form-control-lg mb-4" rows="3" name="description" placeholder="Nội dung"></textarea>
-        
-          
-          {{-- tóm tắt --}}
+      
+          {{-- Tóm tắt đơn hàng --}}
           <div class="order-summary">
-            <h4>Tóm tắt đơn hàng</h4>
-        
-            @foreach ($cart as $product)
-                @foreach ($product as $model)
-                    @foreach ($model as $item)
-                        <div class="product-info">
-                            <img src="{{ asset('storage/' . $item['image_url']) }}" width="110" alt="iPhone 14">
-                            {{-- <span>{{ $item['product_name'] }}</span> --}}
-                        </div>
-                    @endforeach
-                @endforeach
-            @endforeach
-        
-            <hr>
-            <p>Tổng cộng ({{ $totalQuantity }} sản phẩm): <span>{{ number_format($totalPrice, 0, ',', '.') }} đ</span></p>
-            <p>Giảm giá: <span style="color: red;">{{ number_format($discount, 0, ',', '.') }} đ</span></p>
-            <p>Vận chuyển: <span id="shippingCostDisplay">{{ number_format($shippingCost, 0, ',', '.') }} đ</span></p>
-            <p><strong>Tổng ước tính: <span id="estimatedTotalDisplay">{{ number_format($estimatedTotal, 0, ',', '.') }} đ</span></strong></p>
-        </div>
-        <!-- Nút đặt hàng -->
-        <button type="submit" class="btn btn-lg btn-primary w-100">Đặt Hàng</button>
-        </form>
+              <h4>Tóm tắt đơn hàng</h4>
+              @foreach ($cart as $product)
+                  @foreach ($product as $model)
+                      @foreach ($model as $item)
+                          <div class="product-info d-flex mb-3">
+                              <!-- Hình ảnh sản phẩm -->
+                              <div class="me-3">
+                                  <img src="{{ asset('storage/' . $item['image_url']) }}" width="110" alt="Product Image">
+                              </div>
+                              <!-- Thông tin sản phẩm -->
+                              <div>
+                                  <p><strong>Tên sản phẩm:</strong> {{ $item['product_name'] }}</p>
+                                  <p><strong>Dung lượng:</strong> {{ $item['capacity_name'] }}</p>
+                                  <p><strong>Màu sắc:</strong> {{ $item['color_name'] }}</p>
+                                  <p><strong>Số lượng:</strong> {{ $item['quantity'] }}</p>
+                                  <p><strong>Thành tiền:</strong> {{ number_format($item['price'] * $item['quantity'], 0, ',', '.') }} đ</p>
+                              </div>
+                          </div>
+                      @endforeach
+                  @endforeach
+              @endforeach
+      
+              <hr>
+              <p>Tổng cộng ({{ $totalQuantity }} sản phẩm): <span>{{ number_format($totalPrice, 0, ',', '.') }} đ</span></p>
+              <p>Giảm giá: <span style="color: red;">{{ number_format($discount, 0, ',', '.') }} đ</span></p>
+              <p><strong>Tổng ước tính: <span id="estimatedTotalDisplay">{{ number_format($estimatedTotal, 0, ',', '.') }} đ</span></strong></p>
+          </div>
+      
+          <!-- Nút đặt hàng -->
+          <button type="submit" class="btn btn-lg btn-primary w-100">Đặt Hàng</button>
+      </form>
+      
+      
         
         
       
-      <script>
+      {{-- <script>
           document.addEventListener('DOMContentLoaded', function () {
               const shippingOptions = document.querySelectorAll('input[name="shipping-method"]');
               const shippingCostDisplay = document.getElementById('shippingCostDisplay');
@@ -256,7 +238,7 @@
           
               updateShippingCost();
           });
-      </script>
+      </script> --}}
         <!-- Order summary (sticky sidebar) -->
         {{-- <aside class="col-lg-4 offset-xl-1" style="margin-top: -100px">
           <div class="position-sticky top-0" style="padding-top: 100px">

@@ -39,11 +39,10 @@ class Order extends Model
         'user_id',
         'name',
         'address',
+        'email',
         'phone',
         'description',
         'payment_method',
-        'shipping_method',
-        'shipping_fee',
         'total_price',
         'status',
         'voucher_id'
