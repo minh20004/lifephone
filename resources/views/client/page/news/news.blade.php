@@ -8,14 +8,14 @@ Lifephone
     <!-- Breadcrumb -->
     <nav class="container pt-3 my-3 my-md-4" aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="home-electronics.html">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Blog</li>
+            <li class="breadcrumb-item"><a href="{{Route('home')}}">Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Tin tức</li>
         </ol>
     </nav>
 
 
     <!-- Page title -->
-    <h1 class="h3 container mb-4">Our blog</h1>
+    <h1 class="h3 container mb-4">Tin tức nổi bật </h1>
 
 
     <!-- Featured posts -->
@@ -26,7 +26,7 @@ Lifephone
             @if($mostViewedNews)
     <article class="col-md-6 col-lg-7">
         <a class="ratio d-flex hover-effect-scale rounded-4 overflow-hidden"
-            href="{{ route('news.index', ['slug' => $mostViewedNews->slug]) }}"
+            href="{{ route('news.show', ['slug' => $mostViewedNews->slug]) }}"
             style="--cz-aspect-ratio: calc(484 / 746 * 100%)">
             <img src="{{ Storage::url($mostViewedNews->thumbnail) }}" alt="{{ $mostViewedNews->title }}"
                 class="hover-effect-target">
@@ -34,7 +34,7 @@ Lifephone
         <div class="pt-4">
             <div class="nav align-items-center gap-2 pb-2 mt-n1 mb-1">
                 <a class="nav-link text-body fs-xs text-uppercase p-0"
-                    href="#!">{{ $mostViewedNews->category_news->name ?? 'Category' }}</a>
+                    href="#!">{{ $mostViewedNews->category_news->title ?? 'Category' }}</a>
                 <hr class="vr my-1 mx-1">
                 <span class="text-body-tertiary fs-xs">
                     {{ $mostViewedNews->published_date }}

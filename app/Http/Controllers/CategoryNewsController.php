@@ -131,4 +131,15 @@ if ($this->Category_new) {
         $Category_new->delete();
         return redirect()->route('Category_new.index')->with('success', 'Danh mục đã được xóa thành công.');
     }
+    public function categorynewsblog($slug)
+    {
+        // Tìm danh mục theo slug
+        $category = Category_new::where('slug', $slug)->firstOrFail();
+        
+        // Lấy tất cả bài viết thuộc danh mục này
+        $posts = $category->news;  // Giả sử bạn đã thiết lập mối quan hệ với News model
+
+        return view('client.page.category.show', compact('category', 'posts'));
+    }
+
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category_new;
 use App\Models\News;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -214,6 +215,8 @@ class NewController extends Controller
     }
     public function clientIndex()
     {
+        
+        $category_news = DB::table('category_news')->get();
         // Lấy tất cả các bản tin có trạng thái 'Công khai'
         $allNews = News::where('status', 'Công khai')
             ->paginate(6); // Sử dụng paginate để giới hạn 10 bản tin mỗi trang
@@ -246,9 +249,17 @@ class NewController extends Controller
 
         return view('client.page.news.news', compact('news', 'latestNews'));
     }
-    public function clientShow1($slug)
+    public function singlepost($slug)
     {
+        // Tìm bài viết theo slug
         $news = News::where('slug', $slug)->firstOrFail();
-        return view('client.page.news.news', compact('news'));
+        $relatedPost = News::where('category_news_id', $news->category_news_id)
+                        ->where('id', '!=', $news->id) // Loại bỏ bài viết hiện tại
+                        ->limit(5) // Giới hạn số bài viết liên quan
+                        ->get();
+        // Trả về view hiển thị bài viết
+        $categories = Category_new::limit(6)->get(); 
+        return view('client.page.news.show', compact('news','relatedPost','categories'));
     }
 }
+
