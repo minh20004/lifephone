@@ -65,6 +65,7 @@ Lifephone
                         <img  src="{{ Storage::url($item->thumbnail) }}" alt="{{ $item->title }}">
 
                     </div>
+                    
                 </article>
                 @endforeach
 
@@ -118,6 +119,12 @@ Lifephone
 
             <!-- Sticky sidebar that turns into offcanvas on screens < 992px wide (lg breakpoint) -->
             <aside class="col-lg-4 col-xl-3 offset-xl-1" style="margin-top: -115px">
+            <h4 class="h6 mb-4">Danh mục tin tức</h4>
+                    <div class="d-flex flex-wrap gap-3">
+                        @foreach($categories as $category)
+                        <a class="btn btn-outline-secondary px-3" href="{{ route('categoryNewsBlog', ['slug' => $category->slug]) }}">{{ $category->title }}</a>
+                        @endforeach
+                    </div>
                 <section class="latest-news">
                     <h4>Bài viết mới nhất</h4>
                     @foreach ($latestNews as $latest)

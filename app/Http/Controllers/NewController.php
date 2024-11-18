@@ -217,6 +217,7 @@ class NewController extends Controller
     {
         
         $category_news = DB::table('category_news')->get();
+        $categories = Category_new::limit(6)->get(); 
         // Lấy tất cả các bản tin có trạng thái 'Công khai'
         $allNews = News::where('status', 'Công khai')
             ->paginate(6); // Sử dụng paginate để giới hạn 10 bản tin mỗi trang
@@ -234,7 +235,7 @@ class NewController extends Controller
         $latestNews = News::latest()->take(5)->get();
 
         // Lấy 3 bản tin có trạng thái 'Công khai' và lượt xem cao nhất
-        return view('client.page.news.news', compact('allNews', 'additionalMostViewedNews', 'mostViewedNews', 'latestNews'));
+        return view('client.page.news.news', compact('allNews', 'additionalMostViewedNews', 'mostViewedNews', 'latestNews','categories'));
     }
 
 
@@ -251,6 +252,8 @@ class NewController extends Controller
     }
     public function singlepost($slug)
     {
+        $latestNews = News::latest()->take(5)->get();
+        
         // Tìm bài viết theo slug
         $news = News::where('slug', $slug)->firstOrFail();
         $relatedPost = News::where('category_news_id', $news->category_news_id)
@@ -259,7 +262,7 @@ class NewController extends Controller
                         ->get();
         // Trả về view hiển thị bài viết
         $categories = Category_new::limit(6)->get(); 
-        return view('client.page.news.show', compact('news','relatedPost','categories'));
+        return view('client.page.news.show', compact('news','relatedPost','categories','latestNews'));
     }
     public function categoryNewsBlog($slug)
     {
@@ -271,8 +274,10 @@ class NewController extends Controller
                       ->where('status', 'Công khai') 
                       ->orderBy('published_at', 'desc') 
                       ->paginate(6); 
-      
-        return view('client.page.news.categoryNewsBlog', compact('category', 'posts'));
+                      $categories = Category_new::limit(6)->get(); 
+                      
+        $latestNews = News::latest()->take(5)->get();
+        return view('client.page.news.categoryNewsBlog', compact('category', 'posts','categories','latestNews'));
     }
 }
 

@@ -108,4 +108,4 @@ Route::get('/shop', [ClientCategoryController::class, 'shop'])->name('shop');
 Route::get('/categories/{id}/products', [ClientCategoryController::class, 'getProductsByCategory']);
 
 Route::get('/new/{slug}', [NewController::class, 'singlepost'])->name('news.show');
-Route::get('category/{slug}', [CategoryController::class, 'categorynewsblog'])->name('category_news');
+Route::get('/new/category/{slug}', [NewController::class, 'categoryNewsBlog'])->name('categoryNewsBlog');
