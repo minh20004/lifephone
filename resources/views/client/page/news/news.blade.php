@@ -42,7 +42,7 @@ Lifephone
             </div>
             <h3 class="h5 mb-0">
                 <a class="hover-effect-underline"
-                    href="{{ route('news.index', ['slug' => $mostViewedNews->slug]) }}">
+                    href="{{ route('news.show', ['slug' => $mostViewedNews->slug]) }}">
                     {{ $mostViewedNews->title }}
                 </a>
             </h3>
@@ -58,11 +58,11 @@ Lifephone
                     <div class="w-100 pe-3 pe-sm-4 pe-lg-3 pe-xl-4">
                         <div class="text-body-tertiary fs-xs pb-2 mb-1">{{ $item->published_at }}</div>
                         <h3 class="h6 mb-2">
-                            <a class="hover-effect-underline stretched-link" href="{{ route('new_admin.show', $item->id) }}">{{ $item->title }}</a>
+                            <a class="hover-effect-underline stretched-link" href="{{ route('news.show', $item->slug) }}">{{ $item->title }}</a>
                         </h3>
                     </div>
                     <div class="ratio w-100 rounded overflow-hidden" style="max-width: 196px; --cz-aspect-ratio: calc(140 / 196 * 100%)">
-                        <img  src="{{ Storage::url($item->thumbnail) }}" alt="{{ $item->title }}" alt="{{ $item->title }}">
+                        <img  src="{{ Storage::url($item->thumbnail) }}" alt="{{ $item->title }}">
 
                     </div>
                 </article>
@@ -86,7 +86,7 @@ Lifephone
                     <article class="col">
                         <a
                             class="ratio d-flex hover-effect-scale rounded overflow-hidden"
-                            href="{{ route('new_admin.show', $news->id) }}"
+                            href="{{ route('news.show', $news->slug) }}"
                             style="--cz-aspect-ratio: calc(305 / 416 * 100%)">
                             <img src="{{ Storage::url(  $news->thumbnail)  }}" alt="{{ $news->title }}" class="hover-effect-target">
                         </a>
@@ -99,7 +99,7 @@ Lifephone
                                 <span class="text-body-tertiary fs-xs">{{ $news->published_at}}</span>
                             </div>
                             <h3 class="h5 mb-0">
-                                <a class="hover-effect-underline" href="{{ route('new_admin.show', $news->id) }}">{{ $news->title }}</a>
+                                <a class="hover-effect-underline" href="{{ route('news.show', $news->slug) }}">{{ $news->title }}</a>
 
                             </h3>
                         </div>
@@ -125,7 +125,7 @@ Lifephone
                         <div class="w-100 pe-3">
                             <h3 class="h6 mb-2">
 
-                                <a class="hover-effect-underline stretched-link" href="{{ route('new_admin.show', $latest->id) }}">
+                                <a class="hover-effect-underline stretched-link" href="{{ route('news.show', $latest->slug) }}">
 
                                     {{ $latest->title }}
                                 </a>

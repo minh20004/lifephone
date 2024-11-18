@@ -261,5 +261,19 @@ class NewController extends Controller
         $categories = Category_new::limit(6)->get(); 
         return view('client.page.news.show', compact('news','relatedPost','categories'));
     }
+    public function categoryNewsBlog($slug)
+    {
+    
+        $category = Category_new::where('slug', $slug)->firstOrFail();
+
+      
+        $posts = News::where('category_news_id', $category->id)
+                      ->where('status', 'Công khai') 
+                      ->orderBy('published_at', 'desc') 
+                      ->paginate(6); 
+      
+        return view('client.page.news.categoryNewsBlog', compact('category', 'posts'));
+    }
 }
+
 
