@@ -36,6 +36,7 @@ class Order extends Model
     
     // Các trường có thể điền được
     protected $fillable = [
+        'order_code',
         'user_id',
         'name',
         'address',

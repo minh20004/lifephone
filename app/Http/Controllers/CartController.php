@@ -113,21 +113,21 @@ class CartController extends Controller
     }
 
     
+    
     public function updateQuantity(Request $request)
     {
         $productId = $request->input('productId');
         $modelId = $request->input('modelId');
         $colorId = $request->input('colorId');
         $quantity = (int) $request->input('quantity');
-    
+
         $cart = session()->get('cart', []);
-    
+
         if (isset($cart[$productId][$modelId][$colorId])) {
             if ($quantity > 0) {
                 $cart[$productId][$modelId][$colorId]['quantity'] = $quantity;
             } else {
                 unset($cart[$productId][$modelId][$colorId]);
-    
                 if (empty($cart[$productId][$modelId])) {
                     unset($cart[$productId][$modelId]);
                 }
@@ -135,10 +135,10 @@ class CartController extends Controller
                     unset($cart[$productId]);
                 }
             }
-    
-            session()->put('cart', $cart);
         }
-    
+
+        session()->put('cart', $cart);
+
         // Tính tổng tiền và tổng số lượng
         $totalPrice = 0;
         $totalQuantity = 0;
@@ -150,18 +150,25 @@ class CartController extends Controller
                 }
             }
         }
-    
+
+        // Tính tổng tiền cho sản phẩm được cập nhật
         $itemTotal = $cart[$productId][$modelId][$colorId]['price'] * $quantity ?? 0;
-    
+
+        // Tính toán giảm giá nếu có voucher
+        $totalAfterDiscount = $totalPrice; // Giả sử chưa có voucher
+        if ($voucher = session()->get('voucher')) {
+            $discount = $voucher['discount'];
+            $totalAfterDiscount = $totalPrice - $discount;
+        }
+
         return response()->json([
             'itemTotal' => number_format($itemTotal, 0, ',', '.') . ' đ',
             'totalPrice' => number_format($totalPrice, 0, ',', '.') . ' đ',
             'totalQuantity' => $totalQuantity,
+            'totalAfterDiscount' => number_format($totalAfterDiscount, 0, ',', '.') . ' đ'
         ]);
     }
     
-
-
     public function applyVoucher(Request $request)
     {
         $request->validate([
@@ -171,13 +178,20 @@ class CartController extends Controller
         $voucherCode = $request->input('voucher_code');
         $voucher = Voucher::where('code', $voucherCode)->first();
 
-        // Kiểm tra mã voucher có tồn tại và còn hiệu lực không
+        // Lấy giỏ hàng
+        $cart = session()->get('cart', []);
+
+        // Nếu giỏ hàng rỗng
+        if (empty($cart)) {
+            return redirect()->route('cart.index')->withErrors('Giỏ hàng của bạn đang trống, không thể áp dụng mã giảm giá.');
+        }
+
+        // Kiểm tra mã voucher
         if (!$voucher || now()->lt($voucher->start_date) || now()->gt($voucher->end_date) || $voucher->usage_limit <= 0) {
             return redirect()->route('cart.index')->withErrors('Mã giảm giá không hợp lệ hoặc đã hết hạn!');
         }
 
-        // Tính tổng giá trị giỏ hàng trước khi áp dụng voucher
-        $cart = session()->get('cart', []);
+        // Tính tổng giá trị giỏ hàng
         $totalPrice = 0;
         foreach ($cart as $product) {
             foreach ($product as $model) {
@@ -187,7 +201,7 @@ class CartController extends Controller
             }
         }
 
-        // Kiểm tra giá trị đơn hàng tối thiểu
+        // Kiểm tra giá trị tối thiểu để áp dụng voucher
         if ($totalPrice < $voucher->min_order_value) {
             return redirect()->route('cart.index')->withErrors('Giá trị đơn hàng chưa đạt mức tối thiểu để áp dụng mã giảm giá.');
         }
@@ -200,13 +214,10 @@ class CartController extends Controller
             $discount = $voucher->discount_amount;
         }
 
-        // Đảm bảo giảm giá không vượt quá tổng giá trị đơn hàng
         $discount = min($discount, $totalPrice);
-
-        // Tính tổng sau khi áp dụng giảm giá
         $totalAfterDiscount = $totalPrice - $discount;
 
-        // Lưu mã voucher và giảm giá vào session để hiển thị trong giỏ hàng
+        // Lưu voucher vào session
         session()->put('voucher', [
             'code' => $voucherCode,
             'discount' => $discount,
@@ -217,6 +228,33 @@ class CartController extends Controller
         $voucher->decrement('usage_limit');
 
         return redirect()->route('cart.index')->with('success', 'Mã giảm giá đã được áp dụng!');
+    }
+
+    
+    public function remove($productId, $modelId, $colorId)
+    {
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$productId][$modelId][$colorId])) {
+            unset($cart[$productId][$modelId][$colorId]);
+
+            if (empty($cart[$productId][$modelId])) {
+                unset($cart[$productId][$modelId]);
+            }
+
+            if (empty($cart[$productId])) {
+                unset($cart[$productId]);
+            }
+
+            session()->put('cart', $cart);
+        }
+
+        // Kiểm tra nếu giỏ hàng rỗng, xóa voucher
+        if (empty($cart)) {
+            session()->forget('voucher');
+        }
+
+        return redirect()->route('cart.index')->with('success', 'Sản phẩm đã được xóa khỏi giỏ hàng.');
     }
 
     public function checkout(Request $request)
@@ -266,27 +304,7 @@ class CartController extends Controller
 
 
 
-    public function remove($productId, $modelId, $colorId)
-    {
-        $cart = session()->get('cart', []);
-
-        // Kiểm tra xem sản phẩm, model và màu sắc có tồn tại trong giỏ hàng không
-        if (isset($cart[$productId][$modelId][$colorId])) {
-            unset($cart[$productId][$modelId][$colorId]); // Xóa model và màu sắc cụ thể
-
-            if (empty($cart[$productId][$modelId])) {
-                unset($cart[$productId][$modelId]);
-            }
-
-            if (empty($cart[$productId])) {
-                unset($cart[$productId]);
-            }
-
-            session()->put('cart', $cart);
-        }
-
-        return redirect()->route('cart.index')->with('success', 'Sản phẩm đã được xóa khỏi giỏ hàng.');
-    }
+    
 
 
 

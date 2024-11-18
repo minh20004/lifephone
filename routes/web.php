@@ -50,9 +50,10 @@ Route::post('/cart/apply-voucher', [CartController::class, 'applyVoucher'])->nam
 Route::get('/cart/offcanvas', [CartController::class, 'getCart'])->name('cart.offcanvas');
 // thanh toán
 Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
-// Route::post('/order', [CheckoutController::class, 'store'])->name('order.store');
 Route::post('/order/store', [OrderController::class, 'storeOrder'])->name('order.store');
-
+Route::get('/order-success', function () {
+    return view('client.page.checkout.order_success'); // Thông báo thành công
+})->name('order.success');
 
 
 
@@ -74,6 +75,11 @@ Route::resource('index', AdminController::class);
 Route::resource('category', CategoryController::class);
 Route::resource('capacity', CapacityController::class);
 Route::resource('color', ColorController::class);
+
+// order
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+Route::post('/orders/{id}/update-status', [OrderController::class, 'updateStatus'])->name('order.updateStatus');
+Route::get('/admin/orders/{id}', [OrderController::class, 'show'])->name('order.show');
 
 //  route cho phần sản phẩm bị xóa 
 Route::prefix('products')->group(function () {

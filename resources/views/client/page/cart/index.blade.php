@@ -139,11 +139,10 @@
                     <span class="fs-sm">Tổng ước tính:</span>
                     <span class="h5 mb-0"><span id="totalAfterDiscount">{{ number_format($totalAfterDiscount, 0, ',', '.') }} đ</span>
                   </div>
-                  {{-- <a class="btn btn-lg btn-primary w-100" href="{{route('checkout.index')}}">
+                  <a class="btn btn-lg btn-primary w-100" href="{{ route('checkout') }}">
                     Tiến hành thanh toán
                     <i class="ci-chevron-right fs-lg ms-1 me-n1"></i>
-                  </a> --}}
-                  <a href="{{ route('checkout') }}" class="btn btn-primary">Tiếp tục thanh toán</a>
+                  </a>
 
                 </div>
               </div>
