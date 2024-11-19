@@ -49,6 +49,28 @@ class CategoryController extends Controller
     return response()->json($products);
 }
 
+    public function search(Request $request)
+    {
+        $search = $request->input('search');
+        $categories = Category::withCount('products')->get();
+        $colors = Color::all();
+        $capacities = Capacity::withCount('products')->get();
+
+        // Lấy danh sách sản phẩm cùng với danh mục và các biến thể
+        $latestProducts = Product::with([
+            'category:id,name', // Eager load danh mục với id và name
+            'variants.color:id,name', // Eager load màu sắc (color) thông qua biến thể sản phẩm
+            'variants.capacity:id,name'
+        ])
+            ->when($search, function ($query) use ($search) {
+                return $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('product_code', 'like', "%{$search}%");
+            })
+            ->paginate(10);
+
+        return view('client.categories.shop-catalog', compact('latestProducts', 'categories', 'colors', 'capacities'));
+    }
+
 
 
 
