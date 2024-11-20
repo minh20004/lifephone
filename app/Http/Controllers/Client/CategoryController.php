@@ -51,7 +51,9 @@ class CategoryController extends Controller
 
     public function search(Request $request)
     {
-        $search = $request->input('search');
+        $searchTerm = $request->query('search');
+
+        // Lấy tất cả danh mục, màu sắc và dung lượng (nếu cần)
         $categories = Category::withCount('products')->get();
         $colors = Color::all();
         $capacities = Capacity::withCount('products')->get();
@@ -60,13 +62,29 @@ class CategoryController extends Controller
         $latestProducts = Product::with([
             'category:id,name', // Eager load danh mục với id và name
             'variants.color:id,name', // Eager load màu sắc (color) thông qua biến thể sản phẩm
-            'variants.capacity:id,name'
+            'variants.capacity:id,name' // Eager load dung lượng (capacity)
         ])
-            ->when($search, function ($query) use ($search) {
-                return $query->where('name', 'like', "%{$search}%")
-                    ->orWhere('product_code', 'like', "%{$search}%");
-            })
-            ->paginate(10);
+        ->when($searchTerm, function ($query) use ($searchTerm) {
+            return $query->where(function($q) use ($searchTerm) {
+                // Tìm kiếm trong tên, mã sản phẩm và mô tả
+                $q->where('name', 'like', "%{$searchTerm}%")
+                  ->orWhere('product_code', 'like', "%{$searchTerm}%")
+                  ->orWhere('description', 'like', "%{$searchTerm}%")
+                  ->orWhereHas('category', function($q) use ($searchTerm) {
+                      $q->where('name', 'like', "%{$searchTerm}%");
+                  })
+                  ->orWhereHas('variants.color', function($q) use ($searchTerm) {
+                      $q->where('name', 'like', "%{$searchTerm}%");
+                  })
+                  ->orWhereHas('variants.capacity', function($q) use ($searchTerm) {
+                      $q->where('name', 'like', "%{$searchTerm}%");
+                  });
+            });
+        })
+        ->orderByRaw('CASE WHEN name LIKE ? THEN 0 ELSE 1 END', ["%{$searchTerm}%"])
+        ->orderByRaw('CASE WHEN product_code LIKE ? THEN 0 ELSE 1 END', ["%{$searchTerm}%"])
+        ->orderBy('category_id')
+        ->paginate(10);
 
         return view('client.categories.shop-catalog', compact('latestProducts', 'categories', 'colors', 'capacities'));
     }

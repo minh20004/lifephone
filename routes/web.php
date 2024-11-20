@@ -15,6 +15,7 @@ use App\Http\Controllers\ColorController;
 use App\Http\Controllers\FrontendControlle;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VoucherController;
+use App\Http\Controllers\ProfileController;
 
 use Illuminate\Support\Facades\Route;
 

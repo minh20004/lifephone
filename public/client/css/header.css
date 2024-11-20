@@ -1,0 +1,6 @@
+.search-history-dropdown .highlight {
+  background-color: #f0f0f0; /* Màu nền khi hover */
+  cursor: pointer;
+  border-radius: 5px;
+  pointer-events: auto;
+}
