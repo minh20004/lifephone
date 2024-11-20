@@ -29,13 +29,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-})->name('user.home');
+// Route::get('/', function () {
+//     return view('index');
+// })->name('user.home');
 
 // font end trang chủ
 Route::get('/', [FrontendControlle::class, 'index'])->name('home');
-// Route::get('product/{id}', [FrontendControlle::class, 'showProduct'])->name('product.show');
+Route::get('product/{id}', [FrontendControlle::class, 'showProduct'])->name('product.show');
 
 
 
@@ -74,8 +74,6 @@ Route::prefix('products')->group(function () {
     Route::get('/trashed', [ProductController::class, 'trashed'])->name('product.trashed');
     Route::post('/restore/{id}', [ProductController::class, 'restore'])->name('product.restore');
     Route::get('trashed/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
-    
-
 });
 
 // Route danh mục bị xóa
@@ -97,9 +95,9 @@ Route::prefix('colors')->group(function () {
 // chuyển trang biến thể
 Route::get('/product/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
 
-Route::get('/', function () {
-    return view('dashboard');
-});
+// Route::get('/', function () {
+//     return view('dashboard');
+// });
 
 Route::get('/dashboard', function () {
     return view('index');
