@@ -15,6 +15,7 @@ use App\Http\Controllers\ColorController;
 use App\Http\Controllers\FrontendControlle;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VoucherController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,13 +29,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-})->name('user.home');
+// Route::get('/', function () {
+//     return view('index');
+// })->name('user.home');
 
 // font end trang chủ
 Route::get('/', [FrontendControlle::class, 'index'])->name('home');
-// Route::get('product/{id}', [FrontendControlle::class, 'showProduct'])->name('product.show');
+Route::get('product/{id}', [FrontendControlle::class, 'showProduct'])->name('product.show');
+
 
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -72,13 +74,13 @@ Route::prefix('products')->group(function () {
     Route::get('/trashed', [ProductController::class, 'trashed'])->name('product.trashed');
     Route::post('/restore/{id}', [ProductController::class, 'restore'])->name('product.restore');
     Route::get('trashed/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
-
 });
 
 // Route danh mục bị xóa
 Route::prefix('categories')->group(function () {
     Route::get('/trashed', [CategoryController::class, 'trashed'])->name('category.trashed');
     Route::post('/restore/{id}', [CategoryController::class, 'restore'])->name('category.restore');
+
 });
 // Route dung lượng bị xóa
 Route::prefix('capacities')->group(function () {
@@ -93,6 +95,21 @@ Route::prefix('colors')->group(function () {
 // chuyển trang biến thể
 Route::get('/product/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
 
+// Route::get('/', function () {
+//     return view('dashboard');
+// });
+
+Route::get('/dashboard', function () {
+    return view('index');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__.'/auth.php';
 
 Route::resource('vouchers', VoucherController::class);
 
