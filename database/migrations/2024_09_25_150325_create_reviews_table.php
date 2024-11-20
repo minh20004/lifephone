@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('reviews', function (Blueprint $table) {
             $table->id(); // Chỉ giữ một lần khai báo id
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->integer('rating')->default(1); // Thang điểm 1-5
+            $table->foreignId(column: 'user_id')->constrained(table: 'users')->onDelete(action: 'cascade');
+            $table->integer('rating')->default(value: 1); // Thang điểm 1-5
             $table->text('comment')->nullable();
             $table->timestamps(); // Chỉ giữ một lần khai báo timestamps
         });
