@@ -25,7 +25,11 @@
                     <div class="mb-3" style=" border-bottom: 1px solid #ddd; padding-bottom: 10px;margin-bottom: 10px;">
                         <a href="{{ route('color.create') }}" class="btn mb-3 fs-6 fw-bold text-dark"
                             style="background:#9df99d ">Thêm màu sắc</a>
+<<<<<<< HEAD
                         <a href="{{ route('color.trashed') }}" class="btn btn-danger mb-3">Xem danh mục đã bị xóa</a>
+=======
+                        <a href="{{ route('color.trashed') }}" class="btn btn-danger mb-3">Xem màu sắc đã bị xóa</a>
+>>>>>>> c32c957ea283f4266867dc34e802189c042da2ab
                     </div>
                     
 

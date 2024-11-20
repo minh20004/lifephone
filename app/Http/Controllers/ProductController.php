@@ -39,7 +39,7 @@ class ProductController extends Controller
         return view('admin.page.product.index', ['products' => $listProduct, 'search' => $search]);
     }
 
-    // show biến thể sản phẩm 
+    // show biến thể sản phẩm
     public function showVariants($id)
     {
         // $product = Product::with('variants.color', 'variants.capacity')->findOrFail($id);
@@ -62,6 +62,7 @@ class ProductController extends Controller
         $categories = DB::table('categories')->where('status', 1)->get();
         return view('admin.page.product.add', ['categories' => $categories, 'colors' => $colors, 'capacities' => $capacities]);
     }
+
 
 
     public function store(Request $request)
@@ -167,7 +168,16 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        // Lấy thông tin sản phẩm
+        $product = Product::with('variants.color', 'variants.capacity')->findOrFail($id);
+
+        // Tăng lượt xem lên 1
+        $product->increment('views');
+        // hiển thị giá nhỏ nhat
+        $minPrice = $product->variants->min('price_difference');
+
+        // Trả về view với dữ liệu sản phẩm
+        return view('client.page.detail-product.general', compact('product','minPrice')); // Chú ý đường dẫn view
     }
 
     public function edit(string $id)
@@ -237,7 +247,7 @@ class ProductController extends Controller
         if (!empty($errors)) {
             return back()->withErrors($errors)->withInput();
         }
-        
+
 
         $product = Product::findOrFail($id);
 
@@ -294,7 +304,7 @@ class ProductController extends Controller
 
         return redirect()->route('product.index')->with('success', 'Sản phẩm đã được cập nhật thành công!');
     }
-    
+
 
 
 

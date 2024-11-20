@@ -29,7 +29,7 @@ class Capacity extends Model
 
     public function products()
     {
-        return $this->hasMany(Product::class);
+        return $this->hasManyThrough(Product::class, ProductVariant::class, 'capacity_id', 'id', 'id', 'product_id');
     }
 
     public function productVariants() {
