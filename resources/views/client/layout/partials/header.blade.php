@@ -98,7 +98,7 @@
             <span class="visually-hidden">Wishlist</span>
           </a>
 
-          <!-- Cart button -->
+          <!-- giỏ hàng button -->
           <button type="button" class="btn btn-icon btn-lg btn-secondary position-relative rounded-circle ms-2" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Shopping cart">
             <span class="position-absolute top-0 start-100 mt-n1 ms-n3 badge text-bg-success border border-3 border-dark rounded-pill" style="--cz-badge-padding-y: .25em; --cz-badge-padding-x: .42em">3</span>
             <span class="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
@@ -377,7 +377,7 @@
                   </ul>
                 </li>
                 <li class="nav-item me-lg-n2 me-xl-0">
-                  <a class="nav-link" href="docs/installation.html">Docs</a>
+                  <a class="nav-link" href="{{route('cart.index')}}">Docs</a>
                 </li>
                 <li class="nav-item me-lg-n2 me-xl-0">
                   <a class="nav-link" href="docs/typography.html">Components</a>

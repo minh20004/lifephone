@@ -154,82 +154,85 @@
       <div class="col-md-6 col-xl-5 offset-xl-1 pt-4">
         <div class="ps-md-4 ps-xl-0">
           <div class="position-relative" id="zoomPane">
-
-            <!-- Model dung lượng -->
-            <div class="pb-3 mb-2 mb-lg-3">
-              <label class="form-label fw-semibold pb-1 mb-2">Model</label>
-              <div class="d-flex flex-wrap gap-2">
-                @php
-                    $capacities = $product->variants->unique('capacity_id');
-                @endphp
-                @foreach ($capacities as $variant)
-                    <input type="radio" class="btn-check model-option" name="model-options" id="model-{{ $variant->capacity->id }}" 
-                          value="{{ $variant->capacity->id }}" {{ $loop->first ? 'checked' : '' }}>
-                    <label for="model-{{ $variant->capacity->id }}" class="btn btn-sm btn-outline-secondary">{{ $variant->capacity->name }} GB</label>
-                @endforeach
-              </div>
-            </div>
-
-            <!-- Color màu sắc -->
-            <div class="pb-3 mb-3 mb-lg-3">
-              <label class="form-label fw-semibold pb-1 mb-2">Color: <span class="text-body fw-normal fs-6" id="colorOption">{{ $product->variants->first()->color->name }}</span></label>
-              <div class="d-flex flex-wrap gap-2 mb-2" >
-                @php
-                    $colors = $product->variants->unique('color_id');
-                @endphp
-                @foreach ($colors as $variant)
-                    <input type="radio" class="btn-check color-option" name="color-options" id="color-{{ $variant->color->id }}" 
-                          value="{{ $variant->color->id }}" data-color-name="{{ $variant->color->name }}">
-                    <label for="color-{{ $variant->color->id }}" class="btn btn-color fs-xl" style="color: {{ $variant->color->code }};">
-                        <span class="visually-hidden">{{ $variant->color->name }}</span>
-                    </label>
-                @endforeach
-            </div>
-            
-            <!-- Hiển thị giá -->
-            <div class="d-flex flex-wrap align-items-center mb-2">
-                <div class="fs-3 mb-0 text-danger fw-bold" id="productPrice" data-base-price="{{ $minPrice }}">{{ number_format($minPrice, 0, ',', '.') }} đ</div>
-                <div class="d-flex align-items-center text-success fs-sm ms-auto">
-                    <i class="ci-check-circle fs-base me-2"></i>
-                    Có thể đặt hàng
+            <form action="{{ route('cart.add') }}" method="POST">
+              @csrf
+                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                <!-- Model dung lượng -->
+                <div class="pb-3 mb-2 mb-lg-3">
+                  <label class="form-label fw-semibold pb-1 mb-2">Model</label>
+                  <div class="d-flex flex-wrap gap-2">
+                    @php
+                        $capacities = $product->variants->unique('capacity_id');
+                    @endphp
+                    @foreach ($capacities as $variant)
+                        <input type="radio" class="btn-check model-option" name="model-options" id="model-{{ $variant->capacity->id }}" 
+                              value="{{ $variant->capacity->id }}" {{ $loop->first ? 'checked' : '' }}>
+                        <label for="model-{{ $variant->capacity->id }}" class="btn btn-sm btn-outline-secondary">{{ $variant->capacity->name }} GB</label>
+                    @endforeach
+                  </div>
                 </div>
-            </div>
-            {{-- số lượng --}}
-            <div class="d-flex flex-wrap align-items-center mb-3"  >
-              <p style="font-size: 13px; display:none;" id="quantityContainer" class="text-success mb-0">Còn <span id="quantityValue">0</span> sản phẩm</p>
-            </div>
 
-            <!-- Lưu trữ toàn bộ biến thể sản phẩm -->
-              @php
-              $variants = $product->variants;
-              @endphp
-              <script>
-                const variants = @json($variants);
-              </script>
+                <!-- Color màu sắc -->
+                <div class="pb-3 mb-3 mb-lg-3">
+                  <label class="form-label fw-semibold pb-1 mb-2">Color: <span class="text-body fw-normal fs-6" id="colorOption">{{ $product->variants->first()->color->name }}</span></label>
+                  <div class="d-flex flex-wrap gap-2 mb-2" >
+                    @php
+                        $colors = $product->variants->unique('color_id');
+                    @endphp
+                    @foreach ($colors as $variant)
+                        <input type="radio" class="btn-check color-option" name="color-options" id="color-{{ $variant->color->id }}" 
+                              value="{{ $variant->color->id }}" data-color-name="{{ $variant->color->name }}">
+                        <label for="color-{{ $variant->color->id }}" class="btn btn-color fs-xl" style="color: {{ $variant->color->code }};">
+                            <span class="visually-hidden">{{ $variant->color->name }}</span>
+                        </label>
+                    @endforeach
+                </div>
+                
+                <!-- Hiển thị giá -->
+                <div class="d-flex flex-wrap align-items-center mb-2">
+                    <div class="fs-3 mb-0 text-danger fw-bold" id="productPrice" data-base-price="{{ $minPrice }}">{{ number_format($minPrice, 0, ',', '.') }} đ</div>
+                    <div class="d-flex align-items-center text-success fs-sm ms-auto">
+                        <i class="ci-check-circle fs-base me-2"></i>
+                        Có thể đặt hàng
+                    </div>
+                </div>
+                {{-- số lượng --}}
+                <div class="d-flex flex-wrap align-items-center mb-3"  >
+                  <p style="font-size: 13px; display:none;" id="quantityContainer" class="text-success mb-0">Còn <span id="quantityValue">0</span> sản phẩm</p>
+                </div>
+
+                <!-- Lưu trữ toàn bộ biến thể sản phẩm -->
+                  @php
+                  $variants = $product->variants;
+                  @endphp
+                  <script>
+                    const variants = @json($variants);
+                  </script>
               
             
-            <!-- Count + Buttons -->
-            <div class="d-flex flex-wrap flex-sm-nowrap flex-md-wrap flex-lg-nowrap gap-3 gap-lg-2 gap-xl-3 mb-4">
-              <div class="count-input flex-shrink-0 order-sm-1">
-                <button type="button" class="btn btn-icon btn-lg" data-decrement="" aria-label="Decrement quantity">
-                  <i class="ci-minus"></i>
-                </button>
-                <input type="number" class="form-control form-control-lg" value="1" min="1" max="5" readonly="">
-                <button type="button" class="btn btn-icon btn-lg" data-increment="" aria-label="Increment quantity">
-                  <i class="ci-plus"></i>
-                </button>
-              </div>
-              <button type="button" class="btn btn-icon btn-lg btn-secondary animate-pulse order-sm-3 order-md-2 order-lg-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Add to Wishlist" aria-label="Add to Wishlist">
-                <i class="ci-heart fs-lg animate-target"></i>
-              </button>
-              <button type="button" class="btn btn-icon btn-lg btn-secondary animate-rotate order-sm-4 order-md-3 order-lg-4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Compare" aria-label="Compare">
-                <i class="ci-refresh-cw fs-lg animate-target"></i>
-              </button>
-              <button type="button" class="btn btn-lg btn-primary w-100 animate-slide-end order-sm-2 order-md-4 order-lg-2">
-                <i class="ci-shopping-cart fs-lg animate-target ms-n1 me-2"></i>
-                Thêm vào giỏ hàng
-              </button>
-            </div>
+                <!-- Count + Buttons -->
+                <div class="d-flex flex-wrap flex-sm-nowrap flex-md-wrap flex-lg-nowrap gap-3 gap-lg-2 gap-xl-3 mb-4">
+                  <div class="count-input flex-shrink-0 order-sm-1">
+                    <button type="button" class="btn btn-icon btn-lg" data-decrement="" aria-label="Decrement quantity">
+                      <i class="ci-minus"></i>
+                    </button>
+                    <input type="number" class="form-control form-control-lg" value="1" min="1" max="5" readonly=""  name="quantity">
+                    <button type="button" class="btn btn-icon btn-lg" data-increment="" aria-label="Increment quantity">
+                      <i class="ci-plus"></i>
+                    </button>
+                  </div>
+                  <button type="button" class="btn btn-icon btn-lg btn-secondary animate-pulse order-sm-3 order-md-2 order-lg-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Add to Wishlist" aria-label="Add to Wishlist">
+                    <i class="ci-heart fs-lg animate-target"></i>
+                  </button>
+                  <button type="button" class="btn btn-icon btn-lg btn-secondary animate-rotate order-sm-4 order-md-3 order-lg-4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Compare" aria-label="Compare">
+                    <i class="ci-refresh-cw fs-lg animate-target"></i>
+                  </button>
+                  <button type="submit" class="btn btn-lg btn-primary w-100 animate-slide-end order-sm-2 order-md-4 order-lg-2">
+                    <i class="ci-shopping-cart fs-lg animate-target ms-n1 me-2"></i>
+                    Thêm vào giỏ hàng
+                  </button>
+                </div>
+            </form>
 
             <!-- Features -->
             <div class="d-flex flex-wrap gap-3 gap-xl-4 pb-4 pb-lg-5 mb-2 mb-lg-0 mb-xl-2">
@@ -340,279 +343,6 @@
             </button>
           </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- Bundle discount (Cheaper together) -->
-  <section class="container pb-5 mb-1 mb-sm-2 mb-md-3 mb-lg-4 mb-xl-5">
-    <div class="bg-body-tertiary rounded-5 pt-5">
-      <h2 class="h3 text-center pb-2 py-lg-3">Cheaper together</h2>
-      <div class="row justify-content-center px-4 px-md-0">
-        <div class="col-md-10">
-          <div class="overflow-auto" data-simplebar="" data-simplebar-auto-hide="false">
-            <div class="d-flex align-items-center justify-content-between pb-4 mb-2" style="min-width: 840px">
-
-              <!-- Item -->
-              <div class="w-100" style="max-width: 306px">
-                <div class="form-check position-relative p-0 m-0 mb-3">
-                  <input type="checkbox" class="form-check-input position-absolute top-0 end-0 mt-3 me-3" id="iphone" checked="" disabled="">
-                  <label for="iphone" class="d-flex justify-content-center bg-body rounded p-3">
-                    <span class="ratio d-block" style="max-width: 258px; --cz-aspect-ratio: calc(240 / 258 * 100%)">
-                      <img src="{{asset('client/img/shop/electronics/14.png')}}" alt="iPhone 14">
-                    </span>
-                  </label>
-                </div>
-                <h3 class="mb-2">
-                  <a class="d-block fs-sm fw-medium animate-underline text-truncate" href="#!">
-                    <span class="animate-target">Apple iPhone 14 128GB White</span>
-                  </a>
-                </h3>
-                <div class="h6 mb-0">$940.00</div>
-              </div>
-
-              <div class="ci-plus fs-4 mt-n5 mx-3 mx-lg-4"></div>
-
-              <!-- Item -->
-              <div class="w-100" style="max-width: 306px">
-                <div class="form-check position-relative p-0 m-0 mb-3">
-                  <input type="checkbox" class="form-check-input position-absolute top-0 end-0 mt-3 me-3" id="airpods" checked="">
-                  <label for="airpods" class="d-flex justify-content-center bg-body rounded p-3">
-                    <span class="ratio d-block" style="max-width: 258px; --cz-aspect-ratio: calc(240 / 258 * 100%)">
-                      <img src="{{asset('client/img/shop/electronics/06.png')}}" alt="AirPods 2 Pro">
-                    </span>
-                  </label>
-                </div>
-                <h3 class="mb-2">
-                  <a class="d-block fs-sm fw-medium animate-underline text-truncate" href="#!">
-                    <span class="animate-target">Headphones Apple AirPods 2 Pro</span>
-                  </a>
-                </h3>
-                <div class="d-flex align-items-center gap-2">
-                  <span class="badge bg-danger">-32%</span>
-                  <span class="h6 mb-0">$224.00</span>
-                  <del class="text-body-tertiary fs-xs">$330.00</del>
-                </div>
-              </div>
-
-              <div class="ci-plus fs-4 mt-n5 mx-3 mx-lg-4"></div>
-
-              <!-- Item -->
-              <div class="w-100" style="max-width: 306px">
-                <div class="form-check position-relative p-0 m-0 mb-3">
-                  <input type="checkbox" class="form-check-input position-absolute top-0 end-0 mt-3 me-3" id="charger">
-                  <label for="charger" class="d-flex justify-content-center bg-body rounded p-3">
-                    <span class="ratio d-block" style="max-width: 258px; --cz-aspect-ratio: calc(240 / 258 * 100%)">
-                      <img src="{{asset('client/img/shop/electronics/15.png')}}" alt="Wireless charger">
-                    </span>
-                  </label>
-                </div>
-                <h3 class="mb-2">
-                  <a class="d-block fs-sm fw-medium animate-underline text-truncate" href="#!">
-                    <span class="animate-target">Wireless charger for iPhone</span>
-                  </a>
-                </h3>
-                <div class="d-flex align-items-center gap-2">
-                  <span class="badge bg-danger">-48%</span>
-                  <span class="h6 mb-0">$26.00</span>
-                  <del class="text-body-tertiary fs-xs">$50.00</del>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <hr class="mb-0">
-      <div class="row justify-content-center p-4 px-md-0">
-        <div class="col-md-10 d-md-flex align-items-center py-md-3">
-          <div class="fs-sm me-3 mb-3 mb-md-0">Total for selected products</div>
-          <div class="d-flex align-items-center ms-auto">
-            <span class="h5 mb-0 me-4">$1,164.00</span>
-            <button type="button" class="btn btn-primary ms-auto">Purchase together</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- Trending products (Carousel) -->
-  <section class="container pb-4 pb-md-5 mb-2 mb-sm-0 mb-lg-2 mb-xl-4">
-    <h2 class="h3 border-bottom pb-4 mb-0">Sản phẩm thịnh hành</h2>
-
-    <!-- Product carousel -->
-    <div class="position-relative mx-md-1">
-
-      <!-- External slider prev/next buttons visible on screens > 500px wide (sm breakpoint) -->
-      <button type="button" class="trending-prev btn btn-prev btn-icon btn-outline-secondary bg-body rounded-circle animate-slide-start position-absolute top-50 start-0 z-2 translate-middle-y ms-n1 d-none d-sm-inline-flex" aria-label="Prev">
-        <i class="ci-chevron-left fs-lg animate-target"></i>
-      </button>
-      <button type="button" class="trending-next btn btn-next btn-icon btn-outline-secondary bg-body rounded-circle animate-slide-end position-absolute top-50 end-0 z-2 translate-middle-y me-n1 d-none d-sm-inline-flex" aria-label="Next">
-        <i class="ci-chevron-right fs-lg animate-target"></i>
-      </button>
-
-      <!-- Slider -->
-      <div class="swiper py-4 px-sm-3" data-swiper="{
-        &quot;slidesPerView&quot;: 2,
-        &quot;spaceBetween&quot;: 24,
-        &quot;loop&quot;: true,
-        &quot;navigation&quot;: {
-          &quot;prevEl&quot;: &quot;.trending-prev&quot;,
-          &quot;nextEl&quot;: &quot;.trending-next&quot;
-        },
-        &quot;breakpoints&quot;: {
-          &quot;768&quot;: {
-            &quot;slidesPerView&quot;: 3
-          },
-          &quot;992&quot;: {
-            &quot;slidesPerView&quot;: 4
-          }
-        }
-      }">
-        <div class="swiper-wrapper">
-
-          <!-- Item -->
-          <div class="swiper-slide">
-            <div class="product-card animate-underline hover-effect-opacity bg-body rounded">
-              <div class="position-relative">
-                <div class="position-absolute top-0 end-0 z-2 hover-effect-target opacity-0 mt-3 me-3">
-                  <div class="d-flex flex-column gap-2">
-                    <button type="button" class="btn btn-icon btn-secondary animate-pulse d-none d-lg-inline-flex" aria-label="Add to Wishlist">
-                      <i class="ci-heart fs-base animate-target"></i>
-                    </button>
-                    <button type="button" class="btn btn-icon btn-secondary animate-rotate d-none d-lg-inline-flex" aria-label="Compare">
-                      <i class="ci-refresh-cw fs-base animate-target"></i>
-                    </button>
-                  </div>
-                </div>
-                <div class="dropdown d-lg-none position-absolute top-0 end-0 z-2 mt-2 me-2">
-                  <button type="button" class="btn btn-icon btn-sm btn-secondary bg-body" data-bs-toggle="dropdown" aria-expanded="false" aria-label="More actions">
-                    <i class="ci-more-vertical fs-lg"></i>
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-end fs-xs p-2" style="min-width: auto">
-                    <li>
-                      <a class="dropdown-item" href="#!">
-                        <i class="ci-heart fs-sm ms-n1 me-2"></i>
-                        Add to Wishlist
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#!">
-                        <i class="ci-refresh-cw fs-sm ms-n1 me-2"></i>
-                        Compare
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <a class="d-block rounded-top overflow-hidden p-3 p-sm-4" href="#!">
-                  <span class="badge bg-danger position-absolute top-0 start-0 mt-2 ms-2 mt-lg-3 ms-lg-3">-21%</span>
-                  <div class="ratio" style="--cz-aspect-ratio: calc(240 / 258 * 100%)">
-                    <img src="{{asset('client/img/shop/electronics/01.png')}}" alt="VR Glasses">
-                  </div>
-                </a>
-              </div>
-              <div class="w-100 min-w-0 px-1 pb-2 px-sm-3 pb-sm-3">
-                <div class="d-flex align-items-center gap-2 mb-2">
-                  <div class="d-flex gap-1 fs-xs">
-                    <i class="ci-star-filled text-warning"></i>
-                    <i class="ci-star-filled text-warning"></i>
-                    <i class="ci-star-filled text-warning"></i>
-                    <i class="ci-star-filled text-warning"></i>
-                    <i class="ci-star text-body-tertiary opacity-75"></i>
-                  </div>
-                  <span class="text-body-tertiary fs-xs">(123)</span>
-                </div>
-                <h3 class="pb-1 mb-2">
-                  <a class="d-block fs-sm fw-medium text-truncate" href="#!">
-                    <span class="animate-target">VRB01 Virtual Reality Glasses</span>
-                  </a>
-                </h3>
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="h5 lh-1 mb-0">$340.99 <del class="text-body-tertiary fs-sm fw-normal">$430.00</del></div>
-                  <button type="button" class="product-card-button btn btn-icon btn-secondary animate-slide-end ms-2" aria-label="Add to Cart">
-                    <i class="ci-shopping-cart fs-base animate-target"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Item -->
-          <div class="swiper-slide">
-            <div class="product-card animate-underline hover-effect-opacity bg-body rounded">
-              <div class="position-relative">
-                <div class="position-absolute top-0 end-0 z-2 hover-effect-target opacity-0 mt-3 me-3">
-                  <div class="d-flex flex-column gap-2">
-                    <button type="button" class="btn btn-icon btn-secondary animate-pulse d-none d-lg-inline-flex" aria-label="Add to Wishlist">
-                      <i class="ci-heart fs-base animate-target"></i>
-                    </button>
-                    <button type="button" class="btn btn-icon btn-secondary animate-rotate d-none d-lg-inline-flex" aria-label="Compare">
-                      <i class="ci-refresh-cw fs-base animate-target"></i>
-                    </button>
-                  </div>
-                </div>
-                <div class="dropdown d-lg-none position-absolute top-0 end-0 z-2 mt-2 me-2">
-                  <button type="button" class="btn btn-icon btn-sm btn-secondary bg-body" data-bs-toggle="dropdown" aria-expanded="false" aria-label="More actions">
-                    <i class="ci-more-vertical fs-lg"></i>
-                  </button>
-                  <ul class="dropdown-menu dropdown-menu-end fs-xs p-2" style="min-width: auto">
-                    <li>
-                      <a class="dropdown-item" href="#!">
-                        <i class="ci-heart fs-sm ms-n1 me-2"></i>
-                        Add to Wishlist
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="#!">
-                        <i class="ci-refresh-cw fs-sm ms-n1 me-2"></i>
-                        Compare
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <a class="d-block rounded-top overflow-hidden p-3 p-sm-4" href="#!">
-                  <div class="ratio" style="--cz-aspect-ratio: calc(240 / 258 * 100%)">
-                    <img src="{{asset('client/img/shop/electronics/02.png')}}" alt="iPhone 14">
-                  </div>
-                </a>
-              </div>
-              <div class="w-100 min-w-0 px-1 pb-2 px-sm-3 pb-sm-3">
-                <div class="d-flex align-items-center gap-2 mb-2">
-                  <div class="d-flex gap-1 fs-xs">
-                    <i class="ci-star-filled text-warning"></i>
-                    <i class="ci-star-filled text-warning"></i>
-                    <i class="ci-star-filled text-warning"></i>
-                    <i class="ci-star-filled text-warning"></i>
-                    <i class="ci-star-half text-warning"></i>
-                  </div>
-                  <span class="text-body-tertiary fs-xs">(142)</span>
-                </div>
-                <h3 class="pb-1 mb-2">
-                  <a class="d-block fs-sm fw-medium text-truncate" href="#!">
-                    <span class="animate-target">Apple iPhone 14 128GB White</span>
-                  </a>
-                </h3>
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="h5 lh-1 mb-0">$899.00</div>
-                  <button type="button" class="product-card-button btn btn-icon btn-secondary animate-slide-end ms-2" aria-label="Add to Cart">
-                    <i class="ci-shopping-cart fs-base animate-target"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- External slider prev/next buttons visible on screens < 500px wide (sm breakpoint) -->
-      <div class="d-flex justify-content-center gap-2 mt-n2 mb-3 pb-1 d-sm-none">
-        <button type="button" class="trending-prev btn btn-prev btn-icon btn-outline-secondary bg-body rounded-circle animate-slide-start me-1" aria-label="Prev">
-          <i class="ci-chevron-left fs-lg animate-target"></i>
-        </button>
-        <button type="button" class="trending-next btn btn-next btn-icon btn-outline-secondary bg-body rounded-circle animate-slide-end" aria-label="Next">
-          <i class="ci-chevron-right fs-lg animate-target"></i>
-        </button>
       </div>
     </div>
   </section>

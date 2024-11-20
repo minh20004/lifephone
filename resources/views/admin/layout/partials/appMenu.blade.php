@@ -463,33 +463,13 @@
                         <li class="nav-item">
                             <a href="{{route('capacity.index')}}" class="nav-link" data-key="t-gallery"> Dung lượng </a>
                         </li>
-                        {{-- <li class="nav-item">
-                            <a href="pages-maintenance.html" class="nav-link" data-key="t-maintenance"> Maintenance
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages-coming-soon.html" class="nav-link" data-key="t-coming-soon"> Coming Soon
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages-sitemap.html" class="nav-link" data-key="t-sitemap"> Sitemap </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages-search-results.html" class="nav-link" data-key="t-search-results"> Search Results </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages-privacy-policy.html" class="nav-link" data-key="t-privacy-policy">Privacy Policy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="pages-term-conditions.html" class="nav-link" data-key="t-term-conditions">Term & Conditions</a>
-                        </li> --}}
                     </ul>
                 </div>
             </li>
 
             <li class="nav-item">
                 <a class="nav-link menu-link" href="#sidebarLanding" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarLanding">
-                    <i class="ri-rocket-line"></i> <span data-key="t-landing">Landing</span>
+                    <i class="ri-rocket-line"></i> <span data-key="t-landing">Quản lý đơn hàng</span>
                 </a>
                 <div class="collapse menu-dropdown" id="sidebarLanding">
                     <ul class="nav nav-sm flex-column">

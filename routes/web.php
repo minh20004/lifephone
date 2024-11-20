@@ -13,6 +13,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\chatController;
 use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
 use App\Http\Controllers\ColorController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\FrontendControlle;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VoucherController;
@@ -35,7 +36,6 @@ Route::get('/', function () {
 
 // font end trang chủ
 Route::get('/', [FrontendControlle::class, 'index'])->name('home');
-// Route::get('product/{id}', [FrontendControlle::class, 'showProduct'])->name('product.show');
 
 
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -47,7 +47,21 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 });
 
 // -----------------------------USER------------------------------------------------------------------------------
-Route::resource('cart', CartController::class);
+//giỏ hàng
+Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('cart/remove/{productId}/{modelId}/{colorId}', [CartController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/update', [CartController::class, 'updateQuantity'])->name('cart.update');
+Route::post('/cart/apply-voucher', [CartController::class, 'applyVoucher'])->name('cart.apply-voucher');
+Route::get('/cart/offcanvas', [CartController::class, 'getCart'])->name('cart.offcanvas');
+// thanh toán
+Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
+Route::post('/order/store', [OrderController::class, 'storeOrder'])->name('order.store');
+Route::get('/order-success', function () {
+    return view('client.page.checkout.order_success'); // Thông báo thành công
+})->name('order.success');
+
+
 
 // ------------------------------------------------- ADMIN---------------------------------------------------------
 // Quản lý thành viên admin
@@ -67,6 +81,11 @@ Route::resource('index', AdminController::class);
 Route::resource('category', CategoryController::class);
 Route::resource('capacity', CapacityController::class);
 Route::resource('color', ColorController::class);
+
+// order
+Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+Route::post('/orders/{id}/update-status', [OrderController::class, 'updateStatus'])->name('order.updateStatus');
+Route::get('/admin/orders/{id}', [OrderController::class, 'show'])->name('order.show');
 
 //  route cho phần sản phẩm bị xóa 
 Route::prefix('products')->group(function () {
