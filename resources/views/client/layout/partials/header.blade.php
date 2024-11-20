@@ -23,9 +23,12 @@
         <form action="{{ url('/search') }}" method="GET" style="position: relative;">
           @csrf  <!-- CSRF Token để bảo vệ khỏi tấn công CSRF -->
           <i class="ci-search position-absolute top-50 translate-middle-y d-flex fs-lg text-white ms-3"></i>
-          <input type="search" id="search-input" class="form-control form-control-lg form-icon-start border-white rounded-pill" name="search" placeholder="Search the products">
-          <button type="submit" class="btn btn-primary" style="position: absolute;top:50%;right:-5%;transform:translate(-50%,-50%)">Tìm kiếm</button>
-        </form>
+          <input type="search" class="form-control form-control-lg form-icon-start border-white rounded-pill search-header" placeholder="Search the products">
+          <div class="search-history-dropdown position-absolute w-100 bg-white border border-1 rounded-3 mt-1" style="display: none;">
+            <ul class="list-unstyled mb-0">
+              <!-- Các từ tìm kiếm sẽ được thêm vào đây -->
+            </ul>
+          </div>
         </div>
 
         <!-- Sale link visible on screens > 1200px wide (xl breakpoint) -->
