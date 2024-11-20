@@ -306,6 +306,9 @@
                     </div>
                   </div> -->
                 </li>
+                <li class="nav-item dropdown position-static me-lg-n1 me-xl-0">
+                  <a class="nav-link dropdown-toggle" href="{{ route('news.index') }}" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">Tin tức</a>
+                </li>
                 <li class="nav-item dropdown me-lg-n1 me-xl-0">
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" data-bs-auto-close="outside" aria-expanded="false">Account</a>
                   <ul class="dropdown-menu">

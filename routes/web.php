@@ -14,6 +14,10 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
+use App\Http\Controllers\CategoryNewsController;
+use App\Http\Controllers\ClientNewController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\NewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +29,6 @@ use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
 | thuộc nhóm "web" middleware.
 |
 */
-
 Route::get('/', function () {
     return view('index');
 })->name('user.home');
@@ -91,6 +94,7 @@ Route::prefix('products')->group(function () {
     
 });
 
+
 // Route danh mục bị xóa 
 Route::prefix('categories')->group(function () {
     Route::get('/trashed', [CategoryController::class, 'trashed'])->name('category.trashed');
@@ -108,6 +112,14 @@ Route::prefix('colors')->group(function () {
 });
 // chuyển trang biến thể 
 Route::get('/product/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
+//router review và news
+Route::resource('admin/review',ReviewController::class);
+Route::resource('new_admin',  NewController::class);
+
+Route::get('new', [NewController::class, 'clientIndex'])->name('news.index');
+
+Route::resource('category_news', CategoryNewsController::class);
+
 
 
 Route::resource('vouchers', VoucherController::class);
@@ -131,3 +143,5 @@ Route::get('/subscriptions/send', [SubscriptionController::class, 'create'])->na
 Route::get('/subscriptions/index', [SubscriptionController::class, 'sentEmails'])->name('subscriptions.index');
 // routes/web.php
 Route::post('/subscriptions/send', [SubscriptionController::class, 'sendBulkEmails'])->name('subscriptions.send');
+Route::get('/new/{slug}', [NewController::class, 'singlepost'])->name('news.show');
+Route::get('/new/category/{slug}', [NewController::class, 'categoryNewsBlog'])->name('categoryNewsBlog');
