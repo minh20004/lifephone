@@ -86,7 +86,7 @@ class CategoryController extends Controller
         ->orderBy('category_id')
         ->paginate(10);
 
-        return view('client.categories.shop-catalog', compact('latestProducts', 'categories', 'colors', 'capacities'));
+        return view('client.categories.searchProduct', compact('latestProducts', 'categories', 'colors', 'capacities'));
     }
 
 

@@ -24,49 +24,38 @@ class ProductsTableSeeder extends Seeder
         }
 
         // Thêm sản phẩm mẫu vào bảng 'products'
-        DB::table('products')->insert([
-            [
-                'name' => 'iPhone 14 Pro Max',
+        // Lấy tất cả các category
+        $categories = Category::all();
+
+        // Mảng tên file ảnh
+        $images = [
+            'img-1.png', 'img-2.png', 'img-3.png', 'img-4.png', 'img-5.png',
+            'img-6.png', 'img-7.png', 'img-8.png', 'img-9.png', 'img-10.png'
+        ];
+
+        // Chèn 10 sản phẩm với ảnh ngẫu nhiên
+        $products = [];
+        for ($i = 0; $i < 10; $i++) {
+            $products[] = [
+                'name' => 'Product ' . ($i + 1),
                 'category_id' => $categories->random()->id, // Chọn ngẫu nhiên một category từ bảng categories
-                'description' => 'Mô tả chi tiết về sản phẩm iPhone 14 Pro Max.',
-                'gallery_image' => 'https://example.com/path/to/gallery_image1.jpg',
-                'gallery_images' => json_encode(['https://example.com/path/to/gallery_image1.jpg', 'https://example.com/path/to/gallery_image2.jpg']),
-                'image_url' => 'https://example.com/path/to/image.jpg',
-                'price' => 10990000.00,
-                'product_code' => 'IP14PM123',
-                'views' => 150,
+                'description' => 'Mô tả chi tiết về sản phẩm Product ' . ($i + 1) . '.',
+                'gallery_image' => asset('assets/images/products/' . $images[array_rand($images)]), // Chọn ngẫu nhiên ảnh từ mảng
+                'gallery_images' => json_encode([
+                    asset('assets/images/products/' . $images[array_rand($images)]),
+                    asset('assets/images/products/' . $images[array_rand($images)])
+                ]),
+                'image_url' => asset('assets/images/products/' . $images[array_rand($images)]), // Chọn ngẫu nhiên ảnh chính
+                'price' => rand(1000000, 30000000), // Giá ngẫu nhiên từ 1 triệu đến 30 triệu
+                'product_code' => 'PROD' . str_pad($i + 1, 3, '0', STR_PAD_LEFT), // Mã sản phẩm
+                'views' => rand(50, 500), // Lượt xem ngẫu nhiên
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
                 'deleted_at' => null,
-            ],
-            [
-                'name' => 'Samsung Galaxy S22 Ultra',
-                'category_id' => $categories->random()->id, // Chọn ngẫu nhiên một category từ bảng categories
-                'description' => 'Mô tả chi tiết về sản phẩm Samsung Galaxy S22 Ultra.',
-                'gallery_image' => 'https://example.com/path/to/gallery_image3.jpg',
-                'gallery_images' => json_encode(['https://example.com/path/to/gallery_image3.jpg', 'https://example.com/path/to/gallery_image4.jpg']),
-                'image_url' => 'https://example.com/path/to/image2.jpg',
-                'price' => 27990000.00,
-                'product_code' => 'SGS22U123',
-                'views' => 200,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-                'deleted_at' => null,
-            ],
-            [
-                'name' => 'Xiaomi 13 Pro',
-                'category_id' => $categories->random()->id, // Chọn ngẫu nhiên một category từ bảng categories
-                'description' => 'Mô tả chi tiết về sản phẩm Xiaomi 13 Pro.',
-                'gallery_image' => 'https://example.com/path/to/gallery_image5.jpg',
-                'gallery_images' => json_encode(['https://example.com/path/to/gallery_image5.jpg', 'https://example.com/path/to/gallery_image6.jpg']),
-                'image_url' => 'https://example.com/path/to/image3.jpg',
-                'price' => 15990000.00,
-                'product_code' => 'XM13P123',
-                'views' => 120,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
-                'deleted_at' => null,
-            ],
-        ]);
+            ];
+        }
+
+        // Chèn dữ liệu vào bảng products
+        DB::table('products')->insert($products);
     }
 }

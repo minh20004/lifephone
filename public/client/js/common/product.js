@@ -15,7 +15,7 @@ $('.search-header').keydown(function(event) {
         }
         localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
       }
-      window.location.href = '/products?search=' + encodeURIComponent(searchTerm);
+      window.location.href = '/search?search=' + encodeURIComponent(searchTerm);
     }
   }
 });

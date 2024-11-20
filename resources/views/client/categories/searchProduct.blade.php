@@ -308,14 +308,6 @@
       <!-- Product grid -->
       <div class="col-lg-9">
         <div class="row row-cols-2 row-cols-md-3 g-4 pb-3 mb-3">
-          <div class="row row-cols-2 row-cols-md-3 g-4 pb-3 mb-3">
-            <div id="product-list">
-              <!-- Sản phẩm sẽ được load vào đây qua Ajax -->
-            </div>
-          </div>
-          <div id="filtered-products">
-            <!-- Danh sách sản phẩm sẽ được cập nhật ở đây -->
-          </div>
           <!-- Item -->
           @foreach ($latestProducts as $item)
           <div class="col">
@@ -353,7 +345,7 @@
                 <a class="d-block rounded-top overflow-hidden p-3 p-sm-4" href="shop-product-general-electronics.html">
                   <!-- <span class="badge bg-danger position-absolute top-0 start-0 mt-2 ms-2 mt-lg-3 ms-lg-3">-21%</span> -->
                   <div class="ratio" style="--cz-aspect-ratio: calc(240 / 258 * 100%)">
-                    <img src="{{ asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}">
+                    <img src="{{ asset( $item->image_url) }}" alt="{{ $item->name }}">
                   </div>
                 </a>
               </div>
