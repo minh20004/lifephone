@@ -213,101 +213,10 @@
                   <a class="nav-link" href="{{ route('home') }}">Trang chủ</a>
                 </li>
                 <li class="nav-item dropdown position-static me-lg-n1 me-xl-0">
-                  <a class="nav-link dropdown-toggle" href="{{route('shop')}}" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">Shop</a>
-                  <!-- <div class="dropdown-menu rounded-4 p-4">
-                    <div class="d-flex flex-column flex-lg-row gap-4">
-                      <div style="min-width: 190px">
-                        <div class="h6 mb-2">Electronics Store</div>
-                        <ul class="nav flex-column gap-2 mt-0">
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-categories-electronics.html">Categories Page</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Catalog with Side Filters</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-product-general-electronics.html">Product General Info</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-product-details-electronics.html">Product Details</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-product-reviews-electronics.html">Product Reviews</a>
-                          </li>
-                        </ul>
-                        <div class="h6 pt-4 mb-2">Fashion Store</div>
-                        <ul class="nav flex-column gap-2 mt-0">
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-fashion.html">Catalog with Side Filters</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-product-fashion.html">Product Page</a>
-                          </li>
-                        </ul>
-                        <div class="h6 pt-4 mb-2">Furniture Store</div>
-                        <ul class="nav flex-column gap-2 mt-0">
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-furniture.html">Catalog with Top Filters</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-product-furniture.html">Product Page</a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div style="min-width: 190px">
-                        <div class="h6 mb-2">Grocery Store</div>
-                        <ul class="nav flex-column gap-2 mt-0">
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-grocery.html">Catalog with Side Filters</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-product-grocery.html">Product Page</a>
-                          </li>
-                        </ul>
-                        <div class="h6 pt-4 mb-2">Checkout v.1</div>
-                        <ul class="nav flex-column gap-2 mt-0">
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="checkout-v1-cart.html">Shopping Cart</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="checkout-v1-delivery-1.html">Delivery Info (Step 1)</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="checkout-v1-delivery-2.html">Delivery Info (Step 2)</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="checkout-v1-shipping.html">Shipping Address</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="checkout-v1-payment.html">Payment</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="checkout-v1-thankyou.html">Thank You Page</a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div style="min-width: 190px">
-                        <div class="h6 mb-2">Checkout v.2</div>
-                        <ul class="nav flex-column gap-2 mt-0">
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="checkout-v2-cart.html">Shopping Cart</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="checkout-v2-delivery.html">Delivery Info</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="checkout-v2-pickup.html">Pickup from Store</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="checkout-v2-thankyou.html">Thank You Page</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div> -->
+                  <a class="nav-link" href="{{route('shop')}}">Sản phẩm</a>
                 </li>
                 <li class="nav-item dropdown position-static me-lg-n1 me-xl-0">
-                  <a class="nav-link dropdown-toggle" href="{{ route('news.index') }}" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">Tin tức</a>
+                  <a class="nav-link" href="{{ route('news.index') }}">Tin tức</a>
                 </li>
                 <li class="nav-item dropdown me-lg-n1 me-xl-0">
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" data-bs-auto-close="outside" aria-expanded="false">Account</a>
@@ -380,31 +289,13 @@
                   </ul>
                 </li>
                 <li class="nav-item me-lg-n2 me-xl-0">
-                  <a class="nav-link" href="{{route('cart.index')}}">Docs</a>
+                  <a class="nav-link" href="{{route('cart.index')}}">Giỏ hàng</a>
                 </li>
                 <li class="nav-item me-lg-n2 me-xl-0">
                   <a class="nav-link" href="docs/typography.html">Components</a>
                 </li>
               </ul>
               <hr class="d-lg-none my-3">
-              <ul class="navbar-nav ms-auto">
-                <li class="nav-item dropdown me-lg-n2 me-xl-n1">
-                  <a class="nav-link dropdown-toggle fs-sm px-3" href="#!" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">Eng</a>
-                  <ul class="dropdown-menu fs-sm" style="--cz-dropdown-min-width: 7.5rem; --cz-dropdown-spacer: .25rem">
-                    <li><a class="dropdown-item" href="#!">Français</a></li>
-                    <li><a class="dropdown-item" href="#!">Deutsch</a></li>
-                    <li><a class="dropdown-item" href="#!">Italiano</a></li>
-                  </ul>
-                </li>
-                <li class="nav-item dropdown me-lg-n1">
-                  <a class="nav-link dropdown-toggle fs-sm px-3" href="#!" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">USD ($)</a>
-                  <ul class="dropdown-menu dropdown-menu-end fs-sm" style="--cz-dropdown-min-width: 7rem; --cz-dropdown-spacer: .25rem">
-                    <li><a class="dropdown-item" href="#!">€ EUR</a></li>
-                    <li><a class="dropdown-item" href="#!">£ UKP</a></li>
-                    <li><a class="dropdown-item" href="#!">¥ JPY</a></li>
-                  </ul>
-                </li>
-              </ul>
             </div>
           </div>
         </div>

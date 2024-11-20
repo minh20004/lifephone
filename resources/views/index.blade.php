@@ -33,26 +33,29 @@
               }">
                                 <div class="swiper-wrapper">
                                     <div class="swiper-slide text-center text-xl-start pt-5 py-xl-5">
-                                        <p class="text-body">Feel the real quality sound</p>
-                                        <h2 class="display-4 pb-2 pb-xl-4">Headphones ProMax</h2>
-                                        <a class="btn btn-lg btn-primary" href="shop-product-general-electronics.html">
-                                            Shop now
+                                        <h2 class="display-4 pb-2 pb-xl-4">iPhone 16 Pro</h2>
+                                            <h4 class="text-body">Đỉnh cao công nghệ, hiệu năng vượt trội, 
+                                                chinh phục mọi trải nghiệm!</h4>
+                                        <a class="btn btn-lg btn-primary" href="http://lifephone.test/product/5">
+                                            Xem ngay
                                             <i class="ci-arrow-up-right fs-lg ms-2 me-n1"></i>
                                         </a>
                                     </div>
                                     <div class="swiper-slide text-center text-xl-start pt-5 py-xl-5">
-                                        <p class="text-body">Deal of the week</p>
-                                        <h2 class="display-4 pb-2 pb-xl-4">Powerful iPad Pro M2</h2>
-                                        <a class="btn btn-lg btn-primary" href="shop-product-general-electronics.html">
-                                            Shop now
+                                        <h2 class="display-4 pb-2 pb-xl-4">oppo a 16</h2>
+                                            <h4 class="text-body">Đỉnh cao công nghệ, hiệu năng vượt trội, 
+                                                chinh phục mọi trải nghiệm!</h4>
+                                        <a class="btn btn-lg btn-primary" href="http://lifephone.test/product/5">
+                                            Xem ngay
                                             <i class="ci-arrow-up-right fs-lg ms-2 me-n1"></i>
                                         </a>
                                     </div>
                                     <div class="swiper-slide text-center text-xl-start pt-5 py-xl-5">
-                                        <p class="text-body">Virtual reality glasses</p>
-                                        <h2 class="display-4 pb-2 pb-xl-4">Experience New Reality</h2>
-                                        <a class="btn btn-lg btn-primary" href="shop-catalog-electronics.html">
-                                            Shop now
+                                        <h3 class="display-4 pb-2 pb-xl-4">Galaxy S24 Ultra</h3>
+                                            <h4 class="text-body">Đỉnh cao công nghệ, hiệu năng vượt trội, 
+                                                chinh phục mọi trải nghiệm!</h4>
+                                        <a class="btn btn-lg btn-primary" href="http://lifephone.test/product/5">
+                                            Xem ngay
                                             <i class="ci-arrow-up-right fs-lg ms-2 me-n1"></i>
                                         </a>
                                     </div>
@@ -76,19 +79,19 @@
                                     <div class="swiper-slide d-flex justify-content-end">
                                         <div class="ratio rtl-flip"
                                             style="max-width: 495px; --cz-aspect-ratio: calc(537 / 495 * 100%)">
-                                            <img src="client/img/home/electronics/hero-slider/01.png" alt="Image">
+                                            <img src="client/img/home/electronics/hero-slider/16proo.png" alt="Image">
                                         </div>
                                     </div>
                                     <div class="swiper-slide d-flex justify-content-end">
                                         <div class="ratio rtl-flip"
                                             style="max-width: 495px; --cz-aspect-ratio: calc(537 / 495 * 100%)">
-                                            <img src="client/img/home/electronics/hero-slider/02.png" alt="Image">
+                                            <img src="client/img/home/electronics/hero-slider/oppo.png" alt="Image">
                                         </div>
                                     </div>
                                     <div class="swiper-slide d-flex justify-content-end">
                                         <div class="ratio rtl-flip"
                                             style="max-width: 495px; --cz-aspect-ratio: calc(537 / 495 * 100%)">
-                                            <img src="client/img/home/electronics/hero-slider/03.png" alt="Image">
+                                            <img src="client/img/home/electronics/hero-slider/samsung.png" alt="Image">
                                         </div>
                                     </div>
                                 </div>
@@ -121,7 +124,7 @@
                     </div>
                     <div class="text-center text-xxl-start ps-xxl-3">
                         <h3 class="h6 mb-1">Miễn phí vận chuyển </h3>
-                        <p class="fs-sm mb-0">For all orders over $199.00</p>
+                        <p class="fs-sm mb-0">Đối với tất cả các đơn hàng trên một triệu vnđ</p>
                     </div>
                 </div>
             </div>
@@ -133,8 +136,8 @@
                         <i class="ci-credit-card fs-2 m-xxl-1"></i>
                     </div>
                     <div class="text-center text-xxl-start ps-xxl-3">
-                        <h3 class="h6 mb-1">Secure Payment</h3>
-                        <p class="fs-sm mb-0">We ensure secure payment</p>
+                        <h3 class="h6 mb-1">Thanh toán an toàn</h3>
+                        <p class="fs-sm mb-0">Chúng tôi đảm bảo thanh toán an toàn</p>
                     </div>
                 </div>
             </div>
@@ -146,8 +149,8 @@
                         <i class="ci-refresh-cw fs-2 m-xxl-1"></i>
                     </div>
                     <div class="text-center text-xxl-start ps-xxl-3">
-                        <h3 class="h6 mb-1">Money Back Guarantee</h3>
-                        <p class="fs-sm mb-0">Returning money 30 days</p>
+                        <h3 class="h6 mb-1">Đảm bảo hoàn tiền</h3>
+                        <p class="fs-sm mb-0">Hoàn tiền 30 ngày</p>
                     </div>
                 </div>
             </div>
@@ -159,14 +162,13 @@
                         <i class="ci-chat fs-2 m-xxl-1"></i>
                     </div>
                     <div class="text-center text-xxl-start ps-xxl-3">
-                        <h3 class="h6 mb-1">24/7 Customer Support</h3>
-                        <p class="fs-sm mb-0">Friendly customer support</p>
+                        <h3 class="h6 mb-1">Hỗ trợ khách hàng 24/7</h3>
+                        <p class="fs-sm mb-0">Hỗ trợ khách hàng thân thiện</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
 
     <!--sản phẩm mới-->
     <section class="container pt-5 mt-1 mt-sm-2 mt-md-3 mt-lg-4">
@@ -177,12 +179,12 @@
                   style="background: #1d2c41 url('client/img/home/electronics/banner/background.jpg') center/cover no-repeat">
                   <div class="ratio animate-up-down position-relative z-2 me-lg-4"
                       style="max-width: 320px; margin-bottom: -19%; --cz-aspect-ratio: calc(690 / 640 * 100%)">
-                      <img src="client/img/home/electronics/banner/laptop.png" alt="Laptop">
+                      <img src="client/img/home/electronics/banner/san-pham-moi.png" alt="Laptop">
                   </div>
-                  <h3 class="display-2 mb-2">MacBook</h3>
-                  <p class="text-body fw-medium mb-4">Be Pro Anywhere</p>
+                  <h3 class="display-2 mb-2">Iphone 15 VNA</h3>
+                  <p class="text-body fw-medium mb-4"> Trở nên chuyên nghiệp ở mọi nơi</p>
                   <a class="btn btn-sm btn-primary" href="#!">
-                      From $1,199
+                      Giá: 19.690.000đ
                       <i class="ci-arrow-up-right fs-base ms-1 me-n1"></i>
                   </a>
               </div>
@@ -233,7 +235,6 @@
       </div>
   </section>
   
-
     <!-- Trending products (Grid) Thịnh hành-->
     <section class="container pt-5 mt-2 mt-sm-3 mt-lg-4">
 
@@ -241,7 +242,7 @@
         <div class="d-flex align-items-center justify-content-between border-bottom pb-3 pb-md-4">
             <h2 class="h3 mb-0"> Sản phẩm thịnh hành</h2>
             <div class="nav ms-3">
-                <a class="nav-link animate-underline px-0 py-2" href="shop-catalog-electronics.html">
+                <a class="nav-link animate-underline px-0 py-2" href="#">
                     <span class="animate-target">Xem tất cả</span>
                     <i class="ci-chevron-right fs-base ms-1"></i>
                 </a>
@@ -291,7 +292,7 @@
                                 </ul>
                             </div>
                             <a class="d-block rounded-top overflow-hidden p-3 p-sm-4"
-                                href="shop-product-general-electronics.html">
+                                href="{{ route('product.show', $product->id) }}">
                                 <div class="ratio" style="--cz-aspect-ratio: calc(240 / 258 * 100%)">
                                     <img src="{{ asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}">
                                 </div>
@@ -316,11 +317,14 @@
                             </div>
                             <h3 class="pb-1 mb-2">
                                 <a class="d-block fs-sm fw-medium text-truncate"
-                                    href="{{ url('shop-product/' . $product->slug) }}">
+                                    href="{{ route('product.show', $product->id) }}">
                                     <span class="animate-target">{{ $product->name }}</span>
                                 </a>
                             </h3>
                             <div class="d-flex align-items-center justify-content-between">
+                                @php
+                                      $minPrice = $product->variants->min('price_difference');
+                                  @endphp
                                 <div class="h5 lh-1 mb-0">{{ number_format($minPrice, 0, ',', '.') }} VNĐ</div>
                                 <button type="button"
                                     class="product-card-button btn btn-icon btn-secondary animate-slide-end ms-2"
@@ -330,7 +334,7 @@
                             </div>
                         </div>
                         {{-- Biến thể thông tin chi tiết --}}
-                        <div
+                        {{-- <div
                             class="product-card-details position-absolute top-100 start-0 w-100 bg-body rounded-bottom shadow mt-n2 p-3 pt-1">
                             <span class="position-absolute top-0 start-0 w-100 bg-body mt-n2 py-2"></span>
                             <ul class="list-unstyled d-flex flex-column gap-2 m-0">
@@ -360,7 +364,7 @@
                                     <span class="text-dark-emphasis fs-xs fw-medium text-end">172 grams</span>
                                 </li>
                             </ul>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             @endforeach
@@ -410,15 +414,14 @@
                     <div class="row align-items-center position-relative z-2">
                         <div class="col-md-6 mb-3 mb-md-0">
                             <div class="text-center text-md-start py-md-5 px-4 ps-md-5 pe-md-0 me-md-n5">
-                                <h3 class="text-uppercase fw-bold ps-xxl-3 pb-2 mb-1">Seasonal weekly sale 2024</h3>
-                                <p class="text-body-emphasis ps-xxl-3 mb-0">Use code <span
-                                        class="d-inline-block fw-semibold bg-white text-dark rounded-pill py-1 px-2">Sale
-                                        2024</span> to get best offer</p>
+                                <h3 class="text-uppercase fw-bold ps-xxl-3 pb-2 mb-1">Giảm giá hàng tuần theo mùa năm 2024</h3>
+                                <p class="text-body-emphasis ps-xxl-3 mb-0"> Sử dụng mã <span
+                                        class="d-inline-block fw-semibold bg-white text-dark rounded-pill py-1 px-2">sale 2024</span> để nhận được ưu đãi tốt nhất</p>
                             </div>
                         </div>
                         <div class="col-md-6 d-flex justify-content-center justify-content-md-end pb-5 pb-md-0">
                             <div class="me-xxl-4">
-                                <img src="client/img/home/electronics/banner/camera.png" class="d-block rtl-flip"
+                                <img src="client/img/home/electronics/banner/ultra.png" class="d-block rtl-flip"
                                     width="420" alt="Camera">
                                 <div class="d-none d-lg-block" style="margin-bottom: -9%"></div>
                             </div>
@@ -458,7 +461,7 @@
                 </div>
             </div>
             <div class="nav ms-3">
-                <a class="nav-link animate-underline px-0 py-2" href="shop-catalog-electronics.html">
+                <a class="nav-link animate-underline px-0 py-2" href="#">
                     <span class="animate-target text-nowrap">Xem tất cả</span>
                     <i class="ci-chevron-right fs-base ms-1"></i>
                 </a>
@@ -924,12 +927,11 @@
         </div>
     </section>
 
-
     <!-- Brands -->
     <section class="container pt-4 pt-md-5 pb-5 mt-sm-2 mb-2 mb-sm-3 mb-md-4 mb-lg-5">
         <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-3 g-md-4 g-lg-3 g-xl-4">
             <div class="col">
-                <a class="btn btn-outline-secondary w-100 rounded-4 p-3" href="shop-catalog-electronics.html">
+                <a class="btn btn-outline-secondary w-100 rounded-4 p-3" href="#">
                     <img src="client/img/shop/electronics/brands/apple-light-mode.svg" class="d-none-dark"
                         alt="Apple">
                     <img src="client/img/shop/electronics/brands/apple-dark-mode.svg" class="d-none d-block-dark"
@@ -937,7 +939,7 @@
                 </a>
             </div>
             <div class="col">
-                <a class="btn btn-outline-secondary w-100 rounded-4 p-3" href="shop-catalog-electronics.html">
+                <a class="btn btn-outline-secondary w-100 rounded-4 p-3" href="#">
                     <img src="client/img/shop/electronics/brands/motorola-light-mode.svg" class="d-none-dark"
                         alt="Apple">
                     <img src="client/img/shop/electronics/brands/motorola-dark-mode.svg" class="d-none d-block-dark"
@@ -945,7 +947,7 @@
                 </a>
             </div>
             <div class="col">
-                <a class="btn btn-outline-secondary w-100 rounded-4 p-3" href="shop-catalog-electronics.html">
+                <a class="btn btn-outline-secondary w-100 rounded-4 p-3" href="#">
                     <img src="client/img/shop/electronics/brands/canon-light-mode.svg" class="d-none-dark"
                         alt="Apple">
                     <img src="client/img/shop/electronics/brands/canon-dark-mode.svg" class="d-none d-block-dark"
@@ -953,7 +955,7 @@
                 </a>
             </div>
             <div class="col">
-                <a class="btn btn-outline-secondary w-100 rounded-4 p-3" href="shop-catalog-electronics.html">
+                <a class="btn btn-outline-secondary w-100 rounded-4 p-3" href="#">
                     <img src="client/img/shop/electronics/brands/samsung-light-mode.svg" class="d-none-dark"
                         alt="Apple">
                     <img src="client/img/shop/electronics/brands/samsung-dark-mode.svg" class="d-none d-block-dark"
@@ -961,15 +963,15 @@
                 </a>
             </div>
             <div class="col">
-                <a class="btn btn-outline-secondary w-100 rounded-4 p-3" href="shop-catalog-electronics.html">
+                <a class="btn btn-outline-secondary w-100 rounded-4 p-3" href="#">
                     <img src="client/img/shop/electronics/brands/sony-light-mode.svg" class="d-none-dark" alt="Apple">
                     <img src="client/img/shop/electronics/brands/sony-dark-mode.svg" class="d-none d-block-dark"
                         alt="Apple">
                 </a>
             </div>
             <div class="col">
-                <a class="btn btn-outline-secondary w-100 h-100 rounded-4 p-3" href="shop-categories-electronics.html">
-                    All brands
+                <a class="btn btn-outline-secondary w-100 h-100 rounded-4 p-3" href="#">
+                    Xem tất cả
                     <i class="ci-plus-circle fs-base ms-2"></i>
                 </a>
             </div>

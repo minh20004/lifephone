@@ -120,8 +120,6 @@ Route::get('new', [NewController::class, 'clientIndex'])->name('news.index');
 
 Route::resource('category_news', CategoryNewsController::class);
 
-
-
 Route::resource('vouchers', VoucherController::class);
 
 Route::get('/shop', [ClientCategoryController::class, 'shop'])->name('shop');
