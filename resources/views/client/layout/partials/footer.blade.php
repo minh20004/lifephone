@@ -1,20 +1,70 @@
-  <!-- Thanh điều hướng trên cùng -->
-<!-- Login and Signup Forms -->
-<h2>Login or Sign Up</h2>
-<input type="email" id="email" placeholder="Enter email">
-<input type="password" id="password" placeholder="Enter password">
-<button onclick="signIn()">Sign In</button>
-<button onclick="signUp()">Sign Up</button>
-
-<h3>Already have an account?</h3>
-<button onclick="signOutUser()">Sign Out</button>
-
-<!-- Chat Box (Visible only when logged in) -->
-<div id="chatContainer" style="display: none;">
-    <div id="chatBox" style="max-height: 300px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;"></div>
-    <input type="text" id="messageInput" placeholder="Type your message here">
-    <button id="sendButton" onclick="sendMessage()">Send</button>
-</div>
+<!-- Subscription form + Vlog -->
+<section class="bg-body-tertiary py-5">
+  <div class="container pt-sm-2 pt-md-3 pt-lg-4 pt-xl-5">
+    <div class="row">
+      <div class="col-md-6 col-lg-5 mb-5 mb-md-0">
+        <h2 class="h4 mb-2">Đăng ký nhận bản tin của chúng tôi</h2>
+        <p class="text-body pb-2 pb-ms-3">Nhận thông tin cập nhật mới nhất về sản phẩm và chương trình khuyến mãi của chúng tôi</p>
+        <form class="d-flex needs-validation pb-1 pb-sm-2 pb-md-3 pb-lg-0 mb-4 mb-lg-5" 
+              action="{{ route('subscriptions.store') }}" method="POST" novalidate="">
+            @csrf
+            <div class="position-relative w-100 me-2">
+                <input type="email" name="email" class="form-control form-control-lg" placeholder="Your email" required="">
+            </div>
+            <button type="submit" class="btn btn-lg btn-primary">Nhận thông báo</button>
+        </form>
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+        <div class="d-flex gap-3">
+          <a class="btn btn-icon btn-secondary rounded-circle" href="#!" aria-label="Instagram">
+            <i class="ci-instagram fs-base"></i>
+          </a>
+          <a class="btn btn-icon btn-secondary rounded-circle" href="#!" aria-label="Facebook">
+            <i class="ci-facebook fs-base"></i>
+          </a>
+          <a class="btn btn-icon btn-secondary rounded-circle" href="#!" aria-label="YouTube">
+            <i class="ci-youtube fs-base"></i>
+          </a>
+          <a class="btn btn-icon btn-secondary rounded-circle" href="#!" aria-label="Telegram">
+            <i class="ci-telegram fs-base"></i>
+          </a>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-5 col-xl-4 offset-lg-1 offset-xl-2">
+        <ul class="list-unstyled d-flex flex-column gap-4 ps-md-4 ps-lg-0 mb-3">
+          <li class="nav flex-nowrap align-items-center position-relative">
+            <img src="{{asset('client/img/home/electronics/vlog/01.jpg')}}" class="rounded" width="140" alt="Video cover">
+            <div class="ps-3">
+              <div class="fs-xs text-body-secondary lh-sm mb-2">6:16</div>
+              <a class="nav-link fs-sm hover-effect-underline stretched-link p-0" href="#!">5 New Cool Gadgets You Must See on Cartzilla - Cheap Budget</a>
+            </div>
+          </li>
+          <li class="nav flex-nowrap align-items-center position-relative">
+            <img src="{{asset('client/img/home/electronics/vlog/02.jpg')}}" class="rounded" width="140" alt="Video cover">
+            <div class="ps-3">
+              <div class="fs-xs text-body-secondary lh-sm mb-2">10:20</div>
+              <a class="nav-link fs-sm hover-effect-underline stretched-link p-0" href="#!">5 Super Useful Gadgets on Cartzilla You Must Have in 2023</a>
+            </div>
+          </li>
+          <li class="nav flex-nowrap align-items-center position-relative">
+            <img src="{{asset('client/img/home/electronics/vlog/03.jpg')}}" class="rounded" width="140" alt="Video cover">
+            <div class="ps-3">
+              <div class="fs-xs text-body-secondary lh-sm mb-2">8:40</div>
+              <a class="nav-link fs-sm hover-effect-underline stretched-link p-0" href="#!">Top 5 New Amazing Gadgets on Cartzilla You Must See</a>
+            </div>
+          </li>
+        </ul>
+        <div class="nav ps-md-4 ps-lg-0">
+          <a class="btn nav-link animate-underline text-decoration-none px-0" href="#!">
+            <span class="animate-target">View all</span>
+            <i class="ci-chevron-right fs-base ms-1"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 <span class="position-absolute top-0 start-0 w-100 h-100 bg-body d-none d-block-dark"></span>
       <div class="container position-relative z-1 pt-sm-2 pt-md-3 pt-lg-4" data-bs-theme="dark">
 
