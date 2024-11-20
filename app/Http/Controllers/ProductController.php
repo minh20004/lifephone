@@ -39,7 +39,7 @@ class ProductController extends Controller
         return view('admin.page.product.index', ['products' => $listProduct, 'search' => $search]);
     }
 
-    // show biến thể sản phẩm 
+    // show biến thể sản phẩm
     public function showVariants($id)
     {
         // $product = Product::with('variants.color', 'variants.capacity')->findOrFail($id);
@@ -247,7 +247,7 @@ class ProductController extends Controller
         if (!empty($errors)) {
             return back()->withErrors($errors)->withInput();
         }
-        
+
 
         $product = Product::findOrFail($id);
 
@@ -304,7 +304,7 @@ class ProductController extends Controller
 
         return redirect()->route('product.index')->with('success', 'Sản phẩm đã được cập nhật thành công!');
     }
-    
+
 
 
 
