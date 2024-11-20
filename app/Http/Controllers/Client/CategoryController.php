@@ -9,7 +9,7 @@ use App\Models\Color;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class   CategoryController extends Controller
 {
     // Phương thức lấy tất cả các danh mục
 
@@ -34,28 +34,34 @@ class CategoryController extends Controller
         // Trả về view với các dữ liệu cần thiết
         return view('client.categories.shop-catalog', compact('latestProducts', 'categories', 'colors', 'capacities'));
     }
-    public function filterByCategory(Request $request)
+    public function filter(Request $request)
     {
-        $categoryId = $request->get('category_id');
+        $query = Product::with(['variants', 'variants.color', 'variants.capacity']);
 
-        // Lấy danh sách sản phẩm theo danh mục
-        $products = Product::where('category_id', $categoryId)->with('variants.color', 'variants.capacity')->get();
+        // Lọc theo danh mục
+        if ($request->has('category_id')) {
+            $query->where('category_id', $request->category_id);
+        }
 
+        // Lọc theo khoảng giá
+        if ($request->has('min_price') && $request->has('max_price')) {
+            $query->whereBetween('price', [$request->min_price, $request->max_price]);
+        }
+
+        // Lọc theo dung lượng
+        if ($request->has('capacity_ids')) {
+            $query->whereIn('capacity_id', $request->capacity_ids);
+        }
+
+        // Lọc theo màu sắc
+        if ($request->has('color_id')) {
+            $query->where('color_id', $request->color_id);
+        }
+
+        // Lấy danh sách sản phẩm đã lọc
+        $products = $query->get();
+
+        // Trả về danh sách sản phẩm dưới dạng JSON
         return response()->json($products);
     }
-    public function filter(Request $request)
-{
-    $products = Product::whereIn('capacity_id', $request->capacities)->get();
-    return response()->json($products);
-}
-
-
-
-
-
-    // public function getProductsByCategory($id)
-    // {
-    //     $products = Product::where('category_id', $id)->get();
-    //     dd($products); // Dừng lại và hiển thị kết quả
-    // }
 }

@@ -97,5 +97,5 @@ Route::get('/product/{id}/variants', [ProductController::class, 'showVariants'])
 Route::resource('vouchers', VoucherController::class);
 
 Route::get('/shop', [ClientCategoryController::class, 'shop'])->name('shop');
+Route::get('/filter-products', [ProductController::class, 'filterProducts'])->name('filter.products');
 
-Route::get('/categories/{id}/products', [ClientCategoryController::class, 'getProductsByCategory']);

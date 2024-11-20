@@ -72,7 +72,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#filterSidebar" aria-label="Close"></button>
           </div>
           <div class="offcanvas-body flex-column pt-2 py-lg-0">
-            <!-- Categories -->
+            <!-- Categories --> 
             <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
               <h4 class="h6 mb-2">Categories</h4>
               <ul class="list-unstyled d-block m-0">
@@ -82,12 +82,11 @@
                     <span class="animate-target text-truncate me-3">{{ $item->name }}</span>
                     <!-- Hiển thị số lượng sản phẩm hoặc biến thể -->
                     <span class="text-body-secondary fs-xs ms-auto">{{ $item->product_variants_count ?? $item->products_count }}</span>
-                  </button>
+                    </a>
                 </li>
                 @endforeach
               </ul>
             </div>
-
             <!-- Price range -->
             <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
               <h4 class="h6 mb-2" id="slider-label">Price</h4>
@@ -105,9 +104,9 @@
                   </div>
                 </div>
               </div>
+              <div id="product-list" class="mt-4"></div>
             </div>
-
-            <!-- Capacity (checkboxes) -->
+            <!-- SSD size (checkboxes) -->
             <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
               <h4 class="h6">Capacity</h4>
               <div class="d-flex flex-column gap-1">
@@ -122,13 +121,12 @@
                 @endforeach
               </div>
             </div>
-
             <!-- Color -->
             <div class="w-100 border rounded p-3 p-xl-4">
               <h4 class="h6">Color</h4>
               <div class="nav d-block mt-n2">
                 @foreach ($colors as $color)
-                <button type="button" class="nav-link w-auto animate-underline fw-normal pt-2 pb-0 px-0 color-filter" data-color-id="{{ $color->id }}">
+                <button type="button" class="nav-link w-auto animate-underline fw-normal pt-2 pb-0 px-0">
                   <span class="rounded-circle me-2" style="width: .875rem; height: .875rem; margin-top: .125rem; background-color: {{ $color->code }}"></span>
                   <span class="animate-target">{{ $color->name }}</span>
                 </button>
@@ -136,7 +134,6 @@
               </div>
             </div>
           </div>
-
         </div>
       </aside>
       <!-- Product grid -->
@@ -151,7 +148,7 @@
             <!-- Danh sách sản phẩm sẽ được cập nhật ở đây -->
           </div>
           <!-- Item -->
-          @foreach ($latestProducts as $item)
+          @foreach ($products as $item)
           <div class="col">
             <div class="product-card animate-underline hover-effect-opacity bg-body rounded">
               <div class="position-relative">
@@ -192,6 +189,16 @@
                 </a>
               </div>
               <div class="w-100 min-w-0 px-1 pb-2 px-sm-3 pb-sm-3">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                  <div class="d-flex gap-1 fs-xs">
+                    <i class="ci-star-filled text-warning"></i>
+                    <i class="ci-star-filled text-warning"></i>
+                    <i class="ci-star-filled text-warning"></i>
+                    <i class="ci-star-filled text-warning"></i>
+                    <i class="ci-star text-body-tertiary opacity-75"></i>
+                  </div>
+                  <!-- <span class="text-body-tertiary fs-xs">(123)</span> -->
+                </div>
                 <h3 class="pb-1 mb-2">
                   <a class="d-block fs-sm fw-medium text-truncate" href="shop-product-general-electronics.html">
                     <span class="animate-target">{{$item->name}}</span>
