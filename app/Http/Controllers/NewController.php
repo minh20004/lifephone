@@ -27,8 +27,8 @@ class NewController extends Controller
                 $news->published_at = Carbon::now(); // Ghi lại ngày hiện tại
                 $news->save(); // Lưu lại thay đổi
             }
-        return view('admin.page.new.index', compact('listNews'));
     }
+    return view('admin.page.new.index', compact('listNews'));
 }
     /**
      * Show the form for creating a new resource.
@@ -227,10 +227,13 @@ class NewController extends Controller
 
         // Lấy 3 bài viết tiếp theo có lượt xem cao sau bài viết nhiều view nhất
         $additionalMostViewedNews = News::where('status', 'Công khai')
-            ->where('id', '!=', $mostViewedNews->id) // Loại bỏ bài viết có nhiều view nhất
-            ->orderBy('views', 'desc')
-            ->take(3)
-            ->get();
+        ->when(isset($mostViewedNews), function ($query) use ($mostViewedNews) {
+            return $query->where('id', '!=', $mostViewedNews->id); // Loại trừ bài viết nếu tồn tại
+        })
+        ->orderBy('views', 'desc')
+        ->take(3)
+        ->get();
+    
 
         $latestNews = News::latest()->take(5)->get();
 

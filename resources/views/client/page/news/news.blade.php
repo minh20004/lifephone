@@ -12,7 +12,11 @@ Lifephone
             <li class="breadcrumb-item active" aria-current="page">Tin tức</li>
         </ol>
     </nav>
-
+    @if(!$mostViewedNews && $additionalMostViewedNews->isEmpty() && $allNews->isEmpty())
+        <section class="container pb-5">
+            <p class="text-center text-muted">Chưa có tin tức vào lúc này.</p>
+        </section>
+    @else
 
     <!-- Page title -->
     <h1 class="h3 container mb-4">Tin tức nổi bật </h1>
@@ -171,5 +175,6 @@ Lifephone
     <div class="swiper-pagination position-static mt-4"></div>
     </div>
     </section>
+    @endif
 </main>
 @endsection
