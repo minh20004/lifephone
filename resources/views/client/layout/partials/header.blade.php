@@ -21,7 +21,12 @@
         <!-- Search visible on screens > 991px wide (lg breakpoint) -->
         <div class="position-relative flex-fill d-none d-lg-block pe-4 pe-xl-5">
           <i class="ci-search position-absolute top-50 translate-middle-y d-flex fs-lg text-white ms-3"></i>
-          <input type="search" class="form-control form-control-lg form-icon-start border-white rounded-pill" placeholder="Search the products">
+          <input type="search" class="form-control form-control-lg form-icon-start border-white rounded-pill search-header" placeholder="Search the products">
+          <div class="search-history-dropdown position-absolute w-100 bg-white border border-1 rounded-3 mt-1" style="display: none;">
+            <ul class="list-unstyled mb-0">
+              <!-- Các từ tìm kiếm sẽ được thêm vào đây -->
+            </ul>
+          </div>
         </div>
 
         <!-- Sale link visible on screens > 1200px wide (xl breakpoint) -->
