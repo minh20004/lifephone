@@ -4,10 +4,6 @@
 
 <!-- Bootstrap + Theme scripts -->
 <script src="{{ asset('client/js/theme.min.js') }}"></script>
-<<<<<<< HEAD
-<script src="{{ asset('client/js/app.js') }}"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-=======
 
 <script>
   function toggleChatPopup() {
@@ -209,5 +205,4 @@
             .catch(error => console.error('Error:', error));
     }
 </script>
->>>>>>> 25472a8729c852a9ea87c362fb25ad092fa0ef54
 

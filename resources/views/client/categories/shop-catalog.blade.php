@@ -73,12 +73,13 @@
           </div>
           <div class="offcanvas-body flex-column pt-2 py-lg-0">
             <!-- Categories -->
+
             <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
               <h4 class="h6 mb-2">Categories</h4>
               <ul class="list-unstyled d-block m-0">
                 @foreach ($categories as $item)
                 <li class="nav d-block pt-2 mt-1">
-                  <button type="button" class="nav-link w-auto category-filter" data-category-id="{{ $item->id }}">
+                  <button type="button" class="nav-link w-auto category-filter" data-category-id="{{ $item->id }}" data-toggle="ajax-load">
                     <span class="animate-target text-truncate me-3">{{ $item->name }}</span>
                     <!-- Hiển thị số lượng sản phẩm hoặc biến thể -->
                     <span class="text-body-secondary fs-xs ms-auto">{{ $item->product_variants_count ?? $item->products_count }}</span>
@@ -142,14 +143,12 @@
       <!-- Product grid -->
       <div class="col-lg-9">
         <div class="row row-cols-2 row-cols-md-3 g-4 pb-3 mb-3">
-          <div class="row row-cols-2 row-cols-md-3 g-4 pb-3 mb-3">
-            <div id="product-list">
-              <!-- Sản phẩm sẽ được load vào đây qua Ajax -->
-            </div>
+          <!-- Thêm một div để hiển thị sản phẩm liên quan -->
+          <div id="product-list" class="mt-3">
+            
           </div>
-          <div id="filtered-products">
-            <!-- Danh sách sản phẩm sẽ được cập nhật ở đây -->
-          </div>
+
+
           <!-- Item -->
           @foreach ($latestProducts as $item)
           <div class="col">

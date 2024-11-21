@@ -124,9 +124,8 @@ Route::resource('vouchers', VoucherController::class);
 
 Route::get('/shop', [ClientCategoryController::class, 'shop'])->name('shop');
 Route::get('/filter-products', [ProductController::class, 'filterProducts'])->name('filter.products');
+Route::get('/categories/{id}/products', [ClientCategoryController::class, 'getProducts'])->name('category.products');
 
-<<<<<<< HEAD
-=======
 Route::get('/categories/{id}/products', [ClientCategoryController::class, 'getProductsByCategory']);
 
 // chat
@@ -146,4 +145,3 @@ Route::get('/subscriptions/index', [SubscriptionController::class, 'sentEmails']
 Route::post('/subscriptions/send', [SubscriptionController::class, 'sendBulkEmails'])->name('subscriptions.send');
 Route::get('/new/{slug}', [NewController::class, 'singlepost'])->name('news.show');
 Route::get('/new/category/{slug}', [NewController::class, 'categoryNewsBlog'])->name('categoryNewsBlog');
->>>>>>> 25472a8729c852a9ea87c362fb25ad092fa0ef54

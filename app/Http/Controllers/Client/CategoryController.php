@@ -34,6 +34,14 @@ class   CategoryController extends Controller
         // Trả về view với các dữ liệu cần thiết
         return view('client.categories.shop-catalog', compact('latestProducts', 'categories', 'colors', 'capacities'));
     }
+
+
+    public function getProducts($id)
+    {
+        $category = Category::find($id);
+        $products = $category->products;
+        return view('categories.products', compact('products'));
+    }
     public function filter(Request $request)
     {
         $query = Product::with(['variants', 'variants.color', 'variants.capacity']);

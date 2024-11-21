@@ -350,6 +350,13 @@ class ProductController extends Controller
 
         return redirect()->route('product.trashed')->with('success', 'Sản phẩm đã được khôi phục thành công');
     }
+
+    public function getProductsByCategory($categoryId)
+    {
+        $products = Product::where('category_id', $categoryId)->get();
+
+        return view('products.by-category', compact('products'));
+    }
     public function filterProducts(Request $request)
     {
         // Xử lý các tham số lọc từ yêu cầu
