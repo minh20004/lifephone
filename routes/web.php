@@ -29,21 +29,34 @@ use App\Http\Controllers\NewController;
 | thuộc nhóm "web" middleware.
 |
 */
-Route::get('/', function () {
-    return view('index');
-})->name('user.home');
+// Route::get('/', function () {
+//     return view('index');
+// })->name('user.home');
 
 // font end trang chủ
 Route::get('/', [FrontendControlle::class, 'index'])->name('home');
 
-
+// auth admin ------------------------------------------------------
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/admin/login', [AuthController::class, 'adminLogin'])->name('admin.login.submit');
-Route::post('/admin/logout', [AuthController::class, 'adminLogout'])->name('admin.logout');
+Route::post('/logout', [AuthController::class, 'adminLogout'])->name('admin.logout');
 
 Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.home');
-    Route::get('/them-thanh-vien', [AuthController::class, 'create'])->name('admin.them-thanh-vien');
+    // Route::get('/them-thanh-vien', [AuthController::class, 'create'])->name('admin.them-thanh-vien');
+});
+
+// auth customer ------------------------------------------------------
+Route::get('/customer/add', [AuthController::class, 'createCustomer'])->name('customer.add');
+Route::post('/customer/creat', [AuthController::class, 'storeCustomer'])->name('customer.creat');
+
+Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
+Route::get('/customer/login', [AuthController::class, 'showLogin_customer'])->name('customer.login');
+Route::post('/customer/login', [AuthController::class, 'customerLogin'])->name('customer.login.submit');
+Route::post('/customer/logout', [AuthController::class, 'customerLogout'])->name('customer.logout');
+
+Route::middleware(['auth', 'isCustomer'])->group(function () {
+    Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
 });
 
 // -----------------------------USER------------------------------------------------------------------------------

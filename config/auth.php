@@ -38,7 +38,11 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'users', // Đây là guard mặc định cho user (admin)
+        ],
+        'customer' => [
+            'driver' => 'session',
+            'provider' => 'customers', // Guard cho khách hàng
         ],
     ],
 
@@ -59,16 +63,15 @@ return [
     |
     */
 
-    'providers' => [
+   'providers' => [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'customers' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Customer::class,
+        ],
     ],
 
     /*

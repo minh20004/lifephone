@@ -4,7 +4,6 @@
 
 <!-- Bootstrap + Theme scripts -->
 <script src="{{ asset('client/js/theme.min.js') }}"></script>
-
 <script>
   function toggleChatPopup() {
       const chatPopup = document.getElementById('chatPopup');
