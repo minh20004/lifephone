@@ -214,12 +214,24 @@
                                           <span class="animate-target">{{ $product->name }}</span>
                                       </a>
                                   </h4>
-                                  @php
-                                      $minPrice = $product->variants->min('price_difference');
-                                  @endphp
-                                  <div class="h5 mb-0">
-                                      {{ number_format($minPrice, 0, ',', '.') }} VNĐ
-                                  </div>
+                                @php
+                                    // Lọc các biến thể còn hàng
+                                    $availableVariants = $product->variants->filter(function ($variant) {
+                                        return $variant->stock > 0; // Chỉ lấy biến thể có số lượng tồn lớn hơn 0
+                                    });
+
+                                    // Lấy giá nhỏ nhất từ các biến thể còn hàng
+                                    $minPrice = $availableVariants->min('price_difference');
+                                @endphp
+
+                                <div class="h5 mb-0">
+                                    @if ($minPrice !== null)
+                                        {{ number_format($minPrice, 0, ',', '.') }} VNĐ
+                                    @else
+                                        Hết hàng
+                                    @endif
+                                </div>
+
                               </div>
                           </div>
                       </div>

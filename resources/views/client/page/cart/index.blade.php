@@ -32,146 +32,121 @@
               </div>
             </div>
 
-            <!-- Table of items -->
-            @if(session()->has('cart') && count(session('cart')) > 0)
-              <table class="table position-relative z-2 mb-4">
-                <thead>
-                  <tr>
-                    <th scope="col" class="fs-sm fw-normal py-3 ps-0"><span class="text-body">Sản phẩm</span></th>
-                    <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-xl-table-cell"><span class="text-body">Giá</span></th>
-                    <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-md-table-cell"><span class="text-body">Số lượng</span></th>
-                    <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-md-table-cell"><span class="text-body">Tổng cộng</span></th>
-                    <th scope="col" class="py-0 px-0">
-                      <div class="nav justify-content-end">
-                        <button type="button" class="nav-link d-inline-block text-decoration-underline text-nowrap py-3 px-0">Xóa giỏ hàng</button>
+            
+        @if(session()->has('cart') && count(session('cart')) > 0)
+  <table class="table table-bordered mb-4">
+    <thead class="table-light">
+      <tr>
+        <th>Sản phẩm</th>
+        <th class="d-none d-xl-table-cell">Giá</th>
+        <th class="d-none d-md-table-cell">Số lượng</th>
+        <th class="d-none d-md-table-cell">Tổng cộng</th>
+        <th class="text-center">
+          <button class="btn btn-outline-danger">Xóa giỏ hàng</button>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      @foreach ($cartItems as $item)
+          <tr data-product-id="{{ $item['product']->id }}" data-model-id="{{ $item['capacity']->id }}" data-color-id="{{ $item['color']->id }}">
+              <td>
+                  <!-- Checkbox để chọn sản phẩm -->
+                  <div class="form-check">
+                      <input 
+                          class="form-check-input cart-item-checkbox" 
+                          type="checkbox" 
+                          value="{{ $item['product']->id }}-{{ $item['capacity']->id }}-{{ $item['color']->id }}" 
+                          checked>
+                  </div>
+              </td>
+              <td>
+                  <div class="d-flex align-items-center">
+                      <a href="shop-product-general-electronics.html">
+                          <img src="{{ asset('storage/' . $item['product']->image_url) }}" width="110" class="img-fluid rounded">
+                      </a>
+                      <div class="ms-3">
+                          <h5><a href="shop-product-general-electronics.html">{{ $item['product']->name }}</a></h5>
+                          <ul>
+                              <li>Màu sắc: <span>{{ $item['color']->name }}</span></li>
+                              <li>Dung lượng: <span>{{ $item['capacity']->name }}</span></li>
+                          </ul>
                       </div>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody class="align-middle">
+                  </div>
+              </td>
+              <td class="d-none d-xl-table-cell">{{ number_format($item['price'], 0, ',', '.') }} đ</td>
+              <td class="d-none d-md-table-cell">
+                  <div class="input-group input-group-sm count-input">
+                      <button class="btn btn-outline-secondary btn-decrement" type="button">−</button>
+                      <input type="number" value="{{ $item['quantity'] }}" class="form-control" readonly>
+                      <button class="btn btn-outline-secondary btn-increment" type="button">+</button>
+                  </div>
+              </td>
+              <td class="d-none d-md-table-cell" id="itemTotal-{{ $item['product']->id }}-{{ $item['capacity']->id }}-{{ $item['color']->id }}">{{ number_format($item['itemTotal'], 0, ',', '.') }} đ</td>
+              <td class="text-center">
+                  <form action="{{ route('cart.remove', ['productId' => $item['product']->id, 'modelId' => $item['capacity']->id, 'colorId' => $item['color']->id]) }}" method="POST">
+                      @csrf
+                      <button type="submit" class="btn-close"></button>
+                  </form>
+              </td>
+          </tr>
+      @endforeach
+  </tbody>
+  
+  </table>
+@else
+  <p class="text-center text-muted">Giỏ hàng của bạn hiện đang trống.</p>
+@endif
 
-                  <!-- Item -->
-                  @foreach ($cartItems as $item)
-                    <tr data-product-id="{{ $item['product']->id }}" data-model-id="{{ $item['capacity']->id }}" data-color-id="{{ $item['color']->id }}">
-                      <td class="py-3 ps-0">
-                        <div class="d-flex align-items-center">
-                          <a class="flex-shrink-0" href="shop-product-general-electronics.html">
-                            <img src="{{ asset('storage/' . $item['product']->image_url) }}" width="110" alt="iPhone 14">
-                          </a>
-                          <div class="w-100 min-w-0 ps-2 ps-xl-3">
-                            <h5 class="d-flex animate-underline mb-2">
-                              <a class="d-block fs-sm fw-medium text-truncate animate-target" href="shop-product-general-electronics.html">{{ $item['product']->name }}</a>
-                            </h5>
-                            <ul class="list-unstyled gap-1 fs-xs mb-0">
-                              <li><span class="text-body-secondary">Màu sắc:</span> <span class="text-dark-emphasis fw-medium">{{ $item['color']->name }}</span></li>
-                              <li><span class="text-body-secondary">Dung lượng:</span> <span class="text-dark-emphasis fw-medium">{{ $item['capacity']->name }}</span></li>
-                            </ul>
-                            <div class="count-input rounded-2 d-md-none mt-3">
-                              <button type="button" class="btn btn-sm btn-icon" data-decrement="" aria-label="Decrement quantity">
-                                <i class="ci-minus"></i>
-                              </button>
-                              <input type="number" class="form-control form-control-sm" value="{{ $item['quantity'] }}" readonly="">
-                              <button type="button" class="btn btn-sm btn-icon" data-increment="" aria-label="Increment quantity">
-                                <i class="ci-plus"></i>
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="h6 py-3 d-none d-xl-table-cell">{{ number_format($item['price'], 0, ',', '.') }} đ</td>
-                      <td class="py-3 d-none d-md-table-cell">
-                        <div class="count-input">
-                          <button type="button" class="btn btn-icon" data-decrement="" aria-label="Decrement quantity">
-                            <i class="ci-minus"></i>
-                          </button>
-                          <input type="number" class="form-control" value="1" readonly="">
-                          <button type="button" class="btn btn-icon" data-increment="" aria-label="Increment quantity">
-                            <i class="ci-plus"></i>
-                          </button>
-                        </div>
-                      </td>
-                      <td class="h6 py-3 d-none d-md-table-cell" id="itemTotal-{{ $item['product']->id }}-{{ $item['capacity']->id }}-{{ $item['color']->id }}">{{ number_format($item['itemTotal'], 0, ',', '.') }} đ</td>
-                      <td class="text-end py-3 px-0">
-                        <form action="{{ route('cart.remove', ['productId' => $item['product']->id, 'modelId' => $item['capacity']->id, 'colorId' => $item['color']->id]) }}" method="POST">
-                          @csrf
-                          <button type="submit" class="btn-close fs-sm" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-sm" data-bs-title="Remove" aria-label="Remove from cart"></button>
-                        </form>
-                      </td>
-                    </tr>
-                  @endforeach
-                  
-                </tbody>
-              </table>
-            @else
-            <p>Giỏ hàng của bạn hiện đang trống.</p>
-            @endif
-            <div class="nav position-relative z-2 mb-4 mb-lg-0">
-              <a class="nav-link animate-underline px-0" href="{{route('home')}}">
-                <i class="ci-chevron-left fs-lg me-1"></i>
-                <span class="animate-target">Tiếp tục mua sắm</span>
-              </a>
-            </div>
+<div class="nav mb-4">
+  <a class="nav-link" href="{{ route('home') }}">
+    <i class="ci-chevron-left fs-lg"></i> Tiếp tục mua sắm
+  </a>
+</div>
+
+<aside class="col-lg-4">
+  <div class="position-sticky top-0">
+    <div class="bg-body-tertiary rounded-5 p-4 mb-3">
+      <h5>Tóm tắt đơn hàng</h5>
+      <ul class="list-unstyled">
+        <li>Tổng cộng <b>{{ $totalQuantity }}</b> sản phẩm: <span id="totalPrice">{{ number_format($totalPrice, 0, ',', '.') }} đ</span></li>
+        <li>Giảm giá: <span id="discount" class="text-danger">{{ number_format($discount, 0, ',', '.') }} đ</span></li>
+        <li>Vận chuyển: Tính Toán khi thanh toán</li>
+      </ul>
+      <div class="border-top pt-4">
+        <div class="d-flex justify-content-between">
+          <span>Tổng ước tính:</span>
+          <span class="h5" id="totalAfterDiscount">{{ number_format($totalAfterDiscount, 0, ',', '.') }} đ</span>
+        </div>
+        <a class="btn btn-lg btn-primary w-100 mt-3" href="{{ route('checkout') }}">
+          Tiến hành thanh toán
+          <i class="ci-chevron-right fs-lg ms-1"></i>
+        </a>
+      </div>
+    </div>
+
+    <div class="accordion bg-body-tertiary rounded-5 p-4">
+      <div class="accordion-item border-0">
+        <h3 class="accordion-header">
+          <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#promoCode">
+            <i class="ci-percent fs-xl"></i> Áp dụng mã khuyến mãi
+          </button>
+        </h3>
+        <div class="accordion-collapse collapse" id="promoCode">
+          <div class="accordion-body">
+            <form action="{{ route('cart.apply-voucher') }}" method="POST">
+              @csrf
+              <div class="input-group">
+                <input type="text" name="voucher_code" class="form-control" placeholder="Nhập mã khuyến mãi" required>
+                <button type="submit" class="btn btn-dark">Áp dụng</button>
+              </div>
+            </form>
           </div>
         </div>
-        
-        <!-- Tóm tắt đơn hàng (sticky sidebar) -->
-        <aside class="col-lg-4" style="margin-top: -100px">
-          <div class="position-sticky top-0" style="padding-top: 100px">
-            <div class="bg-body-tertiary rounded-5 p-4 mb-3">
-              <div class="p-sm-2 p-lg-0 p-xl-2">
-                <h5 class="border-bottom pb-4 mb-4">Tóm tắt đơn hàng</h5>
-                <ul class="list-unstyled fs-sm gap-3 mb-0">
-                  <li class="d-flex justify-content-between">
-                    <span id="totalQuantity">(Tổng cộng <b>{{ $totalQuantity }}</b> sản phẩm):</span> 
-                    <span class="text-dark-emphasis fw-medium"><span id="totalPrice">{{ number_format($totalPrice, 0, ',', '.') }} đ</span>
-                  </li>
-                  <li class="d-flex justify-content-between">
-                    Giảm giá:
-                    <span class="text-danger fw-medium">{{ number_format($discount, 0, ',', '.') }} đ</span>
-                  </li>
-                  <li class="d-flex justify-content-between">
-                    Vận chuyển:
-                    <span class="text-dark-emphasis fw-medium">Tính Toán khi thanh toán</span>
-                  </li>
-                </ul>
-                <div class="border-top pt-4 mt-4">
-                  <div class="d-flex justify-content-between mb-3">
-                    <span class="fs-sm">Tổng ước tính:</span>
-                    <span class="h5 mb-0"><span id="totalAfterDiscount">{{ number_format($totalAfterDiscount, 0, ',', '.') }} đ</span>
-                  </div>
-                  <a class="btn btn-lg btn-primary w-100" href="{{ route('checkout') }}">
-                    Tiến hành thanh toán
-                    <i class="ci-chevron-right fs-lg ms-1 me-n1"></i>
-                  </a>
+      </div>
+    </div>
+  </div>
+</aside>
 
-                </div>
-              </div>
-            </div>
-            <div class="accordion bg-body-tertiary rounded-5 p-4">
-              <div class="accordion-item border-0">
-                <h3 class="accordion-header" id="promoCodeHeading">
-                  <button type="button" class="accordion-button animate-underline collapsed py-0 ps-sm-2 ps-lg-0 ps-xl-2" data-bs-toggle="collapse" data-bs-target="#promoCode" aria-expanded="false" aria-controls="promoCode">
-                    <i class="ci-percent fs-xl me-2"></i>
-                    <span class="animate-target me-2">Áp dụng mã khuyến mãi</span>
-                  </button>
-                </h3>
-                <div class="accordion-collapse collapse" id="promoCode" aria-labelledby="promoCodeHeading">
-                  <div class="accordion-body pt-3 pb-2 ps-sm-2 px-lg-0 px-xl-2">
-                    <form action="{{ route('cart.apply-voucher') }}" method="POST" class="needs-validation d-flex gap-2" novalidate="">
-                      @csrf
-                      <div class="position-relative w-100">
-                        <input type="text" name="voucher_code" id="voucher_code" class="form-control" placeholder="Nhập mã khuyến mãi" required="">
-                        <div class="invalid-tooltip bg-transparent py-0">Enter a valid promo code!</div>
-                      </div>
-                      <button type="submit" class="btn btn-dark">Áp dụng</button>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </aside>
-        
       
       
       </div>

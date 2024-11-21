@@ -114,6 +114,7 @@ class CartController extends Controller
 
     
     
+    
     public function updateQuantity(Request $request)
     {
         $productId = $request->input('productId');
@@ -151,23 +152,41 @@ class CartController extends Controller
             }
         }
 
-        // Tính tổng tiền cho sản phẩm được cập nhật
-        $itemTotal = $cart[$productId][$modelId][$colorId]['price'] * $quantity ?? 0;
-
-        // Tính toán giảm giá nếu có voucher
-        $totalAfterDiscount = $totalPrice; // Giả sử chưa có voucher
+        // Tính lại giảm giá nếu có mã voucher
+        $discount = 0;
+        $totalAfterDiscount = $totalPrice; // Tổng tiền sau khi giảm giá
         if ($voucher = session()->get('voucher')) {
-            $discount = $voucher['discount'];
-            $totalAfterDiscount = $totalPrice - $discount;
+            if (!empty($voucher['discount'])) {
+                $discount = $voucher['discount'];
+            }
+
+            if (!empty($voucher['code'])) {
+                $voucherModel = Voucher::where('code', $voucher['code'])->first();
+                if ($voucherModel) {
+                    if ($voucherModel->discount_percentage) {
+                        $discount = ($totalPrice * $voucherModel->discount_percentage) / 100;
+                    } elseif ($voucherModel->discount_amount) {
+                        $discount = $voucherModel->discount_amount;
+                    }
+                    $discount = min($discount, $totalPrice);
+                    $totalAfterDiscount = $totalPrice - $discount;
+                    session()->put('voucher', [
+                        'code' => $voucherModel->code,
+                        'discount' => $discount,
+                        'totalAfterDiscount' => $totalAfterDiscount,
+                    ]);
+                }
+            }
         }
 
         return response()->json([
-            'itemTotal' => number_format($itemTotal, 0, ',', '.') . ' đ',
             'totalPrice' => number_format($totalPrice, 0, ',', '.') . ' đ',
             'totalQuantity' => $totalQuantity,
-            'totalAfterDiscount' => number_format($totalAfterDiscount, 0, ',', '.') . ' đ'
+            'totalAfterDiscount' => number_format($totalAfterDiscount, 0, ',', '.') . ' đ',
+            'discount' => number_format($discount, 0, ',', '.') . ' đ',
         ]);
     }
+
     
     public function applyVoucher(Request $request)
     {
@@ -299,16 +318,6 @@ class CartController extends Controller
             'cart', 'totalPrice', 'totalQuantity', 'discount', 'estimatedTotal'
         ));
     }
-
-    
-
-
-
-    
-
-
-
-
 
 
     /**

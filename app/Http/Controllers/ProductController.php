@@ -70,7 +70,7 @@ class ProductController extends Controller
         $validateData = $request->validate([
             'product_code' => 'required',
             'name' => 'required',
-            'image_url' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048',
+            'image_url' => 'nullable|file|mimes:png,jpg,jpeg,gif,webp|max:2048',
             'description' => 'required',
             'category_id' => 'required',
             'variants' => 'required|array',
@@ -163,22 +163,30 @@ class ProductController extends Controller
 
 
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        // Lấy thông tin sản phẩm
+        // Lấy thông tin sản phẩm và các biến thể
         $product = Product::with('variants.color', 'variants.capacity')->findOrFail($id);
 
-        // Tăng lượt xem lên 1
+        // Tăng lượt xem
         $product->increment('views');
-        // hiển thị giá nhỏ nhat
-        $minPrice = $product->variants->min('price_difference');
 
-        // Trả về view với dữ liệu sản phẩm
-        return view('client.page.detail-product.general', compact('product','minPrice')); // Chú ý đường dẫn view
+        // Lọc các biến thể còn hàng
+        $availableVariants = $product->variants->filter(function ($variant) {
+            return $variant->stock > 0; // Chỉ lấy biến thể có số lượng tồn lớn hơn 0
+        });
+
+        // Lấy giá nhỏ nhất từ các biến thể còn hàng
+        $minPrice = $availableVariants->min('price_difference');
+
+        // Trả về view với dữ liệu sản phẩm và giá nhỏ nhất
+        return view('client.page.detail-product.general', compact(
+            'product',
+            'minPrice'
+        ));
     }
+
+
 
     public function edit(string $id)
     {
