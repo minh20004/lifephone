@@ -121,12 +121,9 @@ Route::get('new', [NewController::class, 'clientIndex'])->name('news.index');
 Route::resource('category_news', CategoryNewsController::class);
 
 Route::resource('vouchers', VoucherController::class);
-
+//Shop
 Route::get('/shop', [ClientCategoryController::class, 'shop'])->name('shop');
-Route::get('/filter-products', [ProductController::class, 'filterProducts'])->name('filter.products');
-Route::get('/categories/{id}/products', [ClientCategoryController::class, 'getProducts'])->name('category.products');
-
-Route::get('/categories/{id}/products', [ClientCategoryController::class, 'getProductsByCategory']);
+Route::get('/categories/{id}/products', [ClientCategoryController::class, 'getProductsByCategory'])->name('client.category.products');
 
 // chat
 Route::get('/chat', [chatController::class, 'index'])->name('chat');

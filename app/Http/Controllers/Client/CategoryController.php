@@ -23,24 +23,41 @@ class   CategoryController extends Controller
 
         // Lấy 10 sản phẩm mới nhất và load danh mục và biến thể sản phẩm với màu sắc
         $latestProducts = Product::with([
-            'category:id,name', // Eager load danh mục với id và name
-            'variants.color:id,name', // Eager load màu sắc (color) thông qua biến thể sản phẩm
-            'variants.capacity:id,name'
+            'variants.color:id,name',
+            'variants.capacity:id,name',
         ])
-            ->orderBy('created_at', 'desc') // Lấy theo thứ tự mới nhất
-            ->take(10) // Giới hạn 10 sản phẩm
+            ->orderBy('created_at', 'desc')
+            ->take(10)
             ->get();
+        
+        // dd($latestProducts->toArray());
 
         // Trả về view với các dữ liệu cần thiết
         return view('client.categories.shop-catalog', compact('latestProducts', 'categories', 'colors', 'capacities'));
     }
 
 
-    public function getProducts($id)
+    public function getProductsByCategory($id)
     {
-        // $categories = Category::find($id);
-        $products = Product::where('category_id', $id)->get();
+        // Lấy danh sách danh mục và đếm số lượng sản phẩm
+        $categories = Category::withCount('products')->get();
+        $colors = Color::all();
+        $capacities = Capacity::withCount('products')->get();
 
-        return view('client.categories.products', compact('products'));
+        // Lọc sản phẩm theo danh mục `$id` và load các quan hệ cần thiết
+        $productsByCategory = Product::with([
+            'category:id,name', // Eager load danh mục với id và name
+            'variants.color:id,name', // Eager load màu sắc (color) thông qua biến thể sản phẩm
+            'variants.capacity:id,name'
+        ])
+            ->where('category_id', $id) // Lọc theo danh mục
+            ->orderBy('created_at', 'desc') // Sắp xếp theo ngày tạo mới nhất
+            ->get();
+
+        // Lấy thông tin danh mục hiện tại
+        $currentCategory = Category::findOrFail($id);
+
+        // Trả về view với các dữ liệu cần thiết
+        return view('client.categories.products', compact('productsByCategory', 'categories', 'colors', 'capacities', 'currentCategory'));
     }
 }

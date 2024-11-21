@@ -79,15 +79,16 @@
               <ul class="list-unstyled d-block m-0">
                 @foreach ($categories as $item)
                 <li class="nav d-block pt-2 mt-1">
-                  <button type="button" class="nav-link w-auto category-filter" data-category-id="{{ $item->id }}" data-toggle="ajax-load">
+                  <a href="{{ route('client.category.products', $item->id) }}" class="nav-link w-auto">
                     <span class="animate-target text-truncate me-3">{{ $item->name }}</span>
                     <!-- Hiển thị số lượng sản phẩm hoặc biến thể -->
                     <span class="text-body-secondary fs-xs ms-auto">{{ $item->product_variants_count ?? $item->products_count }}</span>
-                  </button>
+                  </a>
                 </li>
                 @endforeach
               </ul>
             </div>
+
 
             <!-- Price range -->
             <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
@@ -143,12 +144,6 @@
       <!-- Product grid -->
       <div class="col-lg-9">
         <div class="row row-cols-2 row-cols-md-3 g-4 pb-3 mb-3">
-          <!-- Thêm một div để hiển thị sản phẩm liên quan -->
-          <div id="product-list" class="mt-3">
-            
-          </div>
-
-
           <!-- Item -->
           @foreach ($latestProducts as $item)
           <div class="col">
@@ -225,6 +220,7 @@
           </div>
           @endforeach
         </div>
+      </div>
   </section>
   <!-- Subscription form + Vlog -->
   <section class="bg-body-tertiary py-5">
