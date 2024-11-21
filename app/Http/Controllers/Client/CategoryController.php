@@ -38,38 +38,9 @@ class   CategoryController extends Controller
 
     public function getProducts($id)
     {
-        $category = Category::find($id);
-        $products = $category->products;
-        return view('categories.products', compact('products'));
-    }
-    public function filter(Request $request)
-    {
-        $query = Product::with(['variants', 'variants.color', 'variants.capacity']);
+        // $categories = Category::find($id);
+        $products = Product::where('category_id', $id)->get();
 
-        // Lọc theo danh mục
-        if ($request->has('category_id')) {
-            $query->where('category_id', $request->category_id);
-        }
-
-        // Lọc theo khoảng giá
-        if ($request->has('min_price') && $request->has('max_price')) {
-            $query->whereBetween('price', [$request->min_price, $request->max_price]);
-        }
-
-        // Lọc theo dung lượng
-        if ($request->has('capacity_ids')) {
-            $query->whereIn('capacity_id', $request->capacity_ids);
-        }
-
-        // Lọc theo màu sắc
-        if ($request->has('color_id')) {
-            $query->where('color_id', $request->color_id);
-        }
-
-        // Lấy danh sách sản phẩm đã lọc
-        $products = $query->get();
-
-        // Trả về danh sách sản phẩm dưới dạng JSON
-        return response()->json($products);
+        return view('client.categories.products', compact('products'));
     }
 }
