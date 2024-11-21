@@ -28,10 +28,14 @@ class FrontendControlle extends Controller
         $categories = Category::take(11)->get();
         return view('index', compact('latestProducts', 'trendingProducts', 'categories'));
     }
+
+
     public function index_cate_all()
     {
-         // Lấy danh sách danh mục (với giới hạn số lượng nếu cần)
-         $categories = Category::take(12)->get();
+        $categories = Category::with(['products' => function ($query) {
+            $query->take(5); // Lấy 5 sản phẩm liên quan
+        }])->paginate(8);
+
         return view('client/page/category/cate-all', compact('categories'));
     }
     

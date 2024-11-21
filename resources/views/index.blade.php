@@ -112,22 +112,61 @@
         </div>
     </section>
 
-        <!-- Brands -->
-    <section class="container pt-4 pt-md-5 pb-5 mt-sm-2 mb-2">
-        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-3 g-md-4 g-lg-3 g-xl-4">
-            @foreach ($categories as $category)
+    <!-- Features miễn phí vận chuyển -->
+    <section class="container pt-5 mt-1 mt-sm-3 mt-lg-4 mb-sm-3 mb-md-4 mb-lg-5">
+        <div class="row row-cols-2 row-cols-md-4 g-4">
+
+            <!-- Item -->
             <div class="col">
-                <a class="btn btn-outline-secondary w-100 rounded-4 p-3" href="#">
-                 <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" class="img-fluid">
-                </a>
+                <div class="d-flex flex-column flex-xxl-row align-items-center">
+                    <div class="d-flex text-dark-emphasis bg-body-tertiary rounded-circle p-4 mb-3 mb-xxl-0">
+                        <i class="ci-delivery fs-2 m-xxl-1"></i>
+                    </div>
+                    <div class="text-center text-xxl-start ps-xxl-3">
+                        <h3 class="h6 mb-1">Miễn phí vận chuyển </h3>
+                        <p class="fs-sm mb-0">Đối với tất cả các đơn hàng trên một triệu vnđ</p>
+                    </div>
+                </div>
             </div>
-           @endforeach
-           <div class="col">
-            <a class="btn btn-outline-secondary w-100 h-100 rounded-4 p-3" href="{{route('danh-muc-san-pham')}}">
-                Xem tất cả
-                <i class="ci-plus-circle fs-base ms-2"></i>
-            </a>
-        </div>
+
+            <!-- Item -->
+            <div class="col">
+                <div class="d-flex flex-column flex-xxl-row align-items-center">
+                    <div class="d-flex text-dark-emphasis bg-body-tertiary rounded-circle p-4 mb-3 mb-xxl-0">
+                        <i class="ci-credit-card fs-2 m-xxl-1"></i>
+                    </div>
+                    <div class="text-center text-xxl-start ps-xxl-3">
+                        <h3 class="h6 mb-1">Thanh toán an toàn</h3>
+                        <p class="fs-sm mb-0">Chúng tôi đảm bảo thanh toán an toàn</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item -->
+            <div class="col">
+                <div class="d-flex flex-column flex-xxl-row align-items-center">
+                    <div class="d-flex text-dark-emphasis bg-body-tertiary rounded-circle p-4 mb-3 mb-xxl-0">
+                        <i class="ci-refresh-cw fs-2 m-xxl-1"></i>
+                    </div>
+                    <div class="text-center text-xxl-start ps-xxl-3">
+                        <h3 class="h6 mb-1">Đảm bảo hoàn tiền</h3>
+                        <p class="fs-sm mb-0">Hoàn tiền 30 ngày</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Item -->
+            <div class="col">
+                <div class="d-flex flex-column flex-xxl-row align-items-center">
+                    <div class="d-flex text-dark-emphasis bg-body-tertiary rounded-circle p-4 mb-3 mb-xxl-0">
+                        <i class="ci-chat fs-2 m-xxl-1"></i>
+                    </div>
+                    <div class="text-center text-xxl-start ps-xxl-3">
+                        <h3 class="h6 mb-1">Hỗ trợ khách hàng 24/7</h3>
+                        <p class="fs-sm mb-0">Hỗ trợ khách hàng thân thiện</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -887,62 +926,23 @@
         <div class="d-none d-lg-block" style="padding-bottom: 3%"></div>
     </section>
 
-    <!-- Features miễn phí vận chuyển -->
-    <section class="container pt-5 mt-1 mt-sm-3 mt-lg-4 mb-sm-3 mb-md-4 mb-lg-5">
-        <div class="row row-cols-2 row-cols-md-4 g-4">
-
-            <!-- Item -->
+    <!-- Brands -->
+    <section class="container pt-4 pt-md-5 pb-5 mt-sm-2 mb-2">
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-3 g-md-4 g-lg-3 g-xl-4">
+            @foreach ($categories as $category)
             <div class="col">
-                <div class="d-flex flex-column flex-xxl-row align-items-center">
-                    <div class="d-flex text-dark-emphasis bg-body-tertiary rounded-circle p-4 mb-3 mb-xxl-0">
-                        <i class="ci-delivery fs-2 m-xxl-1"></i>
-                    </div>
-                    <div class="text-center text-xxl-start ps-xxl-3">
-                        <h3 class="h6 mb-1">Miễn phí vận chuyển </h3>
-                        <p class="fs-sm mb-0">Đối với tất cả các đơn hàng trên một triệu vnđ</p>
-                    </div>
-                </div>
+                <a class="btn btn-outline-secondary w-100 rounded-4 p-3" href="#">
+                    <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" class="img-fluid">
+                </a>
             </div>
-
-            <!-- Item -->
+            @endforeach
             <div class="col">
-                <div class="d-flex flex-column flex-xxl-row align-items-center">
-                    <div class="d-flex text-dark-emphasis bg-body-tertiary rounded-circle p-4 mb-3 mb-xxl-0">
-                        <i class="ci-credit-card fs-2 m-xxl-1"></i>
-                    </div>
-                    <div class="text-center text-xxl-start ps-xxl-3">
-                        <h3 class="h6 mb-1">Thanh toán an toàn</h3>
-                        <p class="fs-sm mb-0">Chúng tôi đảm bảo thanh toán an toàn</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Item -->
-            <div class="col">
-                <div class="d-flex flex-column flex-xxl-row align-items-center">
-                    <div class="d-flex text-dark-emphasis bg-body-tertiary rounded-circle p-4 mb-3 mb-xxl-0">
-                        <i class="ci-refresh-cw fs-2 m-xxl-1"></i>
-                    </div>
-                    <div class="text-center text-xxl-start ps-xxl-3">
-                        <h3 class="h6 mb-1">Đảm bảo hoàn tiền</h3>
-                        <p class="fs-sm mb-0">Hoàn tiền 30 ngày</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Item -->
-            <div class="col">
-                <div class="d-flex flex-column flex-xxl-row align-items-center">
-                    <div class="d-flex text-dark-emphasis bg-body-tertiary rounded-circle p-4 mb-3 mb-xxl-0">
-                        <i class="ci-chat fs-2 m-xxl-1"></i>
-                    </div>
-                    <div class="text-center text-xxl-start ps-xxl-3">
-                        <h3 class="h6 mb-1">Hỗ trợ khách hàng 24/7</h3>
-                        <p class="fs-sm mb-0">Hỗ trợ khách hàng thân thiện</p>
-                    </div>
-                </div>
-            </div>
+            <a class="btn btn-outline-secondary w-100 h-100 rounded-4 p-3" href="{{route('danh-muc-san-pham')}}">
+                Xem tất cả
+                <i class="ci-plus-circle fs-base ms-2"></i>
+            </a>
+        </div>
         </div>
     </section>
-    
+
 @endsection

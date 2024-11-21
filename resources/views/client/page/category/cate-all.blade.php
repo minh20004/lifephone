@@ -31,276 +31,41 @@ Lifephone
     <!-- Category cards -->
     <section class="container">
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 gy-5">
-
-        <!-- Category -->
-        <div class="col">
-          <div class="hover-effect-scale">
-            <a class="d-block bg-body-tertiary rounded p-4 mb-4" href="shop-catalog-electronics.html">
-              <div class="ratio" style="--cz-aspect-ratio: calc(184 / 258 * 100%)">
-                <img src="client/assets/img/shop/electronics/categories/01.png" class="hover-effect-target" alt="Smartphones">
-              </div>
-            </a>
-            <h2 class="h6 d-flex w-100 pb-2 mb-1">
-              <a class="animate-underline animate-target d-inline text-truncate" href="shop-catalog-electronics.html">Smartphones</a>
-            </h2>
-            <ul class="nav flex-column gap-2 mt-n1">
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Apple iPhone</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Samsung</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Xiaomi</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Nokia</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Meizu</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Category -->
-        <div class="col">
-          <div class="hover-effect-scale">
-            <a class="d-block bg-body-tertiary rounded p-4 mb-4" href="shop-catalog-electronics.html">
-              <div class="ratio" style="--cz-aspect-ratio: calc(184 / 258 * 100%)">
-                <img src="client/assets/img/shop/electronics/categories/02.png" class="hover-effect-target" alt="Powerbank">
-              </div>
-            </a>
-            <h2 class="h6 d-flex w-100 pb-2 mb-1">
-              <a class="animate-underline animate-target d-inline text-truncate" href="shop-catalog-electronics.html">Accessories</a>
-            </h2>
-            <ul class="nav flex-column gap-2 mt-n1">
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Accessory Kits</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Batteries &amp; Battery Packs</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Cables</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Car Accessories</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Charges &amp; Power Adapters</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">FM Transmitters</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Category -->
-        <div class="col">
-          <div class="hover-effect-scale">
-            <a class="d-block bg-body-tertiary rounded p-4 mb-4" href="shop-catalog-electronics.html">
-              <div class="ratio" style="--cz-aspect-ratio: calc(184 / 258 * 100%)">
-                <img src="client/assets/img/shop/electronics/categories/03.png" class="hover-effect-target" alt="Tablets">
-              </div>
-            </a>
-            <h2 class="h6 d-flex w-100 pb-2 mb-1">
-              <a class="animate-underline animate-target d-inline text-truncate" href="shop-catalog-electronics.html">Tablets</a>
-            </h2>
-            <ul class="nav flex-column gap-2 mt-n1">
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Apple iPad</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Android Tablets</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Samsung</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Xiaomi</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Lenovo</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Category -->
-        <div class="col">
-          <div class="hover-effect-scale">
-            <a class="d-block bg-body-tertiary rounded p-4 mb-4" href="shop-catalog-electronics.html">
-              <div class="ratio" style="--cz-aspect-ratio: calc(184 / 258 * 100%)">
-                <img src="client/assets/img/shop/electronics/categories/04.png" class="hover-effect-target" alt="Wearable Electronics">
-              </div>
-            </a>
-            <h2 class="h6 d-flex w-100 pb-2 mb-1">
-              <a class="animate-underline animate-target d-inline text-truncate" href="shop-catalog-electronics.html">Wearable Electronics</a>
-            </h2>
-            <ul class="nav flex-column gap-2 mt-n1">
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Smart Watches</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Fitness Trackers</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Smart Glasses</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">E-books</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Clips, Arm &amp; Wristbands</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Voice Recorders</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Category -->
-        <div class="col">
-          <div class="hover-effect-scale">
-            <a class="d-block bg-body-tertiary rounded p-4 mb-4" href="shop-catalog-electronics.html">
-              <div class="ratio" style="--cz-aspect-ratio: calc(184 / 258 * 100%)">
-                <img src="client/assets/img/shop/electronics/categories/05.png" class="hover-effect-target" alt="Computers">
-              </div>
-            </a>
-            <h2 class="h6 d-flex w-100 pb-2 mb-1">
-              <a class="animate-underline animate-target d-inline text-truncate" href="shop-catalog-electronics.html">Computers &amp; Laptops</a>
-            </h2>
-            <ul class="nav flex-column gap-2 mt-n1">
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Asus</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Acer</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">HP (Hewlett Packard)</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Lenovo</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Apple MacBook</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Category -->
-        <div class="col">
-          <div class="hover-effect-scale">
-            <a class="d-block bg-body-tertiary rounded p-4 mb-4" href="shop-catalog-electronics.html">
-              <div class="ratio" style="--cz-aspect-ratio: calc(184 / 258 * 100%)">
-                <img src="client/assets/img/shop/electronics/categories/06.png" class="hover-effect-target" alt="Cameras">
-              </div>
-            </a>
-            <h2 class="h6 d-flex w-100 pb-2 mb-1">
-              <a class="animate-underline animate-target d-inline text-truncate" href="shop-catalog-electronics.html">Cameras, Photo &amp; Video</a>
-            </h2>
-            <ul class="nav flex-column gap-2 mt-n1">
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Photo Cameras</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Video Cameras</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Action Cameras</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Camcorders</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Studio Equipment</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Tripods</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Bags and Covers</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Category -->
-        <div class="col">
-          <div class="hover-effect-scale">
-            <a class="d-block bg-body-tertiary rounded p-4 mb-4" href="shop-catalog-electronics.html">
-              <div class="ratio" style="--cz-aspect-ratio: calc(184 / 258 * 100%)">
-                <img src="client/assets/img/shop/electronics/categories/07.png" class="hover-effect-target" alt="Headphones">
-              </div>
-            </a>
-            <h2 class="h6 d-flex w-100 pb-2 mb-1">
-              <a class="animate-underline animate-target d-inline text-truncate" href="shop-catalog-electronics.html">Headphones</a>
-            </h2>
-            <ul class="nav flex-column gap-2 mt-n1">
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Apple</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Defunc</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">HyperX</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">JBL</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Logitech</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Panasonic</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Category -->
-        <div class="col">
-          <div class="hover-effect-scale">
-            <a class="d-block bg-body-tertiary rounded p-4 mb-4" href="shop-catalog-electronics.html">
-              <div class="ratio" style="--cz-aspect-ratio: calc(184 / 258 * 100%)">
-                <img src="client/assets/img/shop/electronics/categories/08.png" class="hover-effect-target" alt="Video Games">
-              </div>
-            </a>
-            <h2 class="h6 d-flex w-100 pb-2 mb-1">
-              <a class="animate-underline animate-target d-inline text-truncate" href="shop-catalog-electronics.html">Video Games</a>
-            </h2>
-            <ul class="nav flex-column gap-2 mt-n1">
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">PlayStation 5</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">PlayStation Controllers</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">PlayStation Games</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Gaming PCs</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Nintendo Switch</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Xbox Series X/S</a>
-              </li>
-              <li class="d-flex w-100 pt-1">
-                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Gaming Peripherals</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+        @foreach ($categories as $category)
+            <!-- Category -->
+            <div class="col">
+                <div class="hover-effect-scale">
+                    <!-- Image and Link to Category -->
+                    <a class="d-block bg-body-tertiary rounded p-4 mb-4" href="{{ route('category.show', $category->id) }}">
+                        <div class="ratio" style="--cz-aspect-ratio: calc(184 / 258 * 100%)">
+                            <img src="{{ asset('storage/' . $category->image_page) }}" class="hover-effect-target" alt="{{ $category->name }}">
+                        </div>
+                    </a>
+                    <!-- Category Name -->
+                    <h2 class="h6 d-flex w-100 pb-2 mb-1">
+                        <a class="animate-underline animate-target d-inline text-truncate" href="{{ route('category.show', $category->id) }}">
+                            {{ $category->name }}
+                        </a>
+                    </h2>
+                    <!-- Products List -->
+                    <ul class="nav flex-column gap-2 mt-n1">
+                        @foreach ($category->products as $product)
+                            <li class="d-flex w-100 pt-1">
+                                <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="{{ route('product.show', $product->id) }}">
+                                    {{ $product->name }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        @endforeach
+    </div>
+    
+    <!-- Pagination -->
+    <div class="d-flex justify-content-center mt-4">
+        {{ $categories->links() }}
+    </div>
     </section>
 
     <!-- Banners -->
