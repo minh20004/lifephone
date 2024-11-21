@@ -21,6 +21,24 @@
                                 </div>
                             @enderror
                         </div>
+                        <div class="mb-3">
+                            <label for="image" class="form-label text-dark fw-bold fs-5">Ảnh đại diện</label>
+                            <input type="file" class="form-control @error('image') is-invalid @enderror" name="image">
+                            @error('image')
+                                <div class="invalid-feedback text-danger">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="image_page" class="form-label text-dark fw-bold fs-5">Ảnh trang danh mục</label>
+                            <input type="file" name="image_page" accept="image_page/*" class="form-control @error('image_page') is-invalid @enderror">
+                            @error('image_page')
+                                <div class="invalid-feedback text-danger">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
                         <div class="mb-3 d-flex justify-content-between">
                             <div>
                                 <a href="{{ route('category.index') }}" class="btn btn-dark"> Quay lại</a>

@@ -43,6 +43,7 @@ Route::post('/admin/logout', [AuthController::class, 'adminLogout'])->name('admi
 
 Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.home');
+    Route::get('/them-thanh-vien', [AuthController::class, 'create'])->name('admin.them-thanh-vien');
 });
 
 // -----------------------------USER------------------------------------------------------------------------------
@@ -143,3 +144,5 @@ Route::get('/subscriptions/index', [SubscriptionController::class, 'sentEmails']
 Route::post('/subscriptions/send', [SubscriptionController::class, 'sendBulkEmails'])->name('subscriptions.send');
 Route::get('/new/{slug}', [NewController::class, 'singlepost'])->name('news.show');
 Route::get('/new/category/{slug}', [NewController::class, 'categoryNewsBlog'])->name('categoryNewsBlog');
+// categoy product
+Route::get('/danh-muc-san-pham', [FrontendControlle::class, 'index_cate_all'])->name('danh-muc-san-pham');
