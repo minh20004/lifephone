@@ -83,4 +83,17 @@ class   CategoryController extends Controller
             'productCount'
         ));
     }
+    public function filter(Request $request)
+{
+    $products = Product::whereIn('capacity_id', $request->capacities)->get();
+    return response()->json($products);
+}
+
+
+
+// public function getProductsByCategory($id)
+    // {
+    //     $products = Product::where('category_id', $id)->get();
+    //     dd($products); // Dừng lại và hiển thị kết quả
+    // }
 }

@@ -1,10 +1,15 @@
 <script src="{{ asset('client/vendor/swiper/swiper-bundle.min.js') }}"></script>
 <script src="{{ asset('client/vendor/timezz/timezz.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <!-- Bootstrap + Theme scripts -->
 <!-- Vendor scripts -->
 <script src="{{ asset('client/vendor/choices.js/choices.min.js') }}"></script>
 <script src="{{ asset('client/js/theme.min.js') }}"></script>
+
+<script src="{{ asset('client/js/common/product.js') }}"></script>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const colorOptions = document.querySelectorAll('input[name="color-options"]');
@@ -176,9 +181,10 @@
             });
         });
 
-        // Khởi tạo giá, số lượng và trạng thái dung lượng, màu sắc lúc đầu 
+        // Khởi tạo giá, số lượng và trạng thái dung lượng, màu sắc lúc đầu
         updateColorOptions();
         updateCapacityOptions();
+        // Khởi tạo giá, số lượng và trạng thái dung lượng lúc đầu
         updatePrice();
         updateQuantity();
     });
@@ -215,7 +221,7 @@
     });
 
     // Hàm cập nhật giỏ hàng và giao diện
-    
+
     function updateCart(productId, modelId, colorId, quantity) {
     fetch('{{ route('cart.update') }}', {
         method: 'POST',
