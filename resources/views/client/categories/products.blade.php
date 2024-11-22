@@ -9,7 +9,12 @@
     </ol>
   </nav>
   <!-- Page title -->
-  <h1 class="h3 container mb-4">Sản phẩm thuộc danh mục: {{ $currentCategory->name }}</h1>
+  <!-- <div class="container mb-4">
+    <p class="h5 text-muted">Tìm thấy <span class="fw-bold text-dark">{{ $productCount }}</span> sản phẩm thuộc danh mục <span class="fw-bold text-primary">{{ $currentCategory->name }}</span></p>
+  </div> -->
+
+
+
 
   <!-- Products grid + Sidebar with filters -->
   <section class="container pb-5 mb-sm-2 mb-md-3 mb-lg-4 mb-xl-5">
@@ -88,6 +93,10 @@
       </aside>
       <!-- Product grid -->
       <div class="col-lg-9">
+        <div class="container mb-6">
+          <p class="h6 text-muted">Tìm thấy <span class="fw-bold text-dark">{{ $productCount }}</span> sản phẩm thuộc danh mục <span class="fw-bold text-primary">{{ $currentCategory->name }}</span></p>
+        </div>
+
         <div class="row row-cols-2 row-cols-md-3 g-4 pb-3 mb-3">
           <!-- Product Items -->
           @forelse ($productsByCategory as $item)
@@ -107,7 +116,12 @@
                   </a>
                 </h3>
                 <div class="d-flex align-items-center justify-content-between">
-                  <div class="h5 lh-1 mb-0">{{ $item->price }}₫</div>
+                  <div class="h5 lh-1 mb-0">@foreach ($item->variants as $variant)
+                    @if ($variant->price_difference == $item->variants->min('price_difference'))
+                    {{ number_format($item->variants->min('price_difference'), 0, ',', '.') }} VND
+                    @endif
+                    @endforeach
+                  </div>
                   <button type="button" class="product-card-button btn btn-icon btn-secondary" aria-label="Add to Cart">
                     <i class="ci-shopping-cart"></i>
                   </button>

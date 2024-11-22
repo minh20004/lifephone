@@ -35,7 +35,7 @@
               </div>
               <div class="position-relative z-1 w-100 align-self-end order-sm-1" style="max-width: 416px">
                 <div class="ratio rtl-flip" style="--cz-aspect-ratio: calc(320 / 416 * 100%)">
-                  <img src="assets/img/shop/electronics/banners/iphone-1.png" alt="iPhone 14">
+                  <img src="client/img/shop/electronics/banners/iphone-1.png" alt="iPhone 14">
                 </div>
               </div>
             </div>
@@ -51,7 +51,7 @@
               </div>
               <a class="position-relative z-1 d-block w-100" href="shop-product-general-electronics.html">
                 <div class="ratio" style="--cz-aspect-ratio: calc(159 / 525 * 100%)">
-                  <img src="assets/img/shop/electronics/banners/ipad.png" width="525" alt="iPad">
+                  <img src="client/img/shop/electronics/banners/ipad.png" width="525" alt="iPad">
                 </div>
               </a>
             </div>
@@ -192,7 +192,13 @@
                   </a>
                 </h3>
                 <div class="d-flex align-items-center justify-content-between">
-                  <div class="h5 lh-1 mb-0">{{ $item->price }} <del class="text-body-tertiary fs-sm fw-normal">$430.00</del></div>
+                  <div class="h5 lh-1 mb-0">@foreach ($item->variants as $variant)
+                    @if ($variant->price_difference == $item->variants->min('price_difference'))
+                    {{ number_format($item->variants->min('price_difference'), 0, ',', '.') }} VND
+                    @endif
+                    @endforeach 
+                    <!-- <del class="text-body-tertiary fs-sm fw-normal">$430.00</del> -->
+                  </div>
                   <button type="button" class="product-card-button btn btn-icon btn-secondary animate-slide-end ms-2" aria-label="Add to Cart">
                     <i class="ci-shopping-cart fs-base animate-target"></i>
                   </button>
