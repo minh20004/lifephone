@@ -27,5 +27,13 @@ class FrontendControlle extends Controller
           return view('index', compact('latestProducts', 'trendingProducts'));
     }
     
+    public function show()
+    {
+        $products = Product::all();
+        dd($products);
+        return view('product',[
+
+        ]);
+    }
     
 }
