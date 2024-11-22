@@ -33,82 +33,87 @@
             </div>
 
             <!-- Table of items -->
-            <table class="table position-relative z-2 mb-4">
-              <thead>
-                <tr>
-                  <th scope="col" class="fs-sm fw-normal py-3 ps-0"><span class="text-body">Sản phẩm</span></th>
-                  <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-xl-table-cell"><span class="text-body">Giá</span></th>
-                  <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-md-table-cell"><span class="text-body">Số lượng</span></th>
-                  <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-md-table-cell"><span class="text-body">Tổng cộng</span></th>
-                  <th scope="col" class="py-0 px-0">
-                    <div class="nav justify-content-end">
-                      <button type="button" class="nav-link d-inline-block text-decoration-underline text-nowrap py-3 px-0">Xóa giỏ hàng</button>
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="align-middle">
+            @if(session()->has('cart') && count(session('cart')) > 0)
+              <table class="table position-relative z-2 mb-4">
+                <thead>
+                  <tr>
+                    <th scope="col" class="fs-sm fw-normal py-3 ps-0"><span class="text-body">Sản phẩm</span></th>
+                    <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-xl-table-cell"><span class="text-body">Giá</span></th>
+                    <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-md-table-cell"><span class="text-body">Số lượng</span></th>
+                    <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-md-table-cell"><span class="text-body">Tổng cộng</span></th>
+                    <th scope="col" class="py-0 px-0">
+                      <div class="nav justify-content-end">
+                        <button type="button" class="nav-link d-inline-block text-decoration-underline text-nowrap py-3 px-0">Xóa giỏ hàng</button>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="align-middle">
 
-                <!-- Item -->
-                <tr>
-                  <td class="py-3 ps-0">
-                    <div class="d-flex align-items-center">
-                      <a class="flex-shrink-0" href="shop-product-general-electronics.html">
-                        <img src="{{asset('client/img/shop/electronics/thumbs/08.png')}}" width="110" alt="iPhone 14">
-                      </a>
-                      <div class="w-100 min-w-0 ps-2 ps-xl-3">
-                        <h5 class="d-flex animate-underline mb-2">
-                          <a class="d-block fs-sm fw-medium text-truncate animate-target" href="shop-product-general-electronics.html">Apple iPhone 14 128GB</a>
-                        </h5>
-                        <ul class="list-unstyled gap-1 fs-xs mb-0">
-                          <li><span class="text-body-secondary">Màu sắc:</span> <span class="text-dark-emphasis fw-medium">White</span></li>
-                          <li><span class="text-body-secondary">Dung lượng:</span> <span class="text-dark-emphasis fw-medium">128GB</span></li>
-                          <li class="d-xl-none"><span class="text-body-secondary">Price:</span> <span class="text-dark-emphasis fw-medium">$899.00</span></li>
-                        </ul>
-                        <div class="count-input rounded-2 d-md-none mt-3">
-                          <button type="button" class="btn btn-sm btn-icon" data-decrement="" aria-label="Decrement quantity">
+                  <!-- Item -->
+                  @foreach ($cartItems as $item)
+                    <tr data-product-id="{{ $item['product']->id }}" data-model-id="{{ $item['capacity']->id }}" data-color-id="{{ $item['color']->id }}">
+                      <td class="py-3 ps-0">
+                        <div class="d-flex align-items-center">
+                          <a class="flex-shrink-0" href="shop-product-general-electronics.html">
+                            <img src="{{ asset('storage/' . $item['product']->image_url) }}" width="110" alt="iPhone 14">
+                          </a>
+                          <div class="w-100 min-w-0 ps-2 ps-xl-3">
+                            <h5 class="d-flex animate-underline mb-2">
+                              <a class="d-block fs-sm fw-medium text-truncate animate-target" href="shop-product-general-electronics.html">{{ $item['product']->name }}</a>
+                            </h5>
+                            <ul class="list-unstyled gap-1 fs-xs mb-0">
+                              <li><span class="text-body-secondary">Màu sắc:</span> <span class="text-dark-emphasis fw-medium">{{ $item['color']->name }}</span></li>
+                              <li><span class="text-body-secondary">Dung lượng:</span> <span class="text-dark-emphasis fw-medium">{{ $item['capacity']->name }}</span></li>
+                            </ul>
+                            <div class="count-input rounded-2 d-md-none mt-3">
+                              <button type="button" class="btn btn-sm btn-icon" data-decrement="" aria-label="Decrement quantity">
+                                <i class="ci-minus"></i>
+                              </button>
+                              <input type="number" class="form-control form-control-sm" value="{{ $item['quantity'] }}" readonly="">
+                              <button type="button" class="btn btn-sm btn-icon" data-increment="" aria-label="Increment quantity">
+                                <i class="ci-plus"></i>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td class="h6 py-3 d-none d-xl-table-cell">{{ number_format($item['price'], 0, ',', '.') }} đ</td>
+                      <td class="py-3 d-none d-md-table-cell">
+                        <div class="count-input">
+                          <button type="button" class="btn btn-icon" data-decrement="" aria-label="Decrement quantity">
                             <i class="ci-minus"></i>
                           </button>
-                          <input type="number" class="form-control form-control-sm" value="1" readonly="">
-                          <button type="button" class="btn btn-sm btn-icon" data-increment="" aria-label="Increment quantity">
+                          <input type="number" class="form-control" value="1" readonly="">
+                          <button type="button" class="btn btn-icon" data-increment="" aria-label="Increment quantity">
                             <i class="ci-plus"></i>
                           </button>
                         </div>
-                      </div>
-                    </div>
-                  </td>
-                  <td class="h6 py-3 d-none d-xl-table-cell">$899.00</td>
-                  <td class="py-3 d-none d-md-table-cell">
-                    <div class="count-input">
-                      <button type="button" class="btn btn-icon" data-decrement="" aria-label="Decrement quantity">
-                        <i class="ci-minus"></i>
-                      </button>
-                      <input type="number" class="form-control" value="1" readonly="">
-                      <button type="button" class="btn btn-icon" data-increment="" aria-label="Increment quantity">
-                        <i class="ci-plus"></i>
-                      </button>
-                    </div>
-                  </td>
-                  <td class="h6 py-3 d-none d-md-table-cell">$899.00</td>
-                  <td class="text-end py-3 px-0">
-                    <button type="button" class="btn-close fs-sm" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-sm" data-bs-title="Remove" aria-label="Remove from cart"></button>
-                  </td>
-                </tr>
-
-                
-              </tbody>
-            </table>
-
+                      </td>
+                      <td class="h6 py-3 d-none d-md-table-cell" id="itemTotal-{{ $item['product']->id }}-{{ $item['capacity']->id }}-{{ $item['color']->id }}">{{ number_format($item['itemTotal'], 0, ',', '.') }} đ</td>
+                      <td class="text-end py-3 px-0">
+                        <form action="{{ route('cart.remove', ['productId' => $item['product']->id, 'modelId' => $item['capacity']->id, 'colorId' => $item['color']->id]) }}" method="POST">
+                          @csrf
+                          <button type="submit" class="btn-close fs-sm" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-sm" data-bs-title="Remove" aria-label="Remove from cart"></button>
+                        </form>
+                      </td>
+                    </tr>
+                  @endforeach
+                  
+                </tbody>
+              </table>
+            @else
+            <p>Giỏ hàng của bạn hiện đang trống.</p>
+            @endif
             <div class="nav position-relative z-2 mb-4 mb-lg-0">
-              <a class="nav-link animate-underline px-0" href="shop-catalog-electronics.html">
+              <a class="nav-link animate-underline px-0" href="{{route('home')}}">
                 <i class="ci-chevron-left fs-lg me-1"></i>
                 <span class="animate-target">Tiếp tục mua sắm</span>
               </a>
             </div>
           </div>
         </div>
-
-
+        
         <!-- Tóm tắt đơn hàng (sticky sidebar) -->
         <aside class="col-lg-4" style="margin-top: -100px">
           <div class="position-sticky top-0" style="padding-top: 100px">
@@ -117,12 +122,12 @@
                 <h5 class="border-bottom pb-4 mb-4">Tóm tắt đơn hàng</h5>
                 <ul class="list-unstyled fs-sm gap-3 mb-0">
                   <li class="d-flex justify-content-between">
-                    Tổng cộng (3 mục):
-                    <span class="text-dark-emphasis fw-medium">$2,427.00</span>
+                    <span id="totalQuantity">(Tổng cộng <b>{{ $totalQuantity }}</b> sản phẩm):</span> 
+                    <span class="text-dark-emphasis fw-medium"><span id="totalPrice">{{ number_format($totalPrice, 0, ',', '.') }} đ</span>
                   </li>
                   <li class="d-flex justify-content-between">
                     Giảm giá:
-                    <span class="text-danger fw-medium">-$110.00</span>
+                    <span class="text-danger fw-medium">{{ number_format($discount, 0, ',', '.') }} đ</span>
                   </li>
                   <li class="d-flex justify-content-between">
                     Vận chuyển:
@@ -132,17 +137,13 @@
                 <div class="border-top pt-4 mt-4">
                   <div class="d-flex justify-content-between mb-3">
                     <span class="fs-sm">Tổng ước tính:</span>
-                    <span class="h5 mb-0">$2,390.40</span>
+                    <span class="h5 mb-0"><span id="totalAfterDiscount">{{ number_format($totalAfterDiscount, 0, ',', '.') }} đ</span>
                   </div>
-                  <a class="btn btn-lg btn-primary w-100" href="checkout-v1-delivery-1.html">
+                  <a class="btn btn-lg btn-primary w-100" href="{{ route('checkout') }}">
                     Tiến hành thanh toán
                     <i class="ci-chevron-right fs-lg ms-1 me-n1"></i>
                   </a>
-                  <div class="nav justify-content-center fs-sm mt-3">
-                    <a class="nav-link text-decoration-underline p-0 me-1" href="#authForm" data-bs-toggle="offcanvas" role="button">Tạo một tài khoản</a>
-                    và nhận được
-                    <span class="text-dark-emphasis fw-medium ms-1">239 phần thưởng</span>
-                  </div>
+
                 </div>
               </div>
             </div>
@@ -156,9 +157,10 @@
                 </h3>
                 <div class="accordion-collapse collapse" id="promoCode" aria-labelledby="promoCodeHeading">
                   <div class="accordion-body pt-3 pb-2 ps-sm-2 px-lg-0 px-xl-2">
-                    <form class="needs-validation d-flex gap-2" novalidate="">
+                    <form action="{{ route('cart.apply-voucher') }}" method="POST" class="needs-validation d-flex gap-2" novalidate="">
+                      @csrf
                       <div class="position-relative w-100">
-                        <input type="text" class="form-control" placeholder="Nhập mã khuyến mãi" required="">
+                        <input type="text" name="voucher_code" id="voucher_code" class="form-control" placeholder="Nhập mã khuyến mãi" required="">
                         <div class="invalid-tooltip bg-transparent py-0">Enter a valid promo code!</div>
                       </div>
                       <button type="submit" class="btn btn-dark">Áp dụng</button>
@@ -169,10 +171,11 @@
             </div>
           </div>
         </aside>
+        
+      
+      
       </div>
     </section>
-
-
     <!-- Trending products (Carousel) -->
     <section class="container pb-4 pb-md-5 mb-2 mb-sm-0 mb-lg-2 mb-xl-4">
       <h2 class="h3 border-bottom pb-4 mb-0">Trending products</h2>
@@ -291,70 +294,6 @@
         </div>
       </div>
     </section>
-
-
-    <!-- Subscription form + Vlog -->
-    <section class="bg-body-tertiary py-5">
-      <div class="container pt-sm-2 pt-md-3 pt-lg-4 pt-xl-5">
-        <div class="row">
-          <div class="col-md-6 col-lg-5 mb-5 mb-md-0">
-            <h2 class="h4 mb-2">Sign up to our newsletter</h2>
-            <p class="text-body pb-2 pb-ms-3">Receive our latest updates about our products &amp; promotions</p>
-            <form class="d-flex needs-validation pb-1 pb-sm-2 pb-md-3 pb-lg-0 mb-4 mb-lg-5" novalidate="">
-              <div class="position-relative w-100 me-2">
-                <input type="email" class="form-control form-control-lg" placeholder="Your email" required="">
-              </div>
-              <button type="submit" class="btn btn-lg btn-primary">Subscribe</button>
-            </form>
-            <div class="d-flex gap-3">
-              <a class="btn btn-icon btn-secondary rounded-circle" href="#!" aria-label="Instagram">
-                <i class="ci-instagram fs-base"></i>
-              </a>
-              <a class="btn btn-icon btn-secondary rounded-circle" href="#!" aria-label="Facebook">
-                <i class="ci-facebook fs-base"></i>
-              </a>
-              <a class="btn btn-icon btn-secondary rounded-circle" href="#!" aria-label="YouTube">
-                <i class="ci-youtube fs-base"></i>
-              </a>
-              <a class="btn btn-icon btn-secondary rounded-circle" href="#!" aria-label="Telegram">
-                <i class="ci-telegram fs-base"></i>
-              </a>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-5 col-xl-4 offset-lg-1 offset-xl-2">
-            <ul class="list-unstyled d-flex flex-column gap-4 ps-md-4 ps-lg-0 mb-3">
-              <li class="nav flex-nowrap align-items-center position-relative">
-                <img src="{{asset('client/img/home/electronics/vlog/01.jpg')}}" class="rounded" width="140" alt="Video cover">
-                <div class="ps-3">
-                  <div class="fs-xs text-body-secondary lh-sm mb-2">6:16</div>
-                  <a class="nav-link fs-sm hover-effect-underline stretched-link p-0" href="#!">5 New Cool Gadgets You Must See on Cartzilla - Cheap Budget</a>
-                </div>
-              </li>
-              <li class="nav flex-nowrap align-items-center position-relative">
-                <img src="{{asset('client/img/home/electronics/vlog/02.jpg')}}" class="rounded" width="140" alt="Video cover">
-                <div class="ps-3">
-                  <div class="fs-xs text-body-secondary lh-sm mb-2">10:20</div>
-                  <a class="nav-link fs-sm hover-effect-underline stretched-link p-0" href="#!">5 Super Useful Gadgets on Cartzilla You Must Have in 2023</a>
-                </div>
-              </li>
-              <li class="nav flex-nowrap align-items-center position-relative">
-                <img src="{{asset('client/img/home/electronics/vlog/03.jpg')}}" class="rounded" width="140" alt="Video cover">
-                <div class="ps-3">
-                  <div class="fs-xs text-body-secondary lh-sm mb-2">8:40</div>
-                  <a class="nav-link fs-sm hover-effect-underline stretched-link p-0" href="#!">Top 5 New Amazing Gadgets on Cartzilla You Must See</a>
-                </div>
-              </li>
-            </ul>
-            <div class="nav ps-md-4 ps-lg-0">
-              <a class="btn nav-link animate-underline text-decoration-none px-0" href="#!">
-                <span class="animate-target">View all</span>
-                <i class="ci-chevron-right fs-base ms-1"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
   </main>
   <!-- Back to top button -->
   <div class="floating-buttons position-fixed top-50 end-0 z-sticky me-3 me-xl-4 pb-4">
@@ -371,3 +310,7 @@
     </a>
   </div>
 @endsection
+
+
+
+

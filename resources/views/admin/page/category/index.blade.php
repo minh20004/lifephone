@@ -42,6 +42,7 @@
                     <table class="table table-bordered">
                         <thead class="thead-light">
                             <th>STT</th>
+                            <th>Ảnh</th>
                             <th>Tên danh mục </th>
                             <th>Hành động </th>
 
@@ -50,6 +51,9 @@
                             @foreach ($categories as $index => $item)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
+                                    <td> 
+                                        <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" width="100px" height="30px">
+                                    </td>
                                     <td>{{ $item->name }}</td>
                                     <td class="d-flex">
                                         <div class="me-2">

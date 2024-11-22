@@ -24,12 +24,12 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrapFive();
          // Chia sẻ dữ liệu danh mục và sản phẩm cho view header
-    View::composer('client.layout.partials.header', function ($view) {
-        $categories = Category::with(['products' => function ($query) {
-            $query->take(10);
-        }])->get();
+         View::composer('client.layout.partials.header', function ($view) {
+            $categories = Category::with(['products' => function ($query) {
+                $query->take(11);
+            }])->take(11)->get();
         
-        $view->with('categories', $categories);
-    });
+            $view->with('categories', $categories);
+        });
     }
 }

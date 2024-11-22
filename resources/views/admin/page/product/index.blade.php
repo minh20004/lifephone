@@ -50,7 +50,8 @@
                                     <td>{{ $item->product_code }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>
-                                        <img src="{{ Storage::url($item->image_url) }}" width="70px" height="70px" alt="">
+                                        {{-- <img src="{{ Storage::url($item->image_url) }}" width="70px" height="70px" alt=""> --}}
+                                        <img src="{{ asset('storage/' . $item->image_url) }}" alt=""  width="70px" height="70px">
                                     </td>
                                     <td>
                                         @if ($item->gallery_image)

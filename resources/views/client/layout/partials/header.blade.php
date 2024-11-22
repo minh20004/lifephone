@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <style>
     .tooltip-container {
         text-align: center;
@@ -34,6 +35,13 @@
         pointer-events: auto;
     }
 </style>
+=======
+{{-- @if(session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@endif --}}
+>>>>>>> e5dbbcf861a71135647feb70e9fc791053ae26b6
 <div class="container d-block py-1 py-lg-3" data-bs-theme="dark">
     <div class="navbar-stuck-hide pt-1"></div>
     <div class="row flex-nowrap align-items-center g-0">
@@ -120,6 +128,7 @@
               </li>
             </ul>
           </div>
+<<<<<<< HEAD
             <!-- Mobile offcanvas menu toggler (Hamburger) -->
             <button type="button" class="navbar-toggler me-4 me-lg-0" data-bs-toggle="offcanvas"
                 data-bs-target="#navbarNav" aria-controls="navbarNav" aria-label="Toggle navigation">
@@ -262,6 +271,43 @@
                     </span>
                 </button>
             </div>
+=======
+
+          <!-- Search toggle button visible on screens < 992px wide (lg breakpoint) -->
+          <button type="button" class="btn btn-icon btn-lg fs-xl btn-outline-secondary border-0 rounded-circle animate-shake d-lg-none" data-bs-toggle="collapse" data-bs-target="#searchBar" aria-expanded="false" aria-controls="searchBar" aria-label="Toggle search bar">
+            <i class="ci-search animate-target"></i>
+          </button>
+
+          <!-- Account button visible on screens > 768px wide (md breakpoint) -->
+          @if (Auth::guard('customer')->check()) 
+              <!-- If the user is logged in, show their initials -->
+              <a class="btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-shake d-none d-md-inline-flex" 
+                href="{{ route('customer.file') }}">
+                  <span class="fw-medium">{{ strtoupper(substr(Auth::guard('customer')->user()->email, 0, 1)) }}</span>
+              </a>
+          @else
+              <!-- If the user is not logged in, show the login icon -->
+              <a class="btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-shake d-none d-md-inline-flex" 
+                href="{{ route('customer.login') }}">
+                  <i class="ci-user animate-target"></i>
+                  <span class="visually-hidden">Account</span>
+              </a>
+          @endif
+
+          <!-- Wishlist button visible on screens > 768px wide (md breakpoint) -->
+          <a class="btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-pulse d-none d-md-inline-flex" href="account-wishlist.html">
+            <i class="ci-heart animate-target"></i>
+            <span class="visually-hidden">Wishlist</span>
+          </a>
+
+          <!-- giỏ hàng button -->
+          <button type="button" class="btn btn-icon btn-lg btn-secondary position-relative rounded-circle ms-2" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Shopping cart">
+            <span class="position-absolute top-0 start-100 mt-n1 ms-n3 badge text-bg-success border border-3 border-dark rounded-pill" style="--cz-badge-padding-y: .25em; --cz-badge-padding-x: .42em">3</span>
+            <span class="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
+              <i class="ci-shopping-cart animate-target ms-n1"></i>
+            </span>
+          </button>
+>>>>>>> e5dbbcf861a71135647feb70e9fc791053ae26b6
         </div>
     </div>
     <div class="navbar-stuck-hide pb-1"></div>
@@ -293,7 +339,7 @@
                             <div class="dropdown w-100">
                   <!-- Buttton visible on screens > 991px wide (lg breakpoint) -->
                   <div class="cursor-pointer d-none d-lg-block" data-bs-toggle="dropdown" data-bs-trigger="hover" data-bs-theme="dark">
-                    <a class="position-absolute top-0 start-0 w-100 h-100" href="">
+                    <a class="position-absolute top-0 start-0 w-100 h-100" href="{{route('danh-muc-san-pham')}}">
                       <span class="visually-hidden">Danh mục</span>
                     </a>
                     <button type="button" class="btn btn-lg btn-secondary dropdown-toggle w-100 rounded-bottom-0 justify-content-start pe-none">
@@ -309,7 +355,14 @@
                   </button>
 
                   <!-- Mega menu danh mục sản phẩm-->
-                  <ul class="dropdown-menu w-100 rounded-top-0 rounded-bottom-4 py-1 p-lg-1" style="--cz-dropdown-spacer: 0; --cz-dropdown-item-padding-y: .625rem; --cz-dropdown-item-spacer: 0">
+                  {{-- <ul class="dropdown-menu dropdown-menu-static w-100 rounded-top-0 rounded-bottom-4 py-1 p-lg-1" style="--cz-dropdown-spacer: 0; --cz-dropdown-item-padding-y: .625rem; --cz-dropdown-item-spacer: 0"> --}}
+                  {{-- <ul class="dropdown-menu w-100 rounded-top-0 rounded-bottom-4 py-1 p-lg-1" style="--cz-dropdown-spacer: 0; --cz-dropdown-item-padding-y: .625rem; --cz-dropdown-item-spacer: 0"> --}}
+                    @if(Route::currentRouteName() === 'home')
+                      <ul class="dropdown-menu dropdown-menu-static w-100 rounded-top-0 rounded-bottom-4 py-1 p-lg-1" style="--cz-dropdown-spacer: 0; --cz-dropdown-item-padding-y: .625rem; --cz-dropdown-item-spacer: 0">
+                    @else
+                      <ul class="dropdown-menu w-100 rounded-top-0 rounded-bottom-4 py-1 p-lg-1" style="--cz-dropdown-spacer: 0; --cz-dropdown-item-padding-y: .625rem; --cz-dropdown-item-spacer: 0">
+                    @endif
+
                     <li class="d-lg-none pt-2">
                       <a class="dropdown-item fw-medium" href="shop-categories-electronics.html">
                         <i class="ci-grid fs-xl opacity-60 pe-1 me-2"></i>
@@ -325,7 +378,7 @@
 
                           <!-- Link cho danh mục lớn -->
                           <a class="dropdown-item fw-medium stretched-link d-none d-lg-flex" href="{{ route('category.show', $category->id) }}">
-                            <i class="ci-{{ $category->icon }} fs-xl opacity-60 pe-1 me-2"></i>
+                            <i class="ci-smartphone-2 fs-xl opacity-60 pe-1 me-2"></i>
                             <span class="text-truncate">{{ $category->name }}</span>
                             <i class="ci-chevron-right fs-base ms-auto me-n1"></i>
                           </a>
@@ -369,98 +422,10 @@
                   <a class="nav-link" href="{{ route('home') }}">Trang chủ</a>
                 </li>
                 <li class="nav-item dropdown position-static me-lg-n1 me-xl-0">
-                  <a class="nav-link dropdown-toggle" href="{{route('shop')}}" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">Shop</a>
-                  <!-- <div class="dropdown-menu rounded-4 p-4">
-                    <div class="d-flex flex-column flex-lg-row gap-4">
-                      <div style="min-width: 190px">
-                        <div class="h6 mb-2">Electronics Store</div>
-                        <ul class="nav flex-column gap-2 mt-0">
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-categories-electronics.html">Categories Page</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-electronics.html">Catalog with Side Filters</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-product-general-electronics.html">Product General Info</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-product-details-electronics.html">Product Details</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-product-reviews-electronics.html">Product Reviews</a>
-                          </li>
-                        </ul>
-                        <div class="h6 pt-4 mb-2">Fashion Store</div>
-                        <ul class="nav flex-column gap-2 mt-0">
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-fashion.html">Catalog with Side Filters</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-product-fashion.html">Product Page</a>
-                          </li>
-                        </ul>
-                        <div class="h6 pt-4 mb-2">Furniture Store</div>
-                        <ul class="nav flex-column gap-2 mt-0">
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-furniture.html">Catalog with Top Filters</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-product-furniture.html">Product Page</a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div style="min-width: 190px">
-                        <div class="h6 mb-2">Grocery Store</div>
-                        <ul class="nav flex-column gap-2 mt-0">
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-catalog-grocery.html">Catalog with Side Filters</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="shop-product-grocery.html">Product Page</a>
-                          </li>
-                        </ul>
-                        <div class="h6 pt-4 mb-2">Checkout v.1</div>
-                        <ul class="nav flex-column gap-2 mt-0">
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="checkout-v1-cart.html">Shopping Cart</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="checkout-v1-delivery-1.html">Delivery Info (Step 1)</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="checkout-v1-delivery-2.html">Delivery Info (Step 2)</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="checkout-v1-shipping.html">Shipping Address</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="checkout-v1-payment.html">Payment</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="checkout-v1-thankyou.html">Thank You Page</a>
-                          </li>
-                        </ul>
-                      </div>
-                      <div style="min-width: 190px">
-                        <div class="h6 mb-2">Checkout v.2</div>
-                        <ul class="nav flex-column gap-2 mt-0">
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="checkout-v2-cart.html">Shopping Cart</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="checkout-v2-delivery.html">Delivery Info</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="checkout-v2-pickup.html">Pickup from Store</a>
-                          </li>
-                          <li class="d-flex w-100 pt-1">
-                            <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="checkout-v2-thankyou.html">Thank You Page</a>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div> -->
+                  <a class="nav-link" href="{{route('shop')}}">Sản phẩm</a>
+                </li>
+                <li class="nav-item dropdown position-static me-lg-n1 me-xl-0">
+                  <a class="nav-link" href="{{ route('news.index') }}">Tin tức</a>
                 </li>
                 <li class="nav-item dropdown me-lg-n1 me-xl-0">
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" data-bs-auto-close="outside" aria-expanded="false">Account</a>
@@ -533,13 +498,14 @@
                   </ul>
                 </li>
                 <li class="nav-item me-lg-n2 me-xl-0">
-                  <a class="nav-link" href="docs/installation.html">Docs</a>
+                  <a class="nav-link" href="{{route('cart.index')}}">Giỏ hàng</a>
                 </li>
                 <li class="nav-item me-lg-n2 me-xl-0">
                   <a class="nav-link" href="docs/typography.html">Components</a>
                 </li>
               </ul>
               <hr class="d-lg-none my-3">
+<<<<<<< HEAD
               <ul class="navbar-nav ms-auto">
                 <li class="nav-item dropdown me-lg-n2 me-xl-n1">
                   <a class="nav-link dropdown-toggle fs-sm px-3" href="#!" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">Eng</a>
@@ -2581,6 +2547,8 @@
                         </ul>
                     </div>
                 </div>
+=======
+>>>>>>> e5dbbcf861a71135647feb70e9fc791053ae26b6
             </div>
         </div>
         <div class="offcanvas-header border-top px-0 py-3 mt-3 d-md-none">
