@@ -68,8 +68,12 @@
                                     <td>
                                         <div class="d-flex align-items-center">
                                             <div class="flex-shrink-0 me-2">
+<<<<<<< HEAD
                                                 <img src="{{ asset('storage/' . $user->avatar) }}" alt=""  width="70px" height="70px">
                                                 {{-- <img src="{{ asset('storage/' . $user->avatar) }}" alt="" class="avatar-xs rounded-circle" /> --}}
+=======
+                                                <img src="{{ asset('storage/' . $user->avatar) }}" alt="" class="avatar-xs rounded-circle" />
+>>>>>>> b023fbb (sua noi)
                                             </div>
                                             <div class="flex-grow-1">{{ $user->name }}</div>
                                         </div>

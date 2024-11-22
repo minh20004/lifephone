@@ -26,8 +26,14 @@
                         <a href="{{ route('color.create') }}" class="btn mb-3 fs-6 fw-bold text-dark"
                             style="background:#9df99d ">Thêm màu sắc</a>
                         <a href="{{ route('color.trashed') }}" class="btn btn-danger mb-3">Xem danh mục đã bị xóa</a>
+<<<<<<< HEAD
                         <a href="{{ route('color.trashed') }}" class="btn btn-danger mb-3">Xem màu sắc đã bị xóa</a>
                     </div>                  
+=======
+                    </div>
+                    
+
+>>>>>>> b023fbb (sua noi)
                     <table class="table table-bordered">
                         <thead class="thead-light">
                             <th>STT</th>

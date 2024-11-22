@@ -4,6 +4,7 @@
 @section('content')
     <div class="page-content">
         <div class="container-fluid">
+<<<<<<< HEAD
             @if ($errors->has('variants'))
     <div class="alert alert-danger">
         <ul>
@@ -14,6 +15,8 @@
     </div>
 @endif
 
+=======
+>>>>>>> b023fbb (sua noi)
             <div class="card ">
                 <h2 class=" text-dark fw-bold m-3 mt-4 "
                     style="font-weight: bold; border-bottom: 2px solid #FFD43B; font-family: 'Roboto', sans-serif; padding-bottom: 10px;padding-left: 5px ">
@@ -234,7 +237,11 @@
                                     @endif
                                 </div>
                             </div>
+<<<<<<< HEAD
                             
+=======
+
+>>>>>>> b023fbb (sua noi)
 
                             <div class="mb-5">
                                 <label for="description" class="form-label text-dark fw-bold fs-5">Mô tả sản phẩm:</label>

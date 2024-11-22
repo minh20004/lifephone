@@ -29,7 +29,11 @@ class Capacity extends Model
 
     public function products()
     {
+<<<<<<< HEAD
         return $this->hasManyThrough(Product::class, ProductVariant::class, 'capacity_id', 'id', 'id', 'product_id');
+=======
+        return $this->hasMany(Product::class);
+>>>>>>> b023fbb (sua noi)
     }
 
     public function productVariants() {

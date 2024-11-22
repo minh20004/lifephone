@@ -21,9 +21,15 @@
                         <div class="btn btn-light mb-4 border ">
                             <form action="{{ route('product.index') }}" method="GET">
                                 <div class="input-group">
+<<<<<<< HEAD
                                     <input type="text" class="form-control search_input" name="search" value="{{ $search }}"
                                         placeholder="Tìm kiếm...">
                                     <button class="btn btn-primary btn-search" type="submit"><i class="mdi mdi-magnify"></i></button>
+=======
+                                    <input type="text" class="form-control" name="search" value="{{ $search }}"
+                                        placeholder="Tìm kiếm...">
+                                    <button class="btn btn-primary" type="submit"><i class="mdi mdi-magnify"></i></button>
+>>>>>>> b023fbb (sua noi)
                                 </div>
                             </form>
                         </div>
@@ -50,8 +56,12 @@
                                     <td>{{ $item->product_code }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>
+<<<<<<< HEAD
                                         {{-- <img src="{{ Storage::url($item->image_url) }}" width="70px" height="70px" alt=""> --}}
                                         <img src="{{ asset('storage/' . $item->image_url) }}" alt=""  width="70px" height="70px">
+=======
+                                        <img src="{{ Storage::url($item->image_url) }}" width="70px" height="70px" alt="">
+>>>>>>> b023fbb (sua noi)
                                     </td>
                                     <td>
                                         @if ($item->gallery_image)
