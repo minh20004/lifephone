@@ -38,11 +38,15 @@ return [
     'guards' => [
         'web' => [
             'driver' => 'session',
-            'provider' => 'users', // Đây là guard mặc định cho user (admin)
+            'provider' => 'users',
         ],
         'customer' => [
             'driver' => 'session',
-            'provider' => 'customers', // Guard cho khách hàng
+            'provider' => 'customers',
+        ],
+            'admin' => [ // Guard cho admin
+            'driver' => 'session',
+            'provider' => 'users', // Sử dụng provider users cho admin
         ],
     ],
 

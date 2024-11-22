@@ -171,71 +171,20 @@
             LIFEPHONE
           </a>
         </header>
+        
+        <h1 class="h2 mt-auto">Khôi phục mật khẩu</h1>
+        <p class="pb-2 pb-md-3">Nhập địa chỉ email bạn đã sử dụng khi tham gia và chúng tôi sẽ gửi cho bạn hướng dẫn đặt lại mật khẩu</p>
 
-        <h1 class="h2 mt-auto">Chào mừng trở lại</h1>
-        @if(session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-            @endif
-        <div class="nav fs-sm mb-4">
-          Bạn chưa có tài khoản ?
-          <a class="nav-link text-decoration-underline p-0 ms-2" href="{{ route('customer.add') }}">Đăng kí tài khoản</a>
-        </div>
-        <!-- Error Alert -->
-        @if ($errors->has('email') || $errors->has('password'))
-        <div class="alert alert-danger mt-4">
-            {{ $errors->first('email') ?: $errors->first('password') }}
-        </div>
-        @endif
-        <!-- Form đăng nhập -->
-        <form class="needs-validation" novalidate action="{{ route('customer.login.submit') }}" method="POST">
-          @csrf
-
-          <!-- Email Field -->
+        <!-- Form -->
+        <form class="needs-validation pb-4 mb-3 mb-lg-4" novalidate="">
           <div class="position-relative mb-4">
-              <input type="email" name="email" class="form-control form-control-lg @error('email') is-invalid @enderror" placeholder="Email" value="{{ old('email') }}" required>
-              <div class="invalid-tooltip bg-transparent py-0">
-                  @error('email') {{ $message }} @else Enter a valid email address! @enderror
-              </div>
+            <i class="ci-mail position-absolute top-50 start-0 translate-middle-y fs-lg ms-3"></i>
+            <input type="email" class="form-control form-control-lg form-icon-start" placeholder="Email address" required="">
+            <div class="invalid-tooltip bg-transparent py-0">Vui lòng nhập địa chỉ email hợp lệ!</div>
           </div>
-
-          <!-- Password Field -->
-          <div class="mb-4">
-              <div class="password-toggle">
-                  <input type="password" 
-                        name="password" 
-                        class="form-control form-control-lg @error('password') is-invalid @enderror" 
-                        placeholder="Password" 
-                        required>
-                  <div class="invalid-tooltip bg-transparent py-0">
-                      @error('password') {{ $message }} @else Password is incorrect! @enderror
-                  </div>
-                  <label class="password-toggle-button fs-lg" aria-label="Show/hide password">
-                      <input type="checkbox" class="btn-check">
-                  </label>
-              </div>
-          </div>
-
-          <!-- Submit Button -->
-          <button type="submit" class="btn btn-lg btn-primary w-100">Đăng nhập</button>
+          <button type="submit" class="btn btn-lg btn-primary w-100">Đặt lại mật khẩu</button>
         </form>
 
-        <!-- Gửi lại email xác nhận nếu tài khoản chưa xác nhận -->
-        @if(session('email') && !session('verified'))
-          <form method="POST" action="{{ route('customer.resend.verification') }}">
-              @csrf
-              <input type="hidden" name="email" value="{{ session('email') }}">
-              <button type="submit" class="btn btn-link">Gửi lại email xác nhận</button>
-          </form>
-        @endif
-        {{-- @if(Auth::guard('customer')->check() && !Auth::guard('customer')->user()->is_verified)
-        <form method="POST" action="{{ route('customer.resend.verification') }}">
-            @csrf
-            <input type="hidden" name="email" value="{{ Auth::guard('customer')->user()->email }}">
-            <button type="submit" class="btn btn-link">Gửi lại email xác nhận</button>
-        </form>
-        @endif --}}
         <!-- Divider -->
         <div class="d-flex align-items-center my-4">
           <hr class="w-100 m-0">

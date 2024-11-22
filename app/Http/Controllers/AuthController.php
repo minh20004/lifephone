@@ -9,9 +9,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerifyEmail;
 
 class AuthController extends Controller
 {
+//  admin ------------------------------------------------------------------------------------------------------------------------------
     public function index()
     {
         $users = User::latest('id')->paginate(2);
@@ -128,7 +132,7 @@ class AuthController extends Controller
         return redirect()->route('login');
     }
     
-// khách hàng ------------------------------------------------------------------------------------------------------------------------------
+//  khách hàng ------------------------------------------------------------------------------------------------------------------------------
 
     public function showLogin_customer()
     {
@@ -137,47 +141,43 @@ class AuthController extends Controller
 
     public function file_customer()
     {
-        return view('client/page/auth/file-customer'); 
+        return view('client/page/auth/page/file-customer'); 
     }
 
     public function customerLogin(Request $request)
     {
-        // Rate limit the login attempts (for example, max 5 attempts per minute)
-        if (RateLimiter::tooManyAttempts('login|' . $request->ip(), 5)) {
-            return back()->withErrors(['email' => 'Too many login attempts. Please try again later.']);
-        }
-
-        // Validate the incoming request data
+        // Validate dữ liệu
         $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
-
-        // Retrieve only the necessary fields from the request
+    
         $credentials = $request->only('email', 'password');
-
-        // Attempt to authenticate the customer using the custom guard 'customer'
+    
+        // Kiểm tra nếu thông tin đăng nhập hợp lệ
         if (Auth::guard('customer')->attempt($credentials)) {
-            // Authentication successful, redirect to the home page with a success message
-            RateLimiter::clear('login|' . $request->ip()); // Clear the rate limit after successful login
-            return redirect()->route('home')->with('success', 'Đăng nhập thành công!');
+            $customer = Auth::guard('customer')->user();
+    
+            if (!$customer->is_verified) {
+                // Nếu tài khoản chưa xác nhận, đăng xuất và trả về thông báo lỗi
+                Auth::guard('customer')->logout();
+                return redirect()->route('customer.login')->withErrors(['email' => 'Tài khoản chưa được xác nhận. Vui lòng kiểm tra email để kích hoạt tài khoản.']);
+            }
+    
+            // Nếu tài khoản đã xác nhận, đăng nhập thành công
+            return redirect()->route('customer.file')->with('success', 'Đăng nhập thành công!');
         }
-
-        // Failed login, increment the login attempts count
-        RateLimiter::hit('login|' . $request->ip());
-
-        // Authentication failed, redirect back with an error message
+    
         return redirect()->back()->withErrors(['email' => 'Thông tin đăng nhập không đúng.']);
     }
-
+    
     public function customerLogout()
     {
         Auth::guard('customer')->logout();
         return redirect()->route('home');
     }
 
-    // Customer CRUD operations
-
+    // Customer CRUD operations  -----------------------------------------------------------------------------------------------------------
     public function indexCustomer()
     {
         $customers = Customer::latest('id')->paginate(10);
@@ -189,61 +189,128 @@ class AuthController extends Controller
         return view('client/page/auth/add');
     }
 
+    // Đăng ký khách hàng
     public function storeCustomer(Request $request)
     {
         $request->validate([
             'email' => 'required|string|email|max:255|unique:customers',
-            'phone' => 'required|string|max:15',
-            'address' => 'required|string',
-            'gender' => 'required|in:male,female,other',
             'password' => 'required|string|min:8|confirmed',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $data = $request->only(['email', 'phone', 'address', 'gender']);
-        $data['password'] = bcrypt($request->password);
+        $verificationToken = Str::random(64);
 
-        if ($request->hasFile('avatar')) {
-            if (!Storage::exists('avatars')) {
-                Storage::makeDirectory('avatars');
-            }
-            $data['avatar'] = Storage::put('avatars', $request->file('avatar'));
-        }
+        $customer = Customer::create([
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'verification_token' => $verificationToken,
+        ]);
 
-        Customer::create($data);
-
-        return redirect()->route('customer.add')->with('success', 'Khách hàng đã được thêm thành công!');
+        // Gửi email xác nhận
+        Mail::send('email.verify', ['token' => $verificationToken], function ($message) use ($customer) {
+            $message->to($customer->email)->subject('Xác nhận tài khoản của bạn');
+        });
+        return redirect()->route('customer.login')->with('success', 'Vui lòng kiểm tra email để xác nhận tài khoản!');
     }
 
+    // Xác nhận email
+    public function verifyCustomer($token)
+    {
+        $customer = Customer::where('verification_token', $token)->first();
+    
+        if (!$customer) {
+            return redirect()->route('customer.login')->withErrors(['email' => 'Token xác nhận không hợp lệ hoặc đã hết hạn.']);
+        }
+    
+        // Kích hoạt tài khoản và xóa token
+        $customer->is_verified = true;
+        $customer->verification_token = null; // Xóa token sau khi xác nhận
+        $customer->save();
+    
+        return redirect()->route('customer.login')->with('success', 'Tài khoản của bạn đã được kích hoạt thành công!');
+    }
+    
+    //gửi lại email xác nhận
+    public function resendVerificationEmail(Request $request)
+    {
+        $customer = Customer::where('email', $request->email)->first();
+    
+        if (!$customer) {
+            return redirect()->route('customer.login')->withErrors(['email' => 'Không tìm thấy tài khoản với email này.']);
+        }
+    
+        // Kiểm tra nếu tài khoản đã được xác nhận
+        if ($customer->is_verified) {
+            return redirect()->route('customer.login')->with('success', 'Tài khoản của bạn đã được xác nhận.');
+        }
+    
+        // Tạo lại token xác nhận duy nhất và lưu vào cơ sở dữ liệu
+        $verificationToken = Str::random(60); 
+        $customer->verification_token = $verificationToken;
+        $customer->save();
+    
+        // Gửi email xác nhận
+        Mail::to($customer->email)->send(new VerifyEmail($customer));
+    
+        return redirect()->route('customer.login')->with('success', 'Đã gửi lại email xác nhận. Vui lòng kiểm tra email của bạn.');
+    }
+    
     public function editCustomer($id)
     {
         $customer = Customer::findOrFail($id);
         return view('admin.page.customer.edit', compact('customer'));
     }
 
+    // Hàm xử lý cập nhật thông tin khách hàng
     public function updateCustomer(Request $request, $id)
     {
         $request->validate([
-            'email' => 'required|string|email|max:255|unique:customers,email,'.$id,
-            'phone' => 'required|string|max:15',
+            'name' => 'required|string|max:255',
+            'phone' => 'required|regex:/^\d{10}$/|max:15',
             'address' => 'required|string',
             'gender' => 'required|in:male,female,other',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ], [
+            'phone.regex' => 'Số điện thoại phải có đúng 10 chữ số!',
         ]);
 
-        $customer = Customer::findOrFail($id);
-        $data = $request->except('avatar');
+        try {
+            $customer = Customer::findOrFail($id);
+            $data = $request->except('avatar');
 
-        if ($request->hasFile('avatar')) {
-            if ($customer->avatar) {
-                Storage::delete($customer->avatar);
+            if ($request->hasFile('avatar')) {
+                if ($customer->avatar) {
+                    Storage::delete($customer->avatar);
+                }
+                $data['avatar'] = Storage::put('avatars', $request->file('avatar'));
             }
-            $data['avatar'] = Storage::put('avatars', $request->file('avatar'));
+
+            $customer->update($data);
+
+            // Gửi thông báo thành công
+            return redirect()->route('customer.profile')->with('success', 'Cập nhật thông tin thành công!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Đã có lỗi xảy ra, vui lòng thử lại!');
         }
-
-        $customer->update($data);
-
-        return redirect()->route('admin.customer.index')->with('success', 'Thông tin khách hàng đã được cập nhật!');
+    }
+    
+    // Hàm xử lý cập nhật số điện thoại email khách hàng
+    public function updateContact(Request $request, $id)
+    {
+        $request->validate([
+            'email' => 'required|email|max:255',
+            'phone' => 'required|regex:/^\+?\d{10,15}$/',  // Kiểm tra số điện thoại hợp lệ
+        ]);
+    
+        try {
+            $user = Customer::findOrFail($id);
+            $user->update([
+                'email' => $request->email,
+                'phone' => $request->phone,
+            ]);
+    
+            return redirect()->route('customer.profile')->with('success', 'Cập nhật thông tin liên hệ thành công!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Đã có lỗi xảy ra, vui lòng thử lại!');
+        }
     }
 
     public function destroyCustomer($id)
@@ -252,5 +319,10 @@ class AuthController extends Controller
         $customer->delete();
 
         return redirect()->route('admin.customer.index')->with('success', 'Khách hàng đã được xóa!');
+    }
+// quản lý hồ sơ khách hàng ------------------------------------------------------------------------------------------------------------------------------
+    public function address()
+    {
+        return view('client.page.auth.page.address');
     }
 }

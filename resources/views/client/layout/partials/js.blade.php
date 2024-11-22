@@ -3,6 +3,8 @@
 <script src="{{ asset('client/vendor/timezz/timezz.js') }}"></script>
 
 <!-- Bootstrap + Theme scripts -->
+<!-- Vendor scripts -->
+<script src="{{ asset('client/vendor/choices.js/choices.min.js') }}"></script>
 <script src="{{ asset('client/js/theme.min.js') }}"></script>
 <script>
   function toggleChatPopup() {

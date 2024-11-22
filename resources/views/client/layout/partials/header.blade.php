@@ -1,3 +1,8 @@
+{{-- @if(session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@endif --}}
 <div class="container d-block py-1 py-lg-3" data-bs-theme="dark">
     <div class="navbar-stuck-hide pt-1"></div>
     <div class="row flex-nowrap align-items-center g-0">
@@ -87,18 +92,6 @@
           </button>
 
           <!-- Account button visible on screens > 768px wide (md breakpoint) -->
-          {{-- @if (Auth::check())
-            <a class="btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-shake d-none d-md-inline-flex" 
-              href="{{ route('customer.file') }}">
-              <span class="fw-medium">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span> <!-- Hiển thị chữ cái đầu tiên -->
-            </a>
-          @else
-            <a class="btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-shake d-none d-md-inline-flex" 
-              href="{{ route('customer.login') }}">
-              <i class="ci-user animate-target"></i>
-              <span class="visually-hidden">Account</span>
-            </a>
-          @endif --}}
           @if (Auth::guard('customer')->check()) 
               <!-- If the user is logged in, show their initials -->
               <a class="btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-shake d-none d-md-inline-flex" 

@@ -39,7 +39,7 @@
               </div>
               <div class="position-relative z-1 w-100 align-self-end order-sm-1" style="max-width: 416px">
                 <div class="ratio rtl-flip" style="--cz-aspect-ratio: calc(320 / 416 * 100%)">
-                  <img src="assets/img/shop/electronics/banners/iphone-1.png" alt="iPhone 14">
+                  <img src="client/img/shop/electronics/banners/iphone-1.png" alt="iPhone 14">
                 </div>
               </div>
             </div>
@@ -55,7 +55,7 @@
               </div>
               <a class="position-relative z-1 d-block w-100" href="shop-product-general-electronics.html">
                 <div class="ratio" style="--cz-aspect-ratio: calc(159 / 525 * 100%)">
-                  <img src="assets/img/shop/electronics/banners/ipad.png" width="525" alt="iPad">
+                  <img src="client/img/shop/electronics/banners/ipad.png" width="525" alt="iPad">
                 </div>
               </a>
             </div>

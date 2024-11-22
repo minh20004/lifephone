@@ -41,24 +41,32 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/admin/login', [AuthController::class, 'adminLogin'])->name('admin.login.submit');
 Route::post('/logout', [AuthController::class, 'adminLogout'])->name('admin.logout');
 
-Route::middleware(['auth', 'isAdmin'])->group(function () {
+Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.home');
-    // Route::get('/them-thanh-vien', [AuthController::class, 'create'])->name('admin.them-thanh-vien');
 });
 
 // auth customer ------------------------------------------------------
+// quản lý hồ sơ khách hàng 
+Route::get('/customer/address', [AuthController::class, 'address'])->name('customer.adress');
+
 Route::get('/customer/add', [AuthController::class, 'createCustomer'])->name('customer.add');
 Route::post('/customer/creat', [AuthController::class, 'storeCustomer'])->name('customer.creat');
+Route::put('/customer/{id}/update', [AuthController::class, 'updateCustomer'])->name('customer.update');
+Route::put('/customer/{id}/updateContact', [AuthController::class, 'updateContact'])->name('customer.updateContact');
+
 
 Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
+Route::get('/verify/{token}', [AuthController::class, 'verifyCustomer'])->name('customer.verify');
+// Route để gửi lại email xác nhận
+Route::post('/customer/resend-verification', [AuthController::class, 'resendVerificationEmail'])->name('customer.resend.verification');
+
 Route::get('/customer/login', [AuthController::class, 'showLogin_customer'])->name('customer.login');
 Route::post('/customer/login', [AuthController::class, 'customerLogin'])->name('customer.login.submit');
 Route::post('/customer/logout', [AuthController::class, 'customerLogout'])->name('customer.logout');
 
-Route::middleware(['auth', 'isCustomer'])->group(function () {
+Route::middleware(['auth:customer', 'isCustomer'])->group(function () {
     Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
 });
-
 // -----------------------------USER------------------------------------------------------------------------------
 //giỏ hàng
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');

@@ -77,7 +77,7 @@ Lifephone
             <span class="position-absolute top-0 start-0 w-100 h-100 d-none d-block-dark rtl-flip" style="background: linear-gradient(90deg, #1b273a 0%, #1f2632 100%)"></span>
             <div class="position-relative z-1 text-center text-sm-start pt-4 pt-sm-0 ps-xl-4 mt-2 mt-sm-0 order-sm-2">
               <h2 class="h3 mb-2">iPhone 14</h2>
-              <p class="fs-sm text-light-emphasis mb-sm-4">Apple iPhone 14 128GB Blue</p>
+              <p class="fs-sm text-light-emphasis mb-sm-4">DDieejn  Apple iPhone 14 128GB Blue</p>
               <a class="btn btn-primary" href="shop-product-general-electronics.html">
                 From $899
                 <i class="ci-arrow-up-right fs-base ms-1 me-n1"></i>

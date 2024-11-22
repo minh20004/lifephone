@@ -172,103 +172,111 @@
               </a>
             </header>
   
-            <h1 class="h2 mt-auto">Create an account</h1>
-            <div class="nav fs-sm mb-3 mb-lg-4">
-              I already have an account
+            <h1 class="h2 mt-auto">Tạo tài khoản mới</h1>
+            <div class="nav fs-sm mb-3 mb-lg-4">         
+            Tôi đã có tài khoản
               <a class="nav-link text-decoration-underline p-0 ms-2" href="{{ route('customer.login') }}">Đăng nhập</a>
             </div>
             <div class="nav fs-sm mb-4 d-lg-none">
-              <span class="me-2">Uncertain about creating an account?</span>
-              <a class="nav-link text-decoration-underline p-0" href="#benefits" data-bs-toggle="offcanvas" aria-controls="benefits">Explore the Benefits</a>
+              <span class="me-2">Bạn không chắc chắn về việc tạo tài khoản?</span>
+              <a class="nav-link text-decoration-underline p-0" href="#benefits" data-bs-toggle="offcanvas" aria-controls="benefits">Khám phá lợi ích</a>
             </div>
             @if(session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
             </div>
             @endif
-            <!-- Form -->
-            <form class="needs-validation" novalidate="" method="POST" action="{{ route('customer.creat') }}" enctype="multipart/form-data">
-                @csrf <!-- CSRF token bảo vệ form khỏi các cuộc tấn công giả mạo -->
-                
-                <!-- Email -->
-                <div class="position-relative mb-4">
-                    <label for="register-email" class="form-label">Email</label>
-                    <input type="email" class="form-control form-control-lg" id="register-email" name="email" required>
-                    <div class="invalid-tooltip bg-transparent py-0">Enter a valid email address!</div>
-                </div>
+            
+           <!-- Form -->
+          <form class="needs-validation" method="POST" action="{{ route('customer.creat') }}">
+              @csrf <!-- CSRF token bảo vệ form khỏi các cuộc tấn công giả mạo -->
+              
+              <!-- Hiển thị lỗi từ server -->
+              @if($errors->any())
+                  <div class="alert alert-danger">
+                      <ul>
+                          @foreach ($errors->all() as $error)
+                              <li>{{ $error }}</li>
+                          @endforeach
+                      </ul>
+                  </div>
+              @endif
 
-                <!-- Password -->
-                <div class="mb-4">
-                    <label for="register-password" class="form-label">Password</label>
-                    <div class="password-toggle">
-                        <input type="password" class="form-control form-control-lg" id="register-password" name="password" minlength="8" placeholder="Minimum 8 characters" required>
-                        <div class="invalid-tooltip bg-transparent py-0">Password does not meet the required criteria!</div>
-                        <label class="password-toggle-button fs-lg" aria-label="Show/hide password">
-                            <input type="checkbox" class="btn-check">
-                        </label>
-                    </div>
-                </div>
+              <!-- Email -->
+              <div class="position-relative mb-4">
+                  <label for="register-email" class="form-label">Email</label>
+                  <input 
+                      type="email" 
+                      class="form-control form-control-lg @error('email') is-invalid @enderror" 
+                      id="register-email" 
+                      name="email" 
+                      value="{{ old('email') }}" 
+                      required>
+                  @error('email')
+                      <div class="invalid-feedback">{{ $message }}</div>
+                  @enderror
+              </div>
 
-                <!-- Confirm Password -->
-                <div class="mb-4">
-                    <label for="register-password-confirm" class="form-label">Confirm Password</label>
-                    <div class="password-toggle">
-                        <input type="password" class="form-control form-control-lg" id="register-password-confirm" name="password_confirmation" required>
-                        <div class="invalid-tooltip bg-transparent py-0">Passwords must match!</div>
-                    </div>
-                </div>
+              <!-- Password -->
+              <div class="mb-4">
+                  <label for="register-password" class="form-label">Mật khẩu</label>
+                  <div class="password-toggle">
+                      <input 
+                          type="password" 
+                          class="form-control form-control-lg @error('password') is-invalid @enderror" 
+                          id="register-password" 
+                          name="password" 
+                          minlength="8" 
+                          placeholder="Minimum 8 characters" 
+                          required>
+                      @error('password')
+                          <div class="invalid-feedback">{{ $message }}</div>
+                      @enderror
+                  </div>
+              </div>
 
-                <!-- Phone -->
-                <div class="position-relative mb-4">
-                    <label for="register-phone" class="form-label">Phone</label>
-                    <input type="text" class="form-control form-control-lg" id="register-phone" name="phone" required>
-                    <div class="invalid-tooltip bg-transparent py-0">Please enter a valid phone number!</div>
-                </div>
+              <!-- Confirm Password -->
+              <div class="mb-4">
+                  <label for="register-password-confirm" class="form-label">Xác nhận mật khẩu</label>
+                  <div class="password-toggle">
+                      <input 
+                          type="password" 
+                          class="form-control form-control-lg @error('password_confirmation') is-invalid @enderror" 
+                          id="register-password-confirm" 
+                          name="password_confirmation" 
+                          required>
+                      @error('password_confirmation')
+                          <div class="invalid-feedback">{{ $message }}</div>
+                      @enderror
+                  </div>
+              </div>
 
-                <!-- Address -->
-                <div class="position-relative mb-4">
-                    <label for="register-address" class="form-label">Address</label>
-                    <input type="text" class="form-control form-control-lg" id="register-address" name="address" required>
-                    <div class="invalid-tooltip bg-transparent py-0">Please enter a valid address!</div>
-                </div>
+              <!-- Privacy Policy -->
+              <div class="d-flex flex-column gap-2 mb-4">
+                  <div class="form-check">
+                      <input 
+                          type="checkbox" 
+                          class="form-check-input" 
+                          id="privacy" 
+                          name="privacy" 
+                          required>
+                      <label for="privacy" class="form-check-label">Tôi đã đọc và chấp nhận 
+                          <a class="text-dark-emphasis" href="#!">Chính sách bảo mật</a>
+                      </label>
+                  </div>
+              </div>
 
-                <!-- Gender -->
-                <div class="mb-4">
-                    <label for="register-gender" class="form-label">Gender</label>
-                    <select class="form-control form-control-lg" id="register-gender" name="gender" required>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                    </select>
-                    <div class="invalid-tooltip bg-transparent py-0">Please select a gender!</div>
-                </div>
-
-                <!-- Avatar -->
-                <div class="mb-4">
-                    <label for="register-avatar" class="form-label">Avatar</label>
-                    <input type="file" class="form-control form-control-lg" id="register-avatar" name="avatar" accept="image/*">
-                    <div class="invalid-tooltip bg-transparent py-0">Please upload a valid image!</div>
-                </div>
-
-                <!-- Privacy Policy -->
-                <div class="d-flex flex-column gap-2 mb-4">
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="privacy" name="privacy" required>
-                        <label for="privacy" class="form-check-label">I have read and accept the <a class="text-dark-emphasis" href="#!">Privacy Policy</a></label>
-                    </div>
-                </div>
-
-                <!-- Submit Button -->
-                <button type="submit" class="btn btn-lg btn-primary w-100">
-                    Create an account
-                    <i class="ci-chevron-right fs-lg ms-1 me-n1"></i>
-                </button>
-            </form>
+              <!-- Submit Button -->
+              <button type="submit" class="btn btn-lg btn-primary w-100">
+                  Tạo tài khoản
+                  <i class="ci-chevron-right fs-lg ms-1 me-n1"></i>
+              </button>
+          </form>
 
             <!-- Divider -->
             <div class="d-flex align-items-center my-4">
               <hr class="w-100 m-0">
-              <span class="text-body-emphasis fw-medium text-nowrap mx-4">or continue with</span>
+              <span class="text-body-emphasis fw-medium text-nowrap mx-4">hoặc tiếp tục với</span>
               <hr class="w-100 m-0">
             </div>
   
@@ -291,10 +299,11 @@
             <!-- Footer -->
             <footer class="mt-auto">
               <div class="nav mb-4">
-                <a class="nav-link text-decoration-underline p-0" href="help-topics-v1.html">Need help?</a>
+                <a class="nav-link text-decoration-underline p-0" href="help-topics-v1.html">Cần giúp đỡ?</a>
               </div>
               <p class="fs-xs mb-0">
-                © All rights reserved. Made by <span class="animate-underline"><a class="animate-target text-dark-emphasis text-decoration-none" href="https://createx.studio/" target="_blank" rel="noreferrer">Createx Studio</a></span>
+                © Mọi quyền được bảo lưu. được thực hiện bởi <span class="animate-underline"><a class="animate-target text-dark-emphasis text-decoration-none" href="https://createx.studio/" target="_blank" rel="noreferrer">
+                  LIFEPHONE</a></span>
               </p>
             </footer>
           </div>

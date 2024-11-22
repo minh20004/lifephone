@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('customers', function (Blueprint $table) {
-            $table->id(); // ID tự động tăng
-            $table->string('email')->unique(); // Email duy nhất
-            $table->string('phone')->nullable(); // Số điện thoại (có thể để trống)
-            $table->text('address')->nullable(); // Địa chỉ (có thể để trống)
-            $table->enum('gender', ['male', 'female', 'other'])->default('other'); // Giới tính
-            $table->string('avatar')->nullable(); // Đường dẫn ảnh đại diện
-            $table->string('password'); // Mật khẩu
-            $table->timestamps(); // Thêm created_at và updated_at
+            $table->id();
+            $table->string('email')->unique(); 
+            $table->string('phone')->nullable(); 
+            $table->text('address')->nullable(); 
+            $table->enum('gender', ['male', 'female', 'other'])->default('other');
+            $table->string('avatar')->nullable();
+            $table->string('password');
+            $table->timestamps();
         });
     }
 

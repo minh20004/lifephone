@@ -10,12 +10,15 @@ class Customer extends Authenticatable
     use HasFactory;
 
     protected $fillable = [
+        'name', 
         'email',
         'phone',
         'address',
         'gender',
         'avatar',
         'password',
+        'is_verified',
+        'verification_token'
     ];
 
     protected $hidden = [
