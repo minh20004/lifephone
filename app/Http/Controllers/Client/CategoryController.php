@@ -21,8 +21,7 @@ class   CategoryController extends Controller
         $colors = Color::all();
         $capacities = Capacity::withCount('products')->get();
 
-        // Lấy 10 sản phẩm mới nhất và load danh mục và biến thể sản phẩm với màu sắc
-        // Lấy 10 sản phẩm mới nhất, load danh mục, biến thể sản phẩm cùng giá và màu sắc
+        // Lấy các sản phẩm, phân trang và load danh mục, biến thể sản phẩm với màu sắc
         $latestProducts = Product::with([
             'variants' => function ($query) {
                 $query->select('id', 'product_id', 'price_difference', 'color_id', 'capacity_id') // Lấy giá và các thông tin cần thiết
@@ -34,14 +33,14 @@ class   CategoryController extends Controller
         ])
             ->select('id', 'name', 'image_url', 'category_id') // Chỉ lấy các cột cần thiết từ bảng products
             ->orderBy('created_at', 'desc') // Sắp xếp theo ngày tạo
-            ->take(10) // Giới hạn 10 sản phẩm mới nhất
-            ->get();
+            ->paginate(9); // Phân trang 10 sản phẩm mỗi trang
+
         // Trả về view với các dữ liệu cần thiết
         return view('client.categories.shop-catalog', compact('latestProducts', 'categories', 'colors', 'capacities'));
     }
 
 
-    public function getProductsByCategory($id)
+    public function getProductsByCategory($id, $colorId = null)
     {
         // Lấy danh sách danh mục kèm số lượng sản phẩm
         $categories = Category::withCount('products')->get();
@@ -52,6 +51,9 @@ class   CategoryController extends Controller
 
         // Lọc sản phẩm theo danh mục `$id` và lấy thông tin từ bảng `product_variants`
         $productsByCategory = Product::where('category_id', $id)
+            ->when($colorId, function ($query) use ($colorId) {
+                $query->where('color_id', $colorId);
+            })
             ->with([
                 'category:id,name', // Lấy thông tin danh mục (id, name)
                 'variants' => function ($query) {
@@ -64,7 +66,7 @@ class   CategoryController extends Controller
             ])
             ->select('id', 'name', 'image_url', 'category_id') // Chỉ lấy các cột cần thiết từ bảng products
             ->orderBy('created_at', 'desc') // Sắp xếp theo ngày tạo
-            ->get();
+            ->paginate(9);
 
         // Lấy thông tin danh mục hiện tại
         $currentCategory = Category::findOrFail($id);

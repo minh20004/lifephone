@@ -93,7 +93,7 @@
       </aside>
       <!-- Product grid -->
       <div class="col-lg-9">
-        <div class="container mb-6">
+        <div class="container mb-6 ">
           <p class="h6 text-muted">Tìm thấy <span class="fw-bold text-dark">{{ $productCount }}</span> sản phẩm thuộc danh mục <span class="fw-bold text-primary">{{ $currentCategory->name }}</span></p>
         </div>
 
@@ -157,5 +157,8 @@
       </div>
     </div>
   </section>
+  <div class=" d-flex justify-content-center mt-4">
+    {{ $productsByCategory->links() }}
+  </div>
 </div>
 @endsection
