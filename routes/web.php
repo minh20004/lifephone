@@ -14,6 +14,7 @@ use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\FrontendControlle;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VoucherController;
 
 use Illuminate\Support\Facades\Route;
