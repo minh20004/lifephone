@@ -21,7 +21,7 @@
         <!-- Search visible on screens > 991px wide (lg breakpoint) -->
         <div class="position-relative flex-fill d-none d-lg-block pe-4 pe-xl-5">
           <i class="ci-search position-absolute top-50 translate-middle-y d-flex fs-lg text-white ms-3"></i>
-          <input type="search" class="form-control form-control-lg form-icon-start border-white rounded-pill" placeholder="Search the products">
+          <input type="search" class="form-control form-control-lg form-icon-start border-white rounded-pill search-header" data-fire-url="{{ asset('storage/images/fire.png') }}" placeholder="Search the products">
         </div>
 
         <!-- Sale link visible on screens > 1200px wide (xl breakpoint) -->
@@ -166,14 +166,14 @@
                       @foreach ($categories as $category)
                       <li class="dropend position-static">
                         <div class="position-relative rounded pt-2 pb-1 px-lg-2" data-bs-toggle="dropdown" data-bs-trigger="hover">
-                          
+
                           <!-- Link cho danh mục lớn -->
                           <a class="dropdown-item fw-medium stretched-link d-none d-lg-flex" href="{{ route('category.show', $category->id) }}">
                             <i class="ci-{{ $category->icon }} fs-xl opacity-60 pe-1 me-2"></i>
                             <span class="text-truncate">{{ $category->name }}</span>
                             <i class="ci-chevron-right fs-base ms-auto me-n1"></i>
                           </a>
-                          
+
                           <!-- Hiển thị trên màn hình nhỏ -->
                           <div class="dropdown-item fw-medium text-wrap stretched-link d-lg-none">
                             <i class="ci-{{ $category->icon }} fs-xl opacity-60 pe-1 me-2"></i>

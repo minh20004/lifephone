@@ -86,31 +86,31 @@ Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::post('/orders/{id}/update-status', [OrderController::class, 'updateStatus'])->name('order.updateStatus');
 Route::get('/admin/orders/{id}', [OrderController::class, 'show'])->name('order.show');
 
-//  route cho phần sản phẩm bị xóa 
+//  route cho phần sản phẩm bị xóa
 Route::prefix('products')->group(function () {
     Route::get('/trashed', [ProductController::class, 'trashed'])->name('product.trashed');
     Route::post('/restore/{id}', [ProductController::class, 'restore'])->name('product.restore');
     Route::get('trashed/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
-    
+
 });
 
 
-// Route danh mục bị xóa 
+// Route danh mục bị xóa
 Route::prefix('categories')->group(function () {
     Route::get('/trashed', [CategoryController::class, 'trashed'])->name('category.trashed');
     Route::post('/restore/{id}', [CategoryController::class, 'restore'])->name('category.restore');
 });
-// Route dung lượng bị xóa 
+// Route dung lượng bị xóa
 Route::prefix('capacities')->group(function () {
     Route::get('/trashed', [CapacityController::class, 'trashed'])->name('capacity.trashed');
     Route::post('/restore/{id}', [CapacityController::class, 'restore'])->name('capacity.restore');
 });
-// Route màu sắc bị xóa 
+// Route màu sắc bị xóa
 Route::prefix('colors')->group(function () {
     Route::get('/trashed', [ColorController::class, 'trashed'])->name('color.trashed');
     Route::post('/restore/{id}', [ColorController::class, 'restore'])->name('color.restore');
 });
-// chuyển trang biến thể 
+// chuyển trang biến thể
 Route::get('/product/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
 //router review và news
 Route::resource('admin/review',ReviewController::class);
@@ -143,3 +143,5 @@ Route::get('/subscriptions/index', [SubscriptionController::class, 'sentEmails']
 Route::post('/subscriptions/send', [SubscriptionController::class, 'sendBulkEmails'])->name('subscriptions.send');
 Route::get('/new/{slug}', [NewController::class, 'singlepost'])->name('news.show');
 Route::get('/new/category/{slug}', [NewController::class, 'categoryNewsBlog'])->name('categoryNewsBlog');
+
+Route::get('/search', [ClientCategoryController::class, 'search'])->name('product.search');

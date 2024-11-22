@@ -1,9 +1,13 @@
 
 <script src="{{ asset('client/vendor/swiper/swiper-bundle.min.js') }}"></script>
 <script src="{{ asset('client/vendor/timezz/timezz.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <!-- Bootstrap + Theme scripts -->
 <script src="{{ asset('client/js/theme.min.js') }}"></script>
+
+<script src="{{ asset('client/js/common/product.js') }}"></script>
 
 <script>
   function toggleChatPopup() {
@@ -72,7 +76,7 @@
                 );
 
                 if (selectedVariant) {
-                    // Cập nhật giá 
+                    // Cập nhật giá
                     basePriceElement.textContent = formatPrice(Number(selectedVariant.price_difference));
                 } else {
                     basePriceElement.textContent = formatPrice(Number(basePriceElement.getAttribute(
@@ -136,7 +140,7 @@
             });
         });
 
-        // Khởi tạo giá, số lượng và trạng thái dung lượng lúc đầu 
+        // Khởi tạo giá, số lượng và trạng thái dung lượng lúc đầu
         updatePrice();
         updateQuantity();
         updateCapacityOptions();
@@ -205,4 +209,3 @@
             .catch(error => console.error('Error:', error));
     }
 </script>
-
