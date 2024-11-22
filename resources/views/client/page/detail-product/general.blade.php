@@ -187,6 +187,11 @@
                         </label>
                     @endforeach
                 </div>
+                @if ($errors->has('color-options'))
+                    <div class="text-danger mt-2">
+                        {{ $errors->first('color-options') }}
+                    </div>
+                @endif
                 
                 <!-- Hiển thị giá -->
                 <div class="d-flex flex-wrap align-items-center mb-2">
@@ -221,15 +226,8 @@
                       <i class="ci-plus"></i>
                     </button>
                   </div>
-                  {{-- <div class="count-input flex-shrink-0 order-sm-1">
-                    <button type="button" class="btn btn-icon btn-lg" data-decrement="" aria-label="Decrement quantity">
-                      <i class="ci-minus"></i>
-                    </button>
-                    <input type="number" class="form-control form-control-lg" value="1" min="1" max="5" readonly="">
-                    <button type="button" class="btn btn-icon btn-lg" data-increment="" aria-label="Increment quantity">
-                      <i class="ci-plus"></i>
-                    </button>
-                  </div> --}}
+                  
+
                   <button type="button" class="btn btn-icon btn-lg btn-secondary animate-pulse order-sm-3 order-md-2 order-lg-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Add to Wishlist" aria-label="Add to Wishlist">
                     <i class="ci-heart fs-lg animate-target"></i>
                   </button>
@@ -241,6 +239,11 @@
                     Thêm vào giỏ hàng
                   </button>
                 </div>
+                @if ($errors->has('quantity'))
+                      <div class="text-danger mt-2">
+                          {{ $errors->first('quantity') }}
+                      </div>
+                  @endif
             </form>
 
             <!-- Features -->
