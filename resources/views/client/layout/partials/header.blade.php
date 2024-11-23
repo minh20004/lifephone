@@ -1,3 +1,25 @@
+<style>
+  .auth {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(126, 8, 8); /* Nền trắng */
+  border-radius: 50%; /* Bo tròn hoàn toàn */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Tạo bóng nhẹ */
+  transition: transform 0.2s ease; /* Thêm hiệu ứng mượt */
+}
+
+.auth:hover {
+  background-color: rgb(98, 6, 6); /* Nền trắng */
+  transform: scale(1.1); /* Phóng to nhẹ khi hover */
+}
+
+.auth span {
+  font-size: 1.25rem;
+  color: #fff;
+  font-weight: 700;
+}
+</style>
 <div class="container d-block py-1 py-lg-3" data-bs-theme="dark">
     <div class="navbar-stuck-hide pt-1"></div>
     <div class="row flex-nowrap align-items-center g-0">
@@ -87,10 +109,20 @@
           </button>
 
           <!-- Account button visible on screens > 768px wide (md breakpoint) -->
-          <a class="btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-shake d-none d-md-inline-flex" href="account-signin.html">
-            <i class="ci-user animate-target"></i>
-            <span class="visually-hidden">Account</span>
-          </a>
+          @if (Auth::guard('customer')->check()) 
+              <!-- If the user is logged in, show their initials -->
+              <a class="auth btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-shake d-none d-md-inline-flex" 
+                href="{{ route('customer.file') }}" >
+                  <span class="fw-medium">{{ strtoupper(substr(Auth::guard('customer')->user()->email, 0, 1)) }}</span>
+              </a>
+          @else
+              <!-- If the user is not logged in, show the login icon -->
+              <a class="btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-shake d-none d-md-inline-flex" 
+                href="{{ route('customer.login') }}">
+                  <i class="ci-user animate-target"></i>
+                  <span class="visually-hidden">Account</span>
+              </a>
+          @endif
 
           <!-- Wishlist button visible on screens > 768px wide (md breakpoint) -->
           <a class="btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-pulse d-none d-md-inline-flex" href="account-wishlist.html">
@@ -137,7 +169,7 @@
 
                   <!-- Buttton visible on screens > 991px wide (lg breakpoint) -->
                   <div class="cursor-pointer d-none d-lg-block" data-bs-toggle="dropdown" data-bs-trigger="hover" data-bs-theme="dark">
-                    <a class="position-absolute top-0 start-0 w-100 h-100" href="">
+                    <a class="position-absolute top-0 start-0 w-100 h-100" href="{{route('danh-muc-san-pham')}}">
                       <span class="visually-hidden">Danh mục</span>
                     </a>
                     <button type="button" class="btn btn-lg btn-secondary dropdown-toggle w-100 rounded-bottom-0 justify-content-start pe-none">
@@ -153,7 +185,14 @@
                   </button>
 
                   <!-- Mega menu danh mục sản phẩm-->
-                  <ul class="dropdown-menu w-100 rounded-top-0 rounded-bottom-4 py-1 p-lg-1" style="--cz-dropdown-spacer: 0; --cz-dropdown-item-padding-y: .625rem; --cz-dropdown-item-spacer: 0">
+                  {{-- <ul class="dropdown-menu dropdown-menu-static w-100 rounded-top-0 rounded-bottom-4 py-1 p-lg-1" style="--cz-dropdown-spacer: 0; --cz-dropdown-item-padding-y: .625rem; --cz-dropdown-item-spacer: 0"> --}}
+                  {{-- <ul class="dropdown-menu w-100 rounded-top-0 rounded-bottom-4 py-1 p-lg-1" style="--cz-dropdown-spacer: 0; --cz-dropdown-item-padding-y: .625rem; --cz-dropdown-item-spacer: 0"> --}}
+                    @if(Route::currentRouteName() === 'home')
+                      <ul class="dropdown-menu dropdown-menu-static w-100 rounded-top-0 rounded-bottom-4 py-1 p-lg-1" style="--cz-dropdown-spacer: 0; --cz-dropdown-item-padding-y: .625rem; --cz-dropdown-item-spacer: 0">
+                    @else
+                      <ul class="dropdown-menu w-100 rounded-top-0 rounded-bottom-4 py-1 p-lg-1" style="--cz-dropdown-spacer: 0; --cz-dropdown-item-padding-y: .625rem; --cz-dropdown-item-spacer: 0">
+                    @endif
+
                     <li class="d-lg-none pt-2">
                       <a class="dropdown-item fw-medium" href="shop-categories-electronics.html">
                         <i class="ci-grid fs-xl opacity-60 pe-1 me-2"></i>
@@ -169,7 +208,7 @@
                           
                           <!-- Link cho danh mục lớn -->
                           <a class="dropdown-item fw-medium stretched-link d-none d-lg-flex" href="{{ route('category.show', $category->id) }}">
-                            <i class="ci-{{ $category->icon }} fs-xl opacity-60 pe-1 me-2"></i>
+                            <i class="ci-smartphone-2 fs-xl opacity-60 pe-1 me-2"></i>
                             <span class="text-truncate">{{ $category->name }}</span>
                             <i class="ci-chevron-right fs-base ms-auto me-n1"></i>
                           </a>
