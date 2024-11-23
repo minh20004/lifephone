@@ -32,11 +32,10 @@ News
                             </div>
                         </div>
                         <!-- end card header -->
-
-                        <div><button class="btn btn-primary "><a style="color: yellow;" href="{{route('new_admin.create')}}">thêm</a></button></div>
                         @if ($listNews->isEmpty())
                 <p class="text-center text-muted">Không có tin tức nào để hiển thị.</p>
             @else
+                        <div><button class="btn btn-primary " ><a style="color: yellow;" href="{{route('new_admin.create')}}">thêm</a></button></div>
                         <div class="card-body">
                             <div class="tab-content text-muted">
                                 <div class="tab-pane active" id="productnav-all" role="tabpanel">

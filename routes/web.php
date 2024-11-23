@@ -143,3 +143,5 @@ Route::get('/subscriptions/index', [SubscriptionController::class, 'sentEmails']
 Route::post('/subscriptions/send', [SubscriptionController::class, 'sendBulkEmails'])->name('subscriptions.send');
 Route::get('/new/{slug}', [NewController::class, 'singlepost'])->name('news.show');
 Route::get('/new/category/{slug}', [NewController::class, 'categoryNewsBlog'])->name('categoryNewsBlog');
+
+
