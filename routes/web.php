@@ -48,7 +48,7 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
 });
 
 // auth customer ------------------------------------------------------
-// quản lý hồ sơ khách hàng 
+// quản lý hồ sơ khách hàng
 Route::get('/customer/address', [AuthController::class, 'address'])->name('customer.adress');
 
 Route::get('/customer/add', [AuthController::class, 'createCustomer'])->name('customer.add');

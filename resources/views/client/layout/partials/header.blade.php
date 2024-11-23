@@ -204,14 +204,14 @@
                       @foreach ($categories as $category)
                       <li class="dropend position-static">
                         <div class="position-relative rounded pt-2 pb-1 px-lg-2" data-bs-toggle="dropdown" data-bs-trigger="hover">
-                          
+
                           <!-- Link cho danh mục lớn -->
                           <a class="dropdown-item fw-medium stretched-link d-none d-lg-flex" href="{{ route('category.show', $category->id) }}">
                             <i class="ci-smartphone-2 fs-xl opacity-60 pe-1 me-2"></i>
                             <span class="text-truncate">{{ $category->name }}</span>
                             <i class="ci-chevron-right fs-base ms-auto me-n1"></i>
                           </a>
-                          
+
                           <!-- Hiển thị trên màn hình nhỏ -->
                           <div class="dropdown-item fw-medium text-wrap stretched-link d-lg-none">
                             <i class="ci-{{ $category->icon }} fs-xl opacity-60 pe-1 me-2"></i>

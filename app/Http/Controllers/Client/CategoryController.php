@@ -129,6 +129,7 @@ public function search(Request $request)
 
     return view('client.categories.searchProduct', compact('latestProducts', 'categories', 'colors', 'capacities'));
 }
+
 // public function getProductsByCategory($id)
     // {
     //     $products = Product::where('category_id', $id)->get();

@@ -184,8 +184,10 @@
 
         // Khởi tạo giá, số lượng và trạng thái dung lượng lúc đầu
         // Khởi tạo giá, số lượng và trạng thái dung lượng, màu sắc lúc đầu 
+        // Khởi tạo giá, số lượng và trạng thái dung lượng, màu sắc lúc đầu
         updateColorOptions();
         updateCapacityOptions();
+        // Khởi tạo giá, số lượng và trạng thái dung lượng lúc đầu
         updatePrice();
         updateQuantity();
     });
@@ -222,7 +224,7 @@
     });
 
     // Hàm cập nhật giỏ hàng và giao diện
-    
+
     function updateCart(productId, modelId, colorId, quantity) {
     fetch('{{ route('cart.update') }}', {
         method: 'POST',
