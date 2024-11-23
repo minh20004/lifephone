@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\chatController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReviewController;
@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\CategoryNewsController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -48,6 +49,8 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
 
 // auth customer ------------------------------------------------------
 // quản lý hồ sơ khách hàng 
+Route::get('/customer/address', [AuthController::class, 'address'])->name('customer.adress');
+
 Route::get('/customer/add', [AuthController::class, 'createCustomer'])->name('customer.add');
 Route::post('/customer/creat', [AuthController::class, 'storeCustomer'])->name('customer.creat');
 Route::put('/customer/{id}/update', [AuthController::class, 'updateCustomer'])->name('customer.update');
@@ -75,6 +78,9 @@ Route::put('/customer/address/{addressId}', [AddressController::class, 'updateAd
 
 Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
 
+
+
+Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
 Route::get('/verify/{token}', [AuthController::class, 'verifyCustomer'])->name('customer.verify');
 // Route để gửi lại email xác nhận
 Route::post('/customer/resend-verification', [AuthController::class, 'resendVerificationEmail'])->name('customer.resend.verification');
@@ -87,6 +93,7 @@ Route::middleware(['auth:customer', 'isCustomer'])->group(function () {
     Route::get('/customer/address', [AuthController::class, 'address'])->name('customer.adress');
     Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
     Route::put('/customer/{id}/update-address', [AuthController::class, 'updateAddress'])->name('customer.updateAddress');
+    Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
 });
 // -----------------------------USER------------------------------------------------------------------------------
 //giỏ hàng
@@ -96,12 +103,17 @@ Route::post('cart/remove/{productId}/{modelId}/{colorId}', [CartController::clas
 Route::post('/cart/update', [CartController::class, 'updateQuantity'])->name('cart.update');
 Route::post('/cart/apply-voucher', [CartController::class, 'applyVoucher'])->name('cart.apply-voucher');
 Route::get('/cart/offcanvas', [CartController::class, 'getCart'])->name('cart.offcanvas');
+
 // thanh toán
 Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
 Route::post('/order/store', [OrderController::class, 'storeOrder'])->name('order.store');
 Route::get('/order-success', function () {
     return view('client.page.checkout.order_success'); // Thông báo thành công
 })->name('order.success');
+
+// lịch sử đơn hàng
+
+Route::get('/order-history', [OrderController::class, 'orderHistory'])->name('order.history');
 
 
 
