@@ -56,7 +56,6 @@ class CartController extends Controller
                 }
             }
         }
-
         // Tính toán giảm giá và tổng cộng
         $voucher = session()->get('voucher', []);
         $discount = $voucher['discount'] ?? 0;
@@ -136,7 +135,6 @@ class CartController extends Controller
                 }
             }
         }
-
         session()->put('cart', $cart);
 
         // Tính tổng tiền và tổng số lượng
@@ -223,7 +221,6 @@ class CartController extends Controller
             'discount' => $discount,
             'totalAfterDiscount' => $totalAfterDiscount,
         ]);
-
         // Giảm số lần sử dụng còn lại của voucher
         $voucher->decrement('usage_limit');
 

@@ -9,7 +9,7 @@ use App\Models\Color;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
-class CategoryController extends Controller
+class   CategoryController extends Controller
 {
     // Phương thức lấy tất cả các danh mục
 
@@ -21,41 +21,66 @@ class CategoryController extends Controller
         $colors = Color::all();
         $capacities = Capacity::withCount('products')->get();
 
-        // Lấy 10 sản phẩm mới nhất và load danh mục và biến thể sản phẩm với màu sắc
+        // Lấy các sản phẩm, phân trang và load danh mục, biến thể sản phẩm với màu sắc
         $latestProducts = Product::with([
-            'category:id,name', // Eager load danh mục với id và name
-            'variants.color:id,name', // Eager load màu sắc (color) thông qua biến thể sản phẩm
-            'variants.capacity:id,name'
+            'variants' => function ($query) {
+                $query->select('id', 'product_id', 'price_difference', 'color_id', 'capacity_id') // Lấy giá và các thông tin cần thiết
+                    ->with([
+                        'color:id,name',     // Thông tin màu sắc
+                        'capacity:id,name'  // Thông tin dung lượng
+                    ]);
+            }
         ])
-            ->orderBy('created_at', 'desc') // Lấy theo thứ tự mới nhất
-            ->take(10) // Giới hạn 10 sản phẩm
-            ->get();
+            ->select('id', 'name', 'image_url', 'category_id') // Chỉ lấy các cột cần thiết từ bảng products
+            ->orderBy('created_at', 'desc') // Sắp xếp theo ngày tạo
+            ->paginate(9); // Phân trang 10 sản phẩm mỗi trang
 
         // Trả về view với các dữ liệu cần thiết
         return view('client.categories.shop-catalog', compact('latestProducts', 'categories', 'colors', 'capacities'));
     }
-    public function filterByCategory(Request $request)
+
+
+    public function getProductsByCategory($id, $colorId = null)
     {
-        $categoryId = $request->get('category_id');
+        // Lấy danh sách danh mục kèm số lượng sản phẩm
+        $categories = Category::withCount('products')->get();
 
-        // Lấy danh sách sản phẩm theo danh mục
-        $products = Product::where('category_id', $categoryId)->with('variants.color', 'variants.capacity')->get();
+        // Lấy danh sách màu sắc và dung lượng
+        $colors = Color::all();
+        $capacities = Capacity::withCount('products')->get();
 
-        return response()->json($products);
+        // Lọc sản phẩm theo danh mục `$id` và lấy thông tin từ bảng `product_variants`
+        $productsByCategory = Product::where('category_id', $id)
+            ->when($colorId, function ($query) use ($colorId) {
+                $query->where('color_id', $colorId);
+            })
+            ->with([
+                'category:id,name', // Lấy thông tin danh mục (id, name)
+                'variants' => function ($query) {
+                    $query->select('id', 'product_id', 'price_difference', 'color_id', 'capacity_id')
+                        ->with([
+                            'color:id,name',     // Thông tin màu sắc
+                            'capacity:id,name'  // Thông tin dung lượng
+                        ]);
+                }
+            ])
+            ->select('id', 'name', 'image_url', 'category_id') // Chỉ lấy các cột cần thiết từ bảng products
+            ->orderBy('created_at', 'desc') // Sắp xếp theo ngày tạo
+            ->paginate(9);
+
+        // Lấy thông tin danh mục hiện tại
+        $currentCategory = Category::findOrFail($id);
+        // Lấy số lượng sản phẩm trong danh mục
+        $productCount = Product::where('category_id', $id)->count();
+
+        // Trả về view với các dữ liệu cần thiết
+        return view('client.categories.products', compact(
+            'productsByCategory',
+            'categories',
+            'colors',
+            'capacities',
+            'currentCategory',
+            'productCount'
+        ));
     }
-    public function filter(Request $request)
-{
-    $products = Product::whereIn('capacity_id', $request->capacities)->get();
-    return response()->json($products);
-}
-
-
-
-
-
-    // public function getProductsByCategory($id)
-    // {
-    //     $products = Product::where('category_id', $id)->get();
-    //     dd($products); // Dừng lại và hiển thị kết quả
-    // }
 }

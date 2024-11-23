@@ -132,7 +132,10 @@ News
                     </div>
                     <!-- end card -->
                 </div>
+<<<<<<< HEAD
                 @endif
+=======
+>>>>>>> chuc
             </div>
             <!-- end col -->
         </div>
