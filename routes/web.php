@@ -1,19 +1,23 @@
 <?php
 
-use App\Http\Controllers\Admin\AdminController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\CategoryNewsController;
 use App\Http\Controllers\chatController;
-use App\Http\Controllers\Client\CategoryController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\FrontendControlle;
-use App\Http\Controllers\NewController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\VoucherController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CapacityController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
+use App\Http\Controllers\CategoryNewsController;
+use App\Http\Controllers\ClientNewController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\NewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -122,5 +126,20 @@ Route::get('/shop', [ClientCategoryController::class, 'shop'])->name('shop');
 
 Route::get('/categories/{id}/products', [ClientCategoryController::class, 'getProductsByCategory']);
 
+// chat
+Route::get('/chat', [chatController::class, 'index'])->name('chat');
+
+Route::post('/chat/start', [ChatController::class, 'startConversation'])->name('chat.start');
+Route::post('/chat/{conversationId}/send', [ChatController::class, 'sendMessage'])->name('chat.send');
+Route::get('/chat/{conversationId}/messages', [ChatController::class, 'getMessages'])->name('chat.messages');
+
+// sub;
+Route::resource('/subscriptions', SubscriptionController::class)->except(['show']);
+// Trang gửi email hàng loạt
+Route::get('/subscriptions/send', [SubscriptionController::class, 'create'])->name('subscriptions.create'); // Form gửi email
+// Trang hiển thị các email đã gửi (giả sử bạn có một bảng ghi lại thông tin các email đã gửi)
+Route::get('/subscriptions/index', [SubscriptionController::class, 'sentEmails'])->name('subscriptions.index');
+// routes/web.php
+Route::post('/subscriptions/send', [SubscriptionController::class, 'sendBulkEmails'])->name('subscriptions.send');
 Route::get('/new/{slug}', [NewController::class, 'singlepost'])->name('news.show');
 Route::get('/new/category/{slug}', [NewController::class, 'categoryNewsBlog'])->name('categoryNewsBlog');
