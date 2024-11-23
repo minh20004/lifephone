@@ -122,7 +122,11 @@ Lifephone
                     <h4 class="h6 mb-4">Danh mục tin tức</h4>
                     <div class="d-flex flex-wrap gap-3">
                         @foreach($categories as $category)
+<<<<<<< HEAD
                         <a class="btn btn-outline-secondary px-3" href="{{ route('categoryNewsBlog', ['slug' => $category->slug]) }}">{{ $category->title }}</a>
+=======
+                        {{-- <a class="btn btn-outline-secondary px-3" href="{{ route('categoryNewsBlog', ['slug' => $category->slug]) }}">{{ $category->title }}</a> --}}
+>>>>>>> origin/minh
                         @endforeach
                     </div>
                     <h4 class="h6 pt-5 mb-0">Bài viết mới nhất</h4>

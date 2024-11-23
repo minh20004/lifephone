@@ -27,7 +27,10 @@
     <script>
         CKEDITOR.replace('description');
     </script>
-
+<script src="{{ asset('assets/ckeditor/ckeditor.js') }}"></script>
+<script>
+    CKEDITOR.replace('message');
+</script>
 {{-- ảnh thêm sản phẩm --}}
 <script>
     function readURL(input) {

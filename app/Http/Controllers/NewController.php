@@ -28,8 +28,10 @@ class NewController extends Controller
                 $news->save(); // Lưu lại thay đổi
             }
     }
-    return view('admin.page.new.index', compact('listNews'));
-}
+        return view('admin.page.new.index', compact('listNews'));
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */
