@@ -7,7 +7,7 @@
     <section class="container pt-4">
         <div class="row">
             {{-- col-lg-9 offset-lg-3 --}}
-            <div class="">
+            <div class="col-lg-9 offset-lg-3">
                 <div class="position-relative">
                     <span class="position-absolute top-0 start-0 w-100 h-100 rounded-5 d-none-dark rtl-flip"
                         style="background: linear-gradient(90deg, #accbee 0%, #e7f0fd 100%)"></span>
@@ -113,7 +113,7 @@
     </section>
 
     <!-- Features miễn phí vận chuyển -->
-    <section class="container pt-5 mt-1 mt-sm-3 mt-lg-4">
+    <section class="container pt-5 mt-1 mt-sm-3 mt-lg-4 mb-sm-3 mb-md-4 mb-lg-5">
         <div class="row row-cols-2 row-cols-md-4 g-4">
 
             <!-- Item -->
@@ -169,270 +169,6 @@
             </div>
         </div>
     </section>
-
-    <!--sản phẩm mới-->
-    <section class="container pt-5 mt-1 mt-sm-2 mt-md-3 mt-lg-4">
-      <h2 class="h3 pb-2 pb-sm-3">Hàng mới về</h2>
-      <div class="row">
-          <div class="col-lg-4" data-bs-theme="dark">
-              <div class="d-flex flex-column align-items-center justify-content-end h-100 text-center overflow-hidden rounded-5 px-4 px-lg-3 pt-4 pb-5"
-                  style="background: #1d2c41 url('client/img/home/electronics/banner/background.jpg') center/cover no-repeat">
-                  <div class="ratio animate-up-down position-relative z-2 me-lg-4"
-                      style="max-width: 320px; margin-bottom: -19%; --cz-aspect-ratio: calc(690 / 640 * 100%)">
-                      <img src="client/img/home/electronics/banner/san-pham-moi.png" alt="Laptop">
-                  </div>
-                  <h3 class="display-2 mb-2">Iphone 15 VNA</h3>
-                  <p class="text-body fw-medium mb-4"> Trở nên chuyên nghiệp ở mọi nơi</p>
-                  <a class="btn btn-sm btn-primary" href="#!">
-                      Giá: 19.690.000đ
-                      <i class="ci-arrow-up-right fs-base ms-1 me-n1"></i>
-                  </a>
-              </div>
-          </div>
-  
-          <div class="col-lg-8">
-              <div class="row">
-                  @foreach ($latestProducts as $product)
-                      <div class="col-sm-6 col-lg-6 d-flex flex-column gap-3 pt-4 py-lg-4">
-                          <div class="position-relative animate-underline d-flex align-items-center ps-xl-3">
-                            {{-- <a class="stretched-link d-block fs-sm fw-medium text-truncate" --}}
-                                          {{-- href="{{ route('product.show', $product->id) }}"> --}}
-                              <div class="ratio ratio-1x1 flex-shrink-0" style="width: 110px">
-                                  <img class="rounded" src="{{ asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}">
-                              </div>
-                              <div class="w-100 min-w-0 ps-2 ps-sm-3">
-                                  <div class="d-flex align-items-center gap-2 mb-2">
-                                      <div class="d-flex gap-1 fs-xs">
-                                          @for ($i = 0; $i < 5; $i++)
-                                              @if ($i < $product->rating)
-                                                  <i class="ci-star-filled text-warning"></i>
-                                              @else
-                                                  <i class="ci-star text-secondary"></i>
-                                              @endif
-                                          @endfor
-                                      </div>
-                                      <span class="text-body-tertiary fs-xs">{{ $product->reviews_count ?? 0 }}</span>
-                                  </div>
-                                  <h4 class="mb-2">
-                                      <a class="stretched-link d-block fs-sm fw-medium text-truncate"
-                                          href="{{ route('product.show', $product->id) }}">
-                                          <span class="animate-target">{{ $product->name }}</span>
-                                      </a>
-                                  </h4>
-                                  @php
-                                      $minPrice = $product->variants->min('price_difference');
-                                  @endphp
-                                  <div class="h5 mb-0">
-                                      {{ number_format($minPrice, 0, ',', '.') }} VNĐ
-                                  </div>
-                              </div>
-                            {{-- </a> --}}
-                          </div>
-                      </div>
-                  @endforeach
-              </div>
-          </div>
-      </div>
-  </section>
-  
-    <!-- Trending products (Grid) Thịnh hành-->
-    <section class="container pt-5 mt-2 mt-sm-3 mt-lg-4">
-
-        <!-- Heading -->
-        <div class="d-flex align-items-center justify-content-between border-bottom pb-3 pb-md-4">
-            <h2 class="h3 mb-0"> Sản phẩm thịnh hành</h2>
-            <div class="nav ms-3">
-                <a class="nav-link animate-underline px-0 py-2" href="#">
-                    <span class="animate-target">Xem tất cả</span>
-                    <i class="ci-chevron-right fs-base ms-1"></i>
-                </a>
-            </div>
-        </div>
-
-        <!-- Product grid -->
-        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 pt-4">
-
-            @foreach ($trendingProducts as $product)
-                <!-- Item -->
-                <div class="col">
-                    <div class="product-card animate-underline hover-effect-opacity bg-body rounded">
-                        <div class="position-relative">
-                            <div class="position-absolute top-0 end-0 z-2 hover-effect-target opacity-0 mt-3 me-3">
-                                <div class="d-flex flex-column gap-2">
-                                    <button type="button"
-                                        class="btn btn-icon btn-secondary animate-pulse d-none d-lg-inline-flex"
-                                        aria-label="Add to Wishlist">
-                                        <i class="ci-heart fs-base animate-target"></i>
-                                    </button>
-                                    <button type="button"
-                                        class="btn btn-icon btn-secondary animate-rotate d-none d-lg-inline-flex"
-                                        aria-label="Compare">
-                                        <i class="ci-refresh-cw fs-base animate-target"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="dropdown d-lg-none position-absolute top-0 end-0 z-2 mt-2 me-2">
-                                <button type="button" class="btn btn-icon btn-sm btn-secondary bg-body"
-                                    data-bs-toggle="dropdown" aria-expanded="false" aria-label="More actions">
-                                    <i class="ci-more-vertical fs-lg"></i>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-end fs-xs p-2" style="min-width: auto">
-                                    <li>
-                                        <a class="dropdown-item" href="#!">
-                                            <i class="ci-heart fs-sm ms-n1 me-2"></i>
-                                            Add to Wishlist
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#!">
-                                            <i class="ci-refresh-cw fs-sm ms-n1 me-2"></i>
-                                            Compare
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                            <a class="d-block rounded-top overflow-hidden p-3 p-sm-4"
-                                href="{{ route('product.show', $product->id) }}">
-                                <div class="ratio" style="--cz-aspect-ratio: calc(240 / 258 * 100%)">
-                                    <img src="{{ asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}">
-                                </div>
-                            </a>
-                        </div>
-                        {{-- sanpham --}}
-                        <div class="w-100 min-w-0 px-1 pb-2 px-sm-3 pb-sm-3">
-                            <div class="d-flex align-items-center gap-2 mb-2">
-                                <div class="d-flex gap-1 fs-xs">
-                                    {{-- Hiển thị đánh giá dưới dạng sao --}}
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        @if ($i <= floor($product->rating))
-                                            <i class="ci-star-filled text-warning"></i>
-                                        @elseif($i == ceil($product->rating))
-                                            <i class="ci-star-half text-warning"></i>
-                                        @else
-                                            <i class="ci-star text-muted"></i>
-                                        @endif
-                                    @endfor
-                                </div>
-                                <span class="text-body-tertiary fs-xs">({{ $product->review_count }})</span>
-                            </div>
-                            <h3 class="pb-1 mb-2">
-                                <a class="d-block fs-sm fw-medium text-truncate"
-                                    href="{{ route('product.show', $product->id) }}">
-                                    <span class="animate-target">{{ $product->name }}</span>
-                                </a>
-                            </h3>
-                            <div class="d-flex align-items-center justify-content-between">
-                                @php
-                                      $minPrice = $product->variants->min('price_difference');
-                                  @endphp
-                                <div class="h5 lh-1 mb-0">{{ number_format($minPrice, 0, ',', '.') }} VNĐ</div>
-                                <button type="button"
-                                    class="product-card-button btn btn-icon btn-secondary animate-slide-end ms-2"
-                                    aria-label="Add to Cart">
-                                    <i class="ci-shopping-cart fs-base animate-target"></i>
-                                </button>
-                            </div>
-                        </div>
-                        {{-- Biến thể thông tin chi tiết --}}
-                        {{-- <div
-                            class="product-card-details position-absolute top-100 start-0 w-100 bg-body rounded-bottom shadow mt-n2 p-3 pt-1">
-                            <span class="position-absolute top-0 start-0 w-100 bg-body mt-n2 py-2"></span>
-                            <ul class="list-unstyled d-flex flex-column gap-2 m-0">
-                                <li class="d-flex align-items-center">
-                                    <span class="fs-xs">Display:</span>
-                                    <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
-                                    <span class="text-dark-emphasis fs-xs fw-medium text-end">6.1" XDR</span>
-                                </li>
-                                <li class="d-flex align-items-center">
-                                    <span class="fs-xs">Capacity:</span>
-                                    <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
-                                    <span class="text-dark-emphasis fs-xs fw-medium text-end">128 GB</span>
-                                </li>
-                                <li class="d-flex align-items-center">
-                                    <span class="fs-xs">Chip:</span>
-                                    <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
-                                    <span class="text-dark-emphasis fs-xs fw-medium text-end">A15 Bionic</span>
-                                </li>
-                                <li class="d-flex align-items-center">
-                                    <span class="fs-xs">Camera:</span>
-                                    <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
-                                    <span class="text-dark-emphasis fs-xs fw-medium text-end">12 + 12 MP</span>
-                                </li>
-                                <li class="d-flex align-items-center">
-                                    <span class="fs-xs">Weight:</span>
-                                    <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
-                                    <span class="text-dark-emphasis fs-xs fw-medium text-end">172 grams</span>
-                                </li>
-                            </ul>
-                        </div> --}}
-                    </div>
-                </div>
-            @endforeach
-
-        </div>
-    </section>
-
-    <!-- Sale Banner (CTA) -->
-    <section class="container pt-5 mt-sm-2 mt-md-3 mt-lg-4">
-        <div class="row g-0">
-            <div class="col-md-3 mb-n4 mb-md-0">
-                <div class="position-relative d-flex flex-column align-items-center justify-content-center h-100 py-5">
-                    <div class="position-absolute top-0 start-0 w-100 h-100 d-none d-md-block">
-                        <span class="position-absolute top-0 start-0 w-100 h-100 rounded-5 d-none-dark"
-                            style="background-color: #accbee"></span>
-                        <span class="position-absolute top-0 start-0 w-100 h-100 rounded-5 d-none d-block-dark"
-                            style="background-color: #1b273a"></span>
-                    </div>
-                    <div class="position-absolute top-0 start-0 w-100 h-100 d-md-none">
-                        <span class="position-absolute top-0 start-0 w-100 h-100 rounded-top-5 d-none-dark"
-                            style="background: linear-gradient(90deg, #accbee 0%, #e7f0fd 100%)"></span>
-                        <span class="position-absolute top-0 start-0 w-100 h-100 rounded-top-5 d-none d-block-dark"
-                            style="background: linear-gradient(90deg, #1b273a 0%, #1f2632 100%)"></span>
-                    </div>
-                    <div class="position-relative z-1 display-1 text-dark-emphasis text-nowrap mb-0">
-                        20
-                        <span class="d-inline-block ms-n2">
-                            <span class="d-block fs-1">%</span>
-                            <span class="d-block fs-5">OFF</span>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-9 position-relative">
-                <div class="position-absolute top-0 start-0 h-100 overflow-hidden rounded-pill z-2 d-none d-md-block"
-                    style="color: var(--cz-body-bg); margin-left: -2px">
-                    <svg width="4" height="436" viewBox="0 0 4 436" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M2 0L1.99998 436" stroke="currentColor" stroke-width="3" stroke-dasharray="8 12"
-                            stroke-linecap="round"></path>
-                    </svg>
-                </div>
-                <div class="position-relative">
-                    <span class="position-absolute top-0 start-0 w-100 h-100 rounded-5 d-none-dark rtl-flip"
-                        style="background: linear-gradient(90deg, #accbee 0%, #e7f0fd 100%)"></span>
-                    <span class="position-absolute top-0 start-0 w-100 h-100 rounded-5 d-none d-block-dark rtl-flip"
-                        style="background: linear-gradient(90deg, #1b273a 0%, #1f2632 100%)"></span>
-                    <div class="row align-items-center position-relative z-2">
-                        <div class="col-md-6 mb-3 mb-md-0">
-                            <div class="text-center text-md-start py-md-5 px-4 ps-md-5 pe-md-0 me-md-n5">
-                                <h3 class="text-uppercase fw-bold ps-xxl-3 pb-2 mb-1">Giảm giá hàng tuần theo mùa năm 2024</h3>
-                                <p class="text-body-emphasis ps-xxl-3 mb-0"> Sử dụng mã <span
-                                        class="d-inline-block fw-semibold bg-white text-dark rounded-pill py-1 px-2">sale 2024</span> để nhận được ưu đãi tốt nhất</p>
-                            </div>
-                        </div>
-                        <div class="col-md-6 d-flex justify-content-center justify-content-md-end pb-5 pb-md-0">
-                            <div class="me-xxl-4">
-                                <img src="client/img/home/electronics/banner/ultra.png" class="d-block rtl-flip"
-                                    width="420" alt="Camera">
-                                <div class="d-none d-lg-block" style="margin-bottom: -9%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="d-none d-lg-block" style="padding-bottom: 3%"></div>
-    </section>
-
 
     <!-- Ưu đãi đặc biệt dành cho bạn -->
     <section class="container pt-5 mt-2 mt-sm-3 mt-lg-4">
@@ -927,54 +663,286 @@
         </div>
     </section>
 
-    <!-- Brands -->
-    <section class="container pt-4 pt-md-5 pb-5 mt-sm-2 mb-2 mb-sm-3 mb-md-4 mb-lg-5">
-        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-3 g-md-4 g-lg-3 g-xl-4">
-            <div class="col">
-                <a class="btn btn-outline-secondary w-100 rounded-4 p-3" href="#">
-                    <img src="client/img/shop/electronics/brands/apple-light-mode.svg" class="d-none-dark"
-                        alt="Apple">
-                    <img src="client/img/shop/electronics/brands/apple-dark-mode.svg" class="d-none d-block-dark"
-                        alt="Apple">
-                </a>
-            </div>
-            <div class="col">
-                <a class="btn btn-outline-secondary w-100 rounded-4 p-3" href="#">
-                    <img src="client/img/shop/electronics/brands/motorola-light-mode.svg" class="d-none-dark"
-                        alt="Apple">
-                    <img src="client/img/shop/electronics/brands/motorola-dark-mode.svg" class="d-none d-block-dark"
-                        alt="Apple">
-                </a>
-            </div>
-            <div class="col">
-                <a class="btn btn-outline-secondary w-100 rounded-4 p-3" href="#">
-                    <img src="client/img/shop/electronics/brands/canon-light-mode.svg" class="d-none-dark"
-                        alt="Apple">
-                    <img src="client/img/shop/electronics/brands/canon-dark-mode.svg" class="d-none d-block-dark"
-                        alt="Apple">
-                </a>
-            </div>
-            <div class="col">
-                <a class="btn btn-outline-secondary w-100 rounded-4 p-3" href="#">
-                    <img src="client/img/shop/electronics/brands/samsung-light-mode.svg" class="d-none-dark"
-                        alt="Apple">
-                    <img src="client/img/shop/electronics/brands/samsung-dark-mode.svg" class="d-none d-block-dark"
-                        alt="Apple">
-                </a>
-            </div>
-            <div class="col">
-                <a class="btn btn-outline-secondary w-100 rounded-4 p-3" href="#">
-                    <img src="client/img/shop/electronics/brands/sony-light-mode.svg" class="d-none-dark" alt="Apple">
-                    <img src="client/img/shop/electronics/brands/sony-dark-mode.svg" class="d-none d-block-dark"
-                        alt="Apple">
-                </a>
-            </div>
-            <div class="col">
-                <a class="btn btn-outline-secondary w-100 h-100 rounded-4 p-3" href="#">
-                    Xem tất cả
-                    <i class="ci-plus-circle fs-base ms-2"></i>
+    <!--sản phẩm mới-->
+    <section class="container pt-5 mt-1 mt-sm-2 mt-md-3 mt-lg-4">
+      <h2 class="h3 pb-2 pb-sm-3">Hàng mới về</h2>
+      <div class="row">
+          <div class="col-lg-4" data-bs-theme="dark">
+              <div class="d-flex flex-column align-items-center justify-content-end h-100 text-center overflow-hidden rounded-5 px-4 px-lg-3 pt-4 pb-5"
+                  style="background: #1d2c41 url('client/img/home/electronics/banner/background.jpg') center/cover no-repeat">
+                  <div class="ratio animate-up-down position-relative z-2 me-lg-4"
+                      style="max-width: 320px; margin-bottom: -19%; --cz-aspect-ratio: calc(690 / 640 * 100%)">
+                      <img src="client/img/home/electronics/banner/san-pham-moi.png" alt="Laptop">
+                  </div>
+                  <h3 class="display-2 mb-2">Iphone 15 VNA</h3>
+                  <p class="text-body fw-medium mb-4"> Trở nên chuyên nghiệp ở mọi nơi</p>
+                  <a class="btn btn-sm btn-primary" href="#!">
+                      Giá: 19.690.000đ
+                      <i class="ci-arrow-up-right fs-base ms-1 me-n1"></i>
+                  </a>
+              </div>
+          </div>
+  
+          <div class="col-lg-8">
+              <div class="row">
+                  @foreach ($latestProducts as $product)
+                      <div class="col-sm-6 col-lg-6 d-flex flex-column gap-3 pt-4 py-lg-4">
+                          <div class="position-relative animate-underline d-flex align-items-center ps-xl-3">
+                            {{-- <a class="stretched-link d-block fs-sm fw-medium text-truncate" --}}
+                                          {{-- href="{{ route('product.show', $product->id) }}"> --}}
+                              <div class="ratio ratio-1x1 flex-shrink-0" style="width: 110px">
+                                  <img class="rounded" src="{{ asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}">
+                              </div>
+                              <div class="w-100 min-w-0 ps-2 ps-sm-3">
+                                  <div class="d-flex align-items-center gap-2 mb-2">
+                                      <div class="d-flex gap-1 fs-xs">
+                                          @for ($i = 0; $i < 5; $i++)
+                                              @if ($i < $product->rating)
+                                                  <i class="ci-star-filled text-warning"></i>
+                                              @else
+                                                  <i class="ci-star text-secondary"></i>
+                                              @endif
+                                          @endfor
+                                      </div>
+                                      <span class="text-body-tertiary fs-xs">{{ $product->reviews_count ?? 0 }}</span>
+                                  </div>
+                                  <h4 class="mb-2">
+                                      <a class="stretched-link d-block fs-sm fw-medium text-truncate"
+                                          href="{{ route('product.show', $product->id) }}">
+                                          <span class="animate-target">{{ $product->name }}</span>
+                                      </a>
+                                  </h4>
+                                  @php
+                                      $minPrice = $product->variants->min('price_difference');
+                                  @endphp
+                                  <div class="h5 mb-0">
+                                      {{ number_format($minPrice, 0, ',', '.') }} VNĐ
+                                  </div>
+                              </div>
+                            {{-- </a> --}}
+                          </div>
+                      </div>
+                  @endforeach
+              </div>
+          </div>
+      </div>
+  </section>
+  
+    <!-- Trending products (Grid) Thịnh hành-->
+    <section class="container pt-5 mt-2 mt-sm-3 mt-lg-4">
+
+        <!-- Heading -->
+        <div class="d-flex align-items-center justify-content-between border-bottom pb-3 pb-md-4">
+            <h2 class="h3 mb-0"> Sản phẩm thịnh hành</h2>
+            <div class="nav ms-3">
+                <a class="nav-link animate-underline px-0 py-2" href="#">
+                    <span class="animate-target">Xem tất cả</span>
+                    <i class="ci-chevron-right fs-base ms-1"></i>
                 </a>
             </div>
         </div>
+
+        <!-- Product grid -->
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-4 pt-4">
+
+            @foreach ($trendingProducts as $product)
+                <!-- Item -->
+                <div class="col">
+                    <div class="product-card animate-underline hover-effect-opacity bg-body rounded">
+                        <div class="position-relative">
+                            <div class="position-absolute top-0 end-0 z-2 hover-effect-target opacity-0 mt-3 me-3">
+                                <div class="d-flex flex-column gap-2">
+                                    <button type="button"
+                                        class="btn btn-icon btn-secondary animate-pulse d-none d-lg-inline-flex"
+                                        aria-label="Add to Wishlist">
+                                        <i class="ci-heart fs-base animate-target"></i>
+                                    </button>
+                                    <button type="button"
+                                        class="btn btn-icon btn-secondary animate-rotate d-none d-lg-inline-flex"
+                                        aria-label="Compare">
+                                        <i class="ci-refresh-cw fs-base animate-target"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="dropdown d-lg-none position-absolute top-0 end-0 z-2 mt-2 me-2">
+                                <button type="button" class="btn btn-icon btn-sm btn-secondary bg-body"
+                                    data-bs-toggle="dropdown" aria-expanded="false" aria-label="More actions">
+                                    <i class="ci-more-vertical fs-lg"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end fs-xs p-2" style="min-width: auto">
+                                    <li>
+                                        <a class="dropdown-item" href="#!">
+                                            <i class="ci-heart fs-sm ms-n1 me-2"></i>
+                                            Add to Wishlist
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#!">
+                                            <i class="ci-refresh-cw fs-sm ms-n1 me-2"></i>
+                                            Compare
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <a class="d-block rounded-top overflow-hidden p-3 p-sm-4"
+                                href="{{ route('product.show', $product->id) }}">
+                                <div class="ratio" style="--cz-aspect-ratio: calc(240 / 258 * 100%)">
+                                    <img src="{{ asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}">
+                                </div>
+                            </a>
+                        </div>
+                        {{-- sanpham --}}
+                        <div class="w-100 min-w-0 px-1 pb-2 px-sm-3 pb-sm-3">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <div class="d-flex gap-1 fs-xs">
+                                    {{-- Hiển thị đánh giá dưới dạng sao --}}
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @if ($i <= floor($product->rating))
+                                            <i class="ci-star-filled text-warning"></i>
+                                        @elseif($i == ceil($product->rating))
+                                            <i class="ci-star-half text-warning"></i>
+                                        @else
+                                            <i class="ci-star text-muted"></i>
+                                        @endif
+                                    @endfor
+                                </div>
+                                <span class="text-body-tertiary fs-xs">({{ $product->review_count }})</span>
+                            </div>
+                            <h3 class="pb-1 mb-2">
+                                <a class="d-block fs-sm fw-medium text-truncate"
+                                    href="{{ route('product.show', $product->id) }}">
+                                    <span class="animate-target">{{ $product->name }}</span>
+                                </a>
+                            </h3>
+                            <div class="d-flex align-items-center justify-content-between">
+                                @php
+                                      $minPrice = $product->variants->min('price_difference');
+                                  @endphp
+                                <div class="h5 lh-1 mb-0">{{ number_format($minPrice, 0, ',', '.') }} VNĐ</div>
+                                <button type="button"
+                                    class="product-card-button btn btn-icon btn-secondary animate-slide-end ms-2"
+                                    aria-label="Add to Cart">
+                                    <i class="ci-shopping-cart fs-base animate-target"></i>
+                                </button>
+                            </div>
+                        </div>
+                        {{-- Biến thể thông tin chi tiết --}}
+                        {{-- <div
+                            class="product-card-details position-absolute top-100 start-0 w-100 bg-body rounded-bottom shadow mt-n2 p-3 pt-1">
+                            <span class="position-absolute top-0 start-0 w-100 bg-body mt-n2 py-2"></span>
+                            <ul class="list-unstyled d-flex flex-column gap-2 m-0">
+                                <li class="d-flex align-items-center">
+                                    <span class="fs-xs">Display:</span>
+                                    <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
+                                    <span class="text-dark-emphasis fs-xs fw-medium text-end">6.1" XDR</span>
+                                </li>
+                                <li class="d-flex align-items-center">
+                                    <span class="fs-xs">Capacity:</span>
+                                    <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
+                                    <span class="text-dark-emphasis fs-xs fw-medium text-end">128 GB</span>
+                                </li>
+                                <li class="d-flex align-items-center">
+                                    <span class="fs-xs">Chip:</span>
+                                    <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
+                                    <span class="text-dark-emphasis fs-xs fw-medium text-end">A15 Bionic</span>
+                                </li>
+                                <li class="d-flex align-items-center">
+                                    <span class="fs-xs">Camera:</span>
+                                    <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
+                                    <span class="text-dark-emphasis fs-xs fw-medium text-end">12 + 12 MP</span>
+                                </li>
+                                <li class="d-flex align-items-center">
+                                    <span class="fs-xs">Weight:</span>
+                                    <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
+                                    <span class="text-dark-emphasis fs-xs fw-medium text-end">172 grams</span>
+                                </li>
+                            </ul>
+                        </div> --}}
+                    </div>
+                </div>
+            @endforeach
+
+        </div>
     </section>
+
+    <!-- Sale Banner (CTA) -->
+    <section class="container pt-5 mt-sm-2 mt-md-3 mt-lg-4">
+        <div class="row g-0">
+            <div class="col-md-3 mb-n4 mb-md-0">
+                <div class="position-relative d-flex flex-column align-items-center justify-content-center h-100 py-5">
+                    <div class="position-absolute top-0 start-0 w-100 h-100 d-none d-md-block">
+                        <span class="position-absolute top-0 start-0 w-100 h-100 rounded-5 d-none-dark"
+                            style="background-color: #accbee"></span>
+                        <span class="position-absolute top-0 start-0 w-100 h-100 rounded-5 d-none d-block-dark"
+                            style="background-color: #1b273a"></span>
+                    </div>
+                    <div class="position-absolute top-0 start-0 w-100 h-100 d-md-none">
+                        <span class="position-absolute top-0 start-0 w-100 h-100 rounded-top-5 d-none-dark"
+                            style="background: linear-gradient(90deg, #accbee 0%, #e7f0fd 100%)"></span>
+                        <span class="position-absolute top-0 start-0 w-100 h-100 rounded-top-5 d-none d-block-dark"
+                            style="background: linear-gradient(90deg, #1b273a 0%, #1f2632 100%)"></span>
+                    </div>
+                    <div class="position-relative z-1 display-1 text-dark-emphasis text-nowrap mb-0">
+                        20
+                        <span class="d-inline-block ms-n2">
+                            <span class="d-block fs-1">%</span>
+                            <span class="d-block fs-5">OFF</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 position-relative">
+                <div class="position-absolute top-0 start-0 h-100 overflow-hidden rounded-pill z-2 d-none d-md-block"
+                    style="color: var(--cz-body-bg); margin-left: -2px">
+                    <svg width="4" height="436" viewBox="0 0 4 436" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2 0L1.99998 436" stroke="currentColor" stroke-width="3" stroke-dasharray="8 12"
+                            stroke-linecap="round"></path>
+                    </svg>
+                </div>
+                <div class="position-relative">
+                    <span class="position-absolute top-0 start-0 w-100 h-100 rounded-5 d-none-dark rtl-flip"
+                        style="background: linear-gradient(90deg, #accbee 0%, #e7f0fd 100%)"></span>
+                    <span class="position-absolute top-0 start-0 w-100 h-100 rounded-5 d-none d-block-dark rtl-flip"
+                        style="background: linear-gradient(90deg, #1b273a 0%, #1f2632 100%)"></span>
+                    <div class="row align-items-center position-relative z-2">
+                        <div class="col-md-6 mb-3 mb-md-0">
+                            <div class="text-center text-md-start py-md-5 px-4 ps-md-5 pe-md-0 me-md-n5">
+                                <h3 class="text-uppercase fw-bold ps-xxl-3 pb-2 mb-1">Giảm giá hàng tuần theo mùa năm 2024</h3>
+                                <p class="text-body-emphasis ps-xxl-3 mb-0"> Sử dụng mã <span
+                                        class="d-inline-block fw-semibold bg-white text-dark rounded-pill py-1 px-2">sale 2024</span> để nhận được ưu đãi tốt nhất</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 d-flex justify-content-center justify-content-md-end pb-5 pb-md-0">
+                            <div class="me-xxl-4">
+                                <img src="client/img/home/electronics/banner/ultra.png" class="d-block rtl-flip"
+                                    width="420" alt="Camera">
+                                <div class="d-none d-lg-block" style="margin-bottom: -9%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-none d-lg-block" style="padding-bottom: 3%"></div>
+    </section>
+
+    <!-- Brands -->
+    <section class="container pt-4 pt-md-5 pb-5 mt-sm-2 mb-2">
+        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-3 g-md-4 g-lg-3 g-xl-4">
+            @foreach ($categories as $category)
+            <div class="col">
+                <a class="btn btn-outline-secondary w-100 rounded-4 p-3" href="#">
+                    <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" class="img-fluid">
+                </a>
+            </div>
+            @endforeach
+            <div class="col">
+            <a class="btn btn-outline-secondary w-100 h-100 rounded-4 p-3" href="{{route('danh-muc-san-pham')}}">
+                Xem tất cả
+                <i class="ci-plus-circle fs-base ms-2"></i>
+            </a>
+        </div>
+        </div>
+    </section>
+
 @endsection

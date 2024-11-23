@@ -1,3 +1,25 @@
+<style>
+  .auth {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(126, 8, 8); /* Nền trắng */
+  border-radius: 50%; /* Bo tròn hoàn toàn */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Tạo bóng nhẹ */
+  transition: transform 0.2s ease; /* Thêm hiệu ứng mượt */
+}
+
+.auth:hover {
+  background-color: rgb(98, 6, 6); /* Nền trắng */
+  transform: scale(1.1); /* Phóng to nhẹ khi hover */
+}
+
+.auth span {
+  font-size: 1.25rem;
+  color: #fff;
+  font-weight: 700;
+}
+</style>
 <div class="container d-block py-1 py-lg-3" data-bs-theme="dark">
   <div class="navbar-stuck-hide pt-1"></div>
   <div class="row flex-nowrap align-items-center g-0">
@@ -86,12 +108,21 @@
           <i class="ci-search animate-target"></i>
         </button>
 
-        <!-- Account button visible on screens > 768px wide (md breakpoint) -->
-        <a class="btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-shake d-none d-md-inline-flex" href="account-signin.html">
-          <i class="ci-user animate-target"></i>
-          <span class="visually-hidden">Account</span>
-        </a>
-
+         <!-- Account button visible on screens > 768px wide (md breakpoint) -->
+         @if (Auth::guard('customer')->check()) 
+         <!-- If the user is logged in, show their initials -->
+         <a class="auth btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-shake d-none d-md-inline-flex" 
+           href="{{ route('customer.file') }}" >
+             <span class="fw-medium">{{ strtoupper(substr(Auth::guard('customer')->user()->email, 0, 1)) }}</span>
+         </a>
+        @else
+            <!-- If the user is not logged in, show the login icon -->
+            <a class="btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-shake d-none d-md-inline-flex" 
+              href="{{ route('customer.login') }}">
+                <i class="ci-user animate-target"></i>
+                <span class="visually-hidden">Account</span>
+            </a>
+        @endif
         <!-- Wishlist button visible on screens > 768px wide (md breakpoint) -->
         <a class="btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-pulse d-none d-md-inline-flex" href="account-wishlist.html">
           <i class="ci-heart animate-target"></i>
@@ -153,55 +184,63 @@
                 </button>
 
                 <!-- Mega menu danh mục sản phẩm-->
-                <ul class="dropdown-menu w-100 rounded-top-0 rounded-bottom-4 py-1 p-lg-1" style="--cz-dropdown-spacer: 0; --cz-dropdown-item-padding-y: .625rem; --cz-dropdown-item-spacer: 0">
-                  <li class="d-lg-none pt-2">
-                    <a class="dropdown-item fw-medium" href="shop-categories-electronics.html">
-                      <i class="ci-grid fs-xl opacity-60 pe-1 me-2"></i>
-                      Tất cả danh mục
-                      <i class="ci-chevron-right fs-base ms-auto me-n1"></i>
-                    </a>
-                  </li>
+                  {{-- <ul class="dropdown-menu dropdown-menu-static w-100 rounded-top-0 rounded-bottom-4 py-1 p-lg-1" style="--cz-dropdown-spacer: 0; --cz-dropdown-item-padding-y: .625rem; --cz-dropdown-item-spacer: 0"> --}}
+                  {{-- <ul class="dropdown-menu w-100 rounded-top-0 rounded-bottom-4 py-1 p-lg-1" style="--cz-dropdown-spacer: 0; --cz-dropdown-item-padding-y: .625rem; --cz-dropdown-item-spacer: 0"> --}}
+                    @if(Route::currentRouteName() === 'home')
+                      <ul class="dropdown-menu dropdown-menu-static w-100 rounded-top-0 rounded-bottom-4 py-1 p-lg-1" style="--cz-dropdown-spacer: 0; --cz-dropdown-item-padding-y: .625rem; --cz-dropdown-item-spacer: 0">
+                    @else
+                      <ul class="dropdown-menu w-100 rounded-top-0 rounded-bottom-4 py-1 p-lg-1" style="--cz-dropdown-spacer: 0; --cz-dropdown-item-padding-y: .625rem; --cz-dropdown-item-spacer: 0">
+                    @endif
+
+                    <li class="d-lg-none pt-2">
+                      <a class="dropdown-item fw-medium" href="shop-categories-electronics.html">
+                        <i class="ci-grid fs-xl opacity-60 pe-1 me-2"></i>
+                        Tất cả danh mục
+                        <i class="ci-chevron-right fs-base ms-auto me-n1"></i>
+                      </a>
+                    </li>
 
 
-                    @foreach ($categories as $category)
-                    <li class="dropend position-static">
-                      <div class="position-relative rounded pt-2 pb-1 px-lg-2" data-bs-toggle="dropdown" data-bs-trigger="hover">
-
-                        <!-- Link cho danh mục lớn -->
-                        <a class="dropdown-item fw-medium stretched-link d-none d-lg-flex" href="{{ route('category.show', $category->id) }}">
-                          <i class="ci-{{ $category->icon }} fs-xl opacity-60 pe-1 me-2"></i>
-                          <span class="text-truncate">{{ $category->name }}</span>
-                          <i class="ci-chevron-right fs-base ms-auto me-n1"></i>
-                        </a>
-
-                        <!-- Hiển thị trên màn hình nhỏ -->
-                        <div class="dropdown-item fw-medium text-wrap stretched-link d-lg-none">
-                          <i class="ci-{{ $category->icon }} fs-xl opacity-60 pe-1 me-2"></i>
-                          {{ $category->name }}
-                          <i class="ci-chevron-down fs-base ms-auto me-n1"></i>
-                        </div>
-                      </div>
-                      <div class="dropdown-menu rounded-4 p-4" style="top: 1rem;">
-                        <div class="d-flex flex-column flex-lg-row h-100 gap-4">
-                          <div style="min-width: 194px">
-                            <div class="d-flex w-100">
-                              <a class="h6 text-dark-emphasis text-decoration-none text-truncate" href="{{ route('category.show', $category->id) }}">{{ $category->name }}</a>
-                            </div>
-                            <ul class="nav flex-column gap-2 mt-n2">
-                              @foreach ($category->products as $product)
-                                <li class="d-flex w-100 pt-1">
-                                  <a class="nav-link d-inline fw-normal text-truncate p-0" href="{{ route('product.show', $product->id) }}">
-                                    {{ $product->name }}
-                                  </a>
-                                </li>
-                              @endforeach
-                            </ul>
+                      @foreach ($categories as $category)
+                      <li class="dropend position-static">
+                        <div class="position-relative rounded pt-2 pb-1 px-lg-2" data-bs-toggle="dropdown" data-bs-trigger="hover">
+                          
+                          <!-- Link cho danh mục lớn -->
+                          <a class="dropdown-item fw-medium stretched-link d-none d-lg-flex" href="{{ route('category.show', $category->id) }}">
+                            <i class="ci-smartphone-2 fs-xl opacity-60 pe-1 me-2"></i>
+                            <span class="text-truncate">{{ $category->name }}</span>
+                            <i class="ci-chevron-right fs-base ms-auto me-n1"></i>
+                          </a>
+                          
+                          <!-- Hiển thị trên màn hình nhỏ -->
+                          <div class="dropdown-item fw-medium text-wrap stretched-link d-lg-none">
+                            <i class="ci-{{ $category->icon }} fs-xl opacity-60 pe-1 me-2"></i>
+                            {{ $category->name }}
+                            <i class="ci-chevron-down fs-base ms-auto me-n1"></i>
                           </div>
                         </div>
-                      </div>
-                   </li>
-                   @endforeach
-                </ul>
+                        <div class="dropdown-menu rounded-4 p-4" style="top: 1rem;">
+                          <div class="d-flex flex-column flex-lg-row h-100 gap-4">
+                            <div style="min-width: 194px">
+                              <div class="d-flex w-100">
+                                <a class="h6 text-dark-emphasis text-decoration-none text-truncate" href="{{ route('category.show', $category->id) }}">{{ $category->name }}</a>
+                              </div>
+                              <ul class="nav flex-column gap-2 mt-n2">
+                                @foreach ($category->products as $product)
+                                  <li class="d-flex w-100 pt-1">
+                                    <a class="nav-link d-inline fw-normal text-truncate p-0" href="{{ route('product.show', $product->id) }}">
+                                      {{ $product->name }}
+                                    </a>
+                                  </li>
+                                @endforeach
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                     </li>
+                     @endforeach
+                  </ul>
+
               </div>
             </div>
           </div>

@@ -1,23 +1,25 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NewController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\chatController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\FrontendControlle;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\CapacityController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ClientNewController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\CategoryNewsController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
-use App\Http\Controllers\CategoryNewsController;
-use App\Http\Controllers\ClientNewController;
-use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\NewController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -29,22 +31,70 @@ use App\Http\Controllers\NewController;
 | thuộc nhóm "web" middleware.
 |
 */
-Route::get('/', function () {
-    return view('index');
-})->name('user.home');
+// Route::get('/', function () {
+//     return view('index');
+// })->name('user.home');
 
 // font end trang chủ
 Route::get('/', [FrontendControlle::class, 'index'])->name('home');
 
-
+// auth admin ------------------------------------------------------
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/admin/login', [AuthController::class, 'adminLogin'])->name('admin.login.submit');
-Route::post('/admin/logout', [AuthController::class, 'adminLogout'])->name('admin.logout');
+Route::post('/logout', [AuthController::class, 'adminLogout'])->name('admin.logout');
 
-Route::middleware(['auth', 'isAdmin'])->group(function () {
+Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.home');
 });
 
+// auth customer ------------------------------------------------------
+// quản lý hồ sơ khách hàng 
+Route::get('/customer/address', [AuthController::class, 'address'])->name('customer.adress');
+
+Route::get('/customer/add', [AuthController::class, 'createCustomer'])->name('customer.add');
+Route::post('/customer/creat', [AuthController::class, 'storeCustomer'])->name('customer.creat');
+Route::put('/customer/{id}/update', [AuthController::class, 'updateCustomer'])->name('customer.update');
+Route::put('/customer/{id}/updateContact', [AuthController::class, 'updateContact'])->name('customer.updateContact');
+Route::put('/customer/{id}/changePassword', [AuthController::class, 'changePassword'])->name('customer.changePassword');
+
+// Route::put('/customer/{id}/update-address', [AuthController::class, 'updateAddress'])->name('customer.updateAddress');
+
+
+Route::middleware(['auth:customer'])->group(function () {
+// Route thêm địa chỉ
+Route::post('/customer/address', [AddressController::class, 'addAddress'])->name('customer.addAddress');
+
+// Route xóa địa chỉ
+Route::delete('/customer/address/{addressId}', [AddressController::class, 'deleteAddress'])->name('customer.deleteAddress');
+
+// Route đặt địa chỉ làm mặc định
+Route::get('/customer/address/{addressId}/set-default', [AddressController::class, 'setDefaultAddress'])->name('customer.setDefaultAddress');
+
+// Route cập nhật địa chỉ
+Route::put('/customer/address/{addressId}', [AddressController::class, 'updateAddress'])->name('customer.updateAddress');
+
+});
+
+
+Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
+
+
+
+Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
+Route::get('/verify/{token}', [AuthController::class, 'verifyCustomer'])->name('customer.verify');
+// Route để gửi lại email xác nhận
+Route::post('/customer/resend-verification', [AuthController::class, 'resendVerificationEmail'])->name('customer.resend.verification');
+
+Route::get('/customer/login', [AuthController::class, 'showLogin_customer'])->name('customer.login');
+Route::post('/customer/login', [AuthController::class, 'customerLogin'])->name('customer.login.submit');
+Route::post('/customer/logout', [AuthController::class, 'customerLogout'])->name('customer.logout');
+
+Route::middleware(['auth:customer', 'isCustomer'])->group(function () {
+    Route::get('/customer/address', [AuthController::class, 'address'])->name('customer.adress');
+    Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
+    Route::put('/customer/{id}/update-address', [AuthController::class, 'updateAddress'])->name('customer.updateAddress');
+    Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
+});
 // -----------------------------USER------------------------------------------------------------------------------
 //giỏ hàng
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
@@ -53,12 +103,17 @@ Route::post('cart/remove/{productId}/{modelId}/{colorId}', [CartController::clas
 Route::post('/cart/update', [CartController::class, 'updateQuantity'])->name('cart.update');
 Route::post('/cart/apply-voucher', [CartController::class, 'applyVoucher'])->name('cart.apply-voucher');
 Route::get('/cart/offcanvas', [CartController::class, 'getCart'])->name('cart.offcanvas');
+
 // thanh toán
 Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
 Route::post('/order/store', [OrderController::class, 'storeOrder'])->name('order.store');
 Route::get('/order-success', function () {
     return view('client.page.checkout.order_success'); // Thông báo thành công
 })->name('order.success');
+
+// lịch sử đơn hàng
+
+Route::get('/order-history', [OrderController::class, 'orderHistory'])->name('order.history');
 
 
 
@@ -122,10 +177,9 @@ Route::get('new', [NewController::class, 'clientIndex'])->name('news.index');
 Route::resource('category_news', CategoryNewsController::class);
 
 Route::resource('vouchers', VoucherController::class);
-
+//Shop
 Route::get('/shop', [ClientCategoryController::class, 'shop'])->name('shop');
-
-Route::get('/categories/{id}/products', [ClientCategoryController::class, 'getProductsByCategory']);
+Route::get('/categories/{id}/products', [ClientCategoryController::class, 'getProductsByCategory'])->name('client.category.products');
 
 // chat
 Route::get('/chat', [chatController::class, 'index'])->name('chat');
@@ -146,3 +200,5 @@ Route::get('/new/{slug}', [NewController::class, 'singlepost'])->name('news.show
 Route::get('/new/category/{slug}', [NewController::class, 'categoryNewsBlog'])->name('categoryNewsBlog');
 
 Route::get('/search', [ClientCategoryController::class, 'search'])->name('product.search');
+// categoy product
+Route::get('/danh-muc-san-pham', [FrontendControlle::class, 'index_cate_all'])->name('danh-muc-san-pham');
