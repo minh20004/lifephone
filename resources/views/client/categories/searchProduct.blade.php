@@ -1,70 +1,50 @@
 @extends('client.layout.master')
 @section('content')
+<style>
+    .suggestion-item {
+        width: auto;
+        margin: 5px;
+    }
+
+    @media (max-width: 768px) {
+        .list-hint a {
+            width: 100% !important;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .list-hint a {
+            width: auto;
+        }
+    }
+</style>
+
 <div>
   <!-- Breadcrumb -->
   <nav class="container pt-3 my-3 my-md-4" aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item"><a href="home-electronics.html">Home</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Catalog with sidebar filters</li>
+      <li class="breadcrumb-item active" aria-current="page">Sản phẩm tìm kiếm</li>
     </ol>
   </nav>
 
 
   <!-- Page title -->
-  <h1 class="h3 container mb-4">Shop</h1>
+  <h1 class="h3 container mb-4">Sản phần tìm kiếm</h1>
 
 
-  <!-- Selected filters + Sorting -->
-  <!-- <section class="container mb-4">
-    <div class="row">
-      <div class="col-lg-9">
-        <div class="d-md-flex align-items-start">
-          <div class="h6 fs-sm fw-normal text-nowrap translate-middle-y mt-3 mb-0 me-4">Found <span class="fw-semibold">732</span> items</div>
-          <div class="d-flex flex-wrap gap-2">
-            <button type="button" class="btn btn-sm btn-secondary">
-              <i class="ci-close fs-sm ms-n1 me-1"></i>
-              Sale
-            </button>
-            <button type="button" class="btn btn-sm btn-secondary">
-              <i class="ci-close fs-sm ms-n1 me-1"></i>
-              Asus
-            </button>
-            <button type="button" class="btn btn-sm btn-secondary">
-              <i class="ci-close fs-sm ms-n1 me-1"></i>
-              1 TB
-            </button>
-            <button type="button" class="btn btn-sm btn-secondary">
-              <i class="ci-close fs-sm ms-n1 me-1"></i>
-              $340 - $1,250
-            </button>
-            <button type="button" class="btn btn-sm btn-secondary bg-transparent border-0 text-decoration-underline px-0 ms-2">
-              Clear all
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 mt-3 mt-lg-0">
-        <div class="d-flex align-items-center justify-content-lg-end text-nowrap">
-          <label class="form-label fw-semibold mb-0 me-2">Sort by:</label>
-          <div style="width: 190px">
-            <select class="form-select border-0 rounded-0 px-1" data-select="{
-                  &quot;removeItemButton&quot;: false,
-                  &quot;classNames&quot;: {
-                    &quot;containerInner&quot;: &quot;form-select border-0 rounded-0 px-1&quot;
-                  }
-                }">
-              <option value="Relevance">Relevance</option>
-              <option value="Popularity">Popularity</option>
-              <option value="Price: Low to High">Price: Low to High</option>
-              <option value="Price: High to Low">Price: High to Low</option>
-              <option value="Newest Arrivals">Newest Arrivals</option>
-            </select>
-          </div>
-        </div>
-      </div>
-    </div>
-    <hr class="d-lg-none my-3">
-  </section> -->
+  <div class="list-hint container d-flex justify-content-start align-items-center mb-5">
+      <a class="" href="#" style="background-color: rgba(199, 189, 189, 0.445); border-radius:9999px;text-decoration:none;padding:5px 10px;color:white;" >Iphone 14 pro max</a>
+      <a class="" href="#" style="background-color: rgba(199, 189, 189, 0.445); border-radius:9999px;text-decoration:none;padding:5px 10px;color:white;" >Iphone 13 pro max</a>
+      <a class="" href="#" style="background-color: rgba(199, 189, 189, 0.445); border-radius:9999px;text-decoration:none;padding:5px 10px;color:white;" >Iphone 16 pro </a>
+      <a class="" href="#" style="background-color: rgba(199, 189, 189, 0.445); border-radius:9999px;text-decoration:none;padding:5px 10px;color:white;" >Iphone 15 pro max</a>
+      <a class="" href="#" style="background-color: rgba(199, 189, 189, 0.445); border-radius:9999px;text-decoration:none;padding:5px 10px;color:white;" >Iphone 13 pro max</a>
+  </div>
+
+
+
 
 
   <!-- Products grid + Sidebar with filters -->
@@ -80,18 +60,6 @@
           </div>
           <div class="offcanvas-body flex-column pt-2 py-lg-0">
 
-            <!-- Status
-            <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
-              <h4 class="h6">Status</h4>
-              <div class="d-flex flex-wrap gap-2">
-                <button type="button" class="btn btn-sm btn-outline-secondary">
-                  <i class="ci-percent fs-sm me-1 ms-n1"></i>
-                  Sale
-                </button>
-                <button type="button" class="btn btn-sm btn-outline-secondary">Same Day Delivery</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary">Available to Order</button>
-              </div>
-            </div> -->
 
             <!-- Categories -->
             <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
@@ -131,124 +99,6 @@
             </div>
 
 
-            <!-- Brand (checkboxes) -->
-            <!-- <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
-              <h4 class="h6">Brand</h4>
-              <div class="d-flex flex-column gap-1">
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="apple" checked="">
-                    <label for="apple" class="form-check-label text-body-emphasis">Apple</label>
-                  </div>
-                  <span class="text-body-secondary fs-xs">64</span>
-                </div>
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="asus">
-                    <label for="asus" class="form-check-label text-body-emphasis">Asus</label>
-                  </div>
-                  <span class="text-body-secondary fs-xs">310</span>
-                </div>
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="bao">
-                    <label for="bao" class="form-check-label text-body-emphasis">Bang &amp; Olufsen</label>
-                  </div>
-                  <span class="text-body-secondary fs-xs">47</span>
-                </div>
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="bosh">
-                    <label for="bosh" class="form-check-label text-body-emphasis">Bosh</label>
-                  </div>
-                  <span class="text-body-secondary fs-xs">112</span>
-                </div>
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="cobra">
-                    <label for="cobra" class="form-check-label text-body-emphasis">Cobra</label>
-                  </div>
-                  <span class="text-body-secondary fs-xs">96</span>
-                </div>
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="dell">
-                    <label for="dell" class="form-check-label text-body-emphasis">Dell</label>
-                  </div>
-                  <span class="text-body-secondary fs-xs">178</span>
-                </div>
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="foxconn">
-                    <label for="foxconn" class="form-check-label text-body-emphasis">Foxconn</label>
-                  </div>
-                  <span class="text-body-secondary fs-xs">95</span>
-                </div>
-                <div class="accordion mb-n2">
-                  <div class="accordion-item border-0">
-                    <div class="accordion-collapse collapse" id="more-brands">
-                      <div class="d-flex flex-column gap-1">
-                        <div class="d-flex align-items-center justify-content-between">
-                          <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="hp">
-                            <label for="hp" class="form-check-label text-body-emphasis">Hewlett Packard</label>
-                          </div>
-                          <span class="text-body-secondary fs-xs">61</span>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between">
-                          <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="huawei">
-                            <label for="huawei" class="form-check-label text-body-emphasis">Huawei</label>
-                          </div>
-                          <span class="text-body-secondary fs-xs">417</span>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between">
-                          <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="panasonic">
-                            <label for="panasonic" class="form-check-label text-body-emphasis">Panasonic</label>
-                          </div>
-                          <span class="text-body-secondary fs-xs">123</span>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between">
-                          <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="samsung">
-                            <label for="samsung" class="form-check-label text-body-emphasis">Samsung</label>
-                          </div>
-                          <span class="text-body-secondary fs-xs">284</span>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between">
-                          <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="sony">
-                            <label for="sony" class="form-check-label text-body-emphasis">Sony</label>
-                          </div>
-                          <span class="text-body-secondary fs-xs">133</span>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between">
-                          <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="toshiba">
-                            <label for="toshiba" class="form-check-label text-body-emphasis">Toshiba</label>
-                          </div>
-                          <span class="text-body-secondary fs-xs">39</span>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-between">
-                          <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="xiaomi">
-                            <label for="xiaomi" class="form-check-label text-body-emphasis">Xiaomi</label>
-                          </div>
-                          <span class="text-body-secondary fs-xs">421</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="accordion-header">
-                      <button type="button" class="accordion-button w-auto fs-sm fw-medium collapsed animate-underline py-2" data-bs-toggle="collapse" data-bs-target="#more-brands" aria-expanded="false" aria-controls="more-brands" aria-label="Show/hide more brands">
-                        <span class="animate-target me-2" data-label-collapsed="Show all" data-label-expanded="Show less"></span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> -->
-
             <!-- SSD size (checkboxes) -->
             <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
               <h4 class="h6">Capacity</h4>
@@ -277,26 +127,6 @@
                 </button>
                 @endforeach
 
-                <!-- <button type="button" class="nav-link w-auto animate-underline fw-normal mt-1 pt-2 pb-0 px-0">
-                  <span class="rounded-circle me-2" style="width: .875rem; height: .875rem; margin-top: .125rem; background-color: #ee7976"></span>
-                  <span class="animate-target">Coral red</span>
-                </button>
-                <button type="button" class="nav-link w-auto animate-underline fw-normal mt-1 pt-2 pb-0 px-0">
-                  <span class="rounded-circle me-2" style="width: .875rem; height: .875rem; margin-top: .125rem; background-color: #df8fbf"></span>
-                  <span class="animate-target">Light pink</span>
-                </button>
-                <button type="button" class="nav-link w-auto animate-underline fw-normal mt-1 pt-2 pb-0 px-0">
-                  <span class="rounded-circle me-2" style="width: .875rem; height: .875rem; margin-top: .125rem; background-color: #9acbf1"></span>
-                  <span class="animate-target">Sky blue</span>
-                </button>
-                <button type="button" class="nav-link w-auto animate-underline fw-normal mt-1 pt-2 pb-0 px-0">
-                  <span class="rounded-circle me-2" style="width: .875rem; height: .875rem; margin-top: .125rem; background-color: #364254"></span>
-                  <span class="animate-target">Black</span>
-                </button> -->
-                <!-- <button type="button" class="nav-link w-auto animate-underline fw-normal mt-1 pt-2 pb-0 px-0">
-                  <span class="border rounded-circle me-2" style="width: .875rem; height: .875rem; margin-top: .125rem; background-color: #ffffff"></span>
-                  <span class="animate-target">White</span>
-                </button> -->
               </div>
             </div>
 
@@ -345,7 +175,7 @@
                 <a class="d-block rounded-top overflow-hidden p-3 p-sm-4" href="shop-product-general-electronics.html">
                   <!-- <span class="badge bg-danger position-absolute top-0 start-0 mt-2 ms-2 mt-lg-3 ms-lg-3">-21%</span> -->
                   <div class="ratio" style="--cz-aspect-ratio: calc(240 / 258 * 100%)">
-                    <img src="{{ asset( $item->image_url) }}" alt="{{ $item->name }}">
+                    <img src="{{ asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}">
                   </div>
                 </a>
               </div>
@@ -406,48 +236,6 @@
 
 
 
-          <!-- Banner -->
-          <!-- <div class="position-relative rounded-5 overflow-hidden mb-4">
-              <span class="position-absolute top-0 start-0 w-100 h-100 d-none-dark rtl-flip" style="background: linear-gradient(-90deg, #accbee 0%, #e7f0fd 100%)"></span>
-              <span class="position-absolute top-0 start-0 w-100 h-100 d-none d-block-dark rtl-flip" style="background: linear-gradient(-90deg, #1b273a 0%, #1f2632 100%)"></span>
-              <div class="row align-items-center position-relative z-1">
-                <div class="col-md-6 pt-5 pt-md-0 mb-2 mb-md-0">
-                  <div class="text-center text-md-start py-md-5 px-4 ps-md-5 pe-md-0 me-md-n5">
-                    <h3 class="text-uppercase fw-bold ps-xxl-3 pb-2 mb-1">Seasonal weekly sale 2024</h3>
-                    <p class="text-body-emphasis ps-xxl-3 mb-0">Use code <span class="d-inline-block fw-semibold text-dark bg-white rounded-pill py-1 px-2">Sale 2024</span> to get best offer</p>
-                  </div>
-                </div>
-                <div class="col-md-6 d-flex justify-content-center justify-content-md-end">
-                  <div class="me-3 me-lg-4 me-xxl-5">
-                    <img src="assets/img/shop/electronics/banners/iphone-2.png" class="d-block rtl-flip" width="335" alt="Camera">
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="row row-cols-2 row-cols-md-3 g-4"> -->
-
-          <!-- Item -->
-          <!--  -->
-
-
-
-          <!-- Banner
-              <div class="col" data-bs-theme="dark">
-                <div class="d-flex flex-column align-items-center justify-content-end h-100 text-center overflow-hidden rounded-5 px-4 px-lg-3 pt-4 pb-4" style="background: #1d2c41 url(assets/img/shop/electronics/banners/background.jpg) center/cover no-repeat">
-                  <div class="ratio animate-up-down position-relative z-2 me-lg-4" style="max-width: 320px; margin-bottom: -22%; --cz-aspect-ratio: calc(256 / 260 * 100%)">
-                    <img src="assets/img/shop/electronics/banners/laptop.png" alt="Laptop">
-                  </div>
-                  <h3 class="display-5 mb-2">MacBook</h3>
-                  <p class="text-body fs-sm fw-medium mb-3">Be Pro Anywhere</p>
-                  <a class="btn btn-sm btn-primary mb-2" href="#!">
-                    From $1,199
-                    <i class="ci-arrow-up-right fs-base ms-1 me-n1"></i>
-                  </a>
-                </div>
-              </div> -->
-
-
 
           <!-- Pagination -->
           <!-- <nav class="border-top mt-4 pt-3" aria-label="Catalog pagination">
@@ -481,8 +269,8 @@
                   </a>
                 </li>
               </ul>
-            </nav>
-          </div> -->
+            </nav> -->
+          </div>
         </div>
 
 
@@ -555,3 +343,46 @@
 </div>
 <!-- Thêm jQuery -->
 @endsection
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  $(document).ready(function() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var searchTerm = urlParams.get('search');
+
+    if (searchTerm) {
+        $.ajax({
+            url: '/api/search-suggestions',
+            method: 'GET',
+            data: { search: searchTerm },
+            success: function(response) {
+                $('.list-hint').empty();
+
+                if(window.innerWidth < 768) {
+                  response.suggestions =  response.suggestions.slice(0, 2)
+                }
+
+                response.suggestions.forEach(function(suggestion) {
+                    // Tạo thẻ <a> với style và class giống như mẫu
+                    var suggestionItem = $('<a></a>')
+                        .addClass('suggestion-item')  // Áp dụng class từ CSS
+                        .text(suggestion.name)            // Thêm nội dung từ gợi ý
+                        .attr('href', '/search?search=' + encodeURIComponent(suggestion.name))  // Cập nhật href với từ khóa
+                        .css({                      // Áp dụng CSS động nếu cần
+                            backgroundColor: 'rgba(199, 189, 189, 0.345)',
+                            borderRadius: '8px',
+                            textDecoration: 'none',
+                            padding: '5px 10px',
+                            color: 'black'
+                        });
+
+                    $('.list-hint').append(suggestionItem);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Có lỗi xảy ra khi gọi API:', error);
+            }
+        });
+    }
+  });
+
+</script>
