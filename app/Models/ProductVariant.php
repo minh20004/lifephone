@@ -10,7 +10,6 @@ class ProductVariant extends Model
     use HasFactory;
     protected $fillable = ['product_id', 'color_id', 'capacity_id', 'price_difference', 'stock'];
 
-
     public function product()
     {
         return $this->belongsTo(Product::class);

@@ -1,10 +1,11 @@
+
 <script src="{{ asset('client/vendor/swiper/swiper-bundle.min.js') }}"></script>
 <script src="{{ asset('client/vendor/timezz/timezz.js') }}"></script>
 
 <!-- Bootstrap + Theme scripts -->
+<!-- Vendor scripts -->
+<script src="{{ asset('client/vendor/choices.js/choices.min.js') }}"></script>
 <script src="{{ asset('client/js/theme.min.js') }}"></script>
-
-{{-- thay đổi chữ theo màu sắc của chi tiết sản phẩm --}}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const colorOptions = document.querySelectorAll('input[name="color-options"]');
@@ -183,7 +184,6 @@
         updateQuantity();
     });
 </script>
-
 {{-- Hàm tăng giảm số lượng sản phẩm trong giỏ hàng --}}
 <script>
     document.addEventListener('DOMContentLoaded', function () {

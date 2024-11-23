@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\chatController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\FrontendControlle;
@@ -10,8 +11,13 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\CapacityController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
+use App\Http\Controllers\CategoryNewsController;
+use App\Http\Controllers\ClientNewController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\NewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,23 +29,44 @@ use App\Http\Controllers\Admin\AdminController;
 | thuộc nhóm "web" middleware.
 |
 */
-
-Route::get('/', function () {
-    return view('index');
-})->name('user.home');
+// Route::get('/', function () {
+//     return view('index');
+// })->name('user.home');
 
 // font end trang chủ
 Route::get('/', [FrontendControlle::class, 'index'])->name('home');
 
-
+// auth admin ------------------------------------------------------
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/admin/login', [AuthController::class, 'adminLogin'])->name('admin.login.submit');
-Route::post('/admin/logout', [AuthController::class, 'adminLogout'])->name('admin.logout');
+Route::post('/logout', [AuthController::class, 'adminLogout'])->name('admin.logout');
 
-Route::middleware(['auth', 'isAdmin'])->group(function () {
+Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.home');
 });
 
+// auth customer ------------------------------------------------------
+// quản lý hồ sơ khách hàng 
+Route::get('/customer/address', [AuthController::class, 'address'])->name('customer.adress');
+
+Route::get('/customer/add', [AuthController::class, 'createCustomer'])->name('customer.add');
+Route::post('/customer/creat', [AuthController::class, 'storeCustomer'])->name('customer.creat');
+Route::put('/customer/{id}/update', [AuthController::class, 'updateCustomer'])->name('customer.update');
+Route::put('/customer/{id}/updateContact', [AuthController::class, 'updateContact'])->name('customer.updateContact');
+
+
+Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
+Route::get('/verify/{token}', [AuthController::class, 'verifyCustomer'])->name('customer.verify');
+// Route để gửi lại email xác nhận
+Route::post('/customer/resend-verification', [AuthController::class, 'resendVerificationEmail'])->name('customer.resend.verification');
+
+Route::get('/customer/login', [AuthController::class, 'showLogin_customer'])->name('customer.login');
+Route::post('/customer/login', [AuthController::class, 'customerLogin'])->name('customer.login.submit');
+Route::post('/customer/logout', [AuthController::class, 'customerLogout'])->name('customer.logout');
+
+Route::middleware(['auth:customer', 'isCustomer'])->group(function () {
+    Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
+});
 // -----------------------------USER------------------------------------------------------------------------------
 //giỏ hàng
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
@@ -94,11 +121,11 @@ Route::prefix('products')->group(function () {
     
 });
 
+
 // Route danh mục bị xóa 
 Route::prefix('categories')->group(function () {
     Route::get('/trashed', [CategoryController::class, 'trashed'])->name('category.trashed');
     Route::post('/restore/{id}', [CategoryController::class, 'restore'])->name('category.restore');
-
 });
 // Route dung lượng bị xóa 
 Route::prefix('capacities')->group(function () {
@@ -112,5 +139,36 @@ Route::prefix('colors')->group(function () {
 });
 // chuyển trang biến thể 
 Route::get('/product/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
+//router review và news
+Route::resource('admin/review',ReviewController::class);
+Route::resource('new_admin',  NewController::class);
 
+Route::get('new', [NewController::class, 'clientIndex'])->name('news.index');
 
+Route::resource('category_news', CategoryNewsController::class);
+
+Route::resource('vouchers', VoucherController::class);
+
+Route::get('/shop', [ClientCategoryController::class, 'shop'])->name('shop');
+
+Route::get('/categories/{id}/products', [ClientCategoryController::class, 'getProductsByCategory']);
+
+// chat
+Route::get('/chat', [chatController::class, 'index'])->name('chat');
+
+Route::post('/chat/start', [ChatController::class, 'startConversation'])->name('chat.start');
+Route::post('/chat/{conversationId}/send', [ChatController::class, 'sendMessage'])->name('chat.send');
+Route::get('/chat/{conversationId}/messages', [ChatController::class, 'getMessages'])->name('chat.messages');
+
+// sub;
+Route::resource('/subscriptions', SubscriptionController::class)->except(['show']);
+// Trang gửi email hàng loạt
+Route::get('/subscriptions/send', [SubscriptionController::class, 'create'])->name('subscriptions.create'); // Form gửi email
+// Trang hiển thị các email đã gửi (giả sử bạn có một bảng ghi lại thông tin các email đã gửi)
+Route::get('/subscriptions/index', [SubscriptionController::class, 'sentEmails'])->name('subscriptions.index');
+// routes/web.php
+Route::post('/subscriptions/send', [SubscriptionController::class, 'sendBulkEmails'])->name('subscriptions.send');
+Route::get('/new/{slug}', [NewController::class, 'singlepost'])->name('news.show');
+Route::get('/new/category/{slug}', [NewController::class, 'categoryNewsBlog'])->name('categoryNewsBlog');
+// categoy product
+Route::get('/danh-muc-san-pham', [FrontendControlle::class, 'index_cate_all'])->name('danh-muc-san-pham');
