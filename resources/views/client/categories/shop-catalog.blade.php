@@ -186,7 +186,7 @@
               </div>
               <div class="w-100 min-w-0 px-1 pb-2 px-sm-3 pb-sm-3">
                 <h3 class="pb-1 mb-2">
-                  <a class="d-block fs-sm fw-medium text-truncate" href="shop-product-general-electronics.html">
+                  <a class="d-block fs-sm fw-medium text-truncate" href="{{ route('product.show', $item->id) }}">
                     <span class="animate-target">{{$item->name}}</span>
                   </a>
                 </h3>
