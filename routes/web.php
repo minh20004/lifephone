@@ -1,23 +1,24 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NewController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\chatController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\AddressController;
 use App\Http\Controllers\FrontendControlle;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\CapacityController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ClientNewController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\CategoryNewsController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
-use App\Http\Controllers\CategoryNewsController;
-use App\Http\Controllers\ClientNewController;
-use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\NewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,15 +48,33 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
 
 // auth customer ------------------------------------------------------
 // quản lý hồ sơ khách hàng 
-Route::get('/customer/address', [AuthController::class, 'address'])->name('customer.adress');
-
 Route::get('/customer/add', [AuthController::class, 'createCustomer'])->name('customer.add');
 Route::post('/customer/creat', [AuthController::class, 'storeCustomer'])->name('customer.creat');
 Route::put('/customer/{id}/update', [AuthController::class, 'updateCustomer'])->name('customer.update');
 Route::put('/customer/{id}/updateContact', [AuthController::class, 'updateContact'])->name('customer.updateContact');
+Route::put('/customer/{id}/changePassword', [AuthController::class, 'changePassword'])->name('customer.changePassword');
+
+// Route::put('/customer/{id}/update-address', [AuthController::class, 'updateAddress'])->name('customer.updateAddress');
+
+
+Route::middleware(['auth:customer'])->group(function () {
+// Route thêm địa chỉ
+Route::post('/customer/address', [AddressController::class, 'addAddress'])->name('customer.addAddress');
+
+// Route xóa địa chỉ
+Route::delete('/customer/address/{addressId}', [AddressController::class, 'deleteAddress'])->name('customer.deleteAddress');
+
+// Route đặt địa chỉ làm mặc định
+Route::get('/customer/address/{addressId}/set-default', [AddressController::class, 'setDefaultAddress'])->name('customer.setDefaultAddress');
+
+// Route cập nhật địa chỉ
+Route::put('/customer/address/{addressId}', [AddressController::class, 'updateAddress'])->name('customer.updateAddress');
+
+});
 
 
 Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
+
 Route::get('/verify/{token}', [AuthController::class, 'verifyCustomer'])->name('customer.verify');
 // Route để gửi lại email xác nhận
 Route::post('/customer/resend-verification', [AuthController::class, 'resendVerificationEmail'])->name('customer.resend.verification');
@@ -65,7 +84,9 @@ Route::post('/customer/login', [AuthController::class, 'customerLogin'])->name('
 Route::post('/customer/logout', [AuthController::class, 'customerLogout'])->name('customer.logout');
 
 Route::middleware(['auth:customer', 'isCustomer'])->group(function () {
+    Route::get('/customer/address', [AuthController::class, 'address'])->name('customer.adress');
     Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
+    Route::put('/customer/{id}/update-address', [AuthController::class, 'updateAddress'])->name('customer.updateAddress');
 });
 // -----------------------------USER------------------------------------------------------------------------------
 //giỏ hàng

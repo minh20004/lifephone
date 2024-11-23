@@ -1,279 +1,84 @@
 @extends('client/page/auth/layout/master')
 
 @section('content_customer')
- <div class="ps-lg-3 ps-xl-0">
-    <!-- Page title -->
-    <h1 class="h2 mb-1 mb-sm-2">Addresses</h1>
+<div class="py-4">
+    <h3 class="h6 mb-3">Các địa chỉ của bạn</h3>
+    <ul class="list-unstyled">
+        @foreach(Auth::user()->addresses as $address)
+            <li>
+                <div class="d-flex justify-content-between">
+                    <span>{{ $address->address }}</span>
+                    <div>
+                        @if($address->is_default)
+                            <span class="badge text-bg-info">Mặc định</span>
+                        @else
+                            <a href="{{ route('customer.setDefaultAddress', $address->id) }}" class="btn btn-sm btn-outline-primary">Đặt làm mặc định</a>
+                        @endif
+                        <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editAddressModal" data-id="{{ $address->id }}" data-address="{{ $address->address }}">Chỉnh sửa</button>
 
-    <!-- Primary shipping address -->
-    <div class="border-bottom py-4">
-      <div class="nav flex-nowrap align-items-center justify-content-between pb-1 mb-3">
-        <div class="d-flex align-items-center gap-3 me-4">
-          <h2 class="h6 mb-0">Shipping address</h2>
-          <span class="badge text-bg-info rounded-pill">Primary</span>
+                        <form action="{{ route('customer.deleteAddress', $address->id) }}" method="POST" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                        </form>
+                    </div>
+                </div>
+            </li>
+        @endforeach
+    </ul>
+
+    <!-- Form thêm địa chỉ -->
+    @if(Auth::user()->addresses->count() < 6)
+    <form action="{{ route('customer.addAddress') }}" method="POST">
+        @csrf
+        <div class="mb-3">
+            <label for="address" class="form-label">Thêm địa chỉ mới</label>
+            <input type="text" id="address" name="address" class="form-control" required>
         </div>
-        <a class="nav-link hiding-collapse-toggle text-decoration-underline p-0 collapsed" href="-7.html" data-bs-toggle="collapse" aria-expanded="false" aria-controls="primaryAddressPreview primaryAddressEdit">Edit</a>
-      </div>
-      <div class="collapse primary-address show" id="primaryAddressPreview">
-        <ul class="list-unstyled fs-sm m-0">
-          <li>New York 11741, USA</li>
-          <li>396 Lillian Bolavandy, Holbrook</li>
-        </ul>
-      </div>
-      <div class="collapse primary-address" id="primaryAddressEdit">
-        <form class="row g-3 g-sm-4 needs-validation" novalidate="">
-          <div class="col-sm-6">
-            <div class="position-relative">
-              <label class="form-label">Country</label>
-              <select class="form-select" data-select="{
-                &quot;searchEnabled&quot;: true,
-                &quot;classNames&quot;: {
-                  &quot;containerInner&quot;: &quot;form-select&quot;
-                }
-              }" aria-label="Select country" required="">
-                <option value="">Select country...</option>
-                <optgroup label="Africa">
-                  <option value="Nigeria">Nigeria</option>
-                  <option value="South Africa">South Africa</option>
-                  <option value="Kenya">Kenya</option>
-                  <option value="Egypt">Egypt</option>
-                  <option value="Ethiopia">Ethiopia</option>
-                </optgroup>
-                <optgroup label="Asia">
-                  <option value="China">China</option>
-                  <option value="India">India</option>
-                  <option value="Japan">Japan</option>
-                  <option value="South Korea">South Korea</option>
-                  <option value="Saudi Arabia">Saudi Arabia</option>
-                </optgroup>
-                <optgroup label="Europe">
-                  <option value="Germany">Germany</option>
-                  <option value="France">France</option>
-                  <option value="United Kingdom">United Kingdom</option>
-                  <option value="Italy">Italy</option>
-                  <option value="Spain">Spain</option>
-                </optgroup>
-                <optgroup label="North America">
-                  <option value="United States" selected="">United States</option>
-                  <option value="Canada">Canada</option>
-                  <option value="Mexico">Mexico</option>
-                  <option value="Jamaica">Jamaica</option>
-                  <option value="Costa Rica">Costa Rica</option>
-                </optgroup>
-                <optgroup label="South America">
-                  <option value="Brazil">Brazil</option>
-                  <option value="Argentina">Argentina</option>
-                  <option value="Colombia">Colombia</option>
-                  <option value="Chile">Chile</option>
-                  <option value="Peru">Peru</option>
-                </optgroup>
-                <optgroup label="Oceania">
-                  <option value="Australia">Australia</option>
-                  <option value="New Zealand">New Zealand</option>
-                  <option value="Papua New Guinea">Papua New Guinea</option>
-                  <option value="Fiji">Fiji</option>
-                  <option value="Solomon Islands">Solomon Islands</option>
-                </optgroup>
-              </select>
-              <div class="invalid-feedback">Please select your country!</div>
-            </div>
-          </div>
-          <div class="col-sm-6">
-            <div class="position-relative">
-              <label class="form-label">City</label>
-              <select class="form-select" data-select="{
-                &quot;searchEnabled&quot;: true,
-                &quot;classNames&quot;: {
-                  &quot;containerInner&quot;: &quot;form-select&quot;
-                }
-              }" aria-label="Select city" required="">
-                <option value="">Select city...</option>
-                <option value="Austin">Austin</option>
-                <option value="Charlotte">Charlotte</option>
-                <option value="Chicago">Chicago</option>
-                <option value="Columbus">Columbus</option>
-                <option value="Dallas">Dallas</option>
-                <option value="Houston">Houston</option>
-                <option value="Jacksonville">Jacksonville</option>
-                <option value="Los Angeles">Los Angeles</option>
-                <option value="New York" selected="">New York</option>
-                <option value="Orlando">Orlando</option>
-                <option value="Philadelphia">Philadelphia</option>
-                <option value="Phoenix">Phoenix</option>
-                <option value="San Antonio">San Antonio</option>
-                <option value="San Diego">San Diego</option>
-                <option value="San Jose">San Jose</option>
-              </select>
-              <div class="invalid-feedback">Please select your city!</div>
-            </div>
-          </div>
-          <div class="col-sm-4">
-            <div class="position-relative">
-              <label for="psa-zip" class="form-label">ZIP code</label>
-              <input type="text" class="form-control" id="psa-zip" value="11741" required="">
-              <div class="invalid-feedback">Please enter your ZIP code!</div>
-            </div>
-          </div>
-          <div class="col-sm-8">
-            <div class="position-relative">
-              <label for="psa-address" class="form-label">Address</label>
-              <input type="text" class="form-control" id="psa-address" value="396 Lillian Bolavandy, Holbrook" required="">
-              <div class="invalid-feedback">Please enter your address!</div>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="form-check mb-0">
-              <input type="checkbox" class="form-check-input" id="set-primary-1" checked="">
-              <label for="set-primary-1" class="form-check-label">Set as primary address</label>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="d-flex gap-3 pt-2 pt-sm-0">
-              <button type="submit" class="btn btn-primary">Save changes</button>
-              <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target=".primary-address" aria-expanded="true" aria-controls="primaryAddressPreview primaryAddressEdit">Close</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
+        <button type="submit" class="btn btn-primary">Thêm địa chỉ</button>
+    </form>
+    @endif
+</div>
 
-    <!-- Alternative shipping address -->
-    <div class="border-bottom py-4">
-      <div class="nav flex-nowrap align-items-center justify-content-between pb-1 mb-3">
-        <div class="d-flex align-items-center gap-3 me-4">
-          <h2 class="h6 mb-0">Alternative shipping address</h2>
-        </div>
-        <a class="nav-link hiding-collapse-toggle text-decoration-underline p-0 collapsed" href="-8.html" data-bs-toggle="collapse" aria-expanded="false" aria-controls="alternativeAddressPreview alternativeAddressEdit">Edit</a>
-      </div>
-      <div class="collapse alternative-address show" id="alternativeAddressPreview">
-        <ul class="list-unstyled fs-sm m-0">
-          <li>Florida 32806, USA</li>
-          <li>514 S. Magnolia St., Orlando</li>
-        </ul>
-      </div>
-      <div class="collapse alternative-address" id="alternativeAddressEdit">
-        <form class="row g-3 g-sm-4 needs-validation" novalidate="">
-          <div class="col-sm-6">
-            <div class="position-relative">
-              <label class="form-label">Country</label>
-              <select class="form-select" data-select="{
-                &quot;searchEnabled&quot;: true,
-                &quot;classNames&quot;: {
-                  &quot;containerInner&quot;: &quot;form-select&quot;
-                }
-              }" aria-label="Select country" required="">
-                <option value="">Select country...</option>
-                <optgroup label="Africa">
-                  <option value="Nigeria">Nigeria</option>
-                  <option value="South Africa">South Africa</option>
-                  <option value="Kenya">Kenya</option>
-                  <option value="Egypt">Egypt</option>
-                  <option value="Ethiopia">Ethiopia</option>
-                </optgroup>
-                <optgroup label="Asia">
-                  <option value="China">China</option>
-                  <option value="India">India</option>
-                  <option value="Japan">Japan</option>
-                  <option value="South Korea">South Korea</option>
-                  <option value="Saudi Arabia">Saudi Arabia</option>
-                </optgroup>
-                <optgroup label="Europe">
-                  <option value="Germany">Germany</option>
-                  <option value="France">France</option>
-                  <option value="United Kingdom">United Kingdom</option>
-                  <option value="Italy">Italy</option>
-                  <option value="Spain">Spain</option>
-                </optgroup>
-                <optgroup label="North America">
-                  <option value="United States" selected="">United States</option>
-                  <option value="Canada">Canada</option>
-                  <option value="Mexico">Mexico</option>
-                  <option value="Jamaica">Jamaica</option>
-                  <option value="Costa Rica">Costa Rica</option>
-                </optgroup>
-                <optgroup label="South America">
-                  <option value="Brazil">Brazil</option>
-                  <option value="Argentina">Argentina</option>
-                  <option value="Colombia">Colombia</option>
-                  <option value="Chile">Chile</option>
-                  <option value="Peru">Peru</option>
-                </optgroup>
-                <optgroup label="Oceania">
-                  <option value="Australia">Australia</option>
-                  <option value="New Zealand">New Zealand</option>
-                  <option value="Papua New Guinea">Papua New Guinea</option>
-                  <option value="Fiji">Fiji</option>
-                  <option value="Solomon Islands">Solomon Islands</option>
-                </optgroup>
-              </select>
-              <div class="invalid-feedback">Please select your country!</div>
+<!-- Modal chỉnh sửa địa chỉ -->
+<div class="modal fade" id="editAddressModal" tabindex="-1" aria-labelledby="editAddressModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="" method="POST" id="editAddressForm">
+            @csrf
+            @method('PUT')
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAddressModalLabel">Chỉnh sửa địa chỉ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="newAddress" class="form-label">Địa chỉ mới</label>
+                        <input type="text" class="form-control" id="newAddress" name="address" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Cập nhật</button>
+                </div>
             </div>
-          </div>
-          <div class="col-sm-6">
-            <div class="position-relative">
-              <label class="form-label">City</label>
-              <select class="form-select" data-select="{
-                &quot;searchEnabled&quot;: true,
-                &quot;classNames&quot;: {
-                  &quot;containerInner&quot;: &quot;form-select&quot;
-                }
-              }" aria-label="Select city" required="">
-                <option value="">Select city...</option>
-                <option value="Austin">Austin</option>
-                <option value="Charlotte">Charlotte</option>
-                <option value="Chicago">Chicago</option>
-                <option value="Columbus">Columbus</option>
-                <option value="Dallas">Dallas</option>
-                <option value="Houston">Houston</option>
-                <option value="Jacksonville">Jacksonville</option>
-                <option value="Los Angeles">Los Angeles</option>
-                <option value="New York">New York</option>
-                <option value="Orlando" selected="">Orlando</option>
-                <option value="Philadelphia">Philadelphia</option>
-                <option value="Phoenix">Phoenix</option>
-                <option value="San Antonio">San Antonio</option>
-                <option value="San Diego">San Diego</option>
-                <option value="San Jose">San Jose</option>
-              </select>
-              <div class="invalid-feedback">Please select your city!</div>
-            </div>
-          </div>
-          <div class="col-sm-4">
-            <div class="position-relative">
-              <label for="asa-zip" class="form-label">ZIP code</label>
-              <input type="text" class="form-control" id="asa-zip" value="32806" required="">
-              <div class="invalid-feedback">Please enter your ZIP code!</div>
-            </div>
-          </div>
-          <div class="col-sm-8">
-            <div class="position-relative">
-              <label for="asa-address" class="form-label">Address</label>
-              <input type="text" class="form-control" id="asa-address" value="514 S. Magnolia St." required="">
-              <div class="invalid-feedback">Please enter your address!</div>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="form-check mb-0">
-              <input type="checkbox" class="form-check-input" id="set-primary-2">
-              <label for="set-primary-2" class="form-check-label">Set as primary address</label>
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="d-flex gap-3 pt-2 pt-sm-0">
-              <button type="submit" class="btn btn-primary">Save changes</button>
-              <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target=".alternative-address" aria-expanded="true" aria-controls="alternativeAddressPreview alternativeAddressEdit">Close</button>
-            </div>
-          </div>
         </form>
-      </div>
     </div>
+</div>
 
-    <!-- Add address button -->
-    <div class="nav pt-4">
-      <a class="nav-link animate-underline fs-base px-0" href="#newAddressModal" data-bs-toggle="modal">
-        <i class="ci-plus fs-lg ms-n1 me-2"></i>
-        <span class="animate-target">Add address</span>
-      </a>
-    </div>
-  </div>
+<script>
+    // JavaScript để xử lý modal chỉnh sửa
+    var editAddressModal = document.getElementById('editAddressModal');
+    editAddressModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget; // Nút 'Chỉnh sửa'
+        var addressId = button.getAttribute('data-id');
+        var addressText = button.getAttribute('data-address');
+
+        var form = document.getElementById('editAddressForm');
+        form.action = '/customer/address/' + addressId; // Cập nhật đường dẫn form
+
+        var newAddressInput = document.getElementById('newAddress');
+        newAddressInput.value = addressText; // Điền địa chỉ vào input
+    });
+</script>
 @endsection

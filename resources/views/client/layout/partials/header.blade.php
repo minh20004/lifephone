@@ -1,8 +1,25 @@
-{{-- @if(session('success'))
-<div class="alert alert-success">
-    {{ session('success') }}
-</div>
-@endif --}}
+<style>
+  .auth {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(126, 8, 8); /* Nền trắng */
+  border-radius: 50%; /* Bo tròn hoàn toàn */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Tạo bóng nhẹ */
+  transition: transform 0.2s ease; /* Thêm hiệu ứng mượt */
+}
+
+.auth:hover {
+  background-color: rgb(98, 6, 6); /* Nền trắng */
+  transform: scale(1.1); /* Phóng to nhẹ khi hover */
+}
+
+.auth span {
+  font-size: 1.25rem;
+  color: #fff;
+  font-weight: 700;
+}
+</style>
 <div class="container d-block py-1 py-lg-3" data-bs-theme="dark">
     <div class="navbar-stuck-hide pt-1"></div>
     <div class="row flex-nowrap align-items-center g-0">
@@ -94,8 +111,8 @@
           <!-- Account button visible on screens > 768px wide (md breakpoint) -->
           @if (Auth::guard('customer')->check()) 
               <!-- If the user is logged in, show their initials -->
-              <a class="btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-shake d-none d-md-inline-flex" 
-                href="{{ route('customer.file') }}">
+              <a class="auth btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-shake d-none d-md-inline-flex" 
+                href="{{ route('customer.file') }}" >
                   <span class="fw-medium">{{ strtoupper(substr(Auth::guard('customer')->user()->email, 0, 1)) }}</span>
               </a>
           @else

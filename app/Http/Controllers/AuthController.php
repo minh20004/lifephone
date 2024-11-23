@@ -177,7 +177,7 @@ class AuthController extends Controller
         return redirect()->route('home');
     }
 
-    // Customer CRUD operations  -----------------------------------------------------------------------------------------------------------
+// Customer CRUD operations  -----------------------------------------------------------------------------------------------------------
     public function indexCustomer()
     {
         $customers = Customer::latest('id')->paginate(10);
@@ -265,13 +265,14 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'phone' => 'required|regex:/^\d{10}$/|max:15',
-            'address' => 'required|string',
+            // 'phone' => 'required|regex:/^\d{10}$/|max:15',
+            // 'address' => 'required|string',
             'gender' => 'required|in:male,female,other',
-        ], [
-            'phone.regex' => 'Số điện thoại phải có đúng 10 chữ số!',
-        ]);
-
+        ],
+        //  [
+        //     'phone.regex' => 'Số điện thoại phải có đúng 10 chữ số!',
+        // ]
+        );
         try {
             $customer = Customer::findOrFail($id);
             $data = $request->except('avatar');
@@ -313,6 +314,61 @@ class AuthController extends Controller
         }
     }
 
+    // Hàm xử lý cập nhật địa chỉ khách hàng
+    public function updateAddress(Request $request, $id)
+    {
+        // Kiểm tra người dùng đã đăng nhập chưa
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để cập nhật địa chỉ!');
+        }
+    
+        $user = Auth::user(); // Lấy người dùng hiện tại
+        if ($user->id != $id) {
+            return redirect()->route('customer.profile')->with('error', 'Bạn không có quyền truy cập vào thông tin này!');
+        }
+    
+        // Tiến hành cập nhật địa chỉ
+        $request->validate([
+            'address' => 'required|string|max:255',
+        ]);
+    
+        try {
+            $customer = Customer::findOrFail($id);
+            $customer->update([
+                'address' => $request->input('address')
+            ]);
+    
+            return redirect()->route('customer.profile')->with('success', 'Cập nhật địa chỉ thành công!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Đã có lỗi xảy ra, vui lòng thử lại!');
+        }
+    }
+    
+    // Hàm xử lý cập nhật mật khẩu khách hàng
+    public function changePassword(Request $request, $id)
+    {
+        // Xác thực dữ liệu
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:8|confirmed', // Xác nhận mật khẩu mới
+        ]);
+
+        // Lấy người dùng hiện tại
+        $user = Customer::findOrFail($id);
+
+        // Kiểm tra mật khẩu hiện tại
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Mật khẩu hiện tại không chính xác.']);
+        }
+
+        // Cập nhật mật khẩu mới
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return redirect()->back()->with('success', 'Đổi mật khẩu thành công!');
+    }
+
+    // Hàm xử lý Xóa khách hàng
     public function destroyCustomer($id)
     {
         $customer = Customer::findOrFail($id);

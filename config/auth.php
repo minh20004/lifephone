@@ -44,9 +44,9 @@ return [
             'driver' => 'session',
             'provider' => 'customers',
         ],
-            'admin' => [ // Guard cho admin
+        'admin' => [ // Guard cho admin
             'driver' => 'session',
-            'provider' => 'users', // Sử dụng provider users cho admin
+            'provider' => 'users',
         ],
     ],
 

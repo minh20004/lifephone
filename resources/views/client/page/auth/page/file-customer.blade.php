@@ -4,31 +4,19 @@
   <div class="ps-lg-3 ps-xl-0">
 
     <!-- Page title -->
-    <h1 class="h2 mb-1 mb-sm-2">Thông tin cá nhân</h1>
-    {{-- @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    @if(session('error'))
-        <div class="alert alert-danger">
-            {{ session('error') }}
-        </div>
-    @endif --}}
+    <h1 class="h2 mb-1 mb-sm-2">Thông tin cá nhân </h1>
+    
     <!-- Basic info -->
     <div class="border-bottom py-4">
       <div class="nav flex-nowrap align-items-center justify-content-between pb-1 mb-3">
         <h2 class="h6 mb-0"><li>{{ Auth::user()->name ?? 'Tên chưa được cập nhật' }}</li></h2>
-        <a class="nav-link hiding-collapse-toggle text-decoration-underline p-0 collapsed" href="#basicInfoEdit" data-bs-toggle="collapse" aria-expanded="false" aria-controls="basicInfoPreview basicInfoEdit">Edit</a>
+        <a class="nav-link hiding-collapse-toggle text-decoration-underline p-0 collapsed" href="#basicInfoEdit" data-bs-toggle="collapse" aria-expanded="false" aria-controls="basicInfoPreview basicInfoEdit">Chỉnh sửa</a>
       </div>
       <div class="collapse basic-info show" id="basicInfoPreview">
         <ul class="list-unstyled fs-sm m-0">
           <!-- Display customer information -->
           <li>{{ Auth::user()->name ?? 'Tên chưa được cập nhật' }}</li>
           <li>{{ Auth::user()->gender ?? 'Giới tính chưa cập nhật' }}</li>
-          <li>{{ Auth::user()->phone ?? 'Số điện thoại chưa cập nhật' }}</li>
-          <li>{{ Auth::user()->address ?? 'Địa chỉ Chưa cập nhật' }}</li>
         </ul>
       </div>
       <div class="collapse basic-info" id="basicInfoEdit">
@@ -53,28 +41,6 @@
               <div class="position-relative">
                   <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" value="{{ old('name', Auth::user()->name) }}" required>
                   @error('name')
-                      <div class="invalid-feedback">{{ $message }}</div>
-                  @enderror
-              </div>
-          </div>
-
-          <!-- Phone number -->
-          <div class="col-sm-6">
-              <label for="phone" class="form-label">Số điện thoại</label>
-              <div class="position-relative">
-                  <input type="text" class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone', Auth::user()->phone) }}" required>
-                  @error('phone')
-                      <div class="invalid-feedback">{{ $message }}</div>
-                  @enderror
-              </div>
-          </div>
-
-          <!-- Address -->
-          <div class="col-sm-6">
-              <label for="address" class="form-label">Địa chỉ</label>
-              <div class="position-relative">
-                  <input type="text" class="form-control @error('address') is-invalid @enderror" id="address" name="address" value="{{ old('address', Auth::user()->address) }}" required>
-                  @error('address')
                       <div class="invalid-feedback">{{ $message }}</div>
                   @enderror
               </div>
@@ -109,11 +75,6 @@
       <div class="nav flex-nowrap align-items-center justify-content-between pb-1 mb-3">
         <div class="d-flex align-items-center gap-3 me-4">
           <h2 class="h6 mb-0">Liên hệ</h2>
-           @if(session('success'))
-              <div class="alert alert-success">
-                  {{ session('success') }}
-              </div>
-          @endif
         </div>
         <a class="nav-link hiding-collapse-toggle text-decoration-underline p-0 collapsed" href="#contactInfoEdit" data-bs-toggle="collapse" aria-expanded="false" aria-controls="contactInfoPreview contactInfoEdit">Chỉnh sửa</a>
       </div>
@@ -167,43 +128,76 @@
     </div>
 
 
-    <!-- Password -->
+    <!-- Password Section -->
     <div class="border-bottom py-4">
+      <!-- Header -->
       <div class="nav flex-nowrap align-items-center justify-content-between pb-1 mb-3">
         <div class="d-flex align-items-center gap-3 me-4">
           <h2 class="h6 mb-0">Password</h2>
         </div>
-        <a class="nav-link hiding-collapse-toggle text-decoration-underline p-0 collapsed" href="-6.html" data-bs-toggle="collapse" aria-expanded="false" aria-controls="passChangePreview passChangeEdit">Edit</a>
+        <a class="nav-link hiding-collapse-toggle text-decoration-underline p-0 collapsed" href="#passChangeEdit" data-bs-toggle="collapse" aria-expanded="false" aria-controls="passChangePreview passChangeEdit">Chỉnh sửa</a>
       </div>
+
+      <!-- Password Preview -->
       <div class="collapse password-change show" id="passChangePreview">
         <ul class="list-unstyled fs-sm m-0">
           <li>**************</li>
         </ul>
       </div>
+
+      <!-- Password Edit Form -->
       <div class="collapse password-change" id="passChangeEdit">
-        <form class="row g-3 g-sm-4 needs-validation" novalidate="">
+        <form class="row g-3 g-sm-4 needs-validation" method="POST" action="{{ route('customer.changePassword', Auth::user()->id) }}" novalidate>
+          @csrf
+          @method('PUT')
+
+          <!-- Current Password -->
           <div class="col-sm-6">
-            <label for="current-password" class="form-label">Current password</label>
+            <label for="current-password" class="form-label">Current Password</label>
             <div class="password-toggle">
-              <input type="password" class="form-control" id="current-password" placeholder="Enter your current password" required="">
+              <input type="password" class="form-control @error('current_password') is-invalid @enderror" id="current-password" name="current_password" placeholder="Enter your current password" required>
               <label class="password-toggle-button" aria-label="Show/hide password">
                 <input type="checkbox" class="btn-check">
               </label>
+              @error('current_password')
+              <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             </div>
           </div>
+
+          <!-- New Password -->
           <div class="col-sm-6">
-            <label for="new-password" class="form-label">New password</label>
+            <label for="new-password" class="form-label">New Password</label>
             <div class="password-toggle">
-              <input type="password" class="form-control" id="new-password" placeholder="Create new password" required="">
+              <input type="password" class="form-control @error('new_password') is-invalid @enderror" id="new-password" name="new_password" placeholder="Create new password" required>
               <label class="password-toggle-button" aria-label="Show/hide password">
                 <input type="checkbox" class="btn-check">
               </label>
+              @error('new_password')
+              <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
             </div>
           </div>
+
+          <!-- Confirm New Password -->
+          <div class="col-sm-6">
+            <label for="new-password-confirmation" class="form-label">Confirm New Password</label>
+            <div class="password-toggle">
+              <input type="password" class="form-control @error('new_password_confirmation') is-invalid @enderror" id="new-password-confirmation" name="new_password_confirmation" placeholder="Confirm new password" required>
+              <label class="password-toggle-button" aria-label="Show/hide password">
+                <input type="checkbox" class="btn-check">
+              </label>
+              @error('new_password_confirmation')
+              <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
+            </div>
+          </div>
+
+          <!-- Submit Buttons -->
           <div class="col-12">
             <div class="d-flex gap-3 pt-2 pt-sm-0">
-              <button type="submit" class="btn btn-primary">Save changes</button>
-              <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target=".password-change" aria-expanded="true" aria-controls="passChangePreview passChangeEdit">Close</button>
+              <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+              <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target=".password-change" aria-expanded="true" aria-controls="passChangePreview passChangeEdit">Đóng</button>
             </div>
           </div>
         </form>
