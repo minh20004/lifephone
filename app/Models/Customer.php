@@ -25,6 +25,11 @@ class Customer extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
     
     public function addresses()
     {

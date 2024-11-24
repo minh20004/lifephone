@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Order;
 use App\Models\Customer;
+use App\Mail\VerifyEmail;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\VerifyEmail;
 
 class AuthController extends Controller
 {
@@ -424,4 +425,43 @@ class AuthController extends Controller
     {
         return view('client.page.auth.page.address');
     }
+// Đơn hàng bên khách hàng---------------------------------------------------------------------------------------------------------------------------------------------
+
+    
+    public function history(Request $request)
+    {
+        // Kiểm tra khách đăng nhập hay không
+        $customerId = auth('customer')->check() ? auth('customer')->id() : null;
+
+        if (!$customerId) {
+            return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để xem lịch sử đơn hàng.');
+        }
+
+        $orders = Order::where('customer_id', $customerId)->orderBy('created_at', 'desc')->get();
+
+        return view('client.page.auth.page.order-history.order_history', compact('orders'));
+    }
+    public function detail($id)
+    {
+        // Xác định khách hàng hiện tại (nếu cần)
+        $customerId = auth('customer')->check() ? auth('customer')->id() : null;
+
+        // Tìm đơn hàng
+        $order = Order::with(['orderItems.product', 'orderItems.variant.color', 'orderItems.variant.capacity', 'voucher'])
+                    ->where('customer_id', $customerId) // Đảm bảo chỉ lấy đơn hàng của khách hiện tại
+                    ->find($id);
+
+        // Nếu không tìm thấy đơn hàng
+        if (!$order) {
+            return redirect()->route('order.history')->with('error', 'Đơn hàng không tồn tại hoặc bạn không có quyền xem.');
+        }
+
+        return view('client.page.auth.page.order-history.order_detail', compact('order'));
+    }
+
+
+
 }
+
+
+

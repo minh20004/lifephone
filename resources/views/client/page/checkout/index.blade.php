@@ -54,29 +54,36 @@
                   <div class="d-flex align-items-center justify-content-center bg-primary text-white rounded-circle fs-sm fw-semibold lh-1 flex-shrink-0" style="width: 2rem; height: 2rem; margin-top: -.125rem">2</div>
                   <div class="w-100 ps-3 ps-md-4">
                     <h1 class="h5 mb-md-4">Địa chỉ giao hàng</h1>
-                    {{-- <form class="needs-validation" novalidate=""> --}}
-                      <div class="row row-cols-1 row-cols-sm-2 g-3 g-sm-4 mb-4">
-                        <div class="col">
-                          <label for="shipping-name" class="form-label">Họ và tên <span class="text-danger">*</span></label>
-                          <input type="text" class="form-control form-control-lg" id="shipping-name" name="name" required>
-                        </div>
-                        <div class="col">
-                            <label for="shipping-phone" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control form-control-lg" id="shipping-phone" name="phone" required>
-                          </div>
-                        
+                    <div class="row row-cols-1 row-cols-sm-2 g-3 g-sm-4 mb-4">
+                      <div class="col">
+                        <label for="shipping-name" class="form-label">Họ và tên <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-lg" id="shipping-name" name="name" 
+                          value="{{ auth('customer')->check() ? auth('customer')->user()->name : '' }}" 
+                          {{ auth('customer')->check() ? 'readonly' : '' }} required>
                       </div>
-                      <div class="mb-3">
-                        <label for="shipping-email" class="form-label">Email <span class="text-danger">*</span></label>
-                        <input type="email" class="form-control form-control-lg" id="shipping-email" name="email" required>
+                      <div class="col">
+                        <label for="shipping-phone" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control form-control-lg" id="shipping-phone" name="phone" 
+                          value="{{ auth('customer')->check() ? auth('customer')->user()->phone : '' }}" 
+                          {{ auth('customer')->check() ? 'readonly' : '' }} required>
                       </div>
-                      <div class="mb-3">
-                        <label for="shipping-address" class="form-label">Địa chỉ chi tiết (nhà/ngõ/ngách/đường/quận)<span class="text-danger">*</span></label>
-                        <input type="text" class="form-control form-control-lg"  id="shipping-address" name="address" required>
-                      </div>
-                    {{-- </form> --}}
+                    </div>
+                    <div class="mb-3">
+                      <label for="shipping-email" class="form-label">Email <span class="text-danger">*</span></label>
+                      <input type="email" class="form-control form-control-lg" id="shipping-email" name="email" 
+                        value="{{ auth('customer')->check() ? auth('customer')->user()->email : '' }}" 
+                        {{ auth('customer')->check() ? 'readonly' : '' }} required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="shipping-address" class="form-label">Địa chỉ chi tiết (nhà/ngõ/ngách/đường/quận)<span class="text-danger">*</span></label>
+                      <input type="text" class="form-control form-control-lg" id="shipping-address" name="address" 
+                        value="{{ auth('customer')->check() ? auth('customer')->user()->address : '' }}" 
+                        {{ auth('customer')->check() ? 'readonly' : '' }} required>
+                    </div>
                   </div>
                 </div>
+                
+                
 
                 <!-- Payment -->
                 <div class="d-flex align-items-start">
@@ -140,41 +147,43 @@
                           <a class="nav-link text-decoration-underline p-0" href="{{route('cart.index')}}">Sửa</a>
                         </div>
                       </div>
-                      @foreach ($cart as $product)
-                        @foreach ($product as $model)
-                            @foreach ($model as $item)
-                            <a class="d-flex align-items-center gap-2 text-decoration-none" href="#orderPreview" data-bs-toggle="offcanvas">
-                              <div class="ratio ratio-1x1" style="max-width: 64px">
-                                <img src="{{ asset('storage/' . $item['image_url']) }}" class="d-block p-1" alt="iPhone">
-                              </div>
-                              <i class="ci-chevron-right text-body fs-xl p-0 ms-auto"></i>
+                      
+                            <a class="d-flex align-items-center gap-2 text-decoration-none " href="#orderPreview" data-bs-toggle="offcanvas">
+                              @foreach ($cart as $product)
+                                @foreach ($product as $model)
+                                    @foreach ($model as $item)
+                                      <div class="ratio ratio-1x1 " style="max-width: 64px">
+                                        <div class="">
+                                          <img src="{{ asset('storage/' . $item['image_url']) }}" class="d-block p-1" alt="iPhone" style="width: 70px; height:70px;">
+                                        </div>
+                                      </div>
+                                    @endforeach
+                                 @endforeach
+                              @endforeach
+                      <i class="ci-chevron-right text-body fs-xl p-0 ms-auto"></i>
                             </a>
                           </div>
-                          <ul class="list-unstyled fs-sm gap-3 mb-0">
-                            <li class="d-flex justify-content-between">
-                              Tổng cộng ({{ $totalQuantity }} sản phẩm):
-                              <span class="text-dark-emphasis fw-medium">{{ number_format($totalPrice, 0, ',', '.') }} đ</span>
-                            </li>
-                            <li class="d-flex justify-content-between">
-                              Giảm giá:
-                              <span class="text-danger fw-medium">{{ number_format($discount, 0, ',', '.') }} đ</span>
-                            </li>
-                            {{-- <li class="d-flex justify-content-between">
-                              Vận chuyển:
-                              <span class="text-dark-emphasis fw-medium">35.000 đ</span>
-                            </li> --}}
-                          </ul>
-                          <div class="border-top pt-4 mt-4">
-                            <div class="d-flex justify-content-between mb-3">
-                              <span class="fs-sm">Tổng ước tính:</span>
-                              <span class="h5 mb-0">{{ number_format($estimatedTotal, 0, ',', '.') }} đ</span>
-                            </div>
-                          </div>
-
-                          @endforeach
-                        @endforeach
-                      @endforeach
-                
+                          
+                      <ul class="list-unstyled fs-sm gap-3 mb-0">
+                        <li class="d-flex justify-content-between">
+                          Tổng cộng ({{ $totalQuantity }} sản phẩm):
+                          <span class="text-dark-emphasis fw-medium">{{ number_format($totalPrice, 0, ',', '.') }} đ</span>
+                        </li>
+                        <li class="d-flex justify-content-between">
+                          Giảm giá:
+                          <span class="text-danger fw-medium">{{ number_format($discount, 0, ',', '.') }} đ</span>
+                        </li>
+                        {{-- <li class="d-flex justify-content-between">
+                          Vận chuyển:
+                          <span class="text-dark-emphasis fw-medium">35.000 đ</span>
+                        </li> --}}
+                      </ul>
+                      <div class="border-top pt-4 mt-4">
+                        <div class="d-flex justify-content-between mb-3">
+                          <span class="fs-sm">Tổng ước tính:</span>
+                          <span class="h5 mb-0">{{ number_format($estimatedTotal, 0, ',', '.') }} đ</span>
+                        </div>
+                      </div>
                           
                   </div>
                 </div>
@@ -186,7 +195,7 @@
                 </div>
               </div>
             </aside>
-        
+            
       
       </div>
     </form>
