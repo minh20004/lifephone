@@ -167,6 +167,9 @@
                         <li class="nav-item">
                             <a href="{{route('new_admin.index')}}" class="nav-link" data-key="t-team"> Tin tức </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{route('new_admin.create')}}" class="nav-link" data-key="t-team"> Thêm mới </a>
+                        </li>
                     </ul>
                 </div>
             </li>
