@@ -127,8 +127,18 @@ class OrderController extends Controller
         return redirect()->route('orders.index')->with('success', 'Cập nhật trạng thái đơn hàng thành công.');
     }
 
+    public function show(string $id)
+    {
+        $order = Order::with(['orderItems.product', 'orderItems.variant'])->findOrFail($id);
+        return view('admin.page.order.order_show', compact('order'));
+    }
 
+
+    // public function orderHistory(){
+    //     return view('client.page.order.order_history');
+    // }
     
+
 
     public function create()
     {
@@ -139,19 +149,6 @@ class OrderController extends Controller
     {
         //
     }
-
-
-    public function show(string $id)
-    {
-        $order = Order::with(['orderItems.product', 'orderItems.variant'])->findOrFail($id);
-        return view('admin.page.order.order_show', compact('order'));
-    }
-
-
-    public function orderHistory(){
-        return view('client.page.order.order_history');
-    }
-
     public function edit(string $id)
     {
         //
