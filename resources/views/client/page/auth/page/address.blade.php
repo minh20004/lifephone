@@ -27,6 +27,15 @@
 @section('content_customer')
 <div class="">
     <h2 class="h3 mb-3">Địa chỉ của tôi</h2>
+    @if($errors->any())
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
     <div class="py-4">
     <!-- Nút Thêm Địa Chỉ -->
     @if(Auth::user()->addresses->count() < 6)
@@ -48,9 +57,31 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
+                        <!-- Trường Tên -->
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Tên người nhận</label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="Nhập tên người nhận" required>
+                            @error('name')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+            
+                        <!-- Trường Số điện thoại -->
+                        <div class="mb-3">
+                            <label for="phone_number" class="form-label">Số điện thoại</label>
+                            <input type="text" id="phone_number" name="phone_number" class="form-control" placeholder="Nhập số điện thoại" required>
+                            @error('phone_number')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
+                        </div>
+            
+                        <!-- Trường Địa chỉ -->
                         <div class="mb-3">
                             <label for="address" class="form-label">Địa chỉ</label>
-                            <input type="text" id="address" name="address" class="form-control" required>
+                            <input type="text" id="address" name="address" class="form-control" placeholder="Nhập địa chỉ" required>
+                            @error('address')
+                                <div class="text-danger">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -58,19 +89,17 @@
                         <button type="submit" class="btn btn-primary">Thêm địa chỉ</button>
                     </div>
                 </div>
-            </form>
+            </form>              
         </div>
     </div>
+
     <ul class="list-unstyled">
         @foreach(Auth::user()->addresses as $address) 
             <li class="address-item mb-3">
                 <div class="d-flex justify-content-between">
-                    <span>
-                        {{ $address->address }}
-                        @if($address->is_default)
-                            <span class="badge text-bg-info">Mặc định</span>
-                        @endif
-                    </span>
+                    <p>
+                        <strong>{{ $address->name ?: 'Chưa cập nhật' }}</strong>  | {{ $address->phone_number ?: 'Chưa cập nhật' }}
+                    </p>
                     <div>
                         @if(!$address->is_default)
                             <a href="{{ route('customer.setDefaultAddress', $address->id) }}" class="btn btn-sm btn-secondary">
@@ -78,14 +107,15 @@
                             </a>
                         @endif
                         <button class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#editAddressModal" 
-                                data-id="{{ $address->id }}" data-address="{{ $address->address }}">
+                                data-id="{{ $address->id }}" data-address="{{ $address->address }}"
+                                data-name="{{ $address->name }}" data-phone-number="{{ $address->phone_number }}">
                             <i class="bi bi-pencil-square"></i>
                         </button>
                         @if(!$address->is_default)
                             <form action="{{ route('customer.deleteAddress', $address->id) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">
+                                <button type="submit" class="btn btn-sm btn-danger"  onclick="return confirm('Bạn có chắc chắn muốn xóa địa chỉ này?') ? document.getElementById('delete-form-{{ $address->id }}').submit() : false;">
                                     <i class="bi bi-trash3"></i>
                                 </button>
                             </form>
@@ -96,7 +126,13 @@
                         @endif
                     </div>
                 </div>
-                <p>{{ Auth::user()->name ?? 'Tên chưa được cập nhật' }}</p>
+    
+                <p>Địa chỉ: {{ $address->address ?: 'Chưa cập nhật' }}</p> 
+                <p>
+                    @if($address->is_default)
+                        <span class="badge text-bg-info">Mặc định</span>
+                    @endif
+                </p> 
             </li>
         @endforeach
     </ul>
@@ -115,7 +151,30 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="newAddress" class="form-label">Địa chỉ mới</label>
-                            <input type="text" class="form-control" id="newAddress" name="address" required>
+                            <input type="text" class="form-control @error('address') is-invalid @enderror" id="newAddress" name="address" required>
+                            @error('address')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="newName" class="form-label">Tên</label>
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="newName" name="name">
+                            @error('name')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPhoneNumber" class="form-label">Số điện thoại</label>
+                            <input type="number" class="form-control @error('phone_number') is-invalid @enderror" id="newPhoneNumber" name="phone_number">
+                            @error('phone_number')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -123,23 +182,35 @@
                         <button type="submit" class="btn btn-primary">Cập nhật</button>
                     </div>
                 </div>
-            </form>
+            </form>       
         </div>
     </div>
+
 </div>
+
 <script>
     // JavaScript để xử lý modal chỉnh sửa
     var editAddressModal = document.getElementById('editAddressModal');
     editAddressModal.addEventListener('show.bs.modal', function (event) {
-        var button = event.relatedTarget; // Nút 'Chỉnh sửa'
+        var button = event.relatedTarget;
         var addressId = button.getAttribute('data-id');
         var addressText = button.getAttribute('data-address');
+        var nameText = button.getAttribute('data-name');
+        var phoneNumberText = button.getAttribute('data-phone-number');
 
         var form = document.getElementById('editAddressForm');
-        form.action = '/customer/address/' + addressId; // Cập nhật đường dẫn form
+        form.action = '/customer/address/' + addressId; 
 
+        // Điền thông tin vào các trường trong modal
         var newAddressInput = document.getElementById('newAddress');
-        newAddressInput.value = addressText; // Điền địa chỉ vào input
+        newAddressInput.value = addressText;
+
+        var newNameInput = document.getElementById('newName');
+        newNameInput.value = nameText || '';
+
+        var newPhoneNumberInput = document.getElementById('newPhoneNumber');
+        newPhoneNumberInput.value = phoneNumberText || '';
     });
 </script>
+
 @endsection

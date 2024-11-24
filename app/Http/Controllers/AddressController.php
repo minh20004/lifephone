@@ -11,10 +11,21 @@ class AddressController extends Controller
     public function addAddress(Request $request)
     {
         $request->validate([
-            'address' => 'required|string|max:255',
-        ]);
+            'address' => 'required|string|max:255|unique:addresses,address,',
+            'name' => 'required|string|max:255',
+            'phone_number' => 'required|regex:/^\d{10}$/|max:10',
+            ], [
+                'address.unique' => 'Địa chỉ này đã được sử dụng. Vui lòng thử lại.',
+                'phone_number.required' => 'Vui lòng nhập số điện thoại.',
+                'phone_number.regex' => 'Vui lòng nhập đúng số điện thoại của bạn.',
+                'phone_number.max' => 'Vui lòng nhập đúng số điện thoại của bạn.',
+                'name.required' => 'Tên không được bỏ trống',
+            ]);
+        
 
         $address = new Address();
+        $address->name = $request->name;
+        $address->phone_number = $request->phone_number;
         $address->address = $request->address;
         $address->customer_id = auth()->id();
         $address->is_default = false;
@@ -49,17 +60,28 @@ class AddressController extends Controller
 
     // Phương thức cập nhật địa chỉ
     public function updateAddress(Request $request, $addressId)
-    {
+{
+    // Xác thực dữ liệu nhập vào
+    $request->validate([
+    'address' => 'required|string|max:255|unique:addresses,address,' . $addressId,
+    'name' => 'required|string|max:255',
+    'phone_number' => 'required|regex:/^\d{10}$/|max:10',
+    ], [
+        'address.unique' => 'Địa chỉ này đã được sử dụng. Vui lòng thử lại.',
+        'phone_number.required' => 'Vui lòng nhập số điện thoại.',
+        'phone_number.regex' => 'Vui lòng nhập đúng số điện thoại của bạn.',
+        'phone_number.max' => 'Vui lòng nhập đúng số điện thoại của bạn.',
+        'name.required' => 'Tên không được bỏ trống',
+    ]);
 
-        $request->validate([
-            'address' => 'required|string|max:255',
-        ]);
+    // Tìm địa chỉ cần cập nhật
+    $address = Address::findOrFail($addressId);
+    $address->address = $request->address;
+    $address->name = $request->name;  // Cập nhật tên nếu có
+    $address->phone_number = $request->phone_number;  // Cập nhật số điện thoại nếu có
+    $address->save();
 
-        // Tìm địa chỉ cần cập nhật
-        $address = Address::findOrFail($addressId);
-        $address->address = $request->address;
-        $address->save();
+    return redirect()->back()->with('success', 'Địa chỉ đã được cập nhật!');
+}
 
-        return redirect()->back()->with('success', 'Địa chỉ đã được cập nhật!');
-    }
 }

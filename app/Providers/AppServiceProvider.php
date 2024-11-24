@@ -6,6 +6,7 @@ use App\Models\Category;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use App\Models\News;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,6 +31,16 @@ class AppServiceProvider extends ServiceProvider
             }])->take(11)->get();
         
             $view->with('categories', $categories);
+        });
+
+        // Chia sẻ 3 bài viết mới nhất tới footer.blade.php
+        View::composer('client.layout.partials.footer', function ($view) {
+            $latestNews = News::where('status', 'Công khai')
+                ->latest()
+                ->take(3)
+                ->get();
+
+            $view->with('latestNews', $latestNews);
         });
     }
 }

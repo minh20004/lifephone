@@ -12,6 +12,8 @@ class Address extends Model
     protected $fillable = [
         'customer_id',
         'address',
+        'name',
+        'phone_number',
         'is_default',
     ];
 
