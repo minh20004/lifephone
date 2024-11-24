@@ -76,26 +76,49 @@
             </div>
 
             <!-- Color -->
+            <!-- Filter by Color -->
             <div class="w-100 border rounded p-3 p-xl-4">
               <h4 class="h6">Color</h4>
               <div class="nav d-block mt-n2">
                 @foreach ($colors as $color)
-                <button type="button" class="nav-link w-auto animate-underline fw-normal pt-2 pb-0 px-0 color-filter" data-color-id="{{ $color->id }}">
+                <a href="{{ route('client.category.products', ['id' => $currentCategory->id, 'color_id' => $color->id]) }}"
+                  class="nav-link w-auto animate-underline fw-normal pt-2 pb-0 px-0 {{ $color->id == $colorId ? 'active' : '' }}">
                   <span class="rounded-circle me-2" style="width: .875rem; height: .875rem; margin-top: .125rem; background-color: {{ $color->code }}"></span>
                   <span class="animate-target">{{ $color->name }}</span>
-                </button>
+                </a>
                 @endforeach
               </div>
             </div>
+
             <!-- Other filters (Price, Capacity, Color) giữ nguyên -->
           </div>
         </div>
       </aside>
       <!-- Product grid -->
       <div class="col-lg-9">
-        <div class="container mb-6 ">
-          <p class="h6 text-muted">Tìm thấy <span class="fw-bold text-dark">{{ $productCount }}</span> sản phẩm thuộc danh mục <span class="fw-bold text-primary">{{ $currentCategory->name }}</span></p>
+        <div class="container mb-6">
+          <p class="h6 text-muted">
+            Tìm thấy
+            <span class="fw-bold text-dark">{{ $productCount }}</span>
+            sản phẩm
+            @if ($colorId && $colors->contains('id', $colorId))
+            có màu
+            <span class="fw-bold text-primary">
+              {{ $colors->firstWhere('id', $colorId)->name }}
+            </span>
+            trong danh mục
+            <span class="fw-bold text-primary">
+              {{ $currentCategory->name }}
+            </span>
+            @else
+            thuộc danh mục
+            <span class="fw-bold text-primary">
+              {{ $currentCategory->name }}
+            </span>
+            @endif
+          </p>
         </div>
+
 
         <div class="row row-cols-2 row-cols-md-3 g-4 pb-3 mb-3">
           <!-- Product Items -->

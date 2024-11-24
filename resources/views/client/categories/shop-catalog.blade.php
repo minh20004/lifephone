@@ -130,13 +130,14 @@
               <h4 class="h6">Color</h4>
               <div class="nav d-block mt-n2">
                 @foreach ($colors as $color)
-                <button type="button" class="nav-link w-auto animate-underline fw-normal pt-2 pb-0 px-0 color-filter">
+                <a href="{{ route('client.category.products', $item->id) }}" class="nav-link w-auto animate-underline fw-normal pt-2 pb-0 px-0 color-filter">
                   <span class="rounded-circle me-2" style="width: .875rem; height: .875rem; margin-top: .125rem; background-color: {{ $color->code }}"></span>
                   <span class="animate-target">{{ $color->name }}</span>
-                </button>
+                </a>
                 @endforeach
               </div>
             </div>
+
           </div>
         </div>
       </aside>

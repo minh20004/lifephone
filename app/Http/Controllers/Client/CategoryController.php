@@ -14,73 +14,104 @@ class   CategoryController extends Controller
     // Phương thức lấy tất cả các danh mục
 
     // Phương thức lấy 10 sản phẩm mới nhất cùng với thông tin danh mục của chúng
-    public function shop()
+    public function shop(Request $request)
     {
-        // Lấy danh sách các danh mục và đếm số lượng sản phẩm trong mỗi danh mục
-        $categories = Category::withCount('products')->get();
+        $colorId = $request->input('color_id');
+
+        // Lấy danh sách các màu và các danh mục
         $colors = Color::all();
+        $categories = Category::withCount('products')->get();
         $capacities = Capacity::withCount('products')->get();
 
-        // Lấy các sản phẩm, phân trang và load danh mục, biến thể sản phẩm với màu sắc
+        // Lấy sản phẩm, phân trang và lọc theo màu nếu có color_id
         $latestProducts = Product::with([
             'variants' => function ($query) {
-                $query->select('id', 'product_id', 'price_difference', 'color_id', 'capacity_id') // Lấy giá và các thông tin cần thiết
+                $query->select('id', 'product_id', 'price_difference', 'color_id', 'capacity_id')
                     ->with([
-                        'color:id,name',     // Thông tin màu sắc
-                        'capacity:id,name'  // Thông tin dung lượng
+                        'color:id,name',
+                        'capacity:id,name'
                     ]);
             }
         ])
-            ->select('id', 'name', 'image_url', 'category_id') // Chỉ lấy các cột cần thiết từ bảng products
-            ->orderBy('created_at', 'desc') // Sắp xếp theo ngày tạo
-            ->paginate(9); // Phân trang 10 sản phẩm mỗi trang
+            ->select('id', 'name', 'image_url', 'category_id')
+            ->orderBy('created_at', 'desc');
 
-        // Trả về view với các dữ liệu cần thiết
-        return view('client.categories.shop-catalog', compact('latestProducts', 'categories', 'colors', 'capacities'));
-    }
-
-
-    public function getProductsByCategory($id, $colorId = null)
-    {
-        // Lấy danh sách danh mục kèm số lượng sản phẩm
-        $categories = Category::withCount('products')->get();
-
-        // Lấy danh sách màu sắc và dung lượng
-        $colors = Color::all();
-        $capacities = Capacity::withCount('products')->get();
-
-        // Lọc sản phẩm theo danh mục `$id` và lấy thông tin từ bảng `product_variants`
-        $productsByCategory = Product::where('category_id', $id)
-            ->when($colorId, function ($query) use ($colorId) {
+        // Nếu có color_id, thêm điều kiện lọc theo màu
+        if ($colorId) {
+            $latestProducts->whereHas('variants', function ($query) use ($colorId) {
                 $query->where('color_id', $colorId);
-            })
-            ->with([
-                'category:id,name', // Lấy thông tin danh mục (id, name)
-                'variants' => function ($query) {
-                    $query->select('id', 'product_id', 'price_difference', 'color_id', 'capacity_id')
-                        ->with([
-                            'color:id,name',     // Thông tin màu sắc
-                            'capacity:id,name'  // Thông tin dung lượng
-                        ]);
-                }
-            ])
-            ->select('id', 'name', 'image_url', 'category_id') // Chỉ lấy các cột cần thiết từ bảng products
-            ->orderBy('created_at', 'desc') // Sắp xếp theo ngày tạo
-            ->paginate(9);
+            });
+        }
 
-        // Lấy thông tin danh mục hiện tại
-        $currentCategory = Category::findOrFail($id);
-        // Lấy số lượng sản phẩm trong danh mục
-        $productCount = Product::where('category_id', $id)->count();
+        // Phân trang 9 sản phẩm mỗi trang
+        $latestProducts = $latestProducts->paginate(9);
 
-        // Trả về view với các dữ liệu cần thiết
-        return view('client.categories.products', compact(
-            'productsByCategory',
-            'categories',
-            'colors',
-            'capacities',
-            'currentCategory',
-            'productCount'
-        ));
+        return view('client.categories.shop-catalog', compact('latestProducts', 'colors', 'categories', 'capacities'));
     }
+
+
+
+
+    public function getProductsByCategory($id, Request $request)
+{
+    $colorId = $request->input('color_id'); // Nhận ID màu từ request
+    $capacityIds = $request->input('capacity_ids', []); // Nhận danh sách ID dung lượng từ request
+    $minPrice = $request->input('min_price', 0); // Giá tối thiểu, mặc định là 0
+    $maxPrice = $request->input('max_price', null); // Giá tối đa, null nếu không được đặt
+
+    // Lấy danh sách danh mục kèm số lượng sản phẩm
+    $categories = Category::withCount('products')->get();
+
+    // Lấy danh sách màu sắc và dung lượng
+    $colors = Color::all();
+    $capacities = Capacity::withCount('products')->get();
+
+    // Lọc sản phẩm theo danh mục, màu sắc, dung lượng và khoảng giá
+    $productsByCategory = Product::where('category_id', $id)
+        ->whereHas('variants', function ($query) use ($colorId, $capacityIds, $minPrice, $maxPrice) {
+            if ($colorId) {
+                $query->where('color_id', $colorId);
+            }
+            if (!empty($capacityIds)) {
+                $query->whereIn('capacity_id', $capacityIds);
+            }
+            if ($minPrice) {
+                $query->where('price_difference', '>=', $minPrice);
+            }
+            if ($maxPrice) {
+                $query->where('price_difference', '<=', $maxPrice);
+            }
+        })
+        ->with([
+            'category:id,name',
+            'variants' => function ($query) {
+                $query->select('id', 'product_id', 'price_difference', 'color_id', 'capacity_id')
+                    ->with(['color:id,name', 'capacity:id,name']);
+            }
+        ])
+        ->select('id', 'name', 'image_url', 'category_id')
+        ->orderBy('created_at', 'desc')
+        ->paginate(9);
+
+    // Lấy thông tin danh mục hiện tại
+    $currentCategory = Category::findOrFail($id);
+
+    // Lấy số lượng sản phẩm trong danh mục
+    $productCount = $productsByCategory->total();
+
+    // Trả về view với các dữ liệu cần thiết
+    return view('client.categories.products', compact(
+        'productsByCategory',
+        'categories',
+        'colors',
+        'capacities',
+        'currentCategory',
+        'productCount',
+        'colorId',
+        'capacityIds',
+        'minPrice',
+        'maxPrice'
+    ));
+}
+   
 }
