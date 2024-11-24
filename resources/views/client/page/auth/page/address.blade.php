@@ -71,26 +71,36 @@
                             <span class="badge text-bg-info">Mặc định</span>
                         @endif
                     </span>
-                    <p></p>
                     <div>
                         @if(!$address->is_default)
-                            <a href="{{ route('customer.setDefaultAddress', $address->id) }}" class="btn btn-sm btn-outline-secondary">Đặt làm mặc định</a>
+                            <a href="{{ route('customer.setDefaultAddress', $address->id) }}" class="btn btn-sm btn-secondary">
+                                Thiết lập mặc định
+                            </a>
                         @endif
-                        <button class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#editAddressModal" data-id="{{ $address->id }}" data-address="{{ $address->address }}">
+                        <button class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#editAddressModal" 
+                                data-id="{{ $address->id }}" data-address="{{ $address->address }}">
                             <i class="bi bi-pencil-square"></i>
                         </button>
-                        <form action="{{ route('customer.deleteAddress', $address->id) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger"><i class="bi bi-trash3"></i></button>
-                        </form>
+                        @if(!$address->is_default)
+                            <form action="{{ route('customer.deleteAddress', $address->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
+                            </form>
+                        @else
+                            <button class="btn btn-sm btn-danger" disabled title="Không thể xóa địa chỉ mặc định">
+                                <i class="bi bi-trash3"></i>
+                            </button>
+                        @endif
                     </div>
                 </div>
-                <span>{{ Auth::user()->name ?? 'Tên chưa được cập nhật' }}</span>
+                <p>{{ Auth::user()->name ?? 'Tên chưa được cập nhật' }}</p>
             </li>
         @endforeach
     </ul>
-
+    
     <!-- Modal chỉnh sửa địa chỉ -->
     <div class="modal fade" id="editAddressModal" tabindex="-1" aria-labelledby="editAddressModalLabel" aria-hidden="true">
         <div class="modal-dialog">
