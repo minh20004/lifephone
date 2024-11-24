@@ -16,14 +16,15 @@
             <div class="offcanvas-header d-lg-block py-3 p-lg-0">
               <div class="d-flex align-items-center">
                 <div class="h5 d-flex justify-content-center align-items-center flex-shrink-0 text-primary bg-primary-subtle lh-1 rounded-circle mb-0" style="width: 3rem; height: 3rem">
-                  {{ strtoupper(substr(Auth::guard('customer')->user()->email, 0, 1)) }}
+                  {{-- {{ strtoupper(substr(Auth::guard('customer')->user()->email, 0, 1)) }} --}}
+                  <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Avatar của {{ Auth::user()->name }}" style="height: 100%;">
                 </div>
                 <div class="min-w-0 ps-3">
-                  <h5 class="h6 mb-1">{{ Auth::guard('customer')->user()->email }}</h5>
+                  <h5 class="h6 mb-1">{{ Auth::user()->name ?? 'Tên chưa được cập nhật' }}</li></h5>
                   <div class="nav flex-nowrap text-nowrap min-w-0">
-                    <a class="nav-link animate-underline text-body p-0" href="#bonusesModal" data-bs-toggle="modal">
+                    <a class="nav-link animate-underline text-body p-0" href="{{ route('customer.file') }}">
                       
-                      <span class="text-body fw-normal text-truncate">Sửa hồ sơ</span>
+                      <span class="text-body fw-normal text-truncate"><i class="fa-solid fa-pen"></i> Sửa hồ sơ</span>
                     </a>
                   </div>
                 </div>
