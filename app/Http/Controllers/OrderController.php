@@ -56,10 +56,12 @@ class OrderController extends Controller
 
         $orderCode = strtoupper(substr(uniqid(), -8));
 
+        // Kiểm tra khách đăng nhập hay không
+        $customerId = auth('customer')->check() ? auth('customer')->id() : null;
+
         // Tạo đơn hàng mới
         $order = Order::create([
-            // 'user_id' => auth()->id(), // Lưu id người dùng đã đăng nhập
-            'user_id' => 1, 
+            'customer_id' => $customerId, // Lưu id người dùng đã đăng nhập
             'name' => $request->name,
             'phone' => $request->phone,
             'email' => $request->email,
@@ -110,9 +112,6 @@ class OrderController extends Controller
     }
 
  
-
-
-
 
     
     public function updateStatus(Request $request, $id)

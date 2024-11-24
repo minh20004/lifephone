@@ -85,7 +85,7 @@ Route::get('/order-success', function () {
 
 // lịch sử đơn hàng
 
-Route::get('/order-history', [OrderController::class, 'orderHistory'])->name('order.history');
+Route::get('/order-history', [AuthController::class, 'orderHistory'])->name('order.history');
 
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Color;
 use App\Models\Order;
 use App\Models\Product;
@@ -133,7 +134,6 @@ class CartController extends Controller
 
         return redirect()->route('cart.index')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
     }
-
     
     public function updateQuantity(Request $request)
     {
@@ -386,6 +386,7 @@ class CartController extends Controller
             }
         }
 
+        $customer = auth('customer')->check() ? auth('customer')->user() : null;
         // vượt quá số lượng tồn kho quay lại và báo lỗi
         if (!empty($outOfStockItems)) {
             return back()->withErrors(['quantity' => $outOfStockItems]);

@@ -325,4 +325,13 @@ class AuthController extends Controller
     {
         return view('client.page.auth.page.address');
     }
+// Đơn hàng bên khách hàng---------------------------------------------------------------------------------------------------------------------------------------------
+
+    public function orderHistory(){
+        return view('client.page.auth.page.order_history');
+
+    }
 }
+
+
+
