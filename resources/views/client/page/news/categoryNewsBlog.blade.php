@@ -31,6 +31,10 @@ Lifephone
                         <h3 class="h5 mb-0">
                             <a class="hover-effect-underline" href="{{ route('news.show', $news->slug) }}">{{ $news->title }}</a>
                         </h3>
+                        <div>
+                            <a class="nav-link text-body fs-xs text-uppercase p-0"
+                                href="#!">{{ $news->short_content}}</a>
+                        </div>
                     </div>
                 </article>
                 @endforeach

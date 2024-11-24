@@ -123,7 +123,7 @@ Lifephone
                     <div class="d-flex flex-wrap gap-3">
                         @foreach($categories as $category)
                         {{-- {{ route('categoryNewsBlog', ['slug' => $category->slug]) }} --}}
-                        <a class="btn btn-outline-secondary px-3" href="">{{ $category->title }}</a>
+                        <a class="btn btn-outline-secondary px-3" href="{{ route('categoryNewsBlog', ['slug' => $category->slug]) }}">{{ $category->title }}</a>
 
                         @endforeach
                     </div>
