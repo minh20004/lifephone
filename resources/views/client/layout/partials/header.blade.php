@@ -207,8 +207,9 @@
 
                           <!-- Link cho danh mục lớn -->
                           <a class="dropdown-item fw-medium stretched-link d-none d-lg-flex" href="{{ route('category.show', $category->id) }}">
-                            <i class="ci-smartphone-2 fs-xl opacity-60 pe-1 me-2"></i>
-                            <span class="text-truncate">{{ $category->name }}</span>
+                            {{-- <i class="ci-smartphone-2 fs-xl opacity-60 pe-1 me-2"></i> --}}
+                             <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" style="width: 100px">
+                            {{-- <span class="text-truncate">{{ $category->name }}</span> --}}
                             <i class="ci-chevron-right fs-base ms-auto me-n1"></i>
                           </a>
 
