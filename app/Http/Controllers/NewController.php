@@ -114,7 +114,8 @@ class NewController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $news = News::where('id', $id)->firstOrFail();
+        return view('admin.page.new.show', compact('news'));
     }
 
     /**
@@ -261,13 +262,14 @@ class NewController extends Controller
         
         // Tìm bài viết theo slug
         $news = News::where('slug', $slug)->firstOrFail();
+        $news->increment('views');
         $relatedPost = News::where('category_news_id', $news->category_news_id)
                         ->where('id', '!=', $news->id) // Loại bỏ bài viết hiện tại
                         ->limit(5) // Giới hạn số bài viết liên quan
                         ->get();
         // Trả về view hiển thị bài viết
         $categories = Category_new::limit(6)->get(); 
-        return view('client.page.news.show', compact('news','relatedPost','categories','latestNews'));
+        return view('client.page.news.show', compact('news','relatedPost','categories','latestNews' ));
     }
     public function categoryNewsBlog($slug)
     {

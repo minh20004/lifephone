@@ -51,14 +51,14 @@ News
                                                             <th data-column-id="product" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 94px;">
                                                                 <div class="gridjs-th-content">STT</div>
                                                             </th>
-                                                            <th data-column-id="product" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 300;">
+                                                            <th data-column-id="product" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 300px;">
                                                                 <div class="gridjs-th-content">Tiêu đề</div>
                                                             </th>
                                                             <th data-column-id="user" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 105px;">
                                                                 <div class="gridjs-th-content">Người đăng</div>
                                                             </th>
                                                             <th data-column-id="comment" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 360px;">
-                                                                <div class="gridjs-th-content">Nội dung</div>
+                                                                <div class="gridjs-th-content">Nội dung ngắn</div>
                                                             </th>
                                                             <th data-column-id="rating" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 105px;">
                                                                 <div class="gridjs-th-content">Danh mục tin tức</div>
@@ -88,7 +88,7 @@ News
                                                             <td data-column-id="STT" class="gridjs-td">{{$key+1}}</td>
                                                             <td data-column-id="orders" class="gridjs-td">{{$News->title}}</td>
                                                             <td data-column-id="user" class="gridjs-td">{{$News->author->name}}</td>
-                                                            <td data-column-id="orders" class="gridjs-td">{{$News->content}}</td>
+                                                            <td data-column-id="orders" class="gridjs-td">{{$News->short_content}}</td>
                                                             <td data-column-id="user" class="gridjs-td">{{$News->categoryNews->title}}</td>
 
                                                             <td data-column-id="orders" class="gridjs-td">{{$News->status}}</td>
@@ -97,7 +97,8 @@ News
                                                             </td>
                                                             <td data-column-id="action" class="gridjs-td">
                                                                 <div>
-                                                                    <a href="{{ route('new_admin.edit', $News->id) }}" class="btn btn-warning me-2">Edit</a>
+                                                                <a href="{{ route('new_admin.show', $News->id) }}" class="btn btn-success me-2">Xem chi tiết</a>
+                                                                    <a href="{{ route('new_admin.edit', $News->id) }}" class="btn btn-warning me-2">Sửa</a>
                                                                     <form action="{{route('new_admin.destroy',$News->id)}}" method="post">
 
                                                                         @method('DELETE')
