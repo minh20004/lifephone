@@ -40,47 +40,65 @@ class   CategoryController extends Controller
     }
 
 
-    public function getProductsByCategory($id, $colorId = null)
+    public function getProductsByCategory($id, Request $request)
     {
+        $colorId = $request->input('color_id');
+        $minPrice = $request->input('min_price');
+        $maxPrice = $request->input('max_price');
+        $capacityIds = explode(',', $request->input('capacity_ids', ''));
+
         // Lấy danh sách danh mục kèm số lượng sản phẩm
         $categories = Category::withCount('products')->get();
-
-        // Lấy danh sách màu sắc và dung lượng
         $colors = Color::all();
         $capacities = Capacity::withCount('products')->get();
 
-        // Lọc sản phẩm theo danh mục `$id` và lấy thông tin từ bảng `product_variants`
+        // Lọc sản phẩm theo danh mục, màu sắc, giá và dung lượng
         $productsByCategory = Product::where('category_id', $id)
-            ->when($colorId, function ($query) use ($colorId) {
-                $query->where('color_id', $colorId);
+            ->when($colorId, function ($query, $colorId) {
+                $query->whereHas('variants', function ($subQuery) use ($colorId) {
+                    $subQuery->where('color_id', $colorId);
+                });
+            })
+            ->when($minPrice, function ($query, $minPrice) {
+                $query->whereHas('variants', function ($subQuery) use ($minPrice) {
+                    $subQuery->where('price_difference', '>=', $minPrice);
+                });
+            })
+            ->when($maxPrice, function ($query, $maxPrice) {
+                $query->whereHas('variants', function ($subQuery) use ($maxPrice) {
+                    $subQuery->where('price_difference', '<=', $maxPrice);
+                });
+            })
+            ->when($capacityIds, function ($query, $capacityIds) {
+                $query->whereHas('variants', function ($subQuery) use ($capacityIds) {
+                    $subQuery->whereIn('capacity_id', $capacityIds);
+                });
             })
             ->with([
-                'category:id,name', // Lấy thông tin danh mục (id, name)
+                'category:id,name',
                 'variants' => function ($query) {
                     $query->select('id', 'product_id', 'price_difference', 'color_id', 'capacity_id')
-                        ->with([
-                            'color:id,name',     // Thông tin màu sắc
-                            'capacity:id,name'  // Thông tin dung lượng
-                        ]);
+                        ->with(['color:id,name', 'capacity:id,name']);
                 }
             ])
-            ->select('id', 'name', 'image_url', 'category_id') // Chỉ lấy các cột cần thiết từ bảng products
-            ->orderBy('created_at', 'desc') // Sắp xếp theo ngày tạo
+            ->select('id', 'name', 'image_url', 'category_id')
+            ->orderBy('created_at', 'desc')
             ->paginate(9);
 
-        // Lấy thông tin danh mục hiện tại
         $currentCategory = Category::findOrFail($id);
-        // Lấy số lượng sản phẩm trong danh mục
-        $productCount = Product::where('category_id', $id)->count();
+        $productCount = $productsByCategory->total();
 
-        // Trả về view với các dữ liệu cần thiết
         return view('client.categories.products', compact(
             'productsByCategory',
             'categories',
             'colors',
             'capacities',
             'currentCategory',
-            'productCount'
+            'productCount',
+            'colorId',
+            'minPrice',
+            'maxPrice',
+            'capacityIds'
         ));
     }
 }
