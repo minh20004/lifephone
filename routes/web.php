@@ -119,6 +119,16 @@ Route::get('/order-success', function () {
 // Route::get('/order-history', [AuthController::class, 'orderHistory'])->name('order.history');
 Route::get('/order-history', [AuthController::class, 'history'])->name('order.history');
 Route::get('/order-detail/{id}', [AuthController::class, 'detail'])->name('order.detail');
+// Route::post('/order-cancel/{id}', [AuthController::class, 'cancel'])->name('order.cancel');
+
+// Route cho khách hàng yêu cầu hủy đơn hàng
+Route::post('/order/cancel/{id}', [AuthController::class, 'cancel'])->name('order.cancel');
+
+
+
+Route::get('/public-order-history', [AuthController::class, 'publicHistory'])->name('order.publicHistory');
+
+
 
 
 
@@ -146,6 +156,9 @@ Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::post('/orders/{id}/update-status', [OrderController::class, 'updateStatus'])->name('order.updateStatus');
 Route::get('/admin/orders/{id}', [OrderController::class, 'show'])->name('order.show');
 
+// Route cho admin xác nhận yêu cầu hủy đơn hàng
+Route::get('/admin/orders/cancel-requests', [OrderController::class, 'cancelRequests'])->name('order.cancelRequests');
+Route::post('/admin/order/confirm-cancel/{id}', [OrderController::class, 'confirmCancel'])->name('order.confirmCancel');
 //  route cho phần sản phẩm bị xóa
 Route::prefix('products')->group(function () {
     Route::get('/trashed', [ProductController::class, 'trashed'])->name('product.trashed');

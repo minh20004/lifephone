@@ -50,7 +50,7 @@
                 </div> --}}
 
                 <!-- Shipping address -->
-                <div class="d-flex align-items-start">
+                {{-- <div class="d-flex align-items-start">
                   <div class="d-flex align-items-center justify-content-center bg-primary text-white rounded-circle fs-sm fw-semibold lh-1 flex-shrink-0" style="width: 2rem; height: 2rem; margin-top: -.125rem">2</div>
                   <div class="w-100 ps-3 ps-md-4">
                     <h1 class="h5 mb-md-4">Địa chỉ giao hàng</h1>
@@ -81,8 +81,41 @@
                         {{ auth('customer')->check() ? 'readonly' : '' }} required>
                     </div>
                   </div>
-                </div>
-                
+                </div> --}}
+                <div class="d-flex align-items-start">
+                  <div class="d-flex align-items-center justify-content-center bg-primary text-white rounded-circle fs-sm fw-semibold lh-1 flex-shrink-0" style="width: 2rem; height: 2rem; margin-top: -.125rem">2</div>
+                  <div class="w-100 ps-3 ps-md-4">
+                      <h1 class="h5 mb-md-4">Địa chỉ giao hàng</h1>
+                      <div class="row row-cols-1 row-cols-sm-2 g-3 g-sm-4 mb-4">
+                          <div class="col">
+                              <label for="shipping-name" class="form-label">Họ và tên <span class="text-danger">*</span></label>
+                              <input type="text" class="form-control form-control-lg" id="shipping-name" name="name" 
+                                  value="{{ auth('customer')->check() && auth('customer')->user()->addresses->isNotEmpty() ? auth('customer')->user()->addresses->firstWhere('is_default', 1)->name : '' }}" 
+                                  {{ auth('customer')->check() && auth('customer')->user()->addresses->isNotEmpty() ? 'readonly' : '' }} required>
+                          </div>
+                          <div class="col">
+                              <label for="shipping-phone" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
+                              <input type="text" class="form-control form-control-lg" id="shipping-phone" name="phone" 
+                                  value="{{ auth('customer')->check() && auth('customer')->user()->addresses->isNotEmpty() ? auth('customer')->user()->addresses->firstWhere('is_default', 1)->phone_number : '' }}" 
+                                  {{ auth('customer')->check() && auth('customer')->user()->addresses->isNotEmpty() ? 'readonly' : '' }} required>
+                          </div>
+                      </div>
+                      <div class="mb-3">
+                          <label for="shipping-email" class="form-label">Email <span class="text-danger">*</span></label>
+                          <input type="email" class="form-control form-control-lg" id="shipping-email" name="email" 
+                              value="{{ auth('customer')->check() ? auth('customer')->user()->email : '' }}" 
+                              {{ auth('customer')->check() ? 'readonly' : '' }} required>
+                      </div>
+                      <div class="mb-3">
+                          <label for="shipping-address" class="form-label">Địa chỉ chi tiết (nhà/ngõ/ngách/đường/quận)<span class="text-danger">*</span></label>
+                          <input type="text" class="form-control form-control-lg" id="shipping-address" name="address" 
+                              value="{{ auth('customer')->check() && auth('customer')->user()->addresses->isNotEmpty() ? auth('customer')->user()->addresses->firstWhere('is_default', 1)->address : '' }}" 
+                              {{ auth('customer')->check() && auth('customer')->user()->addresses->isNotEmpty() ? 'readonly' : '' }} required>
+                      </div>
+                  </div>
+              </div>
+              
+              
                 
 
                 <!-- Payment -->

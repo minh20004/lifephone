@@ -332,7 +332,7 @@
                 <a class="nav-link" href="{{route('cart.index')}}">Giỏ hàng</a>
               </li>
               <li class="nav-item me-lg-n2 me-xl-0">
-                <a class="nav-link" href="docs/typography.html">Components</a>
+                <a class="nav-link" href="{{route('order.publicHistory')}}">Đơn mua</a>
               </li>
             </ul>
             <hr class="d-lg-none my-3">

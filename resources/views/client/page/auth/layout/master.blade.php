@@ -37,7 +37,7 @@
                 <a class="list-group-item list-group-item-action d-flex align-items-center  " href="{{route('order.history')}}">
                   <i class="ci-shopping-bag fs-base opacity-75 me-2"></i>
                   Đơn hàng
-                  <span class="badge bg-primary rounded-pill ms-auto">1</span>
+
                 </a>
                 <a class="list-group-item list-group-item-action d-flex align-items-center" href="">
                   <i class="ci-heart fs-base opacity-75 me-2"></i>

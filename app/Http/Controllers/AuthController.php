@@ -428,19 +428,86 @@ class AuthController extends Controller
 // Đơn hàng bên khách hàng---------------------------------------------------------------------------------------------------------------------------------------------
 
     
+    
     public function history(Request $request)
     {
         // Kiểm tra khách đăng nhập hay không
         $customerId = auth('customer')->check() ? auth('customer')->id() : null;
-
+    
         if (!$customerId) {
             return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để xem lịch sử đơn hàng.');
         }
-
-        $orders = Order::where('customer_id', $customerId)->orderBy('created_at', 'desc')->get();
-
-        return view('client.page.auth.page.order-history.order_history', compact('orders'));
+    
+        // Lấy mã đơn hàng từ request
+        $searchCode = $request->input('order_code');
+    
+        // Nếu có tìm kiếm theo mã đơn hàng
+        if ($searchCode) {
+            $ordersAll = Order::where('customer_id', $customerId)
+                            ->where('order_code', 'LIKE', '%' . $searchCode . '%') // Tìm kiếm mã gần đúng
+                            ->get();
+        } else {
+            // Lấy toàn bộ đơn hàng của khách hàng
+            $ordersAll = Order::where('customer_id', $customerId)
+                            ->orderBy('created_at', 'desc')
+                            ->get();
+        }
+        
+        
+    
+        $totalOrders = Order::where('customer_id', $customerId)->count();
+    
+        // Phân loại đơn hàng theo trạng thái
+        $ordersPending = Order::where('customer_id', $customerId)
+                            ->where('status', 'Chờ xác nhận')
+                            ->orderBy('created_at', 'desc')
+                            ->get();
+    
+        $ordersConfirmed = Order::where('customer_id', $customerId)
+                                ->where('status', 'Đã Xác Nhận')
+                                ->orderBy('created_at', 'desc')
+                                ->get();
+    
+        $ordersShipping = Order::where('customer_id', $customerId)
+                                ->where('status', 'Đang giao hàng')
+                                ->orderBy('created_at', 'desc')
+                                ->get();
+    
+        $ordersCompleted = Order::where('customer_id', $customerId)
+                                ->where('status', 'Hoàn Thành')
+                                ->orderBy('created_at', 'desc')
+                                ->get();
+    
+        $ordersCancelled = Order::where('customer_id', $customerId)
+                                ->where('status', 'Đã Hủy')
+                                ->orderBy('created_at', 'desc')
+                                ->get();
+    
+        $ordersRefund = Order::where('customer_id', $customerId)
+                            ->where('status', 'Trả hàng/Hoàn tiền')
+                            ->orderBy('created_at', 'desc')
+                            ->get();
+    
+        // Đếm số lượng đơn hàng cho từng trạng thái (sẽ được hiển thị trên Tabs)
+        $countOrders = [
+            'pending' => $ordersPending->count(),
+            'confirmed' => $ordersConfirmed->count(),
+            'shipping' => $ordersShipping->count(),
+            'completed' => $ordersCompleted->count(),
+            'cancelled' => $ordersCancelled->count(),
+            'refund' => $ordersRefund->count(),
+        ];
+    
+        return view('client.page.auth.page.order-history.order_history', compact(
+            'ordersAll', 'ordersPending', 'ordersConfirmed', 'ordersShipping',
+            'ordersCompleted', 'ordersCancelled', 'ordersRefund',
+            'searchCode', 'countOrders', 'totalOrders'
+        ));
     }
+    
+
+
+
     public function detail($id)
     {
         // Xác định khách hàng hiện tại (nếu cần)
@@ -458,7 +525,41 @@ class AuthController extends Controller
 
         return view('client.page.auth.page.order-history.order_detail', compact('order'));
     }
+    public function cancel($id)
+    {
+        $order = Order::findOrFail($id);
 
+        // Chỉ cho phép hủy khi trạng thái là "Chờ xác nhận"
+        if ($order->status != 'Chờ xác nhận' ) {
+            return redirect()->route('order.history')->with('error', 'Không thể hủy đơn hàng này!');
+        }
+
+        // Thay đổi trạng thái đơn hàng thành "Chờ xác nhận hủy"
+        $order->status = 'Đã Hủy';
+        $order->save();
+
+        return redirect()->route('order.history')->with('success', 'Đơn hàng của bạn đã được yêu cầu hủy và đang chờ xác nhận.');
+    }
+
+    public function publicHistory(Request $request)
+{
+    $searchCode = $request->input('order_code');
+
+    if ($searchCode) {
+        $orders = Order::where('order_code', 'LIKE', '%' . $searchCode . '%') // Tìm kiếm mã gần đúng
+                        ->with(['orderItems.product', 'orderItems.variant.color', 'orderItems.variant.capacity'])
+                        ->orderBy('created_at', 'desc')
+                        ->get();
+    } else {
+        $orders = collect(); // Trả về danh sách rỗng
+    }
+
+    return view('client.page.auth.page.order-history.public_order_history', compact('orders', 'searchCode'));
+}
+
+
+
+    
 
 
 }
