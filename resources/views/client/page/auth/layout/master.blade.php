@@ -23,8 +23,11 @@
                   <h5 class="h6 mb-1">{{ Auth::user()->name ?? 'Tên chưa được cập nhật' }}</li></h5>
                   <div class="nav flex-nowrap text-nowrap min-w-0">
                     <a class="nav-link animate-underline text-body p-0" href="{{ route('customer.file') }}">
-                      
+
                       <span class="text-body fw-normal text-truncate"><i class="fa-solid fa-pen"></i> Sửa hồ sơ</span>
+                    <a class="nav-link animate-underline text-body p-0" href="#bonusesModal" data-bs-toggle="modal">
+
+                      <span class="text-body fw-normal text-truncate">Sửa hồ sơ</span>
                     </a>
                   </div>
                 </div>
@@ -39,7 +42,7 @@
                   Đơn hàng
                   <span class="badge bg-primary rounded-pill ms-auto">1</span>
                 </a>
-                <a class="list-group-item list-group-item-action d-flex align-items-center" href="">
+                <a class="list-group-item list-group-item-action d-flex align-items-center" href="{{route('customer.wishList')}}">
                   <i class="ci-heart fs-base opacity-75 me-2"></i>
                   Sản phẩm yêu thích
                 </a>
@@ -66,7 +69,7 @@
                   Thông báo
                 </a>
               </nav>
-              
+
               <nav class="list-group list-group-borderless pt-3">
                 <form action="{{ route('customer.logout') }}" method="POST" style="display: inline;">
                     @csrf
@@ -76,7 +79,7 @@
                     </a>
                 </form>
             </nav>
-            
+
             </div>
           </div>
         </aside>

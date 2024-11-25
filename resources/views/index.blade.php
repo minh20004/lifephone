@@ -34,7 +34,7 @@
                                 <div class="swiper-wrapper">
                                     <div class="swiper-slide text-center text-xl-start pt-5 py-xl-5">
                                         <h2 class="display-4 pb-2 pb-xl-4">iPhone 16 Pro</h2>
-                                            <h4 class="text-body">Đỉnh cao công nghệ, hiệu năng vượt trội, 
+                                            <h4 class="text-body">Đỉnh cao công nghệ, hiệu năng vượt trội,
                                                 chinh phục mọi trải nghiệm!</h4>
                                         <a class="btn btn-lg btn-primary" href="http://lifephone.test/product/5">
                                             Xem ngay
@@ -43,7 +43,7 @@
                                     </div>
                                     <div class="swiper-slide text-center text-xl-start pt-5 py-xl-5">
                                         <h2 class="display-4 pb-2 pb-xl-4">oppo a 16</h2>
-                                            <h4 class="text-body">Đỉnh cao công nghệ, hiệu năng vượt trội, 
+                                            <h4 class="text-body">Đỉnh cao công nghệ, hiệu năng vượt trội,
                                                 chinh phục mọi trải nghiệm!</h4>
                                         <a class="btn btn-lg btn-primary" href="http://lifephone.test/product/5">
                                             Xem ngay
@@ -52,7 +52,7 @@
                                     </div>
                                     <div class="swiper-slide text-center text-xl-start pt-5 py-xl-5">
                                         <h3 class="display-4 pb-2 pb-xl-4">Galaxy S24 Ultra</h3>
-                                            <h4 class="text-body">Đỉnh cao công nghệ, hiệu năng vượt trội, 
+                                            <h4 class="text-body">Đỉnh cao công nghệ, hiệu năng vượt trội,
                                                 chinh phục mọi trải nghiệm!</h4>
                                         <a class="btn btn-lg btn-primary" href="http://lifephone.test/product/5">
                                             Xem ngay
@@ -682,7 +682,7 @@
                   </a>
               </div>
           </div>
-  
+
           <div class="col-lg-8">
               <div class="row">
                   @foreach ($latestProducts as $product)
@@ -727,7 +727,7 @@
           </div>
       </div>
   </section>
-  
+
     <!-- Trending products (Grid) Thịnh hành-->
     <section class="container pt-5 mt-2 mt-sm-3 mt-lg-4">
 
@@ -754,7 +754,7 @@
                                 <div class="d-flex flex-column gap-2">
                                     <button type="button"
                                         class="btn btn-icon btn-secondary animate-pulse d-none d-lg-inline-flex"
-                                        aria-label="Add to Wishlist">
+                                        aria-label="Add to Wishlist" data-id="{{$product->id}}">
                                         <i class="ci-heart fs-base animate-target"></i>
                                     </button>
                                     <button type="button"
@@ -944,5 +944,30 @@
         </div>
         </div>
     </section>
+    <script>
+        document.querySelectorAll('button[aria-label="Add to Wishlist"]').forEach(button => {
+            button.addEventListener('click', function() {
+            let productId = this.getAttribute('data-id'); // Lấy product ID từ data-id
+            let customerId = @json(Auth::guard('customer')->user()->id); // Lấy ID người dùng đang đăng nhập
 
+            // Gọi API để thêm sản phẩm vào danh sách yêu thích
+            $.ajax({
+                url: '/api/favorites',  // Đảm bảo rằng API của bạn đúng với URL này
+                method: 'POST',
+                data: {
+                customer_id: customerId,  // Gửi customer_id (có thể bạn cần thay đổi tùy theo API)
+                product_id: productId     // Gửi product_id (sản phẩm cần thêm vào wishlist)
+                },
+                success: function(response) {
+                console.log('Product added to wishlist:', response);
+                alert('Sản phẩm đã được thêm vào danh sách yêu thích!');
+                },
+                error: function(xhr, status, error) {
+                console.error('Error:', error);
+                alert('Đã có lỗi xảy ra, vui lòng thử lại!');
+                }
+            });
+            });
+        });
+    </script>
 @endsection

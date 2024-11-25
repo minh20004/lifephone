@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiProductController;
+use App\Http\Controllers\FavoriteController;
 
 
 /*
@@ -21,3 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::get('/search-suggestions', [ApiProductController::class, 'getSearchSuggestions']);
 Route::get('/search-trend', [ApiProductController::class, 'getTopProductsForSearch']);
+
+Route::post('favorites', [FavoriteController::class, 'addToFavorites']);
+Route::post('favorites/delete', [FavoriteController::class, 'removeFromFavorites']);
+Route::get('/favorites', [FavoriteController::class, 'getFavorites']);
+Route::post('favorites/addToCard', [FavoriteController::class, 'addToCart']);

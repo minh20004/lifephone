@@ -53,7 +53,7 @@ class AuthController extends Controller
             }
             $data['avatar'] = Storage::put('avatars', $request->file('avatar'));
         }
-        
+
         User::create($data);
 
         return redirect()->route('admins.index')->with('success', 'Thêm thành công');
@@ -131,17 +131,17 @@ class AuthController extends Controller
         Auth::guard('web')->logout();
         return redirect()->route('login');
     }
-    
+
 //  khách hàng ------------------------------------------------------------------------------------------------------------------------------
 
     public function showLogin_customer()
     {
-        return view('client/page/auth/signin-customer'); 
+        return view('client/page/auth/signin-customer');
     }
 
     public function file_customer()
     {
-        return view('client/page/auth/page/file-customer'); 
+        return view('client/page/auth/page/file-customer');
     }
 
     public function customerLogin(Request $request)
@@ -151,26 +151,26 @@ class AuthController extends Controller
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
-    
+
         $credentials = $request->only('email', 'password');
-    
+
         // Kiểm tra nếu thông tin đăng nhập hợp lệ
         if (Auth::guard('customer')->attempt($credentials)) {
             $customer = Auth::guard('customer')->user();
-    
+
             if (!$customer->is_verified) {
                 // Nếu tài khoản chưa xác nhận, đăng xuất và trả về thông báo lỗi
                 Auth::guard('customer')->logout();
                 return redirect()->route('customer.login')->withErrors(['email' => 'Tài khoản chưa được xác nhận. Vui lòng kiểm tra email để kích hoạt tài khoản.']);
             }
-    
+
             // Nếu tài khoản đã xác nhận, đăng nhập thành công
             return redirect()->route('customer.file')->with('success', 'Đăng nhập thành công!');
         }
-    
+
         return redirect()->back()->withErrors(['email' => 'Thông tin đăng nhập không đúng.']);
     }
-    
+
     public function customerLogout()
     {
         Auth::guard('customer')->logout();
@@ -216,44 +216,44 @@ class AuthController extends Controller
     public function verifyCustomer($token)
     {
         $customer = Customer::where('verification_token', $token)->first();
-    
+
         if (!$customer) {
             return redirect()->route('customer.login')->withErrors(['email' => 'Token xác nhận không hợp lệ hoặc đã hết hạn.']);
         }
-    
+
         // Kích hoạt tài khoản và xóa token
         $customer->is_verified = true;
         $customer->verification_token = null; // Xóa token sau khi xác nhận
         $customer->save();
-    
+
         return redirect()->route('customer.login')->with('success', 'Tài khoản của bạn đã được kích hoạt thành công!');
     }
-    
+
     //gửi lại email xác nhận
     public function resendVerificationEmail(Request $request)
     {
         $customer = Customer::where('email', $request->email)->first();
-    
+
         if (!$customer) {
             return redirect()->route('customer.login')->withErrors(['email' => 'Không tìm thấy tài khoản với email này.']);
         }
-    
+
         // Kiểm tra nếu tài khoản đã được xác nhận
         if ($customer->is_verified) {
             return redirect()->route('customer.login')->with('success', 'Tài khoản của bạn đã được xác nhận.');
         }
-    
+
         // Tạo lại token xác nhận duy nhất và lưu vào cơ sở dữ liệu
-        $verificationToken = Str::random(60); 
+        $verificationToken = Str::random(60);
         $customer->verification_token = $verificationToken;
         $customer->save();
-    
+
         // Gửi email xác nhận
         Mail::to($customer->email)->send(new VerifyEmail($customer));
-    
+
         return redirect()->route('customer.login')->with('success', 'Đã gửi lại email xác nhận. Vui lòng kiểm tra email của bạn.');
     }
-    
+
     public function editCustomer($id)
     {
         $customer = Customer::findOrFail($id);
@@ -335,7 +335,7 @@ class AuthController extends Controller
             return back()->with('error', 'Đã có lỗi xảy ra, vui lòng thử lại!');
         }
     }
-    
+
     // Hàm xử lý cập nhật số điện thoại email khách hàng
     public function updateContact(Request $request, $id)
     {
@@ -343,14 +343,14 @@ class AuthController extends Controller
             'email' => 'required|email|max:255',
             'phone' => 'required|regex:/^\+?\d{10,15}$/',  // Kiểm tra số điện thoại hợp lệ
         ]);
-    
+
         try {
             $user = Customer::findOrFail($id);
             $user->update([
                 'email' => $request->email,
                 'phone' => $request->phone,
             ]);
-    
+
             return redirect()->route('customer.profile')->with('success', 'Cập nhật thông tin liên hệ thành công!');
         } catch (\Exception $e) {
             return back()->with('error', 'Đã có lỗi xảy ra, vui lòng thử lại!');
@@ -364,29 +364,29 @@ class AuthController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để cập nhật địa chỉ!');
         }
-    
+
         $user = Auth::user(); // Lấy người dùng hiện tại
         if ($user->id != $id) {
             return redirect()->route('customer.profile')->with('error', 'Bạn không có quyền truy cập vào thông tin này!');
         }
-    
+
         // Tiến hành cập nhật địa chỉ
         $request->validate([
             'address' => 'required|string|max:255',
         ]);
-    
+
         try {
             $customer = Customer::findOrFail($id);
             $customer->update([
                 'address' => $request->input('address')
             ]);
-    
+
             return redirect()->route('customer.profile')->with('success', 'Cập nhật địa chỉ thành công!');
         } catch (\Exception $e) {
             return back()->with('error', 'Đã có lỗi xảy ra, vui lòng thử lại!');
         }
     }
-    
+
     // Hàm xử lý cập nhật mật khẩu khách hàng
     public function changePassword(Request $request, $id)
     {
@@ -424,4 +424,8 @@ class AuthController extends Controller
     {
         return view('client.page.auth.page.address');
     }
+    public function wish_list(){
+        return view('client.page.auth.page.wishList');
+    }
+
 }

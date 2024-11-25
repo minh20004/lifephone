@@ -145,7 +145,7 @@
               <div class="position-relative">
                 <div class="position-absolute top-0 end-0 z-2 hover-effect-target opacity-0 mt-3 me-3">
                   <div class="d-flex flex-column gap-2">
-                    <button type="button" class="btn btn-icon btn-secondary animate-pulse d-none d-lg-inline-flex" aria-label="Add to Wishlist">
+                    <button type="button" class="btn btn-icon btn-secondary animate-pulse d-none d-lg-inline-flex" aria-label="Add to Wishlist" data-id="{{$item->id}}">
                       <i class="ci-heart fs-base animate-target"></i>
                     </button>
                     <button type="button" class="btn btn-icon btn-secondary animate-rotate d-none d-lg-inline-flex" aria-label="Compare">
@@ -383,6 +383,30 @@
             }
         });
     }
+    document.querySelectorAll('button[aria-label="Add to Wishlist"]').forEach(button => {
+      button.addEventListener('click', function() {
+        let productId = this.getAttribute('data-id'); // Lấy product ID từ data-id
+        let customerId = @json(Auth::guard('customer')->user()->id); // Lấy ID người dùng đang đăng nhập
+
+        // Gọi API để thêm sản phẩm vào danh sách yêu thích
+        $.ajax({
+          url: '/api/favorites',  // Đảm bảo rằng API của bạn đúng với URL này
+          method: 'POST',
+          data: {
+            customer_id: customerId,  // Gửi customer_id (có thể bạn cần thay đổi tùy theo API)
+            product_id: productId     // Gửi product_id (sản phẩm cần thêm vào wishlist)
+          },
+          success: function(response) {
+            console.log('Product added to wishlist:', response);
+            alert('Sản phẩm đã được thêm vào danh sách yêu thích!');
+          },
+          error: function(xhr, status, error) {
+            console.error('Error:', error);
+            alert('Đã có lỗi xảy ra, vui lòng thử lại!');
+          }
+        });
+      });
+    });
   });
 
 </script>
