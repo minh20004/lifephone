@@ -59,6 +59,13 @@ Route::post('/order/store', [OrderController::class, 'storeOrder'])->name('order
 Route::get('/order-success', function () {
     return view('client.page.checkout.order_success'); // Thông báo thành công
 })->name('order.success');
+// Giới thiệu & Liên hệ
+Route::get('about', function(){
+    return view('client.page.about.about');
+});
+Route::get('contact', function(){
+    return view('client.page.about.contact');
+});
 
 
 
