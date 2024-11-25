@@ -113,7 +113,7 @@ Route::prefix('colors')->group(function () {
 // chuyển trang biến thể 
 Route::get('/product/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
 //router review và news
-Route::resource('admin/review',ReviewController::class);
+Route::resource('review',ReviewController::class);
 Route::resource('new_admin',  NewController::class);
 
 Route::get('new', [NewController::class, 'clientIndex'])->name('news.index');

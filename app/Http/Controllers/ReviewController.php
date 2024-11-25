@@ -12,7 +12,7 @@ class ReviewController extends Controller
      */
     public function index()
     {
-        $listReview=Review::all();
+        $listReview=Review::paginate(10);
         return view('admin.page.review.index',compact('listReview'));
     }
 
