@@ -64,7 +64,7 @@ Route::get('about', function(){
     return view('client.page.about.about');
 });
 Route::get('contact', function(){
-    return view('client.page.about.contact');
+    return view('client.page.contact.contact');
 });
 
 
