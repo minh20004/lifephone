@@ -48,7 +48,7 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
 });
 
 // auth customer ------------------------------------------------------
-// quản lý hồ sơ khách hàng 
+// quản lý hồ sơ khách hàng
 Route::get('/customer/address', [AuthController::class, 'address'])->name('customer.adress');
 
 Route::get('/customer/add', [AuthController::class, 'createCustomer'])->name('customer.add');
@@ -97,6 +97,7 @@ Route::middleware(['auth:customer', 'isCustomer'])->group(function () {
     Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
     Route::put('/customer/{id}/update-address', [AuthController::class, 'updateAddress'])->name('customer.updateAddress');
     Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
+    Route::get('/customer/wishList', [AuthController::class, 'wish_list'])->name('customer.wishList');
 });
 // -----------------------------USER------------------------------------------------------------------------------
 //giỏ hàng

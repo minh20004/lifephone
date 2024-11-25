@@ -145,7 +145,7 @@
               <div class="position-relative">
                 <div class="position-absolute top-0 end-0 z-2 hover-effect-target opacity-0 mt-3 me-3">
                   <div class="d-flex flex-column gap-2">
-                    <button type="button" class="btn btn-icon btn-secondary animate-pulse d-none d-lg-inline-flex" aria-label="Add to Wishlist">
+                    <button type="button" class="btn btn-icon btn-secondary animate-pulse d-none d-lg-inline-flex" aria-label="Add to Wishlist" data-id="{{$item->id}}">
                       <i class="ci-heart fs-base animate-target"></i>
                     </button>
                     <button type="button" class="btn btn-icon btn-secondary animate-rotate d-none d-lg-inline-flex" aria-label="Compare">
@@ -383,6 +383,39 @@
             }
         });
     }
+    document.querySelectorAll('button[aria-label="Add to Wishlist"]').forEach(button => {
+            button.addEventListener('click', function() {
+            let productId = this.getAttribute('data-id');
+            let customerId = null;
+            @if (Auth::guard('customer')->check())
+                customerId = @json(Auth::guard('customer')->user()->id);
+            @endif
+
+
+            $.ajax({
+                url: '/api/favorites',
+                method: 'POST',
+                data: {
+                customer_id: customerId,
+                product_id: productId
+                },
+                success: function(response) {
+                console.log('Product added to wishlist:', response);
+                alert('Sản phẩm đã được thêm vào danh sách yêu thích!');
+                },
+                error: function(xhr, status, error) {
+                console.error('Error:', error);
+                    if(customerId == null){
+                        alert('Vui lòng đăng nhập để thêm sản phẩm vào danh sách yêu thích!');
+                    }else if(productId == null){
+                        alert('Sản phẩm không tồn tại!');
+                    } else {
+                        alert('Đã có lỗi xảy ra, vui lòng thử lại!');
+                    }
+                }
+            });
+            });
+        });
   });
 
 </script>

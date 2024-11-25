@@ -122,7 +122,7 @@
                     @endif
                     @endforeach
                   </div>
-                  <button type="button" class="product-card-button btn btn-icon btn-secondary" aria-label="Add to Cart">
+                  <button type="button" class="product-card-button btn btn-icon btn-secondary" data-id="{{$item->id}}" aria-label="Add to Cart">
                     <i class="ci-shopping-cart"></i>
                   </button>
                 </div>
@@ -161,4 +161,39 @@
     {{ $productsByCategory->links() }}
   </div>
 </div>
+<script>
+    document.querySelectorAll('button[aria-label="Add to Wishlist"]').forEach(button => {
+        button.addEventListener('click', function() {
+        let productId = this.getAttribute('data-id');
+        let customerId = null;
+        @if (Auth::guard('customer')->check())
+            customerId = @json(Auth::guard('customer')->user()->id);
+        @endif
+
+
+        $.ajax({
+            url: '/api/favorites',
+            method: 'POST',
+            data: {
+            customer_id: customerId,
+            product_id: productId
+            },
+            success: function(response) {
+            console.log('Product added to wishlist:', response);
+            alert('Sản phẩm đã được thêm vào danh sách yêu thích!');
+            },
+            error: function(xhr, status, error) {
+            console.error('Error:', error);
+                if(customerId == null){
+                    alert('Vui lòng đăng nhập để thêm sản phẩm vào danh sách yêu thích!');
+                }else if(productId == null){
+                    alert('Sản phẩm không tồn tại!');
+                } else {
+                    alert('Đã có lỗi xảy ra, vui lòng thử lại!');
+                }
+            }
+        });
+        });
+    });
+</script>
 @endsection
