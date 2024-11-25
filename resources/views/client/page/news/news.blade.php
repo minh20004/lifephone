@@ -33,8 +33,7 @@ Lifephone
                     href="{{ route('news.show', ['slug' => $mostViewedNews->slug]) }}"
                     style="--cz-aspect-ratio: calc(484 / 746 * 100%)">
                     <img src="{{ asset('storage/' .  $mostViewedNews->thumbnail) }}" alt="{{ $mostViewedNews->title }}" class="hover-effect-target">
-                    {{-- <img src="{{ Storage::url($mostViewedNews->thumbnail) }}" alt="{{ $mostViewedNews->title }}" --}}
-                    class="hover-effect-target">
+                
                 </a>
                 <div class="pt-4">
                     <div class="nav align-items-center gap-2 pb-2 mt-n1 mb-1">
