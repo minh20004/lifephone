@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-    Route::resource('product', ProductController::class);
-    Route::resource('index', AdminController::class);
-    Route::resource('category', CategoryController::class);
-    Route::resource('capacity', CapacityController::class);
-    Route::resource('color', ColorController::class);
+    // Route::resource('product', ProductController::class);
+    // Route::resource('index', AdminController::class);
+    // Route::resource('category', CategoryController::class);
+    // Route::resource('capacity', CapacityController::class);
+    // Route::resource('color', ColorController::class);
 });
