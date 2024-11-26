@@ -10,7 +10,7 @@
                 style="background: #1d2c41 url('client/img/home/electronics/banner/background.jpg') center/cover no-repeat">
                 <div class="ratio animate-up-down position-relative z-2 me-lg-4"
                     style="max-width: 320px; margin-bottom: -19%; --cz-aspect-ratio: calc(690 / 640 * 100%)">
-                    <img src="client/img/home/electronics/banner/san-pham-moi.png" alt="Laptop">
+                    <img src="client/img/home/electronics/timkiem.png" alt="Laptop">
                 </div>
                 <h3 class="display-2 mb-2">Iphone 15 VNA</h3>
                 <p class="text-body fw-medium mb-4"> Trở nên chuyên nghiệp ở mọi nơi</p>
@@ -78,7 +78,7 @@
                                         <div class="text-end mt-3 d-flex justify-content-between gap-2">
                                             <p style="font-size:13px;">Ngày đặt hàng: {{ $order->created_at->format('d/m/Y ') }}</p>
                                             <div class="d-flex gap-2">
-                                                <div><a href="{{ route('order.detail', $order->id) }}" class="btn border border-danger btn-sm text-dark">Xem Chi Tiết Đơn Hàng</a></div>
+                                                <div><a href="{{ route('order.publicDetail', $order->id) }}" class="btn border border-danger btn-sm text-dark">Xem Chi Tiết Đơn Hàng</a></div>
                                                 <div>
                                                     @if($order->status == 'Chờ xác nhận')
                                                         <form action="{{ route('order.cancel', $order->id) }}" method="POST">

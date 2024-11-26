@@ -402,6 +402,22 @@ class CartController extends Controller
     }
 
 
+    public function getCartItemCount()
+    {
+        $cart = session()->get('cart', []);
+        $totalQuantity = 0;
+
+        foreach ($cart as $productId => $models) {
+            foreach ($models as $modelId => $colorModels) {
+                foreach ($colorModels as $item) {
+                    $totalQuantity += $item['quantity'];
+                }
+            }
+        }
+
+        return response()->json(['count' => $totalQuantity]);
+    }
+
 
 
 

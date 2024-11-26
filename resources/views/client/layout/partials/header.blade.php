@@ -131,11 +131,35 @@
 
         <!-- giỏ hàng button -->
         <button type="button" class="btn btn-icon btn-lg btn-secondary position-relative rounded-circle ms-2" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Shopping cart">
-          <span class="position-absolute top-0 start-100 mt-n1 ms-n3 badge text-bg-success border border-3 border-dark rounded-pill" style="--cz-badge-padding-y: .25em; --cz-badge-padding-x: .42em">3</span>
+          <span class="position-absolute top-0 start-100 mt-n1 ms-n3 badge text-bg-success border border-3 border-dark rounded-pill" style="--cz-badge-padding-y: .25em; --cz-badge-padding-x: .42em" id="cartCount">0</span>
           <span class="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
-            <i class="ci-shopping-cart animate-target ms-n1"></i>
+              <i class="ci-shopping-cart animate-target ms-n1"></i>
           </span>
-        </button>
+      </button>
+      <script>
+        // Hàm cập nhật số lượng sản phẩm trong giỏ hàng
+function updateCartItemCount() {
+    fetch('/cart/item-count') // Gọi API từ server
+        .then(response => response.json())
+        .then(data => {
+            const cartCountElement = document.getElementById('cartCount');
+            cartCountElement.textContent = data.count > 0 ? data.count : ''; // Ẩn khi giỏ hàng rỗng
+        })
+        .catch(error => console.error('Error fetching cart item count:', error));
+}
+
+// Gọi hàm khi trang được tải
+document.addEventListener('DOMContentLoaded', updateCartItemCount);
+
+// Gọi lại hàm khi thêm sản phẩm vào giỏ hàng (nếu bạn có nút thêm sản phẩm)
+document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+    button.addEventListener('click', () => {
+        updateCartItemCount();
+    });
+});
+
+      </script>
+      
       </div>
     </div>
   </div>
@@ -332,7 +356,7 @@
                 <a class="nav-link" href="{{route('cart.index')}}">Giỏ hàng</a>
               </li>
               <li class="nav-item me-lg-n2 me-xl-0">
-                <a class="nav-link" href="{{route('order.publicHistory')}}">Đơn mua</a>
+                <a class="nav-link" href="{{route('order.publicHistory')}}">Tra cứu đơn hàng</a>
               </li>
             </ul>
             <hr class="d-lg-none my-3">

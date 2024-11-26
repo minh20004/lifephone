@@ -159,8 +159,18 @@ class OrderController extends Controller
         $validated = $request->validate([
             'status' => 'required|in:Chờ xác nhận,Đã xác nhận,Đang giao hàng,Đã hoàn thành,Đã hủy',
         ]);
-
         $order = Order::findOrFail($id);
+        if ($request->status === 'Đã hủy' && $order->status !== 'Đã hủy') {
+            // Hoàn trả số lượng sản phẩm vào kho
+            foreach ($order->orderItems as $orderItem) {
+                $variant = ProductVariant::find($orderItem->variant_id);
+                if ($variant) {
+                    $variant->stock += $orderItem->quantity;
+                    $variant->save();
+                }
+            }
+        }
+        // $order = Order::findOrFail($id);
         $order->status = $request->status;
         $order->save();
 

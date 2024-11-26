@@ -127,7 +127,9 @@ Route::post('/order/cancel/{id}', [AuthController::class, 'cancel'])->name('orde
 
 
 Route::get('/public-order-history', [AuthController::class, 'publicHistory'])->name('order.publicHistory');
+Route::get('/public-order-detail/{id}', [AuthController::class, 'publicDetail'])->name('order.publicDetail');
 
+Route::get('/cart/item-count', [CartController::class, 'getCartItemCount'])->name('cart.item-count');
 
 
 

@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Mail\VerifyEmail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\ProductVariant;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -538,25 +539,51 @@ class AuthController extends Controller
         $order->status = 'Đã Hủy';
         $order->save();
 
+        // Hoàn trả số lượng sản phẩm vào kho
+    foreach ($order->orderItems as $orderItem) {
+        $variant = ProductVariant::find($orderItem->variant_id);
+        if ($variant) {
+            $variant->stock += $orderItem->quantity;
+            $variant->save();
+        }
+    }
+
         return redirect()->route('order.history')->with('success', 'Đơn hàng của bạn đã được yêu cầu hủy và đang chờ xác nhận.');
     }
 
     public function publicHistory(Request $request)
-{
-    $searchCode = $request->input('order_code');
+    {
+        $searchCode = $request->input('order_code');
 
-    if ($searchCode) {
-        $orders = Order::where('order_code', 'LIKE', '%' . $searchCode . '%') // Tìm kiếm mã gần đúng
-                        ->with(['orderItems.product', 'orderItems.variant.color', 'orderItems.variant.capacity'])
-                        ->orderBy('created_at', 'desc')
-                        ->get();
-    } else {
-        $orders = collect(); // Trả về danh sách rỗng
+        if ($searchCode) {
+            $orders = Order::where('order_code', 'LIKE', '%' . $searchCode . '%') // Tìm kiếm mã gần đúng
+                            ->with(['orderItems.product', 'orderItems.variant.color', 'orderItems.variant.capacity'])
+                            ->orderBy('created_at', 'desc')
+                            ->get();
+        } else {
+            $orders = collect(); // Trả về danh sách rỗng
+        }
+
+        return view('client.page.auth.page.order-history.public-order.public_order_history', compact('orders', 'searchCode'));
     }
+    
+    public function publicDetail($id)
+    {
+        // Xác định khách hàng hiện tại (nếu cần)
+        $customerId = auth('customer')->check() ? auth('customer')->id() : null;
 
-    return view('client.page.auth.page.order-history.public_order_history', compact('orders', 'searchCode'));
-}
+        // Tìm đơn hàng
+        $order = Order::with(['orderItems.product', 'orderItems.variant.color', 'orderItems.variant.capacity', 'voucher'])
+                    ->where('customer_id', $customerId) // Đảm bảo chỉ lấy đơn hàng của khách hiện tại
+                    ->find($id);
 
+        // Nếu không tìm thấy đơn hàng
+        if (!$order) {
+            return redirect()->route('order.history')->with('error', 'Đơn hàng không tồn tại hoặc bạn không có quyền xem.');
+        }
+
+        return view('client.page.auth.page.order-history.public-order.public_order_detail', compact('order'));
+    }
 
 
     

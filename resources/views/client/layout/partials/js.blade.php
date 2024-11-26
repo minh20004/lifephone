@@ -279,3 +279,30 @@
             .catch(error => console.error('Error:', error));
     }
 </script>
+
+{{-- thay dổi số trong trên giỏ hàng --}}
+<script>
+    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+        button.addEventListener('click', function (e) {
+            e.preventDefault();
+            const form = this.closest('form');
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateCartItemCount(); // Cập nhật số lượng
+                    alert(data.message);  // Hiển thị thông báo
+                } else {
+                    alert(data.message);  // Thông báo lỗi
+                }
+            })
+            .catch(error => console.error('Error adding to cart:', error));
+        });
+    });
+
+</script>
