@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
-    
+
     public function index()
     {
         $cart = session()->get('cart', []);
@@ -71,7 +71,7 @@ class CartController extends Controller
 
         return view('client.page.cart.index', compact('cartItems', 'totalQuantity', 'totalPrice', 'discount', 'totalAfterDiscount'));
     }
-    
+
     public function addToCart(Request $request)
     {
         $request->validate([
@@ -134,7 +134,9 @@ class CartController extends Controller
 
         return redirect()->route('cart.index')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
     }
-    
+
+
+
     public function updateQuantity(Request $request)
     {
         $productId = $request->input('productId');
@@ -217,7 +219,6 @@ class CartController extends Controller
         ]);
     }
 
-    
     public function applyVoucher(Request $request)
     {
         $request->validate([

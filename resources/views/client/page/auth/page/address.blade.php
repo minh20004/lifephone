@@ -94,7 +94,7 @@
     </div>
 
     <ul class="list-unstyled">
-        @foreach(Auth::user()->addresses as $address) 
+        @foreach(Auth::user()->addresses as $address)
             <li class="address-item mb-3">
                 <div class="d-flex justify-content-between">
                     <p>

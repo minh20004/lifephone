@@ -109,22 +109,22 @@
         </button>
 
          <!-- Account button visible on screens > 768px wide (md breakpoint) -->
-         @if (Auth::guard('customer')->check()) 
+         @if (Auth::guard('customer')->check())
          <!-- If the user is logged in, show their initials -->
-         <a class="auth btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-shake d-none d-md-inline-flex" 
+         <a class="auth btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-shake d-none d-md-inline-flex"
            href="{{ route('customer.file') }}" >
              <span class="fw-medium">{{ strtoupper(substr(Auth::guard('customer')->user()->email, 0, 1)) }}</span>
          </a>
         @else
             <!-- If the user is not logged in, show the login icon -->
-            <a class="btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-shake d-none d-md-inline-flex" 
+            <a class="btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-shake d-none d-md-inline-flex"
               href="{{ route('customer.login') }}">
                 <i class="ci-user animate-target"></i>
                 <span class="visually-hidden">Account</span>
             </a>
         @endif
         <!-- Wishlist button visible on screens > 768px wide (md breakpoint) -->
-        <a class="btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-pulse d-none d-md-inline-flex" href="account-wishlist.html">
+        <a class="btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-pulse d-none d-md-inline-flex" href="{{route('customer.wishList')}}">
           <i class="ci-heart animate-target"></i>
           <span class="visually-hidden">Wishlist</span>
         </a>

@@ -48,7 +48,7 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
 });
 
 // auth customer ------------------------------------------------------
-// quản lý hồ sơ khách hàng 
+// quản lý hồ sơ khách hàng
 Route::get('/customer/address', [AuthController::class, 'address'])->name('customer.adress');
 
 Route::get('/customer/add', [AuthController::class, 'createCustomer'])->name('customer.add');
@@ -97,7 +97,11 @@ Route::middleware(['auth:customer', 'isCustomer'])->group(function () {
     Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
     Route::put('/customer/{id}/update-address', [AuthController::class, 'updateAddress'])->name('customer.updateAddress');
     Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
+    Route::get('/customer/wishList', [AuthController::class, 'wish_list'])->name('customer.wishList');
+
+    Route::get('/order-history', [AuthController::class, 'history'])->name('order.history');
 });
+Route::get('/order-detail/{id}', [AuthController::class, 'detail'])->name('order.detail');
 // -----------------------------USER------------------------------------------------------------------------------
 //giỏ hàng
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
@@ -117,8 +121,6 @@ Route::get('/order-success', function () {
 // lịch sử đơn hàng
 
 // Route::get('/order-history', [AuthController::class, 'orderHistory'])->name('order.history');
-Route::get('/order-history', [AuthController::class, 'history'])->name('order.history');
-Route::get('/order-detail/{id}', [AuthController::class, 'detail'])->name('order.detail');
 // Route::post('/order-cancel/{id}', [AuthController::class, 'cancel'])->name('order.cancel');
 
 // Route cho khách hàng yêu cầu hủy đơn hàng

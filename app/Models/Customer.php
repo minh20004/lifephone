@@ -10,7 +10,7 @@ class Customer extends Authenticatable
     use HasFactory;
 
     protected $fillable = [
-        'name', 
+        'name',
         'email',
         'phone',
         'address',
@@ -36,5 +36,9 @@ class Customer extends Authenticatable
         return $this->hasMany(Address::class, 'customer_id');
     }
 
-}
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
 
+}
