@@ -47,30 +47,20 @@
                 <h4 class="h6 mb-3">Lọc theo giá</h4>
                 <div class="btn-group-vertical w-100" id="price-range-list" role="group">
                   <!-- Hiển thị 5 giá trị ban đầu -->
-                  <button type="submit" name="min_price" value="0" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 0 ? 'active' : '' }} {{ request('max_price') == 1000000 ? 'active' : '' }}">
-                    Dưới 1 triệu
-                  </button>
-                  <button type="submit" name="min_price" value="1000000" name="max_price" value="3000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 1000000 && request('max_price') == 3000000 ? 'active' : '' }}">
-                    1 đến 3 triệu
-                  </button>
-                  <button type="submit" name="min_price" value="3000000" name="max_price" value="5000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 3000000 && request('max_price') == 5000000 ? 'active' : '' }}">
-                    3 đến 5 triệu
-                  </button>
                   <button type="submit" name="min_price" value="5000000" name="max_price" value="10000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 5000000 && request('max_price') == 10000000 ? 'active' : '' }}">
                     5 đến 10 triệu
                   </button>
                   <button type="submit" name="min_price" value="10000000" name="max_price" value="15000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 10000000 && request('max_price') == 15000000 ? 'active' : '' }}">
                     10 đến 15 triệu
                   </button>
-
+                  <button type="submit" name="min_price" value="15000000" name="max_price" value="20000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 15000000 && request('max_price') == 20000000 ? 'active' : '' }}">
+                    15 đến 20 triệu
+                  </button>
+                  <button type="submit" name="min_price" value="20000000" name="max_price" value="25000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 20000000 && request('max_price') == 25000000 ? 'active' : '' }}">
+                    20 đến 25 triệu
+                  </button>
                   <!-- Các giá trị còn lại ẩn đi -->
                   <div id="more-price-range" class="btn-group-vertical w-100 d-none">
-                    <button type="submit" name="min_price" value="15000000" name="max_price" value="20000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 15000000 && request('max_price') == 20000000 ? 'active' : '' }}">
-                      15 đến 20 triệu
-                    </button>
-                    <button type="submit" name="min_price" value="20000000" name="max_price" value="25000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 20000000 && request('max_price') == 25000000 ? 'active' : '' }}">
-                      20 đến 25 triệu
-                    </button>
                     <button type="submit" name="min_price" value="25000000" name="max_price" value="30000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 25000000 && request('max_price') == 30000000 ? 'active' : '' }}">
                       25 đến 30 triệu
                     </button>
@@ -107,20 +97,6 @@
                 @endforeach
               </ul>
             </div>
-
-            <div class="w-100 border rounded p-3 p-xl-4">
-              <h4 class="h6">Màu sắc</h4>
-              <div class="nav d-block mt-n2">
-                @foreach ($colors as $color)
-                <a href="{{ route('client.category.products', ['id' => $currentCategory->id, 'color_id' => $color->id, 'min_price' => request('min_price'), 'max_price' => request('max_price')]) }}"
-                  class="nav-link w-auto animate-underline fw-normal pt-2 pb-0 px-0 {{ request('color_id') == $color->id ? 'active' : '' }}">
-                  <span class="rounded-circle me-2" style="width: .875rem; height: .875rem; margin-top: .125rem; background-color: {{ $color->code }}"></span>
-                  <span class="animate-target">{{ $color->name }}</span>
-                </a>
-                @endforeach
-              </div>
-            </div>
-
             <!-- Other filters (Price, Capacity, Color) giữ nguyên -->
           </div>
         </div>

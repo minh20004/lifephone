@@ -100,10 +100,10 @@ class   CategoryController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(9);
 
-        // Kiểm tra nếu không có sản phẩm phù hợp với bộ lọc, trả về thông báo hoặc hiển thị sản phẩm mặc định
-        if ($productsByCategory->isEmpty()) {
-            session()->flash('message', 'Không có sản phẩm phù hợp với bộ lọc của bạn.');
-        }
+        // // Kiểm tra nếu không có sản phẩm phù hợp với bộ lọc, trả về thông báo hoặc hiển thị sản phẩm mặc định
+        // if ($productsByCategory->isEmpty()) {
+        //     session()->flash('message', 'Không có sản phẩm phù hợp với bộ lọc của bạn.');
+        // }
 
         // Lấy thông tin danh mục hiện tại
         $currentCategory = Category::findOrFail($id);
