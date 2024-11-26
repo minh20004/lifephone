@@ -208,3 +208,17 @@
 
 
 
+<script>
+  document.getElementById('show-more-button').addEventListener('click', function() {
+    var morePriceRange = document.getElementById('more-price-range');
+    var button = this;
+
+    if (morePriceRange.classList.contains('d-none')) {
+      morePriceRange.classList.remove('d-none');
+      button.innerText = 'Thu gọn';
+    } else {
+      morePriceRange.classList.add('d-none');
+      button.innerText = 'Xem thêm';
+    }
+  });
+</script>

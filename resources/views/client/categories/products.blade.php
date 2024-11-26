@@ -33,7 +33,7 @@
               <ul class="list-unstyled d-block m-0">
                 @foreach ($categories as $item)
                 <li class="nav d-block pt-2 mt-1">
-                  <a href="{{ route('client.category.products', $item->id) }}" class="nav-link w-auto">
+                  <a href="{{ route('client.category.products', ['id' => $item->id, 'min_price' => request('min_price'), 'max_price' => request('max_price')]) }}" class="nav-link w-auto {{ $currentCategory->id == $item->id ? 'active' : '' }}">
                     <span class="animate-target text-truncate me-3">{{ $item->name }}</span>
                     <span class="text-body-secondary fs-xs ms-auto">{{ $item->products_count }}</span>
                   </a>
@@ -41,55 +41,79 @@
                 @endforeach
               </ul>
             </div>
+
             <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
-              <h4 class="h6 mb-2" id="slider-label">Price</h4>
-              <div class="range-slider" aria-labelledby="slider-label">
-                <div class="range-slider-ui"></div>
-                <div class="d-flex align-items-center">
-                  <div class="position-relative w-50">
-                    <i class="ci-dollar-sign position-absolute top-50 start-0 translate-middle-y ms-3"></i>
-                    <input type="number" name="min_price" id="min_price" class="form-control form-icon-start"
-                      min="0" placeholder="Giá tối thiểu" value="{{ request('min_price') }}">
+              <form action="{{ route('client.category.products', ['id' => $currentCategory->id]) }}" method="GET" id="price-filter-form">
+                <h4 class="h6 mb-3">Lọc theo giá</h4>
+                <div class="btn-group-vertical w-100" id="price-range-list" role="group">
+                  <!-- Hiển thị 5 giá trị ban đầu -->
+                  <button type="submit" name="min_price" value="0" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 0 ? 'active' : '' }} {{ request('max_price') == 1000000 ? 'active' : '' }}">
+                    Dưới 1 triệu
+                  </button>
+                  <button type="submit" name="min_price" value="1000000" name="max_price" value="3000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 1000000 && request('max_price') == 3000000 ? 'active' : '' }}">
+                    1 đến 3 triệu
+                  </button>
+                  <button type="submit" name="min_price" value="3000000" name="max_price" value="5000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 3000000 && request('max_price') == 5000000 ? 'active' : '' }}">
+                    3 đến 5 triệu
+                  </button>
+                  <button type="submit" name="min_price" value="5000000" name="max_price" value="10000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 5000000 && request('max_price') == 10000000 ? 'active' : '' }}">
+                    5 đến 10 triệu
+                  </button>
+                  <button type="submit" name="min_price" value="10000000" name="max_price" value="15000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 10000000 && request('max_price') == 15000000 ? 'active' : '' }}">
+                    10 đến 15 triệu
+                  </button>
+
+                  <!-- Các giá trị còn lại ẩn đi -->
+                  <div id="more-price-range" class="btn-group-vertical w-100 d-none">
+                    <button type="submit" name="min_price" value="15000000" name="max_price" value="20000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 15000000 && request('max_price') == 20000000 ? 'active' : '' }}">
+                      15 đến 20 triệu
+                    </button>
+                    <button type="submit" name="min_price" value="20000000" name="max_price" value="25000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 20000000 && request('max_price') == 25000000 ? 'active' : '' }}">
+                      20 đến 25 triệu
+                    </button>
+                    <button type="submit" name="min_price" value="25000000" name="max_price" value="30000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 25000000 && request('max_price') == 30000000 ? 'active' : '' }}">
+                      25 đến 30 triệu
+                    </button>
+                    <button type="submit" name="min_price" value="30000000" name="max_price" value="50000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 30000000 && request('max_price') == 50000000 ? 'active' : '' }}">
+                      30 đến 50 triệu
+                    </button>
+                    <button type="submit" name="min_price" value="50000000" name="max_price" value="85000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 50000000 && request('max_price') == 85000000 ? 'active' : '' }}">
+                      50 đến 85 triệu
+                    </button>
+                    <button type="submit" name="min_price" value="85000000" name="max_price" value="99999999" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 85000000 && request('max_price') == 99999999 ? 'active' : '' }}">
+                      Trên 85 triệu
+                    </button>
                   </div>
-                  <i class="ci-minus text-body-emphasis mx-2"></i>
-                  <div class="position-relative w-50">
-                    <i class="ci-dollar-sign position-absolute top-50 start-0 translate-middle-y ms-3"></i>
-                    <input type="number" name="max_price" id="max_price" class="form-control form-icon-start"
-                      min="0" placeholder="Giá tối đa" value="{{ request('max_price') }}">
-                  </div>
+
+                  <!-- Nút "Thu gọn" -->
+                  <button type="button" class="btn btn-link mt-2" id="show-more-button">
+                    Thu gọn <i class="bi bi-chevron-up"></i>
+                  </button>
                 </div>
-                <form method="GET" action="{{ route('client.category.products', $currentCategory->id) }}">
-                  <button type="submit" class="btn btn-primary mt-3">Áp dụng lọc</button>
-                </form>
-              </div>
+              </form>
             </div>
 
 
-
-
-            <!-- Capacity (checkboxes) -->
             <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
-              <h4 class="h6 mb-2">Capacity</h4>
+              <h4 class="h6 mb-2">Dung lượng</h4>
               <ul class="list-unstyled d-block m-0">
                 @foreach ($capacities as $item)
                 <li class="nav d-block pt-2 mt-1">
-                  <a href="{{ route('client.category.products', ['id' => $currentCategory->id, 'capacity_id' => $item->id, 'color_id' => $colorId]) }}"
+                  <a href="{{ route('client.category.products', ['id' => $currentCategory->id, 'capacity_id' => $item->id, 'min_price' => request('min_price'), 'max_price' => request('max_price')]) }}"
                     class="nav-link w-auto {{ request('capacity_id') == $item->id ? 'active' : '' }}">
                     <span class="animate-target text-truncate me-3">{{ $item->name }}</span>
-                    <span class="text-body-secondary fs-xs ms-auto">{{ $item->products_count }}</span>
                   </a>
                 </li>
                 @endforeach
               </ul>
             </div>
 
-            <!-- Filter by Color -->
             <div class="w-100 border rounded p-3 p-xl-4">
-              <h4 class="h6">Color</h4>
+              <h4 class="h6">Màu sắc</h4>
               <div class="nav d-block mt-n2">
                 @foreach ($colors as $color)
-                <a href="{{ route('client.category.products', ['id' => $currentCategory->id, 'color_id' => $color->id]) }}"
-                  class="nav-link w-auto animate-underline fw-normal pt-2 pb-0 px-0 {{ $color->id == $colorId ? 'active' : '' }}">
+                <a href="{{ route('client.category.products', ['id' => $currentCategory->id, 'color_id' => $color->id, 'min_price' => request('min_price'), 'max_price' => request('max_price')]) }}"
+                  class="nav-link w-auto animate-underline fw-normal pt-2 pb-0 px-0 {{ request('color_id') == $color->id ? 'active' : '' }}">
                   <span class="rounded-circle me-2" style="width: .875rem; height: .875rem; margin-top: .125rem; background-color: {{ $color->code }}"></span>
                   <span class="animate-target">{{ $color->name }}</span>
                 </a>
@@ -103,52 +127,44 @@
       </aside>
       <!-- Product grid -->
       <div class="col-lg-9">
-        <div class="container mb-6">
-          <p class="h6 text-muted">
-            Tìm thấy
-            <span class="fw-bold text-dark">{{ $productCount }}</span>
-            sản phẩm
-            @if ($colorId && $colors->contains('id', $colorId))
-            có màu
-            <span class="fw-bold text-primary">
-              {{ $colors->firstWhere('id', $colorId)->name }}
-            </span>
-            @endif
-
-            @if ($minPrice && $maxPrice)
-            trong khoảng giá
-            <span class="fw-bold text-primary">{{ $minPrice }} - {{ $maxPrice }}</span>
-            @elseif ($minPrice)
-            từ
-            <span class="fw-bold text-primary">{{ $minPrice }}</span>
-            @elseif ($maxPrice)
-            đến
-            <span class="fw-bold text-primary">{{ $maxPrice }}</span>
-            @endif
-
-            @if ($capacityId && $capacities->contains('id', $capacityId))
-            có dung lượng
-            <span class="fw-bold text-primary">
-              {{ $capacities->firstWhere('id', $capacityId)->name }}
-            </span>
-            @endif
-
-            @if (!$colorId && !$minPrice && !$maxPrice && !$capacityId)
-            thuộc danh mục
-            <span class="fw-bold text-primary">
-              {{ $currentCategory->name }}
-            </span>
-            @else
-            trong danh mục
-            <span class="fw-bold text-primary">
-              {{ $currentCategory->name }}
-            </span>
-            @endif
-          </p>
-        </div>
-
-
-
+        <p class="h6 text-muted">
+          Tìm thấy
+          <span class="fw-bold text-dark">{{ $productCount }}</span>
+          sản phẩm
+          @if ($colorId && $colors->contains('id', $colorId))
+          có màu
+          <span class="fw-bold text-primary">
+            {{ $colors->firstWhere('id', $colorId)->name }}
+          </span>
+          @endif
+          @if ($minPrice && $maxPrice)
+          trong khoảng giá
+          <span class="fw-bold text-primary">{{ $minPrice }} - {{ $maxPrice }}</span>
+          @elseif ($minPrice)
+          từ
+          <span class="fw-bold text-primary">{{ $minPrice }}</span>
+          @elseif ($maxPrice)
+          đến
+          <span class="fw-bold text-primary">{{ $maxPrice }}</span>
+          @endif
+          @if ($capacityId && $capacities->contains('id', $capacityId))
+          có dung lượng
+          <span class="fw-bold text-primary">
+            {{ $capacities->firstWhere('id', $capacityId)->name }}
+          </span>
+          @endif
+          @if (!$colorId && !$minPrice && !$maxPrice && !$capacityId)
+          thuộc danh mục
+          <span class="fw-bold text-primary">
+            {{ $currentCategory->name }}
+          </span>
+          @else
+          trong danh mục
+          <span class="fw-bold text-primary">
+            {{ $currentCategory->name }}
+          </span>
+          @endif
+        </p>
 
         <div class="row row-cols-2 row-cols-md-3 g-4 pb-3 mb-3">
           <!-- Product Items -->

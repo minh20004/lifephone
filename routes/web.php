@@ -124,6 +124,8 @@ Route::resource('vouchers', VoucherController::class);
 //Shop
 Route::get('/shop', [ClientCategoryController::class, 'shop'])->name('shop');
 Route::get('/categories/{id}/products', [ClientCategoryController::class, 'getProductsByCategory'])->name('client.category.products');
+// Route::get('/category/{id}/products/filter', [ClientCategoryController::class, 'filterProducts'])->name('category.filterProducts');
+
 
 // chat
 Route::get('/chat', [chatController::class, 'index'])->name('chat');

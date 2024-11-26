@@ -88,29 +88,8 @@
                 @endforeach
               </ul>
             </div>
-
-
-            <!-- Price range -->
-            <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
-              <h4 class="h6 mb-2" id="slider-label">Price</h4>
-              <div class="range-slider" data-range-slider="{&quot;startMin&quot;: 340, &quot;startMax&quot;: 1250, &quot;min&quot;: 0, &quot;max&quot;: 1600, &quot;step&quot;: 1, &quot;tooltipPrefix&quot;: &quot;$&quot;}" aria-labelledby="slider-label">
-                <div class="range-slider-ui"></div>
-                <div class="d-flex align-items-center">
-                  <div class="position-relative w-50">
-                    <i class="ci-dollar-sign position-absolute top-50 start-0 translate-middle-y ms-3"></i>
-                    <input type="number" id="min_price" class="form-control form-icon-start" min="0" placeholder="Giá tối thiểu">
-                  </div>
-                  <i class="ci-minus text-body-emphasis mx-2"></i>
-                  <div class="position-relative w-50">
-                    <i class="ci-dollar-sign position-absolute top-50 start-0 translate-middle-y ms-3"></i>
-                    <input type="number" id="max_price" class="form-control form-icon-start" min="0" placeholder="Giá tối đa">
-                  </div>
-                </div>
-              </div>
-            </div>
-
             <!-- Capacity (checkboxes) -->
-            <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
+            <!-- <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
               <h4 class="h6">Capacity</h4>
               <div class="d-flex flex-column gap-1">
                 @foreach ($capacities as $item)
@@ -123,10 +102,10 @@
                 </div>
                 @endforeach
               </div>
-            </div>
+            </div> -->
 
             <!-- Color -->
-            <div class="w-100 border rounded p-3 p-xl-4">
+            <!-- <div class="w-100 border rounded p-3 p-xl-4">
               <h4 class="h6">Color</h4>
               <div class="nav d-block mt-n2">
                 @foreach ($colors as $color)
@@ -136,7 +115,7 @@
                 </a>
                 @endforeach
               </div>
-            </div>
+            </div> -->
 
           </div>
         </div>
