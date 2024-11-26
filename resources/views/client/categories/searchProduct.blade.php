@@ -146,6 +146,7 @@
                 <div class="position-absolute top-0 end-0 z-2 hover-effect-target opacity-0 mt-3 me-3">
                   <div class="d-flex flex-column gap-2">
                     <button type="button" class="btn btn-icon btn-secondary animate-pulse d-none d-lg-inline-flex" aria-label="Add to Wishlist" data-id="{{$item->id}}">
+                    <button type="button" class="btn btn-icon btn-secondary animate-pulse d-none d-lg-inline-flex" aria-label="Add to Wishlist" data-id="{{$item->id}}">
                       <i class="ci-heart fs-base animate-target"></i>
                     </button>
                     <button type="button" class="btn btn-icon btn-secondary animate-rotate d-none d-lg-inline-flex" aria-label="Compare">

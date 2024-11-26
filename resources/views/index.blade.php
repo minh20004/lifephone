@@ -35,6 +35,7 @@
                                     <div class="swiper-slide text-center text-xl-start pt-5 py-xl-5">
                                         <h2 class="display-4 pb-2 pb-xl-4">iPhone 16 Pro</h2>
                                             <h4 class="text-body">Đỉnh cao công nghệ, hiệu năng vượt trội,
+                                            <h4 class="text-body">Đỉnh cao công nghệ, hiệu năng vượt trội,
                                                 chinh phục mọi trải nghiệm!</h4>
                                         <a class="btn btn-lg btn-primary" href="http://lifephone.test/product/5">
                                             Xem ngay
@@ -44,6 +45,7 @@
                                     <div class="swiper-slide text-center text-xl-start pt-5 py-xl-5">
                                         <h2 class="display-4 pb-2 pb-xl-4">oppo a 16</h2>
                                             <h4 class="text-body">Đỉnh cao công nghệ, hiệu năng vượt trội,
+                                            <h4 class="text-body">Đỉnh cao công nghệ, hiệu năng vượt trội,
                                                 chinh phục mọi trải nghiệm!</h4>
                                         <a class="btn btn-lg btn-primary" href="http://lifephone.test/product/5">
                                             Xem ngay
@@ -52,6 +54,7 @@
                                     </div>
                                     <div class="swiper-slide text-center text-xl-start pt-5 py-xl-5">
                                         <h3 class="display-4 pb-2 pb-xl-4">Galaxy S24 Ultra</h3>
+                                            <h4 class="text-body">Đỉnh cao công nghệ, hiệu năng vượt trội,
                                             <h4 class="text-body">Đỉnh cao công nghệ, hiệu năng vượt trội,
                                                 chinh phục mọi trải nghiệm!</h4>
                                         <a class="btn btn-lg btn-primary" href="http://lifephone.test/product/5">
@@ -683,6 +686,7 @@
               </div>
           </div>
 
+
           <div class="col-lg-8">
               <div class="row">
                   @foreach ($latestProducts as $product)
@@ -728,6 +732,7 @@
       </div>
   </section>
 
+
     <!-- Trending products (Grid) Thịnh hành-->
     <section class="container pt-5 mt-2 mt-sm-3 mt-lg-4">
 
@@ -754,6 +759,7 @@
                                 <div class="d-flex flex-column gap-2">
                                     <button type="button"
                                         class="btn btn-icon btn-secondary animate-pulse d-none d-lg-inline-flex"
+                                        aria-label="Add to Wishlist" data-id="{{$product->id}}">
                                         aria-label="Add to Wishlist" data-id="{{$product->id}}">
                                         <i class="ci-heart fs-base animate-target"></i>
                                     </button>

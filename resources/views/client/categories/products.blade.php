@@ -123,6 +123,7 @@
                     @endforeach
                   </div>
                   <button type="button" class="product-card-button btn btn-icon btn-secondary" data-id="{{$item->id}}" aria-label="Add to Cart">
+                  <button type="button" class="product-card-button btn btn-icon btn-secondary" data-id="{{$item->id}}" aria-label="Add to Cart">
                     <i class="ci-shopping-cart"></i>
                   </button>
                 </div>
@@ -188,3 +189,4 @@
   });
 </script>
 @endsection
+
