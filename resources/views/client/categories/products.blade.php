@@ -43,48 +43,6 @@
             </div>
 
             <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
-              <form action="{{ route('client.category.products', ['id' => $currentCategory->id]) }}" method="GET" id="price-filter-form">
-                <h4 class="h6 mb-3">Lọc theo giá</h4>
-                <div class="btn-group-vertical w-100" id="price-range-list" role="group">
-                  <!-- Hiển thị 5 giá trị ban đầu -->
-                  <button type="submit" name="min_price" value="5000000" name="max_price" value="10000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 5000000 && request('max_price') == 10000000 ? 'active' : '' }}">
-                    5 đến 10 triệu
-                  </button>
-                  <button type="submit" name="min_price" value="10000000" name="max_price" value="15000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 10000000 && request('max_price') == 15000000 ? 'active' : '' }}">
-                    10 đến 15 triệu
-                  </button>
-                  <button type="submit" name="min_price" value="15000000" name="max_price" value="20000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 15000000 && request('max_price') == 20000000 ? 'active' : '' }}">
-                    15 đến 20 triệu
-                  </button>
-                  <button type="submit" name="min_price" value="20000000" name="max_price" value="25000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 20000000 && request('max_price') == 25000000 ? 'active' : '' }}">
-                    20 đến 25 triệu
-                  </button>
-                  <!-- Các giá trị còn lại ẩn đi -->
-                  <div id="more-price-range" class="btn-group-vertical w-100 d-none">
-                    <button type="submit" name="min_price" value="25000000" name="max_price" value="30000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 25000000 && request('max_price') == 30000000 ? 'active' : '' }}">
-                      25 đến 30 triệu
-                    </button>
-                    <button type="submit" name="min_price" value="30000000" name="max_price" value="50000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 30000000 && request('max_price') == 50000000 ? 'active' : '' }}">
-                      30 đến 50 triệu
-                    </button>
-                    <button type="submit" name="min_price" value="50000000" name="max_price" value="85000000" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 50000000 && request('max_price') == 85000000 ? 'active' : '' }}">
-                      50 đến 85 triệu
-                    </button>
-                    <button type="submit" name="min_price" value="85000000" name="max_price" value="99999999" class="btn btn-outline-secondary mb-2 {{ request('min_price') == 85000000 && request('max_price') == 99999999 ? 'active' : '' }}">
-                      Trên 85 triệu
-                    </button>
-                  </div>
-
-                  <!-- Nút "Thu gọn" -->
-                  <button type="button" class="btn btn-link mt-2" id="show-more-button">
-                    Thu gọn <i class="bi bi-chevron-up"></i>
-                  </button>
-                </div>
-              </form>
-            </div>
-
-
-            <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
               <h4 class="h6 mb-2">Dung lượng</h4>
               <ul class="list-unstyled d-block m-0">
                 @foreach ($capacities as $item)
@@ -103,44 +61,7 @@
       </aside>
       <!-- Product grid -->
       <div class="col-lg-9">
-        <p class="h6 text-muted">
-          Tìm thấy
-          <span class="fw-bold text-dark">{{ $productCount }}</span>
-          sản phẩm
-          @if ($colorId && $colors->contains('id', $colorId))
-          có màu
-          <span class="fw-bold text-primary">
-            {{ $colors->firstWhere('id', $colorId)->name }}
-          </span>
-          @endif
-          @if ($minPrice && $maxPrice)
-          trong khoảng giá
-          <span class="fw-bold text-primary">{{ $minPrice }} - {{ $maxPrice }}</span>
-          @elseif ($minPrice)
-          từ
-          <span class="fw-bold text-primary">{{ $minPrice }}</span>
-          @elseif ($maxPrice)
-          đến
-          <span class="fw-bold text-primary">{{ $maxPrice }}</span>
-          @endif
-          @if ($capacityId && $capacities->contains('id', $capacityId))
-          có dung lượng
-          <span class="fw-bold text-primary">
-            {{ $capacities->firstWhere('id', $capacityId)->name }}
-          </span>
-          @endif
-          @if (!$colorId && !$minPrice && !$maxPrice && !$capacityId)
-          thuộc danh mục
-          <span class="fw-bold text-primary">
-            {{ $currentCategory->name }}
-          </span>
-          @else
-          trong danh mục
-          <span class="fw-bold text-primary">
-            {{ $currentCategory->name }}
-          </span>
-          @endif
-        </p>
+     
 
         <div class="row row-cols-2 row-cols-md-3 g-4 pb-3 mb-3">
           <!-- Product Items -->

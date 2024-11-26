@@ -56,8 +56,6 @@ class   CategoryController extends Controller
         // Lọc theo các tham số
         $colorId = $request->input('color_id'); // Lọc theo màu sắc
         $capacityId = $request->input('capacity_id'); // Lọc theo dung lượng
-        $minPrice = $request->input('min_price'); // Giá tối thiểu
-        $maxPrice = $request->input('max_price'); // Giá tối đa
 
         // Lấy danh sách danh mục, màu sắc, và dung lượng
         $categories = Category::withCount('products')->get();
@@ -75,18 +73,6 @@ class   CategoryController extends Controller
                 // Lọc theo dung lượng
                 if ($request->input('capacity_id')) {
                     $query->where('capacity_id', $request->input('capacity_id'));
-                }
-
-                // Lọc theo giá (tối thiểu và tối đa) trong bảng product_variant
-                if ($request->input('min_price') && $request->input('max_price')) {
-                    // Lọc cả giá tối thiểu và tối đa từ bảng product_variant
-                    $query->whereBetween('price_difference', [$request->input('min_price'), $request->input('max_price')]);
-                } elseif ($request->input('min_price')) {
-                    // Lọc chỉ theo giá tối thiểu từ bảng product_variant
-                    $query->where('price_difference', '>=', $request->input('min_price'));
-                } elseif ($request->input('max_price')) {
-                    // Lọc chỉ theo giá tối đa từ bảng product_variant
-                    $query->where('price_difference', '<=', $request->input('max_price'));
                 }
             })
             ->with([
@@ -121,8 +107,6 @@ class   CategoryController extends Controller
             'productCount',
             'colorId',
             'capacityId',
-            'minPrice',
-            'maxPrice' // Truyền minPrice và maxPrice vào view
         ));
     }
 }
