@@ -973,7 +973,7 @@
                     }else if(productId == null){
                         alert('Sản phẩm không tồn tại!');
                     } else {
-                        alert('Đã có lỗi xảy ra, vui lòng thử lại!');
+                        alert('Sản phẩm đã được thêm vào danh sách yêu thích!');
                     }
                 }
             });

@@ -236,7 +236,7 @@
     </div>
   </section>
 </div>
-<script>
+{{-- <script>
   document.querySelectorAll('button[aria-label="Add to Wishlist"]').forEach(button => {
   button.addEventListener('click', function() {
     let productId = this.getAttribute('data-id');
@@ -260,5 +260,40 @@
     });
   });
 });
+</script> --}}
+<script>
+  document.querySelectorAll('button[aria-label="Add to Wishlist"]').forEach(button => {
+    button.addEventListener('click', function() {
+      let productId = this.getAttribute('data-id');
+
+      // Kiểm tra nếu người dùng đã đăng nhập
+      let customerId = @json(Auth::guard('customer')->user() ? Auth::guard('customer')->user()->id : null);
+
+      // Nếu customerId là null, yêu cầu người dùng đăng nhập
+      if (customerId === null) {
+        alert('Bạn cần đăng nhập để thêm sản phẩm vào danh sách yêu thích!');
+        return; // Dừng quá trình gửi yêu cầu AJAX
+      }
+
+      // Nếu đã có customerId, gửi yêu cầu AJAX
+      $.ajax({
+        url: '/api/favorites',
+        method: 'POST',
+        data: {
+          customer_id: customerId,
+          product_id: productId
+        },
+        success: function(response) {
+          console.log('Product added to wishlist:', response);
+          alert('Sản phẩm đã được thêm vào danh sách yêu thích!');
+        },
+        error: function(xhr, status, error) {
+          console.error('Error:', error);
+          alert('Đã có sản phẩm trong danh sách yêu thích, vui lòng chọn sản phẩm khác!');
+        }
+      });
+    });
+  });
 </script>
+
 @endsection

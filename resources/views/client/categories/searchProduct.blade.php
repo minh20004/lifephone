@@ -387,7 +387,7 @@
     document.querySelectorAll('button[aria-label="Add to Wishlist"]').forEach(button => {
       button.addEventListener('click', function() {
         let productId = this.getAttribute('data-id'); // Lấy product ID từ data-id
-        let customerId = @json(Auth::guard('customer')->user()->id); // Lấy ID người dùng đang đăng nhập
+        let customerId = @json(Auth::guard('customer')->check() ? Auth::guard('customer')->user()->id : null);
 
         // Gọi API để thêm sản phẩm vào danh sách yêu thích
         $.ajax({
