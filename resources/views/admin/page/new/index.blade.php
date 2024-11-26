@@ -133,7 +133,6 @@ News
                     </div>
                     <!-- end card -->
                 </div>
-                @endif
             </div>
             <!-- end col -->
         </div>
