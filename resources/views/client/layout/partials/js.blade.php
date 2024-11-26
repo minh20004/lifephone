@@ -275,4 +275,11 @@
             })
             .catch(error => console.error('Error:', error));
     }
+<<<<<<< HEAD
 </script>
+=======
+</script>
+
+
+
+>>>>>>> da6a820e7cdec2589a03910abac1c7fe7abc3d09

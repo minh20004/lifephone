@@ -43,59 +43,112 @@
             </div>
             <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
               <h4 class="h6 mb-2" id="slider-label">Price</h4>
-              <div class="range-slider" data-range-slider="{&quot;startMin&quot;: 340, &quot;startMax&quot;: 1250, &quot;min&quot;: 0, &quot;max&quot;: 1600, &quot;step&quot;: 1, &quot;tooltipPrefix&quot;: &quot;$&quot;}" aria-labelledby="slider-label">
+              <div class="range-slider" aria-labelledby="slider-label">
                 <div class="range-slider-ui"></div>
                 <div class="d-flex align-items-center">
                   <div class="position-relative w-50">
                     <i class="ci-dollar-sign position-absolute top-50 start-0 translate-middle-y ms-3"></i>
-                    <input type="number" id="min_price" class="form-control form-icon-start" min="0" placeholder="Giá tối thiểu">
+                    <input type="number" name="min_price" id="min_price" class="form-control form-icon-start"
+                      min="0" placeholder="Giá tối thiểu" value="{{ request('min_price') }}">
                   </div>
                   <i class="ci-minus text-body-emphasis mx-2"></i>
                   <div class="position-relative w-50">
                     <i class="ci-dollar-sign position-absolute top-50 start-0 translate-middle-y ms-3"></i>
-                    <input type="number" id="max_price" class="form-control form-icon-start" min="0" placeholder="Giá tối đa">
+                    <input type="number" name="max_price" id="max_price" class="form-control form-icon-start"
+                      min="0" placeholder="Giá tối đa" value="{{ request('max_price') }}">
                   </div>
                 </div>
+                <form method="GET" action="{{ route('client.category.products', $currentCategory->id) }}">
+                  <button type="submit" class="btn btn-primary mt-3">Áp dụng lọc</button>
+                </form>
               </div>
             </div>
+
+
+
 
             <!-- Capacity (checkboxes) -->
             <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
-              <h4 class="h6">Capacity</h4>
-              <div class="d-flex flex-column gap-1">
+              <h4 class="h6 mb-2">Capacity</h4>
+              <ul class="list-unstyled d-block m-0">
                 @foreach ($capacities as $item)
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input capacity-checkbox" id="tb-{{$item->id}}" value="{{ $item->id }}">
-                    <label for="tb-{{$item->id}}" class="form-check-label text-body-emphasis">{{$item->name}}</label>
-                  </div>
-                  <span class="text-body-secondary fs-xs">{{$item->products_count}}</span>
-                </div>
+                <li class="nav d-block pt-2 mt-1">
+                  <a href="{{ route('client.category.products', ['id' => $currentCategory->id, 'capacity_id' => $item->id, 'color_id' => $colorId]) }}"
+                    class="nav-link w-auto {{ request('capacity_id') == $item->id ? 'active' : '' }}">
+                    <span class="animate-target text-truncate me-3">{{ $item->name }}</span>
+                    <span class="text-body-secondary fs-xs ms-auto">{{ $item->products_count }}</span>
+                  </a>
+                </li>
                 @endforeach
-              </div>
+              </ul>
             </div>
 
-            <!-- Color -->
+            <!-- Filter by Color -->
             <div class="w-100 border rounded p-3 p-xl-4">
               <h4 class="h6">Color</h4>
               <div class="nav d-block mt-n2">
                 @foreach ($colors as $color)
-                <button type="button" class="nav-link w-auto animate-underline fw-normal pt-2 pb-0 px-0 color-filter" data-color-id="{{ $color->id }}">
+                <a href="{{ route('client.category.products', ['id' => $currentCategory->id, 'color_id' => $color->id]) }}"
+                  class="nav-link w-auto animate-underline fw-normal pt-2 pb-0 px-0 {{ $color->id == $colorId ? 'active' : '' }}">
                   <span class="rounded-circle me-2" style="width: .875rem; height: .875rem; margin-top: .125rem; background-color: {{ $color->code }}"></span>
                   <span class="animate-target">{{ $color->name }}</span>
-                </button>
+                </a>
                 @endforeach
               </div>
             </div>
+
             <!-- Other filters (Price, Capacity, Color) giữ nguyên -->
           </div>
         </div>
       </aside>
       <!-- Product grid -->
       <div class="col-lg-9">
-        <div class="container mb-6 ">
-          <p class="h6 text-muted">Tìm thấy <span class="fw-bold text-dark">{{ $productCount }}</span> sản phẩm thuộc danh mục <span class="fw-bold text-primary">{{ $currentCategory->name }}</span></p>
+        <div class="container mb-6">
+          <p class="h6 text-muted">
+            Tìm thấy
+            <span class="fw-bold text-dark">{{ $productCount }}</span>
+            sản phẩm
+            @if ($colorId && $colors->contains('id', $colorId))
+            có màu
+            <span class="fw-bold text-primary">
+              {{ $colors->firstWhere('id', $colorId)->name }}
+            </span>
+            @endif
+
+            @if ($minPrice && $maxPrice)
+            trong khoảng giá
+            <span class="fw-bold text-primary">{{ $minPrice }} - {{ $maxPrice }}</span>
+            @elseif ($minPrice)
+            từ
+            <span class="fw-bold text-primary">{{ $minPrice }}</span>
+            @elseif ($maxPrice)
+            đến
+            <span class="fw-bold text-primary">{{ $maxPrice }}</span>
+            @endif
+
+            @if ($capacityId && $capacities->contains('id', $capacityId))
+            có dung lượng
+            <span class="fw-bold text-primary">
+              {{ $capacities->firstWhere('id', $capacityId)->name }}
+            </span>
+            @endif
+
+            @if (!$colorId && !$minPrice && !$maxPrice && !$capacityId)
+            thuộc danh mục
+            <span class="fw-bold text-primary">
+              {{ $currentCategory->name }}
+            </span>
+            @else
+            trong danh mục
+            <span class="fw-bold text-primary">
+              {{ $currentCategory->name }}
+            </span>
+            @endif
+          </p>
         </div>
+
+
+
 
         <div class="row row-cols-2 row-cols-md-3 g-4 pb-3 mb-3">
           <!-- Product Items -->
