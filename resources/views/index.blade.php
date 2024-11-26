@@ -35,7 +35,6 @@
                                     <div class="swiper-slide text-center text-xl-start pt-5 py-xl-5">
                                         <h2 class="display-4 pb-2 pb-xl-4">iPhone 16 Pro</h2>
                                             <h4 class="text-body">Đỉnh cao công nghệ, hiệu năng vượt trội,
-                                            <h4 class="text-body">Đỉnh cao công nghệ, hiệu năng vượt trội,
                                                 chinh phục mọi trải nghiệm!</h4>
                                         <a class="btn btn-lg btn-primary" href="http://lifephone.test/product/5">
                                             Xem ngay
@@ -45,7 +44,6 @@
                                     <div class="swiper-slide text-center text-xl-start pt-5 py-xl-5">
                                         <h2 class="display-4 pb-2 pb-xl-4">oppo a 16</h2>
                                             <h4 class="text-body">Đỉnh cao công nghệ, hiệu năng vượt trội,
-                                            <h4 class="text-body">Đỉnh cao công nghệ, hiệu năng vượt trội,
                                                 chinh phục mọi trải nghiệm!</h4>
                                         <a class="btn btn-lg btn-primary" href="http://lifephone.test/product/5">
                                             Xem ngay
@@ -54,7 +52,6 @@
                                     </div>
                                     <div class="swiper-slide text-center text-xl-start pt-5 py-xl-5">
                                         <h3 class="display-4 pb-2 pb-xl-4">Galaxy S24 Ultra</h3>
-                                            <h4 class="text-body">Đỉnh cao công nghệ, hiệu năng vượt trội,
                                             <h4 class="text-body">Đỉnh cao công nghệ, hiệu năng vượt trội,
                                                 chinh phục mọi trải nghiệm!</h4>
                                         <a class="btn btn-lg btn-primary" href="http://lifephone.test/product/5">
@@ -686,7 +683,6 @@
               </div>
           </div>
 
-
           <div class="col-lg-8">
               <div class="row">
                   @foreach ($latestProducts as $product)
@@ -695,7 +691,8 @@
                             {{-- <a class="stretched-link d-block fs-sm fw-medium text-truncate" --}}
                                           {{-- href="{{ route('product.show', $product->id) }}"> --}}
                               <div class="ratio ratio-1x1 flex-shrink-0" style="width: 110px">
-                                  <img class="rounded" src="{{ asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}">
+                                {{-- <img class="rounded" src="{{ Storage::url($product->image_url) }}" alt="{{ $product->name }}"> --}}
+                                <img class="rounded" src="{{ asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}">
                               </div>
                               <div class="w-100 min-w-0 ps-2 ps-sm-3">
                                   <div class="d-flex align-items-center gap-2 mb-2">
@@ -732,7 +729,6 @@
       </div>
   </section>
 
-
     <!-- Trending products (Grid) Thịnh hành-->
     <section class="container pt-5 mt-2 mt-sm-3 mt-lg-4">
 
@@ -759,7 +755,6 @@
                                 <div class="d-flex flex-column gap-2">
                                     <button type="button"
                                         class="btn btn-icon btn-secondary animate-pulse d-none d-lg-inline-flex"
-                                        aria-label="Add to Wishlist" data-id="{{$product->id}}">
                                         aria-label="Add to Wishlist" data-id="{{$product->id}}">
                                         <i class="ci-heart fs-base animate-target"></i>
                                     </button>
@@ -953,16 +948,19 @@
     <script>
         document.querySelectorAll('button[aria-label="Add to Wishlist"]').forEach(button => {
             button.addEventListener('click', function() {
-            let productId = this.getAttribute('data-id'); // Lấy product ID từ data-id
-            let customerId = @json(Auth::guard('customer')->user()->id); // Lấy ID người dùng đang đăng nhập
+            let productId = this.getAttribute('data-id');
+            let customerId = null;
+            @if (Auth::guard('customer')->check())
+                customerId = @json(Auth::guard('customer')->user()->id);
+            @endif
 
-            // Gọi API để thêm sản phẩm vào danh sách yêu thích
+
             $.ajax({
-                url: '/api/favorites',  // Đảm bảo rằng API của bạn đúng với URL này
+                url: '/api/favorites',
                 method: 'POST',
                 data: {
-                customer_id: customerId,  // Gửi customer_id (có thể bạn cần thay đổi tùy theo API)
-                product_id: productId     // Gửi product_id (sản phẩm cần thêm vào wishlist)
+                customer_id: customerId,
+                product_id: productId
                 },
                 success: function(response) {
                 console.log('Product added to wishlist:', response);
@@ -970,7 +968,13 @@
                 },
                 error: function(xhr, status, error) {
                 console.error('Error:', error);
-                alert('Đã có lỗi xảy ra, vui lòng thử lại!');
+                    if(customerId == null){
+                        alert('Vui lòng đăng nhập để thêm sản phẩm vào danh sách yêu thích!');
+                    }else if(productId == null){
+                        alert('Sản phẩm không tồn tại!');
+                    } else {
+                        alert('Đã có lỗi xảy ra, vui lòng thử lại!');
+                    }
                 }
             });
             });

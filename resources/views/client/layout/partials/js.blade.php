@@ -279,3 +279,31 @@
             .catch(error => console.error('Error:', error));
     }
 </script>
+
+{{-- js xử lý sản phẩm yêu thích --}}
+<script>
+    document.querySelectorAll('button[aria-label="Add to Wishlist"]').forEach(button => {
+        button.addEventListener('click', function() {
+        let productId = this.getAttribute('data-id'); // Lấy product ID từ data-id
+        let customerId = @json(Auth::guard('customer')->user()->id); // Lấy ID người dùng đang đăng nhập
+
+        // Gọi API để thêm sản phẩm vào danh sách yêu thích
+        $.ajax({
+            url: '/api/favorites',  // Đảm bảo rằng API của bạn đúng với URL này
+            method: 'POST',
+            data: {
+            customer_id: customerId,  // Gửi customer_id (có thể bạn cần thay đổi tùy theo API)
+            product_id: productId     // Gửi product_id (sản phẩm cần thêm vào wishlist)
+            },
+            success: function(response) {
+            console.log('Product added to wishlist:', response);
+            alert('Sản phẩm đã được thêm vào danh sách yêu thích!');
+            },
+            error: function(xhr, status, error) {
+            console.error('Error:', error);
+            alert('Đã có lỗi xảy ra, vui lòng thử lại!');
+            }
+        });
+        });
+    });
+</script>

@@ -295,28 +295,29 @@ class AuthController extends Controller
     {
         $request->validate([
             'avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ],
-        );
+        ]);
+    
         try {
             $customer = Customer::findOrFail($id);
             $data = $request->except('avatar');
-
+    
             if ($request->hasFile('avatar')) {
+
                 if ($customer->avatar) {
-                    Storage::delete($customer->avatar);
+                    Storage::delete($customer->avatar); 
                 }
-                $data['avatar'] = Storage::put('avatars', $request->file('avatar'));
+    
+                $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
             }
-
+    
             $customer->update($data);
-
-            // Gửi thông báo thành công
+    
             return redirect()->route('customer.profile')->with('success', 'Cập nhật thông tin thành công!');
         } catch (\Exception $e) {
             return back()->with('error', 'Đã có lỗi xảy ra, vui lòng thử lại!');
         }
     }
-
+    
     // Hàm xử lý xóa ảnh đại diện khách hàng
     public function deleteAvatar($id)
     {
