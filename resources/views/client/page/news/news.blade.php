@@ -12,7 +12,11 @@ Lifephone
             <li class="breadcrumb-item active" aria-current="page">Tin tức</li>
         </ol>
     </nav>
-
+    @if(!$mostViewedNews && $additionalMostViewedNews->isEmpty() && $allNews->isEmpty())
+        <section class="container pb-5">
+            <p class="text-center text-muted">Chưa có tin tức vào lúc này.</p>
+        </section>
+    @else
 
     <!-- Page title -->
     <h1 class="h3 container mb-4">Tin tức nổi bật </h1>
@@ -28,9 +32,9 @@ Lifephone
         <a class="ratio d-flex hover-effect-scale rounded-4 overflow-hidden"
             href="{{ route('news.show', ['slug' => $mostViewedNews->slug]) }}"
             style="--cz-aspect-ratio: calc(484 / 746 * 100%)">
-            <img src="{{ asset('storage/' . $mostViewedNews->thumbnail) }}" alt=""  alt="{{ $mostViewedNews->title }}"  class="hover-effect-target">
-            {{-- <img src="{{ Storage::url($mostViewedNews->thumbnail) }}" alt="{{ $mostViewedNews->title }}"
-                class="hover-effect-target"> --}}
+            <img src="{{ asset('storage/' .  $mostViewedNews->thumbnail) }}" alt="{{ $mostViewedNews->title }}" class="hover-effect-target">
+            {{-- <img src="{{ Storage::url($mostViewedNews->thumbnail) }}" alt="{{ $mostViewedNews->title }}" --}}
+                class="hover-effect-target">
         </a>
         <div class="pt-4">
             <div class="nav align-items-center gap-2 pb-2 mt-n1 mb-1">
@@ -63,8 +67,7 @@ Lifephone
                         </h3>
                     </div>
                     <div class="ratio w-100 rounded overflow-hidden" style="max-width: 196px; --cz-aspect-ratio: calc(140 / 196 * 100%)">
-                        <img  src="{{ Storage::url($item->thumbnail) }}" alt="{{ $item->title }}">
-
+                        <img src="{{ asset('storage/' .  $item->thumbnail) }}" alt="{{ $item->title }}" class="hover-effect-target"> 
                     </div>
                     
                 </article>
@@ -90,7 +93,8 @@ Lifephone
                             class="ratio d-flex hover-effect-scale rounded overflow-hidden"
                             href="{{ route('news.show', $news->slug) }}"
                             style="--cz-aspect-ratio: calc(305 / 416 * 100%)">
-                            <img src="{{ asset('storage/' . $news->thumbnail) }}" alt="{{ $news->title }}"  class="hover-effect-target">
+                            <img src="{{ asset('storage/' .  $news->thumbnail) }}" alt="{{ $news->title }}" class="hover-effect-target">
+                            {{-- <img src="{{ Storage::url(  $news->thumbnail)  }}" alt="{{ $news->title }}" class="hover-effect-target"> --}}
                         </a>
                         <div class="pt-4">
                             <div class="nav align-items-center gap-2 pb-2 mt-n1 mb-1">
@@ -122,9 +126,10 @@ Lifephone
             <aside class="col-lg-4 col-xl-3 offset-xl-1" style="margin-top: -115px">
             <h4 class="h6 mb-4">Danh mục tin tức</h4>
                     <div class="d-flex flex-wrap gap-3">
-                        {{-- @foreach($categories as $category)
-                        <a class="btn btn-outline-secondary px-3" href="{{ route('categoryNewsBlog', ['slug' => $category->slug]) }}">{{ $category->title }}</a>
-                        @endforeach --}}
+                        @foreach($categories as $category)
+                        {{-- {{ route('categoryNewsBlog', ['slug' => $category->slug]) }} --}}
+                        <a class="btn btn-outline-secondary px-3" href="">{{ $category->title }}</a>
+                        @endforeach
                     </div>
                 <section class="latest-news">
                     <h4>Bài viết mới nhất</h4>
@@ -141,7 +146,8 @@ Lifephone
                             <div class="text-body-tertiary fs-xs pb-2 mb-1">{{ $latest->created_at}}</div>
                         </div>
                         <div class="ratio w-100" style="max-width: 86px; --cz-aspect-ratio: calc(64 / 86 * 100%)">
-                            <img src="{{ asset('storage/' . $latest->thumbnail) }}" alt=""  alt="{{ $latest->title }}" class="rounded-2" >
+                            <img src="{{ asset('storage/' .  $latest->thumbnail) }}" alt="{{ $latest->title }}" class="rounded-2">
+                            {{-- <img src="{{ Storage::url($latest->thumbnail) }}" class="rounded-2" alt="{{ $latest->title }}"> --}}
                         </div>
                     </article>
                     @endforeach
@@ -172,5 +178,6 @@ Lifephone
     <div class="swiper-pagination position-static mt-4"></div>
     </div>
     </section>
+    @endif
 </main>
 @endsection

@@ -17,7 +17,7 @@
         <li>Khuyến mãi: {{ $order->voucher->discount_percentage ?? '0' }} 
             (Mã: {{ $order->voucher->code ?? 'Không có' }})</li>
         <li>Phương thức thanh toán: {{ $order->payment_method }}</li>
-        <li style="color: red;"><strong>Tổng tiền thanh toán:</strong> {{ number_format($order->total_price, 0, ',', '.') }} đ</li>
+        <li class="text-danger"><strong>Tổng tiền thanh toán:</strong> {{ number_format($order->total_price, 0, ',', '.') }} đ</li>
     </ul>
     <h3>Chi tiết đơn hàng:</h3>
     <table border="1" cellspacing="0" cellpadding="5">

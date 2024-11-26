@@ -39,7 +39,7 @@ class ProductController extends Controller
         return view('admin.page.product.index', ['products' => $listProduct, 'search' => $search]);
     }
 
-    // show biến thể sản phẩm 
+    // show biến thể sản phẩm
     public function showVariants($id)
     {
         // $product = Product::with('variants.color', 'variants.capacity')->findOrFail($id);

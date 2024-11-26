@@ -269,9 +269,6 @@ class AuthController extends Controller
             // 'address' => 'required|string',
             'gender' => 'required|in:male,female,other',
         ],
-        //  [
-        //     'phone.regex' => 'Số điện thoại phải có đúng 10 chữ số!',
-        // ]
         );
         try {
             $customer = Customer::findOrFail($id);
@@ -288,6 +285,52 @@ class AuthController extends Controller
 
             // Gửi thông báo thành công
             return redirect()->route('customer.profile')->with('success', 'Cập nhật thông tin thành công!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Đã có lỗi xảy ra, vui lòng thử lại!');
+        }
+    }
+
+    // Hàm xử lý cập nhật ảnh đại diện khách hàng
+    public function updateAvatar(Request $request, $id)
+    {
+        $request->validate([
+            'avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ],
+        );
+        try {
+            $customer = Customer::findOrFail($id);
+            $data = $request->except('avatar');
+
+            if ($request->hasFile('avatar')) {
+                if ($customer->avatar) {
+                    Storage::delete($customer->avatar);
+                }
+                $data['avatar'] = Storage::put('avatars', $request->file('avatar'));
+            }
+
+            $customer->update($data);
+
+            // Gửi thông báo thành công
+            return redirect()->route('customer.profile')->with('success', 'Cập nhật thông tin thành công!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Đã có lỗi xảy ra, vui lòng thử lại!');
+        }
+    }
+
+    // Hàm xử lý xóa ảnh đại diện khách hàng
+    public function deleteAvatar($id)
+    {
+        try {
+            $customer = Customer::findOrFail($id);
+
+            if ($customer->avatar) {
+
+                Storage::delete($customer->avatar);
+
+                $customer->update(['avatar' => null]);
+            }
+
+            return redirect()->route('customer.profile')->with('success', 'Ảnh đại diện đã được xóa thành công!');
         } catch (\Exception $e) {
             return back()->with('error', 'Đã có lỗi xảy ra, vui lòng thử lại!');
         }

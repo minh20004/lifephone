@@ -6,7 +6,6 @@ use App\Models\Order;
 use App\Models\Voucher;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
-use App\Models\ProductVariant;
 use App\Mail\OrderConfirmationMail;
 use Illuminate\Support\Facades\Mail;
 
@@ -15,14 +14,13 @@ class OrderController extends Controller
     
     public function index()
     {
-        $orders = Order::orderBy('created_at', 'desc')->paginate(10); 
+        $orders = Order::orderBy('created_at', 'desc')->paginate(10); // Lấy tất cả đơn hàng, sắp xếp theo ngày tạo mới nhất
         return view('admin.page.order.index', compact('orders'));
     }
     
-    
     public function storeOrder(Request $request)
     {
-        // Kiểm tra và xác thực dữ liệu từ form
+        // Validate dữ liệu từ form
         $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
@@ -52,32 +50,32 @@ class OrderController extends Controller
         $discount = $voucher['discount'] ?? 0;
         $totalAfterDiscount = $totalPrice - $discount;
 
+        // Lấy voucher_id từ mã giảm giá
         $voucherId = isset($voucher['code']) ? Voucher::where('code', $voucher['code'])->first()->id : null;
 
+         // Tạo mã đơn hàng tự động
         $orderCode = strtoupper(substr(uniqid(), -8));
 
         // Tạo đơn hàng mới
         $order = Order::create([
-            // 'user_id' => auth()->id(), // Lưu id người dùng đã đăng nhập
-            'user_id' => 1, 
+            'user_id' => auth()->id(), // Lưu id người dùng đã đăng nhập
             'name' => $request->name,
             'phone' => $request->phone,
             'email' => $request->email,
             'address' => $request->address,
             'payment_method' => $request->payment_method,
             'total_price' => $totalAfterDiscount,
-            'status' => 'Chờ xác nhận',
-            'voucher_id' => $voucherId,
+            'status' => 'Chờ xác nhận', 
+            'voucher_id' => $voucherId, 
             'description' => $request->description,
-            'order_code' => $orderCode,
+            'order_code' => $orderCode, // Lưu mã đơn hàng
         ]);
 
-        // Lưu các sản phẩm trong giỏ hàng vào bảng order_items
+        // Lưu các sản phẩm trong giỏ hàng vào order_items
         foreach ($cart as $productId => $models) {
             foreach ($models as $modelId => $colors) {
                 foreach ($colors as $colorId => $item) {
                     $variantId = $item['variant_id'];
-                    
                     // Tạo OrderItem cho mỗi sản phẩm trong giỏ hàng
                     OrderItem::create([
                         'order_id' => $order->id,
@@ -87,18 +85,10 @@ class OrderController extends Controller
                         'price' => $item['price'],
                         'total_price' => $item['price'] * $item['quantity'],
                     ]);
-
-                    // Trừ số lượng sản phẩm trong kho
-                    $variant = ProductVariant::find($variantId);
-                    if ($variant) {
-                        $variant->stock -= $item['quantity']; // Giảm số lượng của sản phẩm
-                        $variant->save(); // Cập nhật số lượng còn lại trong kho
-                    }
                 }
             }
         }
 
-        // Gửi email xác nhận đơn hàng
         Mail::to($request->email)->send(new OrderConfirmationMail($order));
         
         // Xóa giỏ hàng trong session sau khi đặt hàng
@@ -108,11 +98,6 @@ class OrderController extends Controller
         // Trả về thông báo thành công và chuyển đến trang thông báo
         return redirect()->route('order.success')->with('success', 'Đặt hàng thành công!');
     }
-
- 
-
-
-
 
     
     public function updateStatus(Request $request, $id)
@@ -149,18 +134,23 @@ class OrderController extends Controller
     }
 
 
-    public function orderHistory(){
-        return view('client.page.order.order_history');
-    }
 
     public function edit(string $id)
     {
         //
     }
 
-    
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
+    {
+        //
+    }
 
-    
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy(string $id)
     {
         //
