@@ -1,13 +1,13 @@
 <!-- LOGO -->
 <div class="navbar-brand-box">
     <!-- Dark Logo-->
-    <a href="#" class="logo logo-dark" style="color: #FFF; font-size: 23px;">
+    <a href="{{ route('admin.home') }}" class="logo logo-dark" style="color: #FFF; font-size: 23px;">
         <span >
             LIFEPHONE
         </span>
     </a>
     <!-- Light Logo-->
-    <a href="#" class="logo logo-light" style="color: #FFF; font-size: 23px;">
+    <a href="{{ route('admin.home') }}" class="logo logo-light" style="color: #FFF; font-size: 23px;">
         <span>
             LIFEPHONE
         </span>
@@ -31,7 +31,7 @@
                     <ul class="nav nav-sm flex-column">
                         <li class="nav-item">
                             <a href="{{ route('home') }}" class="nav-link" data-key="t-analytics"> Xem trang </a>
-                            <a href="dashboard-analytics.html" class="nav-link" data-key="t-analytics"> Analytics </a>
+                            <a href="{{ route('admin.home') }}" class="nav-link" data-key="t-analytics"> Thống kê </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('vouchers.index') }}" class="nav-link" data-key="t-job">Vouchers</a>
@@ -104,28 +104,25 @@
             <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-pages">Pages</span></li>
 
             <li class="nav-item">
-                <a class="nav-link menu-link" href="#sidebarAuth" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAuth">
-                 <i class="ri-account-circle-line"></i> <span data-key="t-authentication">Thành viên</span>
-                </a>
-                <div class="collapse menu-dropdown" id="sidebarAuth">
-                    <ul class="nav nav-sm flex-column">
-                        <li class="nav-item">
-                            <a href="{{ route('admin.them-thanh-vien') }}" class="nav-link" data-key="t-signin"> 
-                                Thêm thành viên mới
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('admins.index') }}" class="nav-link" data-key="t-signin"> 
-                                Tất cả người dùng
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('admin.hoso') }}" class="nav-link" data-key="t-signin"> 
-                                Hồ sơ
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                @if (Auth::user()->role === 'admin')
+                    <a class="nav-link menu-link" href="#sidebarAuth" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAuth">
+                        <i class="ri-account-circle-line"></i> <span data-key="t-authentication">Thành viên</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarAuth">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.them-thanh-vien') }}" class="nav-link" data-key="t-signin"> 
+                                    Thêm thành viên mới
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admins.index') }}" class="nav-link" data-key="t-signin"> 
+                                    Tất cả người dùng
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                @endif
             </li>
 
             <li class="nav-item">

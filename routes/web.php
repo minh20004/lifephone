@@ -20,6 +20,8 @@ use App\Http\Controllers\CategoryNewsController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
 
+use App\Http\Controllers\Admin\DashboardController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -38,16 +40,63 @@ use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
 // font end trang chủ
 Route::get('/', [FrontendControlle::class, 'index'])->name('home');
 
-// auth admin ------------------------------------------------------
+// auth admin ------------------------------------------------------------------------------------------------------------------
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/admin/login', [AuthController::class, 'adminLogin'])->name('admin.login.submit');
 Route::post('/logout', [AuthController::class, 'adminLogout'])->name('admin.logout');
 
 Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.home');
-});
+    Route::get('/admin', [AuthController::class, 'Dashboards'])->name('admin.home');
 
-// auth customer ------------------------------------------------------
+    Route::get('/them-thanh-vien', [AuthController::class, 'create'])->name('admin.them-thanh-vien');
+    Route::get('/thanh-vien', [AuthController::class, 'index'])->name('admin.thanh-vien');
+    Route::get('cap-nhat/thanh-vien/{id}/edit', [AuthController::class, 'edit'])->name('admin.edit');
+    Route::get('profile/admin', [AuthController::class, 'hoso'])->name('admin.profile');
+    
+    Route::resource('admins', AuthController::class);
+
+    Route::resource('new_admin',  NewController::class);
+    Route::resource('category_news', CategoryNewsController::class);
+    Route::resource('product', ProductController::class);
+    Route::resource('index', AdminController::class);
+    Route::resource('category', CategoryController::class);
+    Route::resource('capacity', CapacityController::class);
+    Route::resource('color', ColorController::class);
+    Route::prefix('products')->group(function () {
+        Route::get('/trashed', [ProductController::class, 'trashed'])->name('product.trashed');
+        Route::post('/restore/{id}', [ProductController::class, 'restore'])->name('product.restore');
+        Route::get('trashed/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
+    
+    });
+    // order
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::post('/orders/{id}/update-status', [OrderController::class, 'updateStatus'])->name('order.updateStatus');
+    Route::get('/admin/orders/{id}', [OrderController::class, 'show'])->name('order.show');
+
+    // Route cho admin xác nhận yêu cầu hủy đơn hàng
+    Route::get('/admin/orders/cancel-requests', [OrderController::class, 'cancelRequests'])->name('order.cancelRequests');
+    Route::post('/admin/order/confirm-cancel/{id}', [OrderController::class, 'confirmCancel'])->name('order.confirmCancel');
+
+    // Route cho Voucher
+    // Route::resource('vouchers', VoucherController::class);
+    Route::resource('vouchers', VoucherController::class);
+
+    // sub;
+    Route::resource('/subscriptions', SubscriptionController::class)->except(['show']);
+    // Trang gửi email hàng loạt
+    Route::get('/subscriptions/send', [SubscriptionController::class, 'create'])->name('subscriptions.create'); // Form gửi email
+    // Trang hiển thị các email đã gửi (giả sử bạn có một bảng ghi lại thông tin các email đã gửi)
+    Route::get('/subscriptions/index', [SubscriptionController::class, 'sentEmails'])->name('subscriptions.index');
+    // routes/web.php
+    Route::post('/subscriptions/send', [SubscriptionController::class, 'sendBulkEmails'])->name('subscriptions.send');
+
+    Route::get('/get-statistics', [DashboardController::class, 'getStatistics'])->name('admin.getStatistics');
+
+});
+// end auth admin ------------------------------------------------------------------------------------------------------------------
+
+
+// auth customer ------------------------------------------------------------------------------------------------------------------------------
 // quản lý hồ sơ khách hàng
 Route::get('/customer/address', [AuthController::class, 'address'])->name('customer.adress');
 
@@ -60,30 +109,6 @@ Route::put('/customer/{id}/changePassword', [AuthController::class, 'changePassw
 Route::put('/customer/update-avatar/{id}', [AuthController::class, 'updateAvatar'])->name('customer.updateAvatar');
 Route::delete('/customer/{id}/avatar', [AuthController::class, 'deleteAvatar'])->name('customer.deleteAvatar');
 
-// Route::put('/customer/{id}/update-address', [AuthController::class, 'updateAddress'])->name('customer.updateAddress');
-
-
-Route::middleware(['auth:customer'])->group(function () {
-// Route thêm địa chỉ
-Route::post('/customer/address', [AddressController::class, 'addAddress'])->name('customer.addAddress');
-
-// Route xóa địa chỉ
-Route::delete('/customer/address/{addressId}', [AddressController::class, 'deleteAddress'])->name('customer.deleteAddress');
-
-// Route đặt địa chỉ làm mặc định
-Route::get('/customer/address/{addressId}/set-default', [AddressController::class, 'setDefaultAddress'])->name('customer.setDefaultAddress');
-
-// Route cập nhật địa chỉ
-Route::put('/customer/address/{addressId}', [AddressController::class, 'updateAddress'])->name('customer.updateAddress');
-
-});
-
-
-Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
-
-
-
-Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
 Route::get('/verify/{token}', [AuthController::class, 'verifyCustomer'])->name('customer.verify');
 // Route để gửi lại email xác nhận
 Route::post('/customer/resend-verification', [AuthController::class, 'resendVerificationEmail'])->name('customer.resend.verification');
@@ -100,8 +125,22 @@ Route::middleware(['auth:customer', 'isCustomer'])->group(function () {
     Route::get('/customer/wishList', [AuthController::class, 'wish_list'])->name('customer.wishList');
 
     Route::get('/order-history', [AuthController::class, 'history'])->name('order.history');
+    // Route thêm địa chỉ
+    Route::post('/customer/address', [AddressController::class, 'addAddress'])->name('customer.addAddress');
+    // Route xóa địa chỉ
+    Route::delete('/customer/address/{addressId}', [AddressController::class, 'deleteAddress'])->name('customer.deleteAddress');
+    // Route đặt địa chỉ làm mặc định
+    Route::get('/customer/address/{addressId}/set-default', [AddressController::class, 'setDefaultAddress'])->name('customer.setDefaultAddress');
+    // Route cập nhật địa chỉ
+    Route::put('/customer/address/{addressId}', [AddressController::class, 'updateAddress'])->name('customer.updateAddress');
 });
+
 Route::get('/order-detail/{id}', [AuthController::class, 'detail'])->name('order.detail');
+// end auth customer ------------------------------------------------------------------------------------------------------
+
+
+
+
 // -----------------------------USER------------------------------------------------------------------------------
 //giỏ hàng
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
@@ -136,42 +175,9 @@ Route::get('/cart/item-count', [CartController::class, 'getCartItemCount'])->nam
 
 
 
+
+
 // ------------------------------------------------- ADMIN---------------------------------------------------------
-// Quản lý thành viên admin
-Route::get('/them-thanh-vien', [AuthController::class, 'create'])->name('admin.them-thanh-vien');
-Route::get('/thanh-vien', [AuthController::class, 'index'])->name('admin.thanh-vien');
-Route::get('cap-nhat/thanh-vien/{id}/edit', [AuthController::class, 'edit'])->name('admin.edit');
-Route::get('ho-so/admin', [AuthController::class, 'hoso'])->name('admin.hoso');
-Route::resource('admins', AuthController::class);
-
-// Route cho Voucher
-Route::resource('vouchers', VoucherController::class);
-
-
-// Route cho sản phẩm
-Route::resource('product', ProductController::class);
-Route::resource('index', AdminController::class);
-Route::resource('category', CategoryController::class);
-Route::resource('capacity', CapacityController::class);
-Route::resource('color', ColorController::class);
-
-// order
-Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-Route::post('/orders/{id}/update-status', [OrderController::class, 'updateStatus'])->name('order.updateStatus');
-Route::get('/admin/orders/{id}', [OrderController::class, 'show'])->name('order.show');
-
-// Route cho admin xác nhận yêu cầu hủy đơn hàng
-Route::get('/admin/orders/cancel-requests', [OrderController::class, 'cancelRequests'])->name('order.cancelRequests');
-Route::post('/admin/order/confirm-cancel/{id}', [OrderController::class, 'confirmCancel'])->name('order.confirmCancel');
-//  route cho phần sản phẩm bị xóa
-Route::prefix('products')->group(function () {
-    Route::get('/trashed', [ProductController::class, 'trashed'])->name('product.trashed');
-    Route::post('/restore/{id}', [ProductController::class, 'restore'])->name('product.restore');
-    Route::get('trashed/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
-
-});
-
-
 // Route danh mục bị xóa
 Route::prefix('categories')->group(function () {
     Route::get('/trashed', [CategoryController::class, 'trashed'])->name('category.trashed');
@@ -192,13 +198,10 @@ Route::prefix('colors')->group(function () {
 Route::get('/product/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
 //router review và news
 Route::resource('admin/review',ReviewController::class);
-Route::resource('new_admin',  NewController::class);
+// Route::resource('new_admin',  NewController::class);
 
 Route::get('new', [NewController::class, 'clientIndex'])->name('news.index');
 
-Route::resource('category_news', CategoryNewsController::class);
-
-Route::resource('vouchers', VoucherController::class);
 //Shop
 Route::get('/shop', [ClientCategoryController::class, 'shop'])->name('shop');
 Route::get('/categories/{id}/products', [ClientCategoryController::class, 'getProductsByCategory'])->name('client.category.products');
@@ -210,14 +213,6 @@ Route::post('/chat/start', [ChatController::class, 'startConversation'])->name('
 Route::post('/chat/{conversationId}/send', [ChatController::class, 'sendMessage'])->name('chat.send');
 Route::get('/chat/{conversationId}/messages', [ChatController::class, 'getMessages'])->name('chat.messages');
 
-// sub;
-Route::resource('/subscriptions', SubscriptionController::class)->except(['show']);
-// Trang gửi email hàng loạt
-Route::get('/subscriptions/send', [SubscriptionController::class, 'create'])->name('subscriptions.create'); // Form gửi email
-// Trang hiển thị các email đã gửi (giả sử bạn có một bảng ghi lại thông tin các email đã gửi)
-Route::get('/subscriptions/index', [SubscriptionController::class, 'sentEmails'])->name('subscriptions.index');
-// routes/web.php
-Route::post('/subscriptions/send', [SubscriptionController::class, 'sendBulkEmails'])->name('subscriptions.send');
 Route::get('/new/{slug}', [NewController::class, 'singlepost'])->name('news.show');
 Route::get('/new/category/{slug}', [NewController::class, 'categoryNewsBlog'])->name('categoryNewsBlog');
 

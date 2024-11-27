@@ -13,10 +13,36 @@
 
     <form action="{{ route('admin.login.submit') }}" method="POST"> <!-- Sửa đổi route ở đây -->
         @csrf  
+        {{-- Hiển thị thông báo lỗi --}}
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                @foreach ($errors->all() as $error)
+                    <p class="mb-0">{{ $error }}</p>
+                @endforeach
+            </div>
+        @endif
+    
+        {{-- Thông báo thành công --}}
+        @if (session('success'))
+            <div class="alert alert-success">
+                <p class="mb-0">{{ session('success') }}</p>
+            </div>
+        @endif
+    
+        {{-- Thông báo lỗi cụ thể từ session --}}
+        @if (session('error'))
+            <div class="alert alert-danger">
+                <p class="mb-0">{{ session('error') }}</p>
+            </div>
+        @endif
+    
+        {{-- Email --}}
         <div class="mb-3">
             <label for="email" class="form-label">Email:</label>
-            <input type="email" name="email" class="form-control" id="email" placeholder="Nhập email" required>
+            <input type="email" name="email" class="form-control" id="email" placeholder="Nhập email" value="{{ old('email') }}" required>
         </div>
+    
+        {{-- Mật khẩu --}}
         <div class="mb-3">
             <div class="float-end">
                 <a href="#" class="text-muted">Quên mật khẩu?</a> <!-- Thay đổi URL cho trang quên mật khẩu nếu cần -->
@@ -27,17 +53,17 @@
                 <button class="btn btn-link position-absolute end-0 top-0 text-decoration-none text-muted password-addon" type="button" id="password-addon" onclick="togglePasswordVisibility()"><i class="ri-eye-fill align-middle"></i></button>
             </div>
         </div>
-
+    
         {{-- Checkbox "Nhớ mật khẩu" --}}
         <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="auth-remember-check">
+            <input class="form-check-input" type="checkbox" name="remember" id="auth-remember-check">
             <label class="form-check-label" for="auth-remember-check">Nhớ mật khẩu</label>
         </div>
-
+    
         <div class="mt-4">
             <button class="btn btn-success w-100" type="submit">Đăng nhập</button>
         </div>
-
+    
         <div class="mt-4 text-center">
             <div class="signin-other-title">
                 <a href="{{ route('admin.them-thanh-vien') }}"><h5 class="fs-13 mb-4 title">Đăng kí</h5></a>
@@ -50,6 +76,7 @@
             </div>
         </div>
     </form>
+    
 
     <script>
         function togglePasswordVisibility() {

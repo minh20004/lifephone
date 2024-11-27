@@ -14,15 +14,15 @@
                         <div class="col-12">
                             <div class="d-flex align-items-lg-center flex-lg-row flex-column">
                                 <div class="flex-grow-1">
-                                    <h4 class="fs-16 mb-1">Good Morning, Anna!</h4>
-                                    <p class="text-muted mb-0">Here's what's happening with your store today.</p>
+                                    <h4 class="fs-16 mb-1">Xin chào, <strong style="color: red">{{ Auth::user()->name }}</strong>!</h4>
+                                    <p class="text-muted mb-0">Sau đây là những gì đang diễn ra tại cửa hàng của bạn ngày hôm nay.</p>
                                 </div>
                                 <div class="mt-3 mt-lg-0">
                                     <form action="javascript:void(0);">
                                         <div class="row g-3 mb-0 align-items-center">
                                             <div class="col-sm-auto">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control border-0 dash-filter-picker shadow" data-provider="flatpickr" data-range-date="true" data-date-format="d M, Y" data-deafult-date="01 Jan 2022 to 31 Jan 2022">
+                                                    <input type="text" class="form-control border-0 dash-filter-picker shadow" id="date-range-picker" data-provider="flatpickr" data-range-date="true" data-date-format="d M, Y" data-default-date="01 Jan 2022 to 31 Jan 2022">
                                                     <div class="input-group-text bg-primary border-primary text-white">
                                                         <i class="ri-calendar-2-line"></i>
                                                     </div>
@@ -30,7 +30,7 @@
                                             </div>
                                             <!--end col-->
                                             <div class="col-auto">
-                                                <button type="button" class="btn btn-soft-success"><i class="ri-add-circle-line align-middle me-1"></i> Add Product</button>
+                                                <a href="{{ route('product.create') }}" class="btn btn-soft-success"><i class="ri-add-circle-line align-middle me-1"></i> Thêm sản phẩm mới</a>
                                             </div>
                                             <!--end col-->
                                             <div class="col-auto">
@@ -48,13 +48,14 @@
                     <!--end row-->
 
                     <div class="row">
+                        
                         <div class="col-xl-3 col-md-6">
                             <!-- card -->
                             <div class="card card-animate">
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
                                         <div class="flex-grow-1 overflow-hidden">
-                                            <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> Total Earnings</p>
+                                            <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Tổng thu nhập</p>
                                         </div>
                                         <div class="flex-shrink-0">
                                             <h5 class="text-success fs-14 mb-0">
@@ -65,7 +66,7 @@
                                     <div class="d-flex align-items-end justify-content-between mt-4">
                                         <div>
                                             <h4 class="fs-22 fw-semibold ff-secondary mb-4">$<span class="counter-value" data-target="559.25">0</span>k </h4>
-                                            <a href="" class="text-decoration-underline">View net earnings</a>
+                                            <a href="" class="text-decoration-underline">Xem tất cả</a>
                                         </div>
                                         <div class="avatar-sm flex-shrink-0">
                                             <span class="avatar-title bg-success-subtle rounded fs-3">
@@ -75,7 +76,8 @@
                                     </div>
                                 </div><!-- end card body -->
                             </div><!-- end card -->
-                        </div><!-- end col -->
+                        </div>
+                        <!-- end col -->
 
                         <div class="col-xl-3 col-md-6">
                             <!-- card -->
@@ -83,7 +85,7 @@
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
                                         <div class="flex-grow-1 overflow-hidden">
-                                         <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Orders</p>
+                                         <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Đơn hàng</p>
                                         </div>
                                         <div class="flex-shrink-0">
                                             <h5 class="text-danger fs-14 mb-0">
@@ -94,7 +96,7 @@
                                     <div class="d-flex align-items-end justify-content-between mt-4">
                                         <div>
                                             <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="36894">0</span></h4>
-                                            <a href="" class="text-decoration-underline">View all orders</a>
+                                            <a href="{{ route('orders.index') }}" class="text-decoration-underline">Xem tất cả đơn hàng</a>
                                         </div>
                                         <div class="avatar-sm flex-shrink-0">
                                             <span class="avatar-title bg-info-subtle rounded fs-3">
@@ -112,7 +114,7 @@
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
                                         <div class="flex-grow-1 overflow-hidden">
-                                            <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Customers</p>
+                                            <p class="text-uppercase fw-medium text-muted text-truncate mb-0">khách hàng đăng kí</p>
                                         </div>
                                         <div class="flex-shrink-0">
                                             <h5 class="text-success fs-14 mb-0">
@@ -123,7 +125,7 @@
                                     <div class="d-flex align-items-end justify-content-between mt-4">
                                         <div>
                                             <h4 class="fs-22 fw-semibold ff-secondary mb-4"><span class="counter-value" data-target="183.35">0</span>M </h4>
-                                            <a href="" class="text-decoration-underline">See details</a>
+                                            <a href="" class="text-decoration-underline">Xem chi tiết</a>
                                         </div>
                                         <div class="avatar-sm flex-shrink-0">
                                             <span class="avatar-title bg-warning-subtle rounded fs-3">
@@ -141,7 +143,7 @@
                                 <div class="card-body">
                                     <div class="d-flex align-items-center">
                                         <div class="flex-grow-1 overflow-hidden">
-                                            <p class="text-uppercase fw-medium text-muted text-truncate mb-0"> My Balance</p>
+                                            <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Số dư của tôi</p>
                                         </div>
                                         <div class="flex-shrink-0">
                                             <h5 class="text-muted fs-14 mb-0">
@@ -169,7 +171,7 @@
                         <div class="col-xl-8">
                             <div class="card">
                                 <div class="card-header border-0 align-items-center d-flex">
-                                    <h4 class="card-title mb-0 flex-grow-1">Revenue</h4>
+                                    <h4 class="card-title mb-0 flex-grow-1">Doanh thu</h4>
                                     <div>
                                         <button type="button" class="btn btn-soft-secondary btn-sm">
                                             ALL
@@ -273,7 +275,7 @@
                         <div class="col-xl-6">
                             <div class="card">
                                 <div class="card-header align-items-center d-flex">
-                                    <h4 class="card-title mb-0 flex-grow-1">Best Selling Products</h4>
+                                    <h4 class="card-title mb-0 flex-grow-1">Sản phẩm bán chạy nhất</h4>
                                     <div class="flex-shrink-0">
                                         <div class="dropdown card-header-dropdown">
                                             <a class="text-reset dropdown-btn" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -1284,4 +1286,40 @@
     </div>
     <!-- container-fluid -->
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/vn.js"></script>
+
+<script>
+    // Khởi tạo Flatpickr
+    flatpickr("#date-range-picker", {
+        mode: "range",  // Chọn khoảng thời gian
+        dateFormat: "d M, Y",  // Định dạng ngày tháng
+        defaultDate: [new Date()],  // Đặt ngày mặc định là ngày hiện tại
+        locale: "vn",  // Việt hóa ngôn ngữ
+        onChange: function(selectedDates, dateStr, instance) {
+            var startDate = selectedDates[0];
+            var endDate = selectedDates[1];
+            fetchStatistics(startDate, endDate); // Gọi hàm lấy thống kê
+        }
+    });
+
+    // Hàm lấy thống kê theo ngày tháng
+    function fetchStatistics(startDate, endDate) {
+        // Giả sử bạn đã có các route API để lấy thống kê theo khoảng thời gian
+        axios.post('/admin/statistics', {
+            start_date: startDate.toISOString().split('T')[0],
+            end_date: endDate.toISOString().split('T')[0]
+        }).then(function(response) {
+            // Cập nhật thông tin lên UI
+            document.getElementById('income').textContent = response.data.income;
+            document.getElementById('total-orders').textContent = response.data.total_orders;
+        }).catch(function(error) {
+            console.error('Có lỗi xảy ra khi lấy thống kê:', error);
+        });
+    }
+</script>
+
+
+
 @endsection
