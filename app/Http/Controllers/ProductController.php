@@ -8,6 +8,7 @@ use App\Models\Capacity;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\ProductVariant;
+use App\Models\Review;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -48,20 +49,6 @@ class ProductController extends Controller
         $variants = $product->variants;
         return view('admin.page.product.variants', compact('product', 'variants'));
     }
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -412,4 +399,24 @@ class ProductController extends Controller
 
         return response()->json(['html' => $html]);
     }
+    public function showProductReviews($id)
+    { 
+        {
+    
+            $product = Product::findOrFail($id);
+    
+     
+            $reviews = Review::where('product_id', $id)->get();
+    
+         
+            $reviewCount = $reviews->count();
+    
+          
+            $averageRating = $reviews->avg('rating') ?? 0;
+    
+
+            return view('client.page.detail-product.general', compact('product','reviews','reviewCount','averageRating' ));
+        }
+
+}
 }

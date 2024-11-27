@@ -71,7 +71,9 @@
           </a>
         </div>
 
-    @include('client.page.detail-product.reviews')
+        @include('client.page.detail-product.reviews', [
+ 
+    ])
 
       <!-- Sticky product preview visible on screens > 991px wide (lg breakpoint) -->
       <aside class="col-md-5 col-xl-4 offset-xl-1 d-none d-md-block" style="margin-top: -100px">

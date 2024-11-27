@@ -19,7 +19,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\CategoryNewsController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
-
+use App\Http\Controllers\ClientReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +66,8 @@ Route::delete('/customer/{id}/avatar', [AuthController::class, 'deleteAvatar'])-
 Route::middleware(['auth:customer'])->group(function () {
 // Route thêm địa chỉ
 Route::post('/customer/address', [AddressController::class, 'addAddress'])->name('customer.addAddress');
+// route bình luận
+Route::post('product/{id}/review', [ReviewController::class, 'store'])->middleware('auth')->name('reviews.store');
 
 // Route xóa địa chỉ
 Route::delete('/customer/address/{addressId}', [AddressController::class, 'deleteAddress'])->name('customer.deleteAddress');
@@ -191,7 +193,7 @@ Route::prefix('colors')->group(function () {
 // chuyển trang biến thể
 Route::get('/product/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
 //router review và news
-Route::resource('review',ReviewController::class);
+Route::resource('review_admin',ReviewController::class);
 Route::resource('new_admin',  NewController::class);
 
 Route::get('new', [NewController::class, 'clientIndex'])->name('news.index');
@@ -224,3 +226,5 @@ Route::get('/new/category/{slug}', [NewController::class, 'categoryNewsBlog'])->
 Route::get('/search', [ClientCategoryController::class, 'search'])->name('product.search');
 // categoy product
 Route::get('/danh-muc-san-pham', [FrontendControlle::class, 'index_cate_all'])->name('danh-muc-san-pham');
+
+Route::get('/product/{id}/reviews', [ProductController::class, 'showProductReviews']);
