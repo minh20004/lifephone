@@ -143,6 +143,7 @@ Route::get('/thanh-vien', [AuthController::class, 'index'])->name('admin.thanh-v
 Route::get('cap-nhat/thanh-vien/{id}/edit', [AuthController::class, 'edit'])->name('admin.edit');
 Route::get('ho-so/admin', [AuthController::class, 'hoso'])->name('admin.hoso');
 Route::resource('admins', AuthController::class);
+Route::get('/admin/chatBoard',[AuthController::class, 'indexChatBoard'])->name('admin.chatBoard');
 
 // Route cho Voucher
 Route::resource('vouchers', VoucherController::class);

@@ -1,3 +1,147 @@
+<style>
+  /* Cấu hình cho nút chat */
+  .chat-buttonC {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: rgb(34, 41, 52);
+      color: white;
+      border: none;
+      padding: 15px;
+      border-radius: 50%;
+      font-size: 18px;
+      cursor: pointer;
+      z-index: 5000;
+  }
+
+  /* Cấu hình cho cửa sổ chat */
+  .chat-boxC {
+      position: fixed;
+      bottom: 20px;
+      right: 80px;
+      width: 300px;
+      height: 100%;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      display: none;  /* Ẩn cửa sổ chat ban đầu */
+      flex-direction: column;
+      z-index: 5000;
+  }
+
+  .chat-headerC {
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      background-color: rgb(34, 41, 52);;
+      color: white !important;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 16px !important;
+  }
+
+  .messagesC {
+      padding: 10px;
+      flex-grow: 1;
+      overflow-y: auto;
+      background-color: #f9f9f9;
+  }
+
+  #messageInputC {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+  }
+
+  .send-btnC {
+      width: 100%;
+      padding: 10px;
+      background-color: rgb(34, 41, 52);;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+  }
+
+  .close-btnC {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+  }
+
+  @media (max-width: 767px) {
+    /* Giảm kích thước nút chat trên màn hình nhỏ */
+    .chat-buttonC {
+        padding: 10px;
+        font-size: 20px;  /* Giảm kích thước icon */
+        bottom: 15px;
+        right: 15px;
+    }
+
+    /* Điều chỉnh cửa sổ chat cho màn hình nhỏ */
+    .chat-boxC {
+        width: 250px;  /* Rút gọn chiều rộng cửa sổ chat */
+        height: 350px; /* Rút gọn chiều cao cửa sổ chat */
+        right: 60px;
+    }
+
+    /* Điều chỉnh header của cửa sổ chat */
+    .chat-headerC {
+        font-size: 14px;  /* Giảm kích thước font header */
+    }
+
+    /* Các tin nhắn sẽ được hiển thị với khoảng cách nhỏ hơn */
+    .messagesC {
+        padding: 8px;
+    }
+
+    #messageInputC {
+        padding: 8px;
+        font-size: 14px;  /* Giảm kích thước font input */
+    }
+
+    .send-btnC {
+        padding: 8px;
+        font-size: 14px;  /* Giảm kích thước font button */
+    }
+
+    .close-btnC {
+        font-size: 16px;  /* Giảm kích thước close button */
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .chat-button {
+        padding: 12px;
+        font-size: 22px;  /* Giảm kích thước icon ở máy tính bảng */
+    }
+
+    .chat-box {
+        width: 280px;
+        height: 380px;
+    }
+
+    .chat-header {
+        font-size: 15px;
+    }
+
+    #messageInput {
+        padding: 10px;
+        font-size: 15px;
+    }
+
+    .send-btn {
+        padding: 10px;
+        font-size: 15px;
+    }
+  }
+
+</style>
 <!-- Subscription form + Vlog -->
 <section class="bg-body-tertiary py-5">
   <div class="container pt-sm-2 pt-md-3 pt-lg-4 pt-xl-5">
@@ -5,7 +149,7 @@
       <div class="col-md-6 col-lg-5 mb-5 mb-md-0">
         <h2 class="h4 mb-2">Đăng ký nhận bản tin của chúng tôi</h2>
         <p class="text-body pb-2 pb-ms-3">Nhận thông tin cập nhật mới nhất về sản phẩm và chương trình khuyến mãi của chúng tôi</p>
-        <form class="d-flex needs-validation pb-1 pb-sm-2 pb-md-3 pb-lg-0 mb-4 mb-lg-5" 
+        <form class="d-flex needs-validation pb-1 pb-sm-2 pb-md-3 pb-lg-0 mb-4 mb-lg-5"
               action="{{ route('subscriptions.store') }}" method="POST" novalidate="">
             @csrf
             <div class="position-relative w-100 me-2">
@@ -37,14 +181,14 @@
           <li class="nav flex-nowrap align-items-center position-relative">
               <!-- Hình ảnh bài viết -->
               <img src="{{ asset('storage/' . $news->thumbnail) }}" class="rounded" width="140" alt="{{ $news->title }}">
-              
+
               <!-- Thông tin bài viết -->
               <div class="ps-3">
                   <!-- Thời gian đăng bài -->
                   <div class="fs-xs text-body-secondary lh-sm mb-2">
                       {{ $news->created_at->format('H:i') }}
                   </div>
-  
+
                   <!-- Tiêu đề bài viết -->
                   <a class="nav-link fs-sm hover-effect-underline stretched-link p-0" href="{{ route('news.show', $news->slug) }}">
                       {{ $news->title }}
@@ -304,7 +448,25 @@
           <p class="text-body fs-xs text-center text-md-start mb-0 me-4 order-md-1">© All rights reserved. Made by <span class="animate-underline"><a class="animate-target text-dark-emphasis fw-medium text-decoration-none" href="https://createx.studio/" target="_blank" rel="noreferrer">Createx Studio</a></span></p>
         </div>
       </div>
-      <script type="module">
+
+      <button id="chatButtonC" class="chat-buttonC" style="line-height: 1;"><i class="fa-regular fa-comment"></i></button>
+      <div id="chatBoxC" class="chat-boxC">
+        <div class="chat-headerC">
+            <p class="m-0">Chat with Admin</p>
+            <button id="closeChatC" class="close-btnC">X</button>
+        </div>
+        <div id="messagesC" class="messagesC"></div>
+        <input id="messageInputC" type="text" placeholder="Type your message..." />
+        <!-- Nút gửi tin nhắn -->
+        <div class="d-flex">
+          <button id="sendMessageC" class="send-btnC w-75">Send</button>
+          <button id="uploadImageC" class="upload-btnC w-25" style="border: none; border-radius:10px;">📷 <span id="imageCount">0</span></button>
+        </div>
+        <!-- Nút tải ảnh -->
+        <input type="file" id="imageInputC" class="image-input" accept="image/*" />
+      </div>
+
+      <!-- <script type="module">
         // Import Firebase SDKs
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
@@ -417,4 +579,218 @@
 
         // Listen for new messages when the page loads
         window.onload = listenForMessages;
-    </script>
+    </script> -->
+  <script>
+    // Kết nối tới server Socket.IO
+    var socket = null;
+    var conversationId = null;
+    var customerId = null;
+
+    // Lấy các phần tử DOM
+    const chatButton = document.getElementById("chatButtonC");
+    const chatBox = document.getElementById("chatBoxC");
+    const closeChat = document.getElementById("closeChatC");
+    const sendMessage = document.getElementById("sendMessageC");
+    const messageInput = document.getElementById("messageInputC");
+    const messagesDiv = document.getElementById("messagesC");
+    const messageImg = document.getElementById('imageInputC');
+
+    document.getElementById('uploadImageC').addEventListener('click', function() {
+        document.getElementById('imageInputC').click(); // Kích hoạt ô chọn tệp khi nhấn nút
+    });
+
+    let imageCount = 0;
+    document.getElementById('imageInputC').addEventListener('change', function(event) {
+    const files = event.target.files;  // Lấy các tệp được chọn
+    if (files.length > 0) {
+        imageCount += files.length;  // Cập nhật số lượng ảnh đã tải lên
+        console.log(imageCount)
+        // Cập nhật hiển thị số lượng ảnh trên nút tải ảnh
+        document.getElementById('imageCount').textContent = imageCount;
+    }
+});
+
+    // Khi người dùng bấm nút "Chat with Admin"
+    chatButton.addEventListener("click", () => {
+        // Gửi yêu cầu join vào room với admin
+        // socket.emit('join', conversationId, userId, senderType);
+        console.log('Chat with Admin');
+        customerId = @json(Auth::guard('customer')->check() ? Auth::guard('customer')->user()->id : null);
+        chatBox.style.display = "flex";  // Mở cửa sổ chat
+        $.ajax({
+          url: 'http://localhost:8000/api/getConversation',
+          type: 'POST',
+          data: {
+            customerId: customerId,
+          },
+          success: function(data) {
+            console.log(data);
+            conversationId = data.conversationId;
+            socket = io('http://localhost:3000');
+            socket.emit('join',conversationId, 'customer')
+
+            socket.on('previous_messages', (data) => {
+              console.log('--------------')
+              console.log('previous_messages', data);
+              console.log('--------------')
+
+              data.forEach((message) => {
+                const messageElement = document.createElement("div");
+
+                // Kiểm tra senderType để quyết định kiểu hiển thị
+                if(message.type == 'text'){
+                  if (message.senderType === 'customer') {
+                      // Nếu là admin, căn trái và áp dụng các lớp CSS cho admin
+                      messageElement.classList.add('d-flex', 'justify-content-end', 'mb-3');
+                      messageElement.innerHTML = `
+                          <div class="message-bubble text-white p-2 rounded" style="max-width: 75%;background-color:rgb(77 87 103);">
+                              ${message.content}
+                          </div>
+                      `;
+                  } else {
+                      // Nếu là customer, căn phải và áp dụng các lớp CSS cho customer
+                      messageElement.classList.add('d-flex', 'justify-content-star', 'mb-3');
+                      messageElement.innerHTML = `
+                          <div class="message-bubble text-dark p-2 rounded" style="max-width: 75%;background-color:rgb(222 222 222);">
+                              ${message.content}
+                          </div>
+                      `;
+                  }
+                }else if(message.type == 'img'){
+                  if (message.senderType === 'customer') {
+                      // Nếu là admin, căn trái và áp dụng các lớp CSS cho admin
+                      messageElement.classList.add('d-flex', 'justify-content-end', 'mb-3');
+                      messageElement.innerHTML = `
+                          <div class="message-bubble text-white p-2 rounded" style="max-width: 75%;background-color:rgb(77 87 103);">
+                            <img src="${message.content}" class="w-100" alt="">
+                          </div>
+                      `;
+                  } else {
+                      // Nếu là customer, căn phải và áp dụng các lớp CSS cho customer
+                      messageElement.classList.add('d-flex', 'justify-content-star', 'mb-3');
+                      messageElement.innerHTML = `
+                          <div class="message-bubble text-dark p-2 rounded" style="max-width: 75%;background-color:rgb(222 222 222);">
+                            <img src="${message.content}" class="w-100" alt="">
+                          </div>
+                      `;
+                  }
+                }
+
+                // Thêm phần tử tin nhắn vào phần tử DOM chứa tin nhắn (messagesDiv)
+                messagesDiv.appendChild(messageElement);
+              });
+              messagesDiv.scrollTop = messagesDiv.scrollHeight;  // Cuộn xuống cuối tin nhắn
+            });
+
+            socket.on('new_message', (data) => {
+              console.log('++++++++++++++++');
+              console.log('new_message', data);
+              console.log('++++++++++++++++');
+
+              let messageElement;
+
+              if (data.senderType === 'customer') {
+                    // Nếu là admin, căn trái và áp dụng các lớp CSS cho admin
+                    messageElement = `
+                        <div class="d-flex justify-content-end mb-3">
+                          <div class="message-bubble text-white p-2 rounded" style="max-width: 75%;background-color:rgb(77 87 103);">
+                              ${data.message}
+                          </div>
+                      </div>
+                    `;
+                } else {
+                    // Nếu là customer, căn phải và áp dụng các lớp CSS cho customer
+                    messageElement = `
+                        <div class="d-flex justify-content-star mb-3">
+                          <div class="message-bubble text-dark p-2 rounded" style="max-width: 75%;background-color:rgb(222 222 222);">
+                              ${data.message}
+                          </div>
+                      </div>
+                    `;
+                }
+                messagesDiv.innerHTML += messageElement;
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            });
+
+            socket.on('new_img', (data) => {
+              let messageElement = document.createElement("div");
+
+              if (data.senderType === 'customer') {
+                    // Nếu là admin, căn trái và áp dụng các lớp CSS cho admin
+                    messageElement.classList.add('d-flex', 'justify-content-end', 'mb-3');
+                    messageElement.innerHTML = `
+                        <div class="message-bubble text-white p-2 rounded" style="max-width: 75%;background-color:rgb(77 87 103);">
+                           <img src="${data.content}" class="w-100" alt="">
+                        </div>
+                    `;
+                } else {
+                    // Nếu là customer, căn phải và áp dụng các lớp CSS cho customer
+                    messageElement.classList.add('d-flex', 'justify-content-star', 'mb-3');
+                    messageElement.innerHTML = `
+                        <div class="message-bubble text-dark p-2 rounded" style="max-width: 75%;background-color:rgb(222 222 222);">
+                            <img src="${data.content}" class="w-100" alt="">
+                        </div>
+                    `;
+                }
+              messagesDiv.innerHTML += messageElement;
+              messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            })
+          },
+          error: function(e) {
+            console.log(e);
+          }
+        });
+    });
+
+    // Khi người dùng đóng cửa sổ chat
+    closeChat.addEventListener("click", () => {
+        chatBox.style.display = "none";  // Ẩn cửa sổ chat
+    });
+
+    // Khi người dùng gửi tin nhắn
+    sendMessage.addEventListener("click", () => {
+        const message = messageInput.value.trim();
+        const fileInput = messageImg.files[0];
+        if (message) {
+            // Gửi tin nhắn tới server
+            socket.emit("sendMessage", {
+              conversationId: conversationId,
+              senderId: customerId,
+              senderType: 'customer',
+              content: message,
+              type: 'text',
+            });
+            console.log('sendMessage', message);
+            messageInput.value = "";  // Xóa nội dung sau khi gửi
+        }
+        if(fileInput){
+          const reader = new FileReader();
+          reader.onloadend = function() {
+              const base64Image = reader.result;
+
+              // Gửi ảnh qua socket
+              socket.emit("sendImg", {
+                  conversationId: conversationId,
+                  senderId: customerId,
+                  senderType: 'customer',
+                  content: base64Image, // Dữ liệu ảnh base64
+                  type: 'img'
+              });
+          };
+          console.log('send img', fileInput)
+          reader.readAsDataURL(fileInput); // Đọc ảnh thành base64
+          document.getElementById('imageInputC').value = "";  // Reset input ảnh
+          imageCount = 0;  // Reset số lượng ảnh
+          document.getElementById('imageCount').textContent = imageCount;
+        }
+    });
+
+    // Nhận các tin nhắn từ server
+    // socket.on("receive_message", (message) => {
+    //     const messageElement = document.createElement("div");
+    //     messageElement.textContent = message;
+    //     messagesDiv.appendChild(messageElement);
+    //     messagesDiv.scrollTop = messagesDiv.scrollHeight;  // Cuộn xuống cuối tin nhắn
+    // });
+
+  </script>

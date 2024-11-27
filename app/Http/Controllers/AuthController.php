@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\RateLimiter;
+use App\Models\Conversation;
+use App\Models\Message;
 
 class AuthController extends Controller
 {
@@ -298,28 +300,28 @@ class AuthController extends Controller
         $request->validate([
             'avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-    
+
         try {
             $customer = Customer::findOrFail($id);
             $data = $request->except('avatar');
-    
+
             if ($request->hasFile('avatar')) {
 
                 if ($customer->avatar) {
-                    Storage::delete($customer->avatar); 
+                    Storage::delete($customer->avatar);
                 }
-    
+
                 $data['avatar'] = $request->file('avatar')->store('avatars', 'public');
             }
-    
+
             $customer->update($data);
-    
+
             return redirect()->route('customer.profile')->with('success', 'Cập nhật thông tin thành công!');
         } catch (\Exception $e) {
             return back()->with('error', 'Đã có lỗi xảy ra, vui lòng thử lại!');
         }
     }
-    
+
     // Hàm xử lý xóa ảnh đại diện khách hàng
     public function deleteAvatar($id)
     {
@@ -429,20 +431,21 @@ class AuthController extends Controller
     }
 // Đơn hàng bên khách hàng---------------------------------------------------------------------------------------------------------------------------------------------
 
-    
-    
+
+
+
     public function history(Request $request)
     {
         // Kiểm tra khách đăng nhập hay không
         $customerId = auth('customer')->check() ? auth('customer')->id() : null;
-    
+
         if (!$customerId) {
             return redirect()->route('login')->with('error', 'Vui lòng đăng nhập để xem lịch sử đơn hàng.');
         }
-    
+
         // Lấy mã đơn hàng từ request
         $searchCode = $request->input('order_code');
-    
+
         // Nếu có tìm kiếm theo mã đơn hàng
         if ($searchCode) {
             $ordersAll = Order::where('customer_id', $customerId)
@@ -454,42 +457,42 @@ class AuthController extends Controller
                             ->orderBy('created_at', 'desc')
                             ->get();
         }
-        
-        
-    
+
+
+
         $totalOrders = Order::where('customer_id', $customerId)->count();
-    
+
         // Phân loại đơn hàng theo trạng thái
         $ordersPending = Order::where('customer_id', $customerId)
                             ->where('status', 'Chờ xác nhận')
                             ->orderBy('created_at', 'desc')
                             ->get();
-    
+
         $ordersConfirmed = Order::where('customer_id', $customerId)
                                 ->where('status', 'Đã Xác Nhận')
                                 ->orderBy('created_at', 'desc')
                                 ->get();
-    
+
         $ordersShipping = Order::where('customer_id', $customerId)
                                 ->where('status', 'Đang giao hàng')
                                 ->orderBy('created_at', 'desc')
                                 ->get();
-    
+
         $ordersCompleted = Order::where('customer_id', $customerId)
                                 ->where('status', 'Hoàn Thành')
                                 ->orderBy('created_at', 'desc')
                                 ->get();
-    
+
         $ordersCancelled = Order::where('customer_id', $customerId)
                                 ->where('status', 'Đã Hủy')
                                 ->orderBy('created_at', 'desc')
                                 ->get();
-    
+
         $ordersRefund = Order::where('customer_id', $customerId)
                             ->where('status', 'Trả hàng/Hoàn tiền')
                             ->orderBy('created_at', 'desc')
                             ->get();
-    
+
         // Đếm số lượng đơn hàng cho từng trạng thái (sẽ được hiển thị trên Tabs)
         $countOrders = [
             'pending' => $ordersPending->count(),
@@ -499,14 +502,14 @@ class AuthController extends Controller
             'cancelled' => $ordersCancelled->count(),
             'refund' => $ordersRefund->count(),
         ];
-    
+
         return view('client.page.auth.page.order-history.order_history', compact(
             'ordersAll', 'ordersPending', 'ordersConfirmed', 'ordersShipping',
             'ordersCompleted', 'ordersCancelled', 'ordersRefund',
             'searchCode', 'countOrders', 'totalOrders'
         ));
     }
-    
+
 
 
 
@@ -567,7 +570,7 @@ class AuthController extends Controller
 
         return view('client.page.auth.page.order-history.public-order.public_order_history', compact('orders', 'searchCode'));
     }
-    
+
     public function publicDetail($id)
     {
         // Xác định khách hàng hiện tại (nếu cần)
@@ -587,14 +590,18 @@ class AuthController extends Controller
     }
 
 
-    
+
 
 
     public function wish_list(){
         return view('client.page.auth.page.wishList');
     }
 
+    function indexChatBoard(){
+        $admin = User::first();
+        $conversations = Conversation::where('userId', $admin->id)->get();
+        $customers = Customer::all();
+        $messages = Message::all();
+        return view('admin.page.chatBoard.chatBoard', compact('conversations', 'customers', 'messages', 'admin'));
+    }
 }
-
-
-
