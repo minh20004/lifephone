@@ -399,8 +399,7 @@ class ProductController extends Controller
 
         return response()->json(['html' => $html]);
     }
-    public function showProductReviews($id)
-    { 
+    public function showProductReviews($id) 
         {
     
             $product = Product::findOrFail($id);
@@ -418,5 +417,5 @@ class ProductController extends Controller
             return view('client.page.detail-product.general', compact('product','reviews','reviewCount','averageRating' ));
         }
 
-}
+
 }

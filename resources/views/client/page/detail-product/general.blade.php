@@ -491,7 +491,7 @@
           <i class="ci-star-filled text-warning"></i>
           <i class="ci-star text-body-tertiary opacity-60"></i>
         </div>
-        <div class="fs-sm" >{{ $reviewCount }} đánh giá</div>
+        <p><strong>Số lượng đánh giá:</strong> {{ $reviewCount }}</p>
       </div>
     </div>
     <div class="col-sm-8">
