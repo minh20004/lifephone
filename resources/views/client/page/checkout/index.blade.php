@@ -13,91 +13,30 @@
           <div class="col-lg-8 col-xl-7 mb-5 mb-lg-0">
           
             <div class="d-flex flex-column gap-5 pe-lg-4 pe-xl-0">
-              
-                {{-- <div class="d-flex align-items-start">
-                  <div class="d-flex align-items-center justify-content-center bg-primary text-white rounded-circle fs-sm fw-semibold lh-1 flex-shrink-0" style="width: 2rem; height: 2rem; margin-top: -.125rem">1</div>
-                  <div class="flex-grow-0 flex-shrink-0 ps-3 ps-md-4" style="width: calc(100% - 2rem)">
-                    <h1 class="h5 mb-md-4">Thông tin giao hàng</h1>
-                    <div class="ms-n5 ms-sm-0">
-                      <h3 class="h6 border-bottom pb-4 mb-0">Chọn phương thức vận chuyển</h3>
-                      <div class="mb-lg-4" id="shippingMethod" role="list">
-
-                        <!-- Giao hàng chuyển phát nhanh -->
-                        <div class="border-bottom">
-                          <div class="form-check mb-0" role="listitem" data-bs-toggle="collapse" data-bs-target="#courier" aria-expanded="true" aria-controls="courier">
-                            <label class="form-check-label d-flex align-items-center text-dark-emphasis fw-semibold py-4">
-                              <input type="radio" class="form-check-input fs-base me-2 me-sm-3" name="payment-method" checked="">
-                              Giao hàng chuyển phát nhanh
-                              <span class="fw-normal ms-auto">35.000 đ</span>
-                            </label>
-                          </div>
-                          
-                        </div>
-
-                        <!-- nhận từ store -->
-                        <div class="border-bottom">
-                          <div class="form-check mb-0" role="listitem" data-bs-toggle="collapse" data-bs-target="#pickup" aria-expanded="false" aria-controls="pickup">
-                            <label class="form-check-label d-flex align-items-center text-dark-emphasis fw-semibold py-4">
-                              <input type="radio" class="form-check-input fs-base me-2 me-sm-3" name="payment-method">
-                              Nhận hàng từ cửa hàng
-                              <span class="fw-normal ms-auto">Miễn phí</span>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div> --}}
-
                 <!-- Shipping address -->
-                {{-- <div class="d-flex align-items-start">
-                  <div class="d-flex align-items-center justify-content-center bg-primary text-white rounded-circle fs-sm fw-semibold lh-1 flex-shrink-0" style="width: 2rem; height: 2rem; margin-top: -.125rem">2</div>
-                  <div class="w-100 ps-3 ps-md-4">
-                    <h1 class="h5 mb-md-4">Địa chỉ giao hàng</h1>
-                    <div class="row row-cols-1 row-cols-sm-2 g-3 g-sm-4 mb-4">
-                      <div class="col">
-                        <label for="shipping-name" class="form-label">Họ và tên <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control form-control-lg" id="shipping-name" name="name" 
-                          value="{{ auth('customer')->check() ? auth('customer')->user()->name : '' }}" 
-                          {{ auth('customer')->check() ? 'readonly' : '' }} required>
-                      </div>
-                      <div class="col">
-                        <label for="shipping-phone" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control form-control-lg" id="shipping-phone" name="phone" 
-                          value="{{ auth('customer')->check() ? auth('customer')->user()->phone : '' }}" 
-                          {{ auth('customer')->check() ? 'readonly' : '' }} required>
-                      </div>
-                    </div>
-                    <div class="mb-3">
-                      <label for="shipping-email" class="form-label">Email <span class="text-danger">*</span></label>
-                      <input type="email" class="form-control form-control-lg" id="shipping-email" name="email" 
-                        value="{{ auth('customer')->check() ? auth('customer')->user()->email : '' }}" 
-                        {{ auth('customer')->check() ? 'readonly' : '' }} required>
-                    </div>
-                    <div class="mb-3">
-                      <label for="shipping-address" class="form-label">Địa chỉ chi tiết (nhà/ngõ/ngách/đường/quận)<span class="text-danger">*</span></label>
-                      <input type="text" class="form-control form-control-lg" id="shipping-address" name="address" 
-                        value="{{ auth('customer')->check() ? auth('customer')->user()->address : '' }}" 
-                        {{ auth('customer')->check() ? 'readonly' : '' }} required>
-                    </div>
-                  </div>
-                </div> --}}
                 <div class="d-flex align-items-start">
-                  <div class="d-flex align-items-center justify-content-center bg-primary text-white rounded-circle fs-sm fw-semibold lh-1 flex-shrink-0" style="width: 2rem; height: 2rem; margin-top: -.125rem">2</div>
+                  <div class="d-flex align-items-center justify-content-center bg-primary text-white rounded-circle fs-sm fw-semibold lh-1 flex-shrink-0" style="width: 2rem; height: 2rem; margin-top: -.125rem">1</div>
                   <div class="w-100 ps-3 ps-md-4">
-                      <h1 class="h5 mb-md-4">Địa chỉ giao hàng</h1>
+                      <div class="d-flex justify-content-between">
+                          <h1 class="h5 mb-md-4">Địa chỉ giao hàng</h1>
+                          @if(auth('customer')->check() && $addresses->isNotEmpty())
+                              <a type="button" class="text-decoration-none fs-5" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                  Thay Đổi
+                              </a>
+                          @endif
+                      </div>
                       <div class="row row-cols-1 row-cols-sm-2 g-3 g-sm-4 mb-4">
                           <div class="col">
                               <label for="shipping-name" class="form-label">Họ và tên <span class="text-danger">*</span></label>
                               <input type="text" class="form-control form-control-lg" id="shipping-name" name="name" 
-                                  value="{{ auth('customer')->check() && auth('customer')->user()->addresses->isNotEmpty() ? auth('customer')->user()->addresses->firstWhere('is_default', 1)->name : '' }}" 
-                                  {{ auth('customer')->check() && auth('customer')->user()->addresses->isNotEmpty() ? 'readonly' : '' }} required>
+                                  value="{{ auth('customer')->check() && $defaultAddress ? $defaultAddress->name : '' }}" 
+                                  {{ auth('customer')->check() ? 'readonly' : '' }} required>
                           </div>
                           <div class="col">
                               <label for="shipping-phone" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
                               <input type="text" class="form-control form-control-lg" id="shipping-phone" name="phone" 
-                                  value="{{ auth('customer')->check() && auth('customer')->user()->addresses->isNotEmpty() ? auth('customer')->user()->addresses->firstWhere('is_default', 1)->phone_number : '' }}" 
-                                  {{ auth('customer')->check() && auth('customer')->user()->addresses->isNotEmpty() ? 'readonly' : '' }} required>
+                                  value="{{ auth('customer')->check() && $defaultAddress ? $defaultAddress->phone_number : '' }}" 
+                                  {{ auth('customer')->check() ? 'readonly' : '' }} required>
                           </div>
                       </div>
                       <div class="mb-3">
@@ -107,20 +46,54 @@
                               {{ auth('customer')->check() ? 'readonly' : '' }} required>
                       </div>
                       <div class="mb-3">
-                          <label for="shipping-address" class="form-label">Địa chỉ chi tiết (nhà/ngõ/ngách/đường/quận)<span class="text-danger">*</span></label>
+                          <label for="shipping-address" class="form-label">Địa chỉ chi tiết <span class="text-danger">*</span></label>
                           <input type="text" class="form-control form-control-lg" id="shipping-address" name="address" 
-                              value="{{ auth('customer')->check() && auth('customer')->user()->addresses->isNotEmpty() ? auth('customer')->user()->addresses->firstWhere('is_default', 1)->address : '' }}" 
-                              {{ auth('customer')->check() && auth('customer')->user()->addresses->isNotEmpty() ? 'readonly' : '' }} required>
+                              value="{{ auth('customer')->check() && $defaultAddress ? $defaultAddress->address : '' }}" 
+                              {{ auth('customer')->check() ? 'readonly' : '' }} required>
                       </div>
+              
+                      <!-- Modal -->
+                      @if(auth('customer')->check() && $addresses->isNotEmpty())
+                      <div class="modal fade" id="staticBackdrop" data-bs-backdrop="true" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                          <div class="modal-dialog">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title" id="staticBackdropLabel">Địa chỉ của tôi</h5>
+                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                      <ul class="d-flex list-group ">
+                                          @foreach ($addresses as $address)
+                                              <li class="d-flex gap-3 list-group-item border-bottom border-danger">
+                                                  <input type="radio" class="btn btn-primary btn-sm mt-2 change-address-btn" 
+                                                      name="selected_address"
+                                                      data-name="{{ $address->name }}" 
+                                                      data-phone="{{ $address->phone_number }}" 
+                                                      data-address="{{ $address->address }}" 
+                                                      style="width: 20px; height: 20px; accent-color: red; font-size: 26px;"> 
+                                                  <div>
+                                                      <strong>{{ $address->name }}</strong> | {{ $address->phone_number }}<br>
+                                                      {{ $address->address }}
+                                                  </div>
+                                              </li>
+                                          @endforeach
+                                      </ul>
+                                  </div>
+                                  <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                      <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="confirm-address-btn">Xác Nhận</button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      @endif
                   </div>
               </div>
               
-              
-                
-
+            
                 <!-- Payment -->
                 <div class="d-flex align-items-start">
-                  <div class="d-flex align-items-center justify-content-center bg-primary text-white rounded-circle fs-sm fw-semibold lh-1 flex-shrink-0" style="width: 2rem; height: 2rem; margin-top: -.125rem">3</div>
+                  <div class="d-flex align-items-center justify-content-center bg-primary text-white rounded-circle fs-sm fw-semibold lh-1 flex-shrink-0" style="width: 2rem; height: 2rem; margin-top: -.125rem">2</div>
                   <div class="w-100 ps-3 ps-md-4">
                     <h2 class="h5 mb-0">Phương thức thanh toán</h2>
                     <div class="mb-4" id="paymentMethod" role="list">
@@ -148,6 +121,7 @@
                         <div class="collapse" id="paypal" data-bs-parent="#paymentMethod"></div>
                       </div>
 
+                      
                     </div>
 
                     <!-- Add promo code button -->
@@ -206,10 +180,6 @@
                           Giảm giá:
                           <span class="text-danger fw-medium">{{ number_format($discount, 0, ',', '.') }} đ</span>
                         </li>
-                        {{-- <li class="d-flex justify-content-between">
-                          Vận chuyển:
-                          <span class="text-dark-emphasis fw-medium">35.000 đ</span>
-                        </li> --}}
                       </ul>
                       <div class="border-top pt-4 mt-4">
                         <div class="d-flex justify-content-between mb-3">
@@ -234,5 +204,32 @@
     </form>
     </div>
 </main>
+{{-- thay đổi địa chỉ của trang checkout --}}
+<script>
+  let selectedAddress = {};
 
+  document.querySelectorAll('.change-address-btn').forEach(button => {
+      button.addEventListener('click', function () {
+          selectedAddress = {
+              name: this.getAttribute('data-name'),
+              phone: this.getAttribute('data-phone'),
+              address: this.getAttribute('data-address'),
+          };
+      });
+  });
+
+  document.getElementById('confirm-address-btn').addEventListener('click', function () {
+      // Kiểm tra xem đã chọn địa chỉ chưa
+      if (Object.keys(selectedAddress).length === 0) {
+          alert('Vui lòng chọn địa chỉ trước khi xác nhận!');
+          return;
+      }
+
+      document.getElementById('shipping-name').value = selectedAddress.name;
+      document.getElementById('shipping-phone').value = selectedAddress.phone;
+      document.getElementById('shipping-address').value = selectedAddress.address;
+
+      selectedAddress = {};
+  });
+</script>
 @endsection

@@ -20,7 +20,6 @@ use App\Http\Controllers\CategoryNewsController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
 
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -97,6 +96,10 @@ Route::middleware(['auth:customer', 'isCustomer'])->group(function () {
     Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
     Route::put('/customer/{id}/update-address', [AuthController::class, 'updateAddress'])->name('customer.updateAddress');
     Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
+    Route::get('/order-history', [AuthController::class, 'history'])->name('order.history');
+Route::get('/order-detail/{id}', [AuthController::class, 'detail'])->name('order.detail');
+
+
 });
 // -----------------------------USER------------------------------------------------------------------------------
 //giỏ hàng
@@ -114,11 +117,13 @@ Route::get('/order-success', function () {
     return view('client.page.checkout.order_success'); // Thông báo thành công
 })->name('order.success');
 
+Route::post('/payment/vnpay', [OrderController::class, 'payWithVNPay'])->name('payment.vnpay');
+Route::get('/payment/vnpay/callback', [OrderController::class, 'handleVNPayCallback'])->name('order.vnpay.callback');
+
+
 // lịch sử đơn hàng
 
 // Route::get('/order-history', [AuthController::class, 'orderHistory'])->name('order.history');
-Route::get('/order-history', [AuthController::class, 'history'])->name('order.history');
-Route::get('/order-detail/{id}', [AuthController::class, 'detail'])->name('order.detail');
 // Route::post('/order-cancel/{id}', [AuthController::class, 'cancel'])->name('order.cancel');
 
 // Route cho khách hàng yêu cầu hủy đơn hàng
@@ -130,7 +135,6 @@ Route::get('/public-order-history', [AuthController::class, 'publicHistory'])->n
 Route::get('/public-order-detail/{id}', [AuthController::class, 'publicDetail'])->name('order.publicDetail');
 
 Route::get('/cart/item-count', [CartController::class, 'getCartItemCount'])->name('cart.item-count');
-
 
 
 

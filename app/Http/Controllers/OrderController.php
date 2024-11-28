@@ -13,17 +13,64 @@ use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
-    
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::orderBy('created_at', 'desc')->paginate(10); // Lấy tất cả đơn hàng, sắp xếp theo ngày tạo mới nhất
-        return view('admin.page.order.index', compact('orders'));
+        $searchTerm = $request->input('search');
+
+        $orders = Order::orderBy('created_at', 'desc');
+
+        if ($searchTerm) {
+            $orders->where(function($query) use ($searchTerm) {
+                $query->where('order_code', 'like', '%' . $searchTerm . '%')
+                    ->orWhere('name', 'like', '%' . $searchTerm . '%');
+            });
+        }
+
+        $orders = $orders->get();
+
+        // Nhóm đơn hàng theo trạng thái
+        $groupedOrders = [
+            'Tất cả' => $orders,
+            'Chờ xác nhận' => $orders->where('status', 'Chờ xác nhận'),
+            'Đã xác nhận' => $orders->where('status', 'Đã xác nhận'),
+            'Đang giao hàng' => $orders->where('status', 'Đang giao hàng'),
+            'Đã hoàn thành' => $orders->where('status', 'Đã hoàn thành'),
+            'Đã hủy' => $orders->where('status', 'Đã hủy'),
+        ];
+
+        // Tính số lượng đơn hàng cho từng trạng thái
+        $orderCounts = array_map(fn($orders) => $orders->count(), $groupedOrders);
+
+        return view('admin.page.order.index', compact('groupedOrders', 'orderCounts'));
     }
+
+
     
+    public function updateStatus(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'status' => 'required|in:Chờ xác nhận,Đã xác nhận,Đang giao hàng,Đã hoàn thành,Đã hủy',
+        ]);
+        $order = Order::findOrFail($id);
+        if ($request->status === 'Đã hủy' && $order->status !== 'Đã hủy') {
+            // Hoàn trả số lượng sản phẩm vào kho
+            foreach ($order->orderItems as $orderItem) {
+                $variant = ProductVariant::find($orderItem->variant_id);
+                if ($variant) {
+                    $variant->stock += $orderItem->quantity;
+                    $variant->save();
+                }
+            }
+        }
+        // $order = Order::findOrFail($id);
+        $order->status = $request->status;
+        $order->save();
+
+        return redirect()->route('orders.index')->with('success', 'Cập nhật trạng thái đơn hàng thành công.');
+    }
     
     public function storeOrder(Request $request)
     {
-        // Validate dữ liệu từ form
         $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
@@ -49,14 +96,12 @@ class OrderController extends Controller
             }
         }
 
-        // Áp dụng voucher nếu có
         $discount = $voucher['discount'] ?? 0;
         $totalAfterDiscount = $totalPrice - $discount;
 
         // Lấy voucher_id từ mã giảm giá
         $voucherId = isset($voucher['code']) ? Voucher::where('code', $voucher['code'])->first()->id : null;
 
-        // Tạo mã đơn hàng tự động
         $orderCode = strtoupper(substr(uniqid(), -8));
 
         // Kiểm tra khách đăng nhập hay không
@@ -81,10 +126,9 @@ class OrderController extends Controller
             ]);
         }
 
-        // Nếu khách không đăng nhập, chỉ lưu thông tin vào đơn hàng mà không cần địa chỉ
         if (!$customerId) {
             $order = Order::create([
-                'customer_id' => null, // Không có customer_id nếu không đăng nhập
+                'customer_id' => null, 
                 'name' => $request->name,
                 'phone' => $request->phone,
                 'email' => $request->email,
@@ -94,10 +138,9 @@ class OrderController extends Controller
                 'status' => 'Chờ xác nhận', 
                 'voucher_id' => $voucherId, 
                 'description' => $request->description,
-                'order_code' => $orderCode, // Lưu mã đơn hàng
+                'order_code' => $orderCode, 
             ]);
         } else {
-            // Tạo đơn hàng mới nếu có customer_id
             $order = Order::create([
                 'customer_id' => $customerId,
                 'name' => $request->name,
@@ -113,17 +156,15 @@ class OrderController extends Controller
             ]);
         }
 
-        // Lưu các sản phẩm trong giỏ hàng vào order_items
         foreach ($cart as $productId => $models) {
             foreach ($models as $modelId => $colors) {
                 foreach ($colors as $colorId => $item) {
                     $variantId = $item['variant_id'];
         
-                    // Tạo OrderItem cho mỗi sản phẩm trong giỏ hàng
                     OrderItem::create([
                         'order_id' => $order->id,
                         'product_id' => $productId,
-                        'variant_id' => $variantId, // Lưu thông tin biến thể ở đây
+                        'variant_id' => $variantId, 
                         'quantity' => $item['quantity'],
                         'price' => $item['price'],
                         'total_price' => $item['price'] * $item['quantity'],
@@ -143,39 +184,19 @@ class OrderController extends Controller
         }
         
 
-        // Gửi email xác nhận đơn hàng
         Mail::to($request->email)->send(new OrderConfirmationMail($order));
         
         // Xóa giỏ hàng trong session sau khi đặt hàng
         session()->forget('cart');
         session()->forget('voucher');
 
-        // Trả về thông báo thành công và chuyển đến trang thông báo
         return redirect()->route('order.success')->with('success', 'Đặt hàng thành công!');
     }
     
-    public function updateStatus(Request $request, $id)
-    {
-        $validated = $request->validate([
-            'status' => 'required|in:Chờ xác nhận,Đã xác nhận,Đang giao hàng,Đã hoàn thành,Đã hủy',
-        ]);
-        $order = Order::findOrFail($id);
-        if ($request->status === 'Đã hủy' && $order->status !== 'Đã hủy') {
-            // Hoàn trả số lượng sản phẩm vào kho
-            foreach ($order->orderItems as $orderItem) {
-                $variant = ProductVariant::find($orderItem->variant_id);
-                if ($variant) {
-                    $variant->stock += $orderItem->quantity;
-                    $variant->save();
-                }
-            }
-        }
-        // $order = Order::findOrFail($id);
-        $order->status = $request->status;
-        $order->save();
+   
 
-        return redirect()->route('orders.index')->with('success', 'Cập nhật trạng thái đơn hàng thành công.');
-    }
+
+
 
     
 

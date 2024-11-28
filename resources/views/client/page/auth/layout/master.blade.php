@@ -17,7 +17,7 @@
               <div class="d-flex align-items-center">
                 <div class="h5 d-flex justify-content-center align-items-center flex-shrink-0 text-primary bg-primary-subtle lh-1 rounded-circle mb-0" style="width: 3rem; height: 3rem">
                   {{-- {{ strtoupper(substr(Auth::guard('customer')->user()->email, 0, 1)) }} --}}
-                  <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Avatar của {{ Auth::user()->name }}" style="height: 100%;">
+                  {{-- <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Avatar của {{ Auth::user()->name }}" style="height: 100%;"> --}}
                 </div>
                 <div class="min-w-0 ps-3">
                   <h5 class="h6 mb-1">{{ Auth::user()->name ?? 'Tên chưa được cập nhật' }}</li></h5>

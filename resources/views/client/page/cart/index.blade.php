@@ -177,8 +177,6 @@
       </div>
     </div>
   </aside>
-      
-      </div>
     </section>
     <!-- Trending products (Carousel) -->
     <section class="container pb-4 pb-md-5 mb-2 mb-sm-0 mb-lg-2 mb-xl-4">

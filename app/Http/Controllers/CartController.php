@@ -385,21 +385,43 @@ class CartController extends Controller
                 }
             }
         }
+        $customer = auth('customer')->user();
+
+        $addresses = $customer ? $customer->addresses : collect(); // Trả về nếu chưa đăng nhập
+        $defaultAddress = $customer ? $addresses->firstWhere('is_default', 1) : null;
 
         $customer = auth('customer')->check() ? auth('customer')->user() : null;
-        // vượt quá số lượng tồn kho quay lại và báo lỗi
+        
+        // baos lỗi khi vượt qua
         if (!empty($outOfStockItems)) {
             return back()->withErrors(['quantity' => $outOfStockItems]);
         }
+        
 
         $totalAfterDiscount = $totalPrice - $discount;
 
         $estimatedTotal = $totalAfterDiscount;
 
         return view('client.page.checkout.index', compact(
-            'cart', 'totalPrice', 'totalQuantity', 'discount', 'estimatedTotal'
+            'cart', 'totalPrice', 'totalQuantity', 'discount', 'estimatedTotal','defaultAddress','addresses'
         ));
     }
+    
+
+
+
+
+
+
+
+    public function saveAddress(Request $request)
+    {
+        $address = $request->only(['name', 'phone', 'address']);
+        session()->put('selected_address', $address);
+
+        return response()->json(['status' => 'success', 'message' => 'Địa chỉ đã được lưu vào session.']);
+    }
+
 
 
     public function getCartItemCount()
@@ -417,8 +439,8 @@ class CartController extends Controller
 
         return response()->json(['count' => $totalQuantity]);
     }
-
-
+    
+    
 
 
 
@@ -457,10 +479,10 @@ class CartController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+    // public function update(Request $request, string $id)
+    // {
+    //     //
+    // }
 
     /**
      * Remove the specified resource from storage.
