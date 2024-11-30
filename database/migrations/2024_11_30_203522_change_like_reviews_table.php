@@ -12,11 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('reviews', function (Blueprint $table) {
-            $table->unsignedBigInteger('color_id')->nullable();
-            $table->unsignedBigInteger('capacity_id')->nullable();
-    
-            $table->foreign('color_id')->references('id')->on('colors')->onDelete('set null');
-            $table->foreign('capacity_id')->references('id')->on('capacities')->onDelete('set null');
+            $table->unsignedInteger('likes')->default(0);
+            $table->unsignedInteger('dislikes')->default(0);
         });
     }
 
@@ -26,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('reviews', function (Blueprint $table) {
-            
+            //
         });
     }
 };

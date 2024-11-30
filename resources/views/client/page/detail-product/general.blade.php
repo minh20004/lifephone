@@ -566,70 +566,75 @@ Lifephone
               <i class="ci-corner-down-right fs-base ms-1 me-1"></i>
               <span class="animate-target">Reply</span>
             </button>
-            <button type="button" class="nav-link text-body-secondary animate-scale px-0 ms-auto me-n1">
+            <!-- Like button -->
+            <button type="button" class="nav-link text-body-secondary animate-scale px-0 ms-auto me-n1 like-btn" data-review-id="{{ $review->id }}">
               <i class="ci-thumbs-up fs-base animate-target me-1"></i>
-              0
+              <span id="likes-{{ $review->id }}">{{ $review->likes }}</span>
             </button>
+
             <hr class="vr my-2 mx-3">
-            <button type="button" class="nav-link text-body-secondary animate-scale px-0 ms-n1">
+
+            <!-- Dislike button -->
+            <button type="button" class="nav-link text-body-secondary animate-scale px-0 ms-n1 dislike-btn" data-review-id="{{ $review->id }}">
               <i class="ci-thumbs-down fs-base animate-target me-1"></i>
-              0
+              <span id="dislikes-{{ $review->id }}">{{ $review->dislikes }}</span>
             </button>
           </div>
-        </div>
-        @endforeach
-        @else
-        <p>Chưa có đánh giá nào hãy là người đánh giá sản phẩm đầu tiên của chúng tôi.</p>
-        @endif
-
-
-        <div class="nav">
-          <a class="nav-link text-primary animate-underline px-0" href="shop-product-reviews-electronics.html">
-            <span class="animate-target">Xem tất cả đánh giá</span>
-            <i class="ci-chevron-right fs-base ms-1"></i>
-          </a>
         </div>
       </div>
+      @endforeach
+      @else
+      <p>Chưa có đánh giá nào hãy là người đánh giá sản phẩm đầu tiên của chúng tôi.</p>
+      @endif
 
-      <!-- Sticky product preview visible on screens > 991px wide (lg breakpoint) -->
-      <aside class="col-md-5 col-xl-4 offset-xl-1 d-none d-md-block" style="margin-top: -100px">
-        <div class="position-sticky top-0 ps-3 ps-lg-4 ps-xl-0" style="padding-top: 100px">
-          <div class="border rounded p-3 p-lg-4">
-            <div class="d-flex align-items-center mb-3">
-              <div class="ratio ratio-1x1 flex-shrink-0" style="width: 110px">
-                <img src="{{ asset('storage/' . $product->image_url) }}" width="110" alt="iPhone 14">
-              </div>
-              <div class="w-100 min-w-0 ps-2 ps-sm-3">
-                <div class="d-flex align-items-center gap-2 mb-2">
-                  <div class="d-flex gap-1 fs-xs">
-                    <i class="ci-star-filled text-warning"></i>
-                    <i class="ci-star-filled text-warning"></i>
-                    <i class="ci-star-filled text-warning"></i>
-                    <i class="ci-star-filled text-warning"></i>
-                    <i class="ci-star text-body-tertiary opacity-75"></i>
-                  </div>
-                  <span class="text-body-tertiary fs-xs">68</span>
-                </div>
-                <h4 class="fs-sm fw-medium mb-2">{{$product->name}}</h4>
-                <div class="h5 mb-0 text-danger">{{ number_format($minPrice, 0, ',', '.') }} đ</div>
-              </div>
+
+      <div class="nav">
+        <a class="nav-link text-primary animate-underline px-0" href="shop-product-reviews-electronics.html">
+          <span class="animate-target">Xem tất cả đánh giá</span>
+          <i class="ci-chevron-right fs-base ms-1"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Sticky product preview visible on screens > 991px wide (lg breakpoint) -->
+    <aside class="col-md-5 col-xl-4 offset-xl-1 d-none d-md-block" style="margin-top: -100px">
+      <div class="position-sticky top-0 ps-3 ps-lg-4 ps-xl-0" style="padding-top: 100px">
+        <div class="border rounded p-3 p-lg-4">
+          <div class="d-flex align-items-center mb-3">
+            <div class="ratio ratio-1x1 flex-shrink-0" style="width: 110px">
+              <img src="{{ asset('storage/' . $product->image_url) }}" width="110" alt="iPhone 14">
             </div>
-            <div class="d-flex gap-2 gap-lg-3">
-              <button type="button" class="btn btn-primary w-100 animate-slide-end">
-                <i class="ci-shopping-cart fs-base animate-target ms-n1 me-2"></i>
-                Thêm vào giỏ hàng
-              </button>
-              <button type="button" class="btn btn-icon btn-secondary animate-pulse" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Add to Wishlist" aria-label="Add to Wishlist" data-id="{{$product->id}}">
-                <i class="ci-heart fs-base animate-target"></i>
-              </button>
-              <button type="button" class="btn btn-icon btn-secondary animate-rotate" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Compare" aria-label="Compare">
-                <i class="ci-refresh-cw fs-base animate-target"></i>
-              </button>
+            <div class="w-100 min-w-0 ps-2 ps-sm-3">
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <div class="d-flex gap-1 fs-xs">
+                  <i class="ci-star-filled text-warning"></i>
+                  <i class="ci-star-filled text-warning"></i>
+                  <i class="ci-star-filled text-warning"></i>
+                  <i class="ci-star-filled text-warning"></i>
+                  <i class="ci-star text-body-tertiary opacity-75"></i>
+                </div>
+                <span class="text-body-tertiary fs-xs">68</span>
+              </div>
+              <h4 class="fs-sm fw-medium mb-2">{{$product->name}}</h4>
+              <div class="h5 mb-0 text-danger">{{ number_format($minPrice, 0, ',', '.') }} đ</div>
             </div>
           </div>
+          <div class="d-flex gap-2 gap-lg-3">
+            <button type="button" class="btn btn-primary w-100 animate-slide-end">
+              <i class="ci-shopping-cart fs-base animate-target ms-n1 me-2"></i>
+              Thêm vào giỏ hàng
+            </button>
+            <button type="button" class="btn btn-icon btn-secondary animate-pulse" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Add to Wishlist" aria-label="Add to Wishlist" data-id="{{$product->id}}">
+              <i class="ci-heart fs-base animate-target"></i>
+            </button>
+            <button type="button" class="btn btn-icon btn-secondary animate-rotate" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Compare" aria-label="Compare">
+              <i class="ci-refresh-cw fs-base animate-target"></i>
+            </button>
+          </div>
         </div>
-      </aside>
-    </div>
+      </div>
+    </aside>
+  </div>
 </section>
 
 <!-- Viewed products (Carousel) -->
@@ -747,4 +752,45 @@ Lifephone
     </div>
   </div>
 </section>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Like button
+    document.querySelectorAll('.like-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const reviewId = this.dataset.reviewId;
+
+            fetch(`/reviews/${reviewId}/like`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById(`likes-${reviewId}`).textContent = data.likes;
+            });
+        });
+    });
+
+    // Dislike button
+    document.querySelectorAll('.dislike-btn').forEach(button => {
+        button.addEventListener('click', function () {
+            const reviewId = this.dataset.reviewId;
+
+            fetch(`/reviews/${reviewId}/dislike`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById(`dislikes-${reviewId}`).textContent = data.dislikes;
+            });
+        });
+    });
+});
+</script>
 @endsection

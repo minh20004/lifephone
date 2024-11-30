@@ -226,3 +226,5 @@ Route::get('/new/category/{slug}', [NewController::class, 'categoryNewsBlog'])->
 Route::get('/search', [ClientCategoryController::class, 'search'])->name('product.search');
 // categoy product
 Route::get('/danh-muc-san-pham', [FrontendControlle::class, 'index_cate_all'])->name('danh-muc-san-pham');
+Route::post('/reviews/{id}/like', [ReviewController::class, 'like'])->name('reviews.like');
+Route::post('/reviews/{id}/dislike', [ReviewController::class, 'dislike'])->name('reviews.dislike');

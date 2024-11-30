@@ -4,7 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiProductController;
 use App\Http\Controllers\FavoriteController;
-
+use App\Http\Controllers\ReviewController;
 
 /*
 |--------------------------------------------------------------------------

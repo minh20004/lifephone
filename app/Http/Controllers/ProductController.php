@@ -451,6 +451,5 @@ class ProductController extends Controller
         // Trả về view với các dữ liệu cần thiết
         return view('client.page.detail-product.general', compact('product', 'reviews', 'reviewCount', 'averageRating'));
     }
-    
-    
-}
+ }
+
