@@ -35,4 +35,13 @@ class Review extends Model
 {
     return $this->hasMany(Review::class);
 }
+public function color()
+{
+    return $this->belongsTo(Color::class);
+}
+
+public function capacity()
+{
+    return $this->belongsTo(Capacity::class);
+}
 }

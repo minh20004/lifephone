@@ -49,4 +49,7 @@ class Product extends Model
     return $this->belongsTo(Product::class);
 }
 
+public function loadAllCustomer(){
+    return $this->belongsTo(Customer::class,'customer_id' );
+}
 }

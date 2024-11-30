@@ -177,10 +177,39 @@ class ProductController extends Controller
         // Lấy giá nhỏ nhất từ các biến thể còn hàng
         $minPrice = $availableVariants->min('price_difference');
 
+    // Lấy danh sách đánh giá của sản phẩm cùng với thông tin khách hàng và người dùng
+    $reviews = Review::with(['user', 'loadAllCustomer']) // Nạp quan hệ user và customer nếu cần
+        ->where('product_id', $id)
+        ->get();
+
+    // Tính toán số lượng đánh giá
+    $reviewCount = $reviews ? $reviews->count() : 0;
+
+    // Tính điểm đánh giá trung bình
+    $averageRating = $reviews->avg('rating') ?? 0;
+    $ratingCounts = [
+        5 => $reviews->where('rating', 5)->count(),
+        4 => $reviews->where('rating', 4)->count(),
+        3 => $reviews->where('rating', 3)->count(),
+        2 => $reviews->where('rating', 2)->count(),
+        1 => $reviews->where('rating', 1)->count(),
+    ];
+
+    // Tính toán tỷ lệ phần trăm của mỗi mức sao
+    $ratingPercentages = [];
+    foreach ($ratingCounts as $rating => $count) {
+        $ratingPercentages[$rating] = $reviewCount > 0 ? ($count / $reviewCount) * 100 : 0;
+    }
+
         // Trả về view với dữ liệu sản phẩm và giá nhỏ nhất
         return view('client.page.detail-product.general', compact(
             'product',
-            'minPrice'
+            'minPrice',
+            'reviews', 
+            'reviewCount', 
+            'averageRating',
+            'ratingPercentages',
+            'ratingCounts'
         ));
     }
 
@@ -400,23 +429,28 @@ class ProductController extends Controller
         return response()->json(['html' => $html]);
     }
     public function showProductReviews($id)
-    { 
-        {
+    {
+        
+        // Tìm sản phẩm kèm theo các quan hệ cần thiết
+        $product = Product::with('variants.color', 'variants.capacity')
+            ->findOrFail($id);
     
-            $product = Product::findOrFail($id);
+        // Lấy danh sách đánh giá của sản phẩm cùng với thông tin khách hàng và người dùng
+        $reviews = Review::with(['user', 'loadAllCustomer']) // Nạp quan hệ user và customer nếu cần
+            ->where('product_id', $id)
+            ->get();
     
-     
-            $reviews = Review::where('product_id', $id)->get();
+        // Tính toán số lượng đánh giá
+        $reviewCount = $reviews ? $reviews->count() : 0;
     
-         
-            $reviewCount = $reviews->count();
-    
-          
-            $averageRating = $reviews->avg('rating') ?? 0;
-    
+        // Tính điểm đánh giá trung bình
+        $averageRating = $reviews->avg('rating') ?? 0;
+        dd($reviews);
+        dd($reviewCount);
 
-            return view('client.page.detail-product.general', compact('product','reviews','reviewCount','averageRating' ));
-        }
-
-}
+        // Trả về view với các dữ liệu cần thiết
+        return view('client.page.detail-product.general', compact('product', 'reviews', 'reviewCount', 'averageRating'));
+    }
+    
+    
 }
