@@ -10,30 +10,29 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index(Request $request)
+    public function Dashboards(Request $request)
     {
-        // Lấy ngày hiện tại hoặc ngày mặc định
-        $startDate = Carbon::now()->startOfDay();
-        $endDate = Carbon::now()->endOfDay();
+        // Lấy ngày bắt đầu và ngày kết thúc từ request, nếu không có thì mặc định là đầu và cuối tháng hiện tại
+        $startDate = $request->input('start_date') 
+            ? Carbon::parse($request->input('start_date'))->startOfDay()
+            : Carbon::now()->startOfMonth();
 
-        // Kiểm tra nếu người dùng chọn khoảng thời gian
-        if ($request->has('start_date') && $request->has('end_date')) {
-            $startDate = Carbon::parse($request->start_date)->startOfDay();
-            $endDate = Carbon::parse($request->end_date)->endOfDay();
-        }
+        $endDate = $request->input('end_date') 
+            ? Carbon::parse($request->input('end_date'))->endOfDay()
+            : Carbon::now()->endOfMonth();
 
-        // Thống kê thu nhập
-        $income = Order::whereBetween('created_at', [$startDate, $endDate])->sum('total_amount');
+        // Thống kê tổng thu nhập từ các đơn hàng có trạng thái "Đã hoàn thành"
+        $totalIncome = Order::where('status', 'Đã hoàn thành')
+            ->whereBetween('updated_at', [$startDate, $endDate])
+            ->sum('total_price');
 
-        // Thống kê số lượng đơn hàng
-        $totalOrders = Order::whereBetween('created_at', [$startDate, $endDate])->count();
+        // Thống kê số lượng đơn hàng có trạng thái "Đã hoàn thành"
+        $completedOrders = Order::where('status', 'Đã hoàn thành')
+            ->whereBetween('updated_at', [$startDate, $endDate])
+            ->count();
 
         // Truyền dữ liệu vào view
-        return view('admin.index', [
-            'income' => number_format($income, 2),
-            'totalOrders' => $totalOrders,
-            'startDate' => $startDate->format('d M, Y'),
-            'endDate' => $endDate->format('d M, Y')
-        ]);
+        return view('admin.index', compact('totalIncome', 'completedOrders', 'startDate', 'endDate'));
     }
+
 }

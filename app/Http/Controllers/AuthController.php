@@ -14,14 +14,82 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\RateLimiter;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
-//  admin ------------------------------------------------------------------------------------------------------------------------------
-    public function Dashboards()
-    {
-        return view('admin.index');
-    }   
+//  admin ------------------------------------------------------------------------------------------------------------------------------  
+public function Dashboards(Request $request)
+{
+    // Lấy ngày bắt đầu và kết thúc từ request
+    $startDate = $request->input('start_date') 
+        ? Carbon::parse($request->input('start_date'))->startOfDay()
+        : Carbon::now()->startOfMonth();
+
+    $endDate = $request->input('end_date') 
+        ? Carbon::parse($request->input('end_date'))->endOfDay()
+        : Carbon::now()->endOfMonth();
+
+    // Tính toán khoảng thời gian trước đó (1 tháng trước)
+    $previousStartDate = $startDate->copy()->subMonth();
+    $previousEndDate = $endDate->copy()->subMonth();
+
+    // Thống kê số lượng đơn hàng theo từng trạng thái trong khoảng thời gian hiện tại
+    $currentOrdersByStatus = [
+        'Chờ xác nhận' => Order::where('status', 'Chờ xác nhận')->whereBetween('updated_at', [$startDate, $endDate])->count(),
+        'Đã xác nhận' => Order::where('status', 'Đã xác nhận')->whereBetween('updated_at', [$startDate, $endDate])->count(),
+        'Đang giao hàng' => Order::where('status', 'Đang giao hàng')->whereBetween('updated_at', [$startDate, $endDate])->count(),
+        'Đã hoàn thành' => Order::where('status', 'Đã hoàn thành')->whereBetween('updated_at', [$startDate, $endDate])->count(),
+        'Đã hủy' => Order::where('status', 'Đã hủy')->whereBetween('updated_at', [$startDate, $endDate])->count(),
+    ];
+
+    // Thống kê số lượng đơn hàng theo từng trạng thái trong khoảng thời gian trước đó
+    $previousOrdersByStatus = [
+        'Chờ xác nhận' => Order::where('status', 'Chờ xác nhận')->whereBetween('updated_at', [$previousStartDate, $previousEndDate])->count(),
+        'Đã xác nhận' => Order::where('status', 'Đã xác nhận')->whereBetween('updated_at', [$previousStartDate, $previousEndDate])->count(),
+        'Đang giao hàng' => Order::where('status', 'Đang giao hàng')->whereBetween('updated_at', [$previousStartDate, $previousEndDate])->count(),
+        'Đã hoàn thành' => Order::where('status', 'Đã hoàn thành')->whereBetween('updated_at', [$previousStartDate, $previousEndDate])->count(),
+        'Đã hủy' => Order::where('status', 'Đã hủy')->whereBetween('updated_at', [$previousStartDate, $previousEndDate])->count(),
+    ];
+
+    // Tổng thu nhập hiện tại và trước đó
+    $currentIncome = Order::where('status', 'Đã hoàn thành')->whereBetween('updated_at', [$startDate, $endDate])->sum('total_price');
+    $previousIncome = Order::where('status', 'Đã hoàn thành')->whereBetween('updated_at', [$previousStartDate, $previousEndDate])->sum('total_price');
+
+    // Tính phần trăm thay đổi thu nhập
+    $incomeChangePercentage = $this->calculatePercentageChange($previousIncome, $currentIncome);
+    
+    // Tính phần trăm thay đổi số lượng đơn hàng
+    $orderChangePercentage = [];
+    foreach ($currentOrdersByStatus as $status => $currentCount) {
+        $previousCount = $previousOrdersByStatus[$status] ?? 0;
+        $orderChangePercentage[$status] = $this->calculatePercentageChange($previousCount, $currentCount);
+    }
+
+    // Truyền dữ liệu vào view
+    return view('admin.index', compact(
+        'currentOrdersByStatus',
+        'previousOrdersByStatus',
+        'currentIncome',
+        'incomeChangePercentage',
+        'orderChangePercentage',
+        'startDate',
+        'endDate'
+    ));
+}
+
+public function calculatePercentageChange($previous, $current)
+{
+    // Nếu giá trị trước đó là 0, tránh chia cho 0
+    if ($previous == 0) {
+        return $current > 0 ? 100 : 0;
+    }
+
+    // Tính phần trăm thay đổi
+    $percentageChange = (($current - $previous) / $previous) * 100;
+    return round($percentageChange, 2);  // Làm tròn đến 2 chữ số
+}
+
 
     public function index()
     {
