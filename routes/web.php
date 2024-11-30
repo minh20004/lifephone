@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\CategoryNewsController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -136,6 +137,24 @@ Route::get('/public-order-detail/{id}', [AuthController::class, 'publicDetail'])
 
 Route::get('/cart/item-count', [CartController::class, 'getCartItemCount'])->name('cart.item-count');
 
+// thanh toán vnpay
+Route::post('/vnpay-payment', [OrderController::class,'vnpay_payment'])->name('vnpay.payment');
+
+Route::post('/order', [OrderController::class, 'storeOrder'])->name('order.store');
+
+// Route để bắt đầu thanh toán VNPay
+Route::post('/order/vnpay', [OrderController::class, 'vnpay_payment'])->name('order.vnpay');
+
+// Route để xử lý callback từ VNPay
+Route::get('/order/vnpay/callback', [OrderController::class, 'vnpay_callback'])->name('order.vnpay_callback');
+
+Route::get('/order-failure', function () {
+    return view('client.page.checkout.order_failure'); // Thông báo thất bại
+})->name('order.failure');
+// thanh toán lại
+Route::post('/order/{id}/retry-payment', [OrderController::class, 'retryPayment'])->name('order.retryPayment');
+// web.php
+Route::get('/checkout-failure/{id}', [OrderController::class, 'retryPayment'])->name('checkout-failure');
 
 
 // ------------------------------------------------- ADMIN---------------------------------------------------------

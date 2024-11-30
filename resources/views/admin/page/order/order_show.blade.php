@@ -99,8 +99,20 @@
                             <div class="d-flex align-items-center justify-content-end pe-3 text-end border-bottom">
                                 <div class="pe-3"><span>Phương thức thanh toán</span></div>
                                 <div class="w-25 border-start p-3">
-                                    <div class="fs-6"><b>Thanh toán khi nhận hàng</b></div>
+                                    <div class="fs-6"><b>{{$order->payment_method}}</b></div>
                                 </div>
+                            </div>
+                            <div>
+                                @if ($order->additional_status === 'Đã thanh toán')
+                                    <div class="alert alert-success text-center my-3">
+                                        Đơn đã được thanh toán. Số tiền cần thanh toán là <strong>0 đồng</strong>.
+                                    </div>
+                                @else
+                                    <div class="alert alert-warning text-center my-3">
+                                        Đơn hàng chưa được thanh toán. Tổng số tiền cần thanh toán là <strong>{{ number_format($order->total_price, 0, ',', '.') }} đ</strong>.
+                                    </div>
+                                @endif
+        
                             </div>
         </div>
     </div>

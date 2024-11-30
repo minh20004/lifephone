@@ -103,6 +103,11 @@
                                                         
                                                                 <option value="Đã hủy" 
                                                                     {{ $order->status === 'Đã hủy' ? 'selected' : ($order->status !== 'Chờ xác nhận' && $order->status !== 'Đã xác nhận' && $order->status !== 'Đang giao hàng' ? 'disabled' : '') }}>Đã hủy</option>
+
+                                                                    <option value="Thanh toán thất bại" 
+                                                                    {{ $order->status === 'Thanh toán thất bại' ? 'selected' : ($order->status !== 'Chờ xác nhận' ? 'disabled' : '') }}>Thanh toán thất bại</option>
+                                                                    
+
                                                             </select>
                                                         </form>
                                                         
