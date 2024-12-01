@@ -92,6 +92,29 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
 
     Route::get('/get-statistics', [DashboardController::class, 'getStatistics'])->name('admin.getStatistics');
 
+
+    // Route danh mục bị xóa
+    Route::prefix('categories')->group(function () {
+        Route::get('/trashed', [CategoryController::class, 'trashed'])->name('category.trashed');
+        Route::post('/restore/{id}', [CategoryController::class, 'restore'])->name('category.restore');
+
+    });
+    // Route dung lượng bị xóa
+    Route::prefix('capacities')->group(function () {
+        Route::get('/trashed', [CapacityController::class, 'trashed'])->name('capacity.trashed');
+        Route::post('/restore/{id}', [CapacityController::class, 'restore'])->name('capacity.restore');
+    });
+    // Route màu sắc bị xóa
+    Route::prefix('colors')->group(function () {
+        Route::get('/trashed', [ColorController::class, 'trashed'])->name('color.trashed');
+        Route::post('/restore/{id}', [ColorController::class, 'restore'])->name('color.restore');
+    });
+    // chuyển trang biến thể
+    Route::get('/product/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
+    //router review và news
+    Route::resource('admin/review',ReviewController::class);
+    // Route::resource('new_admin',  NewController::class);
+
 });
 // end auth admin ------------------------------------------------------------------------------------------------------------------
 
@@ -178,26 +201,8 @@ Route::get('/cart/item-count', [CartController::class, 'getCartItemCount'])->nam
 
 
 // ------------------------------------------------- ADMIN---------------------------------------------------------
-// Route danh mục bị xóa
-Route::prefix('categories')->group(function () {
-    Route::get('/trashed', [CategoryController::class, 'trashed'])->name('category.trashed');
-    Route::post('/restore/{id}', [CategoryController::class, 'restore'])->name('category.restore');
-
-});
-// Route dung lượng bị xóa
-Route::prefix('capacities')->group(function () {
-    Route::get('/trashed', [CapacityController::class, 'trashed'])->name('capacity.trashed');
-    Route::post('/restore/{id}', [CapacityController::class, 'restore'])->name('capacity.restore');
-});
-// Route màu sắc bị xóa
-Route::prefix('colors')->group(function () {
-    Route::get('/trashed', [ColorController::class, 'trashed'])->name('color.trashed');
-    Route::post('/restore/{id}', [ColorController::class, 'restore'])->name('color.restore');
-});
-// chuyển trang biến thể
-Route::get('/product/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
-//router review và news
-Route::resource('admin/review',ReviewController::class);
+// //router review và news
+// Route::resource('admin/review',ReviewController::class);
 // Route::resource('new_admin',  NewController::class);
 
 Route::get('new', [NewController::class, 'clientIndex'])->name('news.index');
