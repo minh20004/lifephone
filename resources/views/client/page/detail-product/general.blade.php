@@ -495,7 +495,7 @@ Lifephone
 
           <!-- Overall rating card -->
           <div class="d-flex flex-column align-items-center justify-content-center h-100 bg-body-tertiary rounded p-4">
-            <div class="h1 pb-2 mb-1">{{ $averageRating }}</div>
+            <div class="h1 pb-2 mb-1">{{ number_format($averageRating, 2) }}</div> <!-- Giới hạn 2 số thập phân -->
             <div class="hstack justify-content-center gap-1 fs-sm mb-2">
               @for ($i = 1; $i <= 5; $i++)
                 @if ($i <=floor($averageRating))
@@ -507,6 +507,7 @@ Lifephone
                 @endif
                 @endfor
             </div>
+
 
             @if(isset($reviewCount))
             <p>Số lượng đánh giá: {{ $reviewCount }}</p>
@@ -534,15 +535,25 @@ Lifephone
           </div>
         </div>
 
+        @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
 
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
         <!-- Review -->
         @if(isset($reviews))
-        @foreach ($reviews as $review)
+        @foreach ($reviews->take(2) as $review)
 
         <div class="border-bottom py-3 mb-3">
           <div class="d-flex align-items-center mb-3">
             <div class="text-nowrap me-3">
-              <span class="h6 mb-0">{{ $review->customer ? $review->customer->name : 'Anonymous' }}</span> <!-- Tên người dùng -->
+              <span class="h6 mb-0">{{ $review->loadAllCustomer ? $review->loadAllCustomer->name : 'Anonymous' }}</span> <!-- Tên người dùng -->
               <i class="ci-check-circle text-success align-middle ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Verified customer"></i>
             </div>
             <span class="text-body-secondary fs-sm ms-auto">{{ $review->created_at }}</span> <!-- Ngày đánh giá -->
@@ -751,46 +762,83 @@ Lifephone
       </button>
     </div>
   </div>
+  
 </section>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+  document.addEventListener('DOMContentLoaded', function() {
     // Like button
     document.querySelectorAll('.like-btn').forEach(button => {
-        button.addEventListener('click', function () {
-            const reviewId = this.dataset.reviewId;
+      button.addEventListener('click', function() {
+        const reviewId = this.dataset.reviewId;
 
-            fetch(`/reviews/${reviewId}/like`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'Content-Type': 'application/json',
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById(`likes-${reviewId}`).textContent = data.likes;
-            });
-        });
+        fetch(`/reviews/${reviewId}/like`, {
+            method: 'POST',
+            headers: {
+              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+              'Content-Type': 'application/json',
+            },
+          })
+          .then(response => response.json())
+          .then(data => {
+            document.getElementById(`likes-${reviewId}`).textContent = data.likes;
+          });
+      });
     });
 
     // Dislike button
     document.querySelectorAll('.dislike-btn').forEach(button => {
-        button.addEventListener('click', function () {
-            const reviewId = this.dataset.reviewId;
+      button.addEventListener('click', function() {
+        const reviewId = this.dataset.reviewId;
 
-            fetch(`/reviews/${reviewId}/dislike`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                    'Content-Type': 'application/json',
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById(`dislikes-${reviewId}`).textContent = data.dislikes;
-            });
+        fetch(`/reviews/${reviewId}/dislike`, {
+            method: 'POST',
+            headers: {
+              'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+              'Content-Type': 'application/json',
+            },
+          })
+          .then(response => response.json())
+          .then(data => {
+            document.getElementById(`dislikes-${reviewId}`).textContent = data.dislikes;
+          });
+      });
+    });
+  });
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('review-form');
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const rating = document.getElementById('rating').value;
+        const content = document.getElementById('content').value;
+        const productId = '{{ $product->id }}'; // Lấy ID sản phẩm
+
+        const formData = new FormData();
+        formData.append('rating', rating);
+        formData.append('content', content);
+        formData.append('product_id', productId);
+
+        fetch('{{ route('reviews.store', ['id' => $product->id]) }}', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('alert-container').innerHTML = '<div class="alert alert-success">' + data.message + '</div>';
+
+            const newReview = '<div class="review">' +
+                                 '<p><strong>' + data.review.user.name + '</strong> - ' + data.review.rating + ' sao</p>' +
+                                 '<p>' + data.review.content + '</p>' +
+                              '</div>';
+            document.getElementById('reviews').insertAdjacentHTML('afterbegin', newReview);
+
+            form.reset(); // Reset form fields
+        })
+        .catch(error => {
+            document.getElementById('alert-container').innerHTML = '<div class="alert alert-danger">Đã có lỗi xảy ra. Vui lòng thử lại.</div>';
         });
     });
 });
+
 </script>
 @endsection

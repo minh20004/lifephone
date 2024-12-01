@@ -6,9 +6,11 @@ use App\Models\Color;
 use App\Models\Product;
 use App\Models\Capacity;
 use App\Models\Category;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\ProductVariant;
 use App\Models\Review;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -176,11 +178,13 @@ class ProductController extends Controller
 
         // Lấy giá nhỏ nhất từ các biến thể còn hàng
         $minPrice = $availableVariants->min('price_difference');
-
+    
     // Lấy danh sách đánh giá của sản phẩm cùng với thông tin khách hàng và người dùng
     $reviews = Review::with(['user', 'loadAllCustomer']) // Nạp quan hệ user và customer nếu cần
         ->where('product_id', $id)
+
         ->get();
+        
 
     // Tính toán số lượng đánh giá
     $reviewCount = $reviews ? $reviews->count() : 0;
@@ -200,7 +204,16 @@ class ProductController extends Controller
     foreach ($ratingCounts as $rating => $count) {
         $ratingPercentages[$rating] = $reviewCount > 0 ? ($count / $reviewCount) * 100 : 0;
     }
+    $customer_id  = Auth::id(); // Lấy ID người dùng hiện tại
+$hasPurchased = Order::where('customer_id', $customer_id )
+    ->whereHas('orderItems', function ($query) use ($id) {
+        $query->where('product_id', $id); // Kiểm tra sản phẩm trong đơn hàng
+    })
+    ->exists();
 
+if (!$hasPurchased) {
+    return redirect()->back()->with('error', 'Bạn cần mua sản phẩm trước khi đánh giá.');
+}
         // Trả về view với dữ liệu sản phẩm và giá nhỏ nhất
         return view('client.page.detail-product.general', compact(
             'product',

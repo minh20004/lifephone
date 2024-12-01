@@ -52,4 +52,8 @@ class Product extends Model
 public function loadAllCustomer(){
     return $this->belongsTo(Customer::class,'customer_id' );
 }
+public function order()
+{
+    return $this->belongsTo(Order::class);
+}
 }
