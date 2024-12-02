@@ -42,7 +42,9 @@
             </div>
             
         <!-- Table of items -->
-        @if(session()->has('cart') && count(session('cart')) > 0)
+        {{-- @if((auth('customer')->check() && count($cartItems) > 0) || (session()->has('cart') && count(session('cart')) > 0)) --}}
+        {{-- @if(session()->has('cart') && count(session('cart')) > 0) --}}
+        @if(count($cartItems) > 0)
         <table class="table position-relative z-2 mb-4">
           <thead>
             <tr>
@@ -90,7 +92,7 @@
                   
                   <div class="count-input" style="display: flex; align-items: center; border: 1px solid #d1d5db; border-radius: 8px; width: 120px; justify-content: space-between; padding: 5px;">
                       <button type="button" class="btn-decrement" style="background: none; border: none; font-size: 20px; cursor: pointer;">−</button>
-                      <input type="number" class="quantity-input" value="{{ $item['quantity'] }}" readonly style="width: 30px; text-align: center; border: none; outline: none; font-size: 16px;">
+                      <input type="number" class="quantity-input" value="{{ $item['quantity'] }}" readonly style="width: 60px; text-align: center; border: none; outline: none; font-size: 16px;">
                       <button type="button" class="btn-increment" style="background: none; border: none; font-size: 20px; cursor: pointer;">+</button>
                   </div>
                 

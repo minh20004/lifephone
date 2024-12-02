@@ -51,6 +51,12 @@
             <div class="mb-3">
                 <textarea name="description" class="form-control" rows="4" placeholder="Nội dung"></textarea>
             </div>
+            <div class="border-top pt-4 mt-4">
+                <div class="d-flex justify-content-between mb-3">
+                  <span class="fs-sm">Tổng ước tính:</span>
+                  <span class="h5 mb-0">{{ number_format($estimatedTotal, 0, ',', '.') }} đ</span>
+                </div>
+              </div>
             <button type="button" class="btn btn-primary w-100" id="place-order-btn">Đặt hàng</button>
         </form>
     </div>

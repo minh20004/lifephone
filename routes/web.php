@@ -155,6 +155,8 @@ Route::get('/order-failure', function () {
 Route::post('/order/{id}/retry-payment', [OrderController::class, 'retryPayment'])->name('order.retryPayment');
 // web.php
 Route::get('/checkout-failure/{id}', [OrderController::class, 'retryPayment'])->name('checkout-failure');
+// Trong web.php
+Route::get('/checkout/{order_id}', [OrderController::class, 'retryPayment'])->name('checkout-vnpay');
 
 
 // ------------------------------------------------- ADMIN---------------------------------------------------------

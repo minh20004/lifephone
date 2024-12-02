@@ -142,12 +142,12 @@
                                         <button type="submit" class="btn btn-success">Thanh toán lại</button>
                                     </form> --}}
                                     @if($order->status == 'Thanh toán thất bại')
-                                        <!-- Hiển thị nút "Thanh toán lại" nếu đơn hàng có trạng thái thất bại -->
                                         <form action="{{ route('order.retryPayment', $order->id) }}" method="POST">
                                             @csrf
                                             <button type="submit" class="btn btn-warning">Thanh toán lại</button>
                                         </form>
                                     @endif
+
                                     
 
 

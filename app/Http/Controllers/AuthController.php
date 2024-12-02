@@ -138,6 +138,7 @@ class AuthController extends Controller
 
     public function showLogin_customer()
     {
+        
         return view('client/page/auth/signin-customer'); 
     }
 
@@ -155,6 +156,11 @@ class AuthController extends Controller
         ]);
     
         $credentials = $request->only('email', 'password');
+
+        if (auth('customer')->attempt($credentials)) {
+            // Xóa session voucher khi đăng nhập thành công
+            session()->forget('voucher');
+        }
     
         // Kiểm tra nếu thông tin đăng nhập hợp lệ
         if (Auth::guard('customer')->attempt($credentials)) {
@@ -175,6 +181,11 @@ class AuthController extends Controller
     
     public function customerLogout()
     {
+        $customerId = auth('customer')->id();
+    
+    // Xóa voucher trong session khi người dùng đăng xuất
+        session()->forget('voucher');
+
         Auth::guard('customer')->logout();
         return redirect()->route('home');
     }

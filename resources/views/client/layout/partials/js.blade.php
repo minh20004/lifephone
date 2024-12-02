@@ -187,7 +187,7 @@
     });
 </script>
 {{-- Hàm tăng giảm số lượng sản phẩm trong giỏ hàng --}}
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', function () {
     // Xử lý sự kiện thay đổi số lượng
     document.querySelectorAll('.btn-decrement, .btn-increment').forEach(function (button) {
@@ -248,7 +248,7 @@
             }
         })
         .catch(error => console.error('Error:', error));
-}
+    }
 
 </script>
 <script>
@@ -278,7 +278,7 @@
             })
             .catch(error => console.error('Error:', error));
     }
-</script>
+</script> --}}
 
 {{-- thay dổi số trong trên giỏ hàng --}}
 <script>
@@ -307,5 +307,101 @@
 
 </script>
 
+{{-- tăng giỏ số lượng nháp --}}
+{{-- <script>
+    document.querySelectorAll('.btn-increment, .btn-decrement').forEach(button => {
+        button.addEventListener('click', function() {
+            const row = this.closest('tr');
+            const productId = row.dataset.productId;
+            const modelId = row.dataset.modelId;
+            const colorId = row.dataset.colorId;
+            const input = row.querySelector('.quantity-input');
+            let quantity = parseInt(input.value);
 
+            if (this.classList.contains('btn-increment')) quantity++;
+            if (this.classList.contains('btn-decrement') && quantity > 1) quantity--;
 
+            // Cập nhật số lượng hiển thị
+            input.value = quantity;
+
+            // Gửi yêu cầu cập nhật số lượng bằng Ajax
+            fetch(`/cart/update`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
+                body: JSON.stringify({ productId, modelId, colorId, quantity })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Cập nhật giá tổng cộng
+                    row.querySelector(`#itemTotal-${productId}-${modelId}-${colorId}`).textContent = data.itemTotal;
+                    document.querySelector('#cart-total-price').textContent = data.totalPrice;
+                }
+            })
+            .catch(err => console.error(err));
+        });
+    });
+
+</script> --}}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.btn-decrement, .btn-increment').forEach(function (button) {
+        button.addEventListener('click', function () {
+            const isIncrement = this.classList.contains('btn-increment');
+            const input = this.closest('.count-input').querySelector('input');
+            let quantity = parseInt(input.value);
+
+            // Tăng hoặc giảm số lượng
+            if (isIncrement) {
+                quantity++;
+            } else if (quantity > 1) {
+                quantity--;
+            }
+
+            // Cập nhật giá trị trong ô input
+            input.value = quantity;
+
+            // Lấy thông tin sản phẩm
+            const row = this.closest('tr');
+            const productId = row.dataset.productId;
+            const modelId = row.dataset.modelId;
+            const colorId = row.dataset.colorId;
+
+            // Gửi yêu cầu AJAX để cập nhật số lượng
+            fetch('{{ route('cart.update') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ productId, modelId, colorId, quantity })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Cập nhật tổng giá của sản phẩm
+                        document.querySelector(`#itemTotal-${productId}-${modelId}-${colorId}`).textContent = data.itemTotal + ' VNĐ';
+
+                        // Cập nhật tổng giá trị giỏ hàng
+                        document.querySelector('#totalPrice').textContent = data.totalPrice + ' VNĐ';
+
+                        // Cập nhật tổng giá trị sau khi giảm giá (nếu có)
+                        if (data.totalAfterDiscount !== undefined) {
+                            document.querySelector('#totalAfterDiscount').textContent = data.totalAfterDiscount + ' VNĐ';
+                        }
+
+                        // Cập nhật giảm giá
+                        if (data.discount !== undefined) {
+                            document.querySelector('#discount').textContent = data.discount + ' VNĐ';
+                        }
+                    } else {
+                        console.error('Lỗi khi cập nhật giỏ hàng:', data.message);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
+});
+
+</script>
