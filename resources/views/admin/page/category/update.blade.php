@@ -22,6 +22,33 @@
                                 </div>
                             @enderror
                         </div>
+
+                        @if ($category->image)
+                        <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" width="100" class="mb-2">
+                        @endif
+                        <div class="mb-3">
+                            <label for="image" class="form-label text-dark fw-bold fs-5">Thay đổi hình ảnh</label>
+                            <input type="file" class="form-control @error('image') is-invalid @enderror" name="image">
+                            @error('image')
+                                <div class="invalid-feedback text-danger">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
+                        @if ($category->image_page)
+                        <img src="{{ asset('storage/' . $category->image_page) }}" alt="{{ $category->image_page }}" width="100" class="mb-2">
+                        @endif
+                        <div class="mb-3">
+                            <label for="image_page" class="form-label text-dark fw-bold fs-5">Thay đổi hình ảnh trang </label>
+                            <input type="file" class="form-control @error('image_page') is-invalid @enderror" name="image_page">
+                            @error('image_page')
+                                <div class="invalid-feedback text-danger">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
                         <div class="mb-3 d-flex justify-content-between">
                             <div>
                                 <a href="{{ route('category.index') }}" class="btn btn-dark"> Quay lại</a>

@@ -39,7 +39,7 @@ class ProductController extends Controller
         return view('admin.page.product.index', ['products' => $listProduct, 'search' => $search]);
     }
 
-    // show biến thể sản phẩm 
+    // show biến thể sản phẩm
     public function showVariants($id)
     {
         // $product = Product::with('variants.color', 'variants.capacity')->findOrFail($id);
@@ -48,6 +48,17 @@ class ProductController extends Controller
         $variants = $product->variants;
         return view('admin.page.product.variants', compact('product', 'variants'));
     }
+
+
+
+
+
+
+    
+
+
+
+
 
 
 
@@ -70,7 +81,7 @@ class ProductController extends Controller
         $validateData = $request->validate([
             'product_code' => 'required',
             'name' => 'required',
-            'image_url' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048',
+            'image_url' => 'nullable|file|mimes:png,jpg,jpeg,gif,webp|max:2048',
             'description' => 'required',
             'category_id' => 'required',
             'variants' => 'required|array',
@@ -163,22 +174,30 @@ class ProductController extends Controller
 
 
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        // Lấy thông tin sản phẩm
+        // Lấy thông tin sản phẩm và các biến thể
         $product = Product::with('variants.color', 'variants.capacity')->findOrFail($id);
 
-        // Tăng lượt xem lên 1
+        // Tăng lượt xem
         $product->increment('views');
-        // hiển thị giá nhỏ nhat
-        $minPrice = $product->variants->min('price_difference');
 
-        // Trả về view với dữ liệu sản phẩm
-        return view('client.page.detail-product.general', compact('product','minPrice')); // Chú ý đường dẫn view
+        // Lọc các biến thể còn hàng
+        $availableVariants = $product->variants->filter(function ($variant) {
+            return $variant->stock > 0; // Chỉ lấy biến thể có số lượng tồn lớn hơn 0
+        });
+
+        // Lấy giá nhỏ nhất từ các biến thể còn hàng
+        $minPrice = $availableVariants->min('price_difference');
+
+        // Trả về view với dữ liệu sản phẩm và giá nhỏ nhất
+        return view('client.page.detail-product.general', compact(
+            'product',
+            'minPrice'
+        ));
     }
+
+
 
     public function edit(string $id)
     {
@@ -247,7 +266,7 @@ class ProductController extends Controller
         if (!empty($errors)) {
             return back()->withErrors($errors)->withInput();
         }
-        
+
 
         $product = Product::findOrFail($id);
 
@@ -304,7 +323,7 @@ class ProductController extends Controller
 
         return redirect()->route('product.index')->with('success', 'Sản phẩm đã được cập nhật thành công!');
     }
-    
+
 
 
 
@@ -349,5 +368,48 @@ class ProductController extends Controller
         $product->restore();
 
         return redirect()->route('product.trashed')->with('success', 'Sản phẩm đã được khôi phục thành công');
+    }
+
+    public function getProductsByCategory($categoryId)
+    {
+        $products = Product::where('category_id', $categoryId)->get();
+
+        return view('products.by-category', compact('products'));
+    }
+    public function filterProducts(Request $request)
+    {
+        // Xử lý các tham số lọc từ yêu cầu
+        $query = Product::query();
+
+        // Lọc theo category
+        if ($request->has('category_id') && $request->category_id) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        // Lọc theo giá
+        if ($request->has('min_price') && $request->min_price) {
+            $query->where('price', '>=', $request->min_price);
+        }
+        if ($request->has('max_price') && $request->max_price) {
+            $query->where('price', '<=', $request->max_price);
+        }
+
+        // Lọc theo dung lượng
+        if ($request->has('capacities') && !empty($request->capacities)) {
+            $query->whereIn('capacity_id', $request->capacities);
+        }
+
+        // Lọc theo màu sắc
+        if ($request->has('colors') && !empty($request->colors)) {
+            $query->whereIn('color_id', $request->colors);
+        }
+
+        // Lấy sản phẩm đã lọc
+        $products = $query->get();
+
+        // Trả về danh sách sản phẩm dưới dạng HTML (có thể thay đổi tùy theo nhu cầu)
+        $html = view('partials.product-list', compact('products'))->render();
+
+        return response()->json(['html' => $html]);
     }
 }
