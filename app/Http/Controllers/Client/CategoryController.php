@@ -46,8 +46,8 @@ class   CategoryController extends Controller
     {
         // Lọc theo các tham số
         $capacityId = $request->input('capacity_id');
-        $minPrice = $request->get('min_price', 0);
-        $maxPrice = $request->get('max_price', 1000000);
+        $minPrice = $request->get('min_price', 1000000);
+        $maxPrice = $request->get('max_price', 10000000);
         $perPage = $request->get('per_page', 6);  // Số sản phẩm mỗi trang
         $category = Category::findOrFail($id);
         $products = $category->products()->paginate(12);

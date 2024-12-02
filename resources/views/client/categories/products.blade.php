@@ -49,7 +49,7 @@
               <div class="mb-3">
                 <label for="min_price" class="form-label">Giá tối thiểu:</label>
                 <input type="number" id="min_price" name="min_price" class="form-control"
-                  value="{{ request('min_price', 0) }}" min="0" step="1000000" placeholder="Nhập giá tối thiểu">
+                  value="{{ request('min_price', 10000000) }}" min="1000000" step="500000" placeholder="Nhập giá tối thiểu">
               </div>
 
               <div class="mb-3">
