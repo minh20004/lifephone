@@ -7,6 +7,7 @@ News
 @section('content')
 
 <div class="page-content">
+    
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
@@ -31,9 +32,10 @@ News
                             </div>
                         </div>
                         <!-- end card header -->
-
-                        <div><button class="btn btn-primary "><a style="color: yellow;" href="{{route('new_admin.create')}}">thêm</a></button></div>
-
+                        @if ($listNews->isEmpty())
+                <p class="text-center text-muted">Không có tin tức nào để hiển thị.</p>
+            @else
+                        <div><button class="btn btn-primary " ><a style="color: yellow;" href="{{route('new_admin.create')}}">thêm</a></button></div>
                         <div class="card-body">
                             <div class="tab-content text-muted">
                                 <div class="tab-pane active" id="productnav-all" role="tabpanel">
@@ -49,14 +51,14 @@ News
                                                             <th data-column-id="product" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 94px;">
                                                                 <div class="gridjs-th-content">STT</div>
                                                             </th>
-                                                            <th data-column-id="product" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 300;">
+                                                            <th data-column-id="product" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 300px;">
                                                                 <div class="gridjs-th-content">Tiêu đề</div>
                                                             </th>
                                                             <th data-column-id="user" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 105px;">
                                                                 <div class="gridjs-th-content">Người đăng</div>
                                                             </th>
                                                             <th data-column-id="comment" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 360px;">
-                                                                <div class="gridjs-th-content">Nội dung</div>
+                                                                <div class="gridjs-th-content">Nội dung ngắn</div>
                                                             </th>
                                                             <th data-column-id="rating" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 105px;">
                                                                 <div class="gridjs-th-content">Danh mục tin tức</div>
@@ -86,7 +88,7 @@ News
                                                             <td data-column-id="STT" class="gridjs-td">{{$key+1}}</td>
                                                             <td data-column-id="orders" class="gridjs-td">{{$News->title}}</td>
                                                             <td data-column-id="user" class="gridjs-td">{{$News->author->name}}</td>
-                                                            <td data-column-id="orders" class="gridjs-td">{{$News->content}}</td>
+                                                            <td data-column-id="orders" class="gridjs-td">{{$News->short_content}}</td>
                                                             <td data-column-id="user" class="gridjs-td">{{$News->categoryNews->title}}</td>
 
                                                             <td data-column-id="orders" class="gridjs-td">{{$News->status}}</td>
@@ -95,7 +97,8 @@ News
                                                             </td>
                                                             <td data-column-id="action" class="gridjs-td">
                                                                 <div>
-                                                                    <a href="{{ route('new_admin.edit', $News->id) }}" class="btn btn-warning me-2">Edit</a>
+                                                                <a href="{{ route('new_admin.show', $News->id) }}" class="btn btn-success me-2">Xem chi tiết</a>
+                                                                    <a href="{{ route('new_admin.edit', $News->id) }}" class="btn btn-warning me-2">Sửa</a>
                                                                     <form action="{{route('new_admin.destroy',$News->id)}}" method="post">
 
                                                                         @method('DELETE')

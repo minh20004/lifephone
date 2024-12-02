@@ -34,6 +34,8 @@ class ProductVariant extends Model
     {
         return $this->belongsTo(Color::class, 'color_id');
     }
+
+    
 }
 // class ProductVariant extends Model
 // {

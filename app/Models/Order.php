@@ -37,7 +37,7 @@ class Order extends Model
     // Các trường có thể điền được
     protected $fillable = [
         'order_code',
-        'user_id',
+        'customer_id',
         'name',
         'address',
         'email',
@@ -65,5 +65,10 @@ class Order extends Model
     public function voucher()
     {
         return $this->belongsTo(Voucher::class);
+    }
+    // Quan hệ với bảng customers
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
     }
 }

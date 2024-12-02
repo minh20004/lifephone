@@ -1,3 +1,37 @@
+<div class="modal fade" id="reviewForm" data-bs-backdrop="static" tabindex="-1" aria-labelledby="reviewFormLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <form class="modal-content needs-validation" id="submitReviewForm" method="POST" action="{{ route('reviews.store', ['id' => $product->id]) }}">
+      @csrf
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="reviewFormLabel">Đánh giá của bạn về sản phẩm</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pb-3 pt-0">
+        <input type="hidden" name="product_id" value="{{ $product->id }}">
+        <div class="mb-3">
+          <label class="form-label">Đánh giá <span class="text-danger">*</span></label>
+          <select class="form-select" name="rating" required>
+            <option value="" disabled selected>Chọn số sao</option>
+            @for ($i = 1; $i <= 5; $i++)
+              <option value="{{ $i }}">{{ $i }} sao</option>
+            @endfor
+          </select>
+          <div class="invalid-feedback">Hãy chọn số sao cho sản phẩm!</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="review-text">Bình luận <span class="text-danger">*</span></label>
+          <textarea class="form-control" rows="4" id="review-text" name="comment" minlength="20" required></textarea>
+          <div class="invalid-feedback">Bình luận cần có ít nhất 20 ký tự!</div>
+        </div>
+      </div>
+      <div class="modal-footer flex-nowrap gap-3 border-0 px-4">
+        <button type="reset" class="btn btn-secondary w-100 m-0" data-bs-dismiss="modal">Quay lại</button>
+        <button type="submit" class="btn btn-primary w-100 m-0">Gửi đánh giá</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- Reviews -->
 <div class="d-flex align-items-center pt-5 mb-4 mt-2 mt-md-3 mt-lg-4" id="reviews" style="scroll-margin-top: 80px">
     <h2 class="h3 mb-0">Đánh giá</h2>
@@ -21,7 +55,7 @@
           <i class="ci-star-filled text-warning"></i>
           <i class="ci-star text-body-tertiary opacity-60"></i>
         </div>
-        <div class="fs-sm">68 đánh giá</div>
+        <div class="fs-sm" >{{ $reviewCount }} đánh giá</div>
       </div>
     </div>
     <div class="col-sm-8">
@@ -88,30 +122,30 @@
   </div>
 
   <!-- Review -->
+  @foreach ($reviews as $review)
+  
   <div class="border-bottom py-3 mb-3">
     <div class="d-flex align-items-center mb-3">
       <div class="text-nowrap me-3">
-        <span class="h6 mb-0">Rafael Marquez</span>
+        <span class="h6 mb-0">{{ $review->user->name }}</span> <!-- Tên người dùng -->
         <i class="ci-check-circle text-success align-middle ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Verified customer"></i>
       </div>
-      <span class="text-body-secondary fs-sm ms-auto">June 28, 2024</span>
+      <span class="text-body-secondary fs-sm ms-auto">{{ $review->created_at->format('F d, Y') }}</span> <!-- Ngày đánh giá -->
     </div>
     <div class="d-flex gap-1 fs-sm pb-2 mb-1">
-      <i class="ci-star-filled text-warning"></i>
-      <i class="ci-star-filled text-warning"></i>
-      <i class="ci-star-filled text-warning"></i>
-      <i class="ci-star-filled text-warning"></i>
-      <i class="ci-star-filled text-warning"></i>
+      @for ($i = 1; $i <= 5; $i++)
+        @if ($i <= $review->rating)
+          <i class="ci-star-filled text-warning"></i>
+        @else
+          <i class="ci-star text-body-tertiary opacity-60"></i>
+        @endif
+      @endfor
     </div>
     <ul class="list-inline gap-2 pb-2 mb-1">
-      <li class="fs-sm me-4"><span class="text-dark-emphasis fw-medium">Color:</span> Blue</li>
-      <li class="fs-sm"><span class="text-dark-emphasis fw-medium">Model:</span> 128GB</li>
+      <li class="fs-sm me-4"><span class="text-dark-emphasis fw-medium">Color:</span> {{ $review->color }}</li>
+      <li class="fs-sm"><span class="text-dark-emphasis fw-medium">Model:</span> {{ $review->model }}</li>
     </ul>
-    <p class="fs-sm">The phone has a new A15 Bionic chip, which makes it lightning-fast and responsive. The camera system has also been upgraded, and it now includes a 12-megapixel ultra-wide lens and a 12-megapixel wide lens.</p>
-    <ul class="list-unstyled fs-sm pb-2 mb-1">
-      <li><span class="text-dark-emphasis fw-medium">Pros:</span> Powerful A15 Bionic chip, improved camera</li>
-      <li><span class="text-dark-emphasis fw-medium">Cons:</span> High price tag</li>
-    </ul>
+    <p class="fs-sm">{{ $review->comment }}</p>
     <div class="nav align-items-center">
       <button type="button" class="nav-link animate-underline px-0">
         <i class="ci-corner-down-right fs-base ms-1 me-1"></i>
@@ -128,47 +162,9 @@
       </button>
     </div>
   </div>
+@endforeach
 
-  <!-- Review -->
-  <div class="border-bottom py-3 mb-3">
-    <div class="d-flex align-items-center mb-3">
-      <div class="text-nowrap me-3">
-        <span class="h6 mb-0">Daniel Adams</span>
-      </div>
-      <span class="text-body-secondary fs-sm ms-auto">May 15, 2024</span>
-    </div>
-    <div class="d-flex gap-1 fs-sm pb-2 mb-1">
-      <i class="ci-star-filled text-warning"></i>
-      <i class="ci-star-filled text-warning"></i>
-      <i class="ci-star-filled text-warning"></i>
-      <i class="ci-star-filled text-warning"></i>
-      <i class="ci-star text-body-tertiary opacity-75"></i>
-    </div>
-    <ul class="list-inline gap-2 pb-2 mb-1">
-      <li class="fs-sm me-4"><span class="text-dark-emphasis fw-medium">Color:</span> Blue</li>
-      <li class="fs-sm"><span class="text-dark-emphasis fw-medium">Model:</span> 128GB</li>
-    </ul>
-    <p class="fs-sm">The phone has a new A15 Bionic chip, which makes it lightning-fast and responsive. The camera system has also been upgraded, and it now includes a 12-megapixel ultra-wide lens and a 12-megapixel wide lens.</p>
-    <ul class="list-unstyled fs-sm pb-2 mb-1">
-      <li><span class="text-dark-emphasis fw-medium">Pros:</span> Powerful A15 Bionic chip, improved camera</li>
-      <li><span class="text-dark-emphasis fw-medium">Cons:</span> High price tag</li>
-    </ul>
-    <div class="nav align-items-center">
-      <button type="button" class="nav-link animate-underline px-0">
-        <i class="ci-corner-down-right fs-base ms-1 me-1"></i>
-        <span class="animate-target">Reply</span>
-      </button>
-      <button type="button" class="nav-link text-body-secondary animate-scale px-0 ms-auto me-n1">
-        <i class="ci-thumbs-up text-success fs-base animate-target me-1"></i>
-        18
-      </button>
-      <hr class="vr my-2 mx-3">
-      <button type="button" class="nav-link text-body-secondary animate-scale px-0 ms-n1">
-        <i class="ci-thumbs-down text-danger fs-base animate-target me-1"></i>
-        2
-      </button>
-    </div>
-  </div>
+
 
   <div class="nav">
     <a class="nav-link text-primary animate-underline px-0" href="shop-product-reviews-electronics.html">

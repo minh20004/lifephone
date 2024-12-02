@@ -33,31 +33,29 @@
       </div>
       <div class="col-md-6 col-lg-5 col-xl-4 offset-lg-1 offset-xl-2">
         <ul class="list-unstyled d-flex flex-column gap-4 ps-md-4 ps-lg-0 mb-3">
+          @foreach($latestNews as $news)
           <li class="nav flex-nowrap align-items-center position-relative">
-            <img src="{{asset('client/img/home/electronics/vlog/01.jpg')}}" class="rounded" width="140" alt="Video cover">
-            <div class="ps-3">
-              <div class="fs-xs text-body-secondary lh-sm mb-2">6:16</div>
-              <a class="nav-link fs-sm hover-effect-underline stretched-link p-0" href="#!">5 New Cool Gadgets You Must See on Cartzilla - Cheap Budget</a>
-            </div>
+              <!-- Hình ảnh bài viết -->
+              <img src="{{ asset('storage/' . $news->thumbnail) }}" class="rounded" width="140" alt="{{ $news->title }}">
+              
+              <!-- Thông tin bài viết -->
+              <div class="ps-3">
+                  <!-- Thời gian đăng bài -->
+                  <div class="fs-xs text-body-secondary lh-sm mb-2">
+                      {{ $news->created_at->format('H:i') }}
+                  </div>
+  
+                  <!-- Tiêu đề bài viết -->
+                  <a class="nav-link fs-sm hover-effect-underline stretched-link p-0" href="{{ route('news.show', $news->slug) }}">
+                      {{ $news->title }}
+                  </a>
+              </div>
           </li>
-          <li class="nav flex-nowrap align-items-center position-relative">
-            <img src="{{asset('client/img/home/electronics/vlog/02.jpg')}}" class="rounded" width="140" alt="Video cover">
-            <div class="ps-3">
-              <div class="fs-xs text-body-secondary lh-sm mb-2">10:20</div>
-              <a class="nav-link fs-sm hover-effect-underline stretched-link p-0" href="#!">5 Super Useful Gadgets on Cartzilla You Must Have in 2023</a>
-            </div>
-          </li>
-          <li class="nav flex-nowrap align-items-center position-relative">
-            <img src="{{asset('client/img/home/electronics/vlog/03.jpg')}}" class="rounded" width="140" alt="Video cover">
-            <div class="ps-3">
-              <div class="fs-xs text-body-secondary lh-sm mb-2">8:40</div>
-              <a class="nav-link fs-sm hover-effect-underline stretched-link p-0" href="#!">Top 5 New Amazing Gadgets on Cartzilla You Must See</a>
-            </div>
-          </li>
+      @endforeach
         </ul>
         <div class="nav ps-md-4 ps-lg-0">
-          <a class="btn nav-link animate-underline text-decoration-none px-0" href="#!">
-            <span class="animate-target">View all</span>
+          <a class="btn nav-link animate-underline text-decoration-none px-0" href="{{ route('news.index') }}">
+            <span class="animate-target">Xem tất cả</span>
             <i class="ci-chevron-right fs-base ms-1"></i>
           </a>
         </div>
