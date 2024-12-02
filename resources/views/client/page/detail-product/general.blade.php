@@ -575,7 +575,7 @@ Lifephone
           <div class="nav align-items-center">
             <button type="button" class="nav-link animate-underline px-0">
               <i class="ci-corner-down-right fs-base ms-1 me-1"></i>
-              <span class="animate-target">Reply</span>
+              <span class="animate-target">Phản hồi</span>
             </button>
             <!-- Like button -->
             <button type="button" class="nav-link text-body-secondary animate-scale px-0 ms-auto me-n1 like-btn" data-review-id="{{ $review->id }}">
@@ -819,24 +819,25 @@ Lifephone
         formData.append('product_id', productId);
 
         fetch('{{ route('reviews.store', ['id' => $product->id]) }}', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('alert-container').innerHTML = '<div class="alert alert-success">' + data.message + '</div>';
-
-            const newReview = '<div class="review">' +
-                                 '<p><strong>' + data.review.user.name + '</strong> - ' + data.review.rating + ' sao</p>' +
-                                 '<p>' + data.review.content + '</p>' +
-                              '</div>';
-            document.getElementById('reviews').insertAdjacentHTML('afterbegin', newReview);
-
-            form.reset(); // Reset form fields
-        })
-        .catch(error => {
-            document.getElementById('alert-container').innerHTML = '<div class="alert alert-danger">Đã có lỗi xảy ra. Vui lòng thử lại.</div>';
-        });
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': '{{ csrf_token() }}', // CSRF token để bảo vệ
+    },
+    body: JSON.stringify({
+        rating: document.getElementById('rating').value,
+        comment: document.getElementById('content').value,
+    })
+})
+.then(response => response.json())
+.then(data => {
+    // Xử lý thành công, ví dụ hiển thị thông báo hoặc cập nhật giao diện
+    console.log(data.message);
+})
+.catch(error => {
+    // Xử lý lỗi
+    console.error(error);
+});
     });
 });
 

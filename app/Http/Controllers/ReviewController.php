@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Review;
 use Illuminate\Http\Request;
@@ -30,25 +32,43 @@ class ReviewController extends Controller
     {
         if (!auth()->check()) {
             return redirect()->route('customer.login')->with('error', 'Vui lòng đăng nhập để đánh giá.');
-        } else {
-            $request->validate([
-                'rating' => 'required|integer|min:1|max:5',
-                'comment' => 'required|string|min:5|max:500',
-            ]);
-
-            // Lấy user ID của người dùng đăng nhập
-            $userId = auth()->id();
-
-            // Lưu đánh giá vào database
-            Review::create([
-                'product_id' => $productId,
-                'customer_id' => $userId,
-                'rating' => $request->input('rating'),
-                'comment' => $request->input('comment'),
-            ]);
-
-            return redirect()->back()->with('success', 'Đánh giá của bạn đã được gửi.');
         }
+        
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string|min:5|max:500',
+        ]);
+        
+        $userId = auth()->id();
+        
+        // Kiểm tra xem khách hàng đã mua sản phẩm này chưa
+        $orderItems = OrderItem::whereHas('order', function ($query) use ($userId) {
+            $query->where('customer_id', $userId)
+                  ->where('status', 'completed'); // Điều kiện trạng thái đơn hàng
+        })->where('product_id', $productId)->get();
+        
+        if ($orderItems->isEmpty()) {
+            return redirect()->back()->with('error', 'Bạn chưa mua sản phẩm này nên không thể đánh giá.');
+        }
+        
+        // Kiểm tra nếu khách hàng đã bình luận cho bất kỳ lần mua nào
+        $existingReview = Review::where('product_id', $productId)
+                                ->where('customer_id', $userId)
+                                ->exists();
+        
+        if ($existingReview) {
+            return redirect()->back()->with('error', 'Bạn đã đánh giá sản phẩm này.');
+        }
+        
+        // Lưu đánh giá mới
+        Review::create([
+            'product_id' => $productId,
+            'customer_id' => $userId,
+            'rating' => $request->input('rating'),
+            'comment' => $request->input('comment'),
+        ]);
+        
+        return redirect()->back()->with('success', 'Đánh giá của bạn đã được gửi.');
     }
 
 
