@@ -16,8 +16,8 @@ class   CategoryController extends Controller
     public function shop(Request $request)
     {
         // Lấy các tham số lọc
-        $minPrice = $request->get('min_price', 0); // Mặc định 0 nếu không có giá trị
-        $maxPrice = $request->get('max_price', 1000000); // Mặc định giá tối đa
+        $minPrice = $request->get('min_price', 1000000); // Mặc định 0 nếu không có giá trị
+        $maxPrice = $request->get('max_price', 10000000); // Mặc định giá tối đa
 
         // Lấy danh mục và số lượng sản phẩm trong mỗi danh mục
         $categories = Category::withCount('products')->get();

@@ -47,8 +47,8 @@
                   <label for="min_price" class="form-label">Giá tối thiểu:</label>
                   <input type="number" id="min_price" name="min_price"
                     class="form-control"
-                    value="{{ request('min_price', 0) }}"
-                    min="0" step="1000000"
+                    value="{{ request('min_price', 1000000) }}"
+                    min="1000000" step="1000000"
                     placeholder="Nhập giá tối thiểu">
                 </div>
 
@@ -56,8 +56,8 @@
                   <label for="max_price" class="form-label">Giá tối đa:</label>
                   <input type="number" id="max_price" name="max_price"
                     class="form-control"
-                    value="{{ request('max_price', 1000000) }}"
-                    min="0" step="1000000"
+                    value="{{ request('max_price', 10000000) }}"
+                    min="1000000" step="1000000"
                     placeholder="Nhập giá tối đa">
                 </div>
 
