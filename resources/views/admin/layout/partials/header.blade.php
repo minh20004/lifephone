@@ -435,17 +435,17 @@
                             <ul class="nav nav-tabs dropdown-tabs nav-tabs-custom" data-dropdown-tabs="true" id="notificationItemsTab" role="tablist">
                                 <li class="nav-item waves-effect waves-light">
                                     <a class="nav-link active" data-bs-toggle="tab" href="#all-noti-tab" role="tab" aria-selected="true">
-                                        All (4)
+                                        Tất cả (4)
                                     </a>
                                 </li>
                                 <li class="nav-item waves-effect waves-light">
                                     <a class="nav-link" data-bs-toggle="tab" href="#messages-tab" role="tab" aria-selected="false">
-                                        Messages
+                                        Tin nhắn
                                     </a>
                                 </li>
                                 <li class="nav-item waves-effect waves-light">
                                     <a class="nav-link" data-bs-toggle="tab" href="#alerts-tab" role="tab" aria-selected="false">
-                                        Alerts
+                                        Đơn hàng
                                     </a>
                                 </li>
                             </ul>
@@ -665,7 +665,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade p-4" id="alerts-tab" role="tabpanel" aria-labelledby="alerts-tab"></div>
+                        <div class="tab-pane fade p-4" id="alerts-tab" role="tabpanel" aria-labelledby="alerts-tab">
+                            
+                        </div>
 
                         <div class="notification-actions" id="notification-actions">
                             <div class="d-flex text-muted justify-content-center">

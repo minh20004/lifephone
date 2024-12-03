@@ -9,9 +9,9 @@
         <div class="product-description">
           {!! $product->description !!}
       </div>
-
-
-
+      
+      
+      
         <ul class="list-unstyled d-flex flex-column gap-3 fs-sm pb-3 m-0 mb-2 mb-sm-3">
           <li class="d-flex align-items-center position-relative pe-4">
             <span>Model:</span>
@@ -71,9 +71,7 @@
           </a>
         </div>
 
-        @include('client.page.detail-product.reviews', [
- 
-    ])
+    @include('client.page.detail-product.reviews')
 
       <!-- Sticky product preview visible on screens > 991px wide (lg breakpoint) -->
       <aside class="col-md-5 col-xl-4 offset-xl-1 d-none d-md-block" style="margin-top: -100px">
@@ -103,7 +101,7 @@
                 <i class="ci-shopping-cart fs-base animate-target ms-n1 me-2"></i>
                 Thêm vào giỏ hàng
               </button>
-              <button type="button" class="btn btn-icon btn-secondary animate-pulse" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Add to Wishlist" aria-label="Add to Wishlist" data-id="{{$product->id}}">
+              <button type="button" class="btn btn-icon btn-secondary animate-pulse" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Add to Wishlist" aria-label="Add to Wishlist">
                 <i class="ci-heart fs-base animate-target"></i>
               </button>
               <button type="button" class="btn btn-icon btn-secondary animate-rotate" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Compare" aria-label="Compare">

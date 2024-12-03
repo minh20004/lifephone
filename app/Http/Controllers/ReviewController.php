@@ -44,7 +44,7 @@ class ReviewController extends Controller
         // Kiểm tra xem khách hàng đã mua sản phẩm này chưa
         $orderItems = OrderItem::whereHas('order', function ($query) use ($userId) {
             $query->where('customer_id', $userId)
-                  ->where('status', 'completed'); // Điều kiện trạng thái đơn hàng
+                  ->where('status', 'Đã hoàn thành'); // Điều kiện trạng thái đơn hàng
         })->where('product_id', $productId)->get();
         
         if ($orderItems->isEmpty()) {
@@ -104,17 +104,6 @@ class ReviewController extends Controller
         $review = Review::findOrFail($id);
         $review->delete();
         return redirect()->route('review.index');
-    }
-    public function showProductReviews($id)
-    {
-        $product = Product::findOrFail($id);
-
-        $reviews = Review::where('product_id', $id)->get();
-        $reviewCount = $reviews->count();
-        $averageRating = $reviews->avg('rating') ?? 0;
-
-
-        return view('client.page.detail-product.general', compact('reviews', 'reviewCount', 'averageRating'));
     }
     public function like(Request $request, $reviewId)
 {

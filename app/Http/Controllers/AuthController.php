@@ -138,7 +138,12 @@ class AuthController extends Controller
 
     public function showLogin_customer()
     {
+<<<<<<< HEAD
         return view('client/page/auth/signin-customer');
+=======
+        
+        return view('client/page/auth/signin-customer'); 
+>>>>>>> origin/tan
     }
 
     public function file_customer()
@@ -156,6 +161,14 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
 
+<<<<<<< HEAD
+=======
+        if (auth('customer')->attempt($credentials)) {
+            // Xóa session voucher khi đăng nhập thành công
+            session()->forget('voucher');
+        }
+    
+>>>>>>> origin/tan
         // Kiểm tra nếu thông tin đăng nhập hợp lệ
         if (Auth::guard('customer')->attempt($credentials)) {
             $customer = Auth::guard('customer')->user();
@@ -175,6 +188,11 @@ class AuthController extends Controller
 
     public function customerLogout()
     {
+        $customerId = auth('customer')->id();
+    
+    // Xóa voucher trong session khi người dùng đăng xuất
+        session()->forget('voucher');
+
         Auth::guard('customer')->logout();
         return redirect()->route('home');
     }

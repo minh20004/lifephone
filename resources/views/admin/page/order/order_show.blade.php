@@ -4,71 +4,116 @@
 @section('content')
     <div class="page-content">
         <div class="container-fluid">
-            <div class="card">
+            <div class="d-flex justify-content-between border align-items-center rounded-bottom">
                 <div class="m-3" style="margin-left: 20px">
-                    <a href="{{ route('orders.index') }}"><b class="fs-4 fw-bold">Chi Tiết Đơn Hàng {{ $order->order_code }}</b></a>
+                    <a class="text-decoration-none fs-5 text-danger" href="{{ route('orders.index') }}" >< Trở lại</a>
+                </div>
+                <div class="pe-3">
+                    <span class="text-danger"><span class="text-dark">Mã đơn hàng: {{ $order->order_code }}</span> | {{ $order->status }}</span>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-body">
-                    <p style="color: #000"><strong>Tên người nhận:</strong> {{ $order->name }}</p>
-                    <p style="color: #000"><strong>Địa chỉ:</strong> {{ $order->address }}</p>
-                    <p style="color: #000"><strong>Số điện thoại:</strong> {{ $order->phone }}</p>
-                    <p style="color: #000"><strong>Email:</strong> {{ $order->email ?? 'Không có' }}</p>
-                    <p style="color: #000"><strong>Phương thức thanh toán:</strong> {{ $order->payment_method }}</p>
-                    <p style="color: #000"><strong>Trạng thái:</strong> {{ $order->status }}</p>
-                    <p style="color: #000"><strong>Khuyến Mãi:</strong> {{ $order->voucher->discount_percentage ?? '0' }} 
-                        (Mã: {{ $order->voucher->code ?? 'Không có' }})
-                    </p>
-                </div>
-                
-            </div>
-            <div class="card ">
-                <div class="m-3" style="margin-left: 20px">
-                    <a href="{{ route('orders.index') }}"><b class="fs-4 fw-bold">Sản Phẩm Trong Đơn Hàng</b></a>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <table class="table table-bordered">
-                        <thead class="thead-light">
-                            <tr>
-                                <th>Tên sản phẩm</th>
-                                <th>Ảnh</th>
-                                <th>Màu sắc</th>
-                                <th>Dung lượng</th>
-                                <th>Số lượng</th>
-                                <th>Đơn giá</th>
-                                <th>Tổng giá</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($order->orderItems as $item)
-                                <tr>
-                                    <td>{{ $item->product->name }}</td>
-                                    <td>
-                                        @if ($item->product->image_url)
-                                            <img src="{{ asset('storage/' . $item->product->image_url) }}"
-                                                alt="{{ $item->product->name }}" style="width: 100px; height: auto;">
-                                        @else
-                                            Không có ảnh
-                                        @endif
-                                    </td>
-                                    <td>{{ $item->variant->color->name ?? 'Không có màu' }}</td>
-                                    <td>{{ $item->variant->capacity->name ?? 'Không có dung lượng' }}</td>
-                                    <td>{{ $item->quantity }}</td>
-                                    <td>{{ number_format($item->price, 0, ',', '.') }} vnđ</td>
-                                    <td>{{ number_format($item->total_price, 0, ',', '.') }} vnđ</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-
-                    </table>
-                    <div>
-                        <a href="{{ route('orders.index') }}" class="btn btn-dark"> Quay lại</a>
+            <div class="card shadow-sm ">
+                <div>
+                    <div class="d-flex align-items-center justify-content-start pe-3  border-bottom">
+                        <div class="w-25 p-3"><span>Tên người nhận</span></div>
+                        <div class=" border-start p-3">
+                            <div>{{ $order->name }}</div>
+                        </div>
                     </div>
-                    
+                        <div class="d-flex align-items-center justify-content-start pe-3  border-bottom">
+                            <div class="w-25 p-3"><span>Số điện thoại</span></div>
+                            <div class=" border-start p-3">
+                                <div>{{ $order->phone }}</div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-start pe-3  border-bottom">
+                            <div class="w-25 p-3"><span>Địa Chỉ</span></div>
+                            <div class=" border-start p-3">
+                                <div>{{ $order->address }}</div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-start pe-3 ">
+                            <div class="w-25 p-3"><span>Email</span></div>
+                            <div class=" border-start p-3">
+                                <div class="fs-6">{{ $order->email ?? 'Không có' }}</div>
+                            </div>
+                        </div>
                 </div>
+                <div style="
+                    background-image: repeating-linear-gradient(45deg, #e53bdc, #d51e55 33px, transparent 0, transparent 41px, #0bf373 0, #20c2e7 74px, transparent 0, transparent 82px);
+                    background-position-x: -1.875rem;
+                    background-size: 7.25rem .1875rem;
+                    height: .1875rem;
+                    width: 100%;">
+                </div>
+                <div class="pt-3">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fa-solid fa-shop"></i>
+                            <b>LifePhone</b>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center ">
+                        @foreach ($order->orderItems as $item)
+                        <div class="col-md-1">
+                            @if ($item->product->image_url)
+                                <img src="{{ asset('storage/' . $item->product->image_url) }}" alt="Product" class="img-fluid rounded">
+                            @else
+                                Không có ảnh
+                            @endif
+                        </div>
+                        <div class="col-md-5">
+                            <p class="mb-1 ms-3 fw-bold">{{ $item->product->name }}</p>
+                            <p class="mb-1 ms-3 text-muted">Phân loại hàng: {{ $item->variant->color->name ?? 'Không có màu' }}, {{ $item->variant->capacity->name ?? 'Không có dung lượng' }}</p>
+                            <p class="mb-1 ms-3 text-dark">x{{ $item->quantity }}</p>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <p class="mb-1 text-danger fw-600 ">{{ number_format($item->price, 0, ',', '.') }} đ</p>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                    <div class="border-top">
+                        <div class="d-flex align-items-center justify-content-end pe-3 text-end border-bottom">
+                            <div class="pe-3"><span>Tổng tiền hàng</span></div>
+                            <div class="w-25 border-start p-3">
+                                <div>{{ number_format($item->total_price, 0, ',', '.') }} đ</div>
+                            </div>
+                        </div>
+                            <div class="d-flex align-items-center justify-content-end pe-3 text-end border-bottom">
+                                <div class="pe-3"><span>Giảm giá</span></div>
+                                <div class="w-25 border-start p-3">
+                                    <div >{{ $order->voucher->discount_percentage  ?? '0' }} %</div>
+                                    
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-end pe-3 text-end border-bottom">
+                                <div class="pe-3"><span>Thành tiền</span></div>
+                                <div class="w-25 border-start p-3">
+                                    <div class="fs-5 fw-bold text-danger">{{ number_format($order->total_price, 0, ',', '.') }} đ</div>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center justify-content-end pe-3 text-end border-bottom">
+                                <div class="pe-3"><span>Phương thức thanh toán</span></div>
+                                <div class="w-25 border-start p-3">
+                                    <div class="fs-6"><b>{{$order->payment_method}}</b></div>
+                                </div>
+                            </div>
+                            <div>
+                                @if ($order->additional_status === 'Đã thanh toán')
+                                    <div class="alert alert-success text-center my-3">
+                                        Đơn đã được thanh toán. Số tiền cần thanh toán là <strong>0 đồng</strong>.
+                                    </div>
+                                @else
+                                    <div class="alert alert-warning text-center my-3">
+                                        Đơn hàng chưa được thanh toán. Tổng số tiền cần thanh toán là <strong>{{ number_format($order->total_price, 0, ',', '.') }} đ</strong>.
+                                    </div>
+                                @endif
+        
+                            </div>
         </div>
     </div>
 @endsection
