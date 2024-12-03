@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\VoucherRequest;
+use App\Http\Requests\updateVoucherRequest;
+use App\Http\Requests\VoucherRequest;       
 use App\Models\Voucher;
 use Illuminate\Http\Request;
 
@@ -62,7 +63,7 @@ class VoucherController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(VoucherRequest $request, string $id)
+    public function update(updateVoucherRequest $request, string $id)
     {
         $voucher = Voucher::findOrFail($id);
         $voucher -> update([

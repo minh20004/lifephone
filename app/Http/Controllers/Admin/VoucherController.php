@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\VoucherRequest;
 use App\Models\Voucher;
+use App\Http\Requests\UpdateVoucherRequest;
 use Illuminate\Http\Request;
 
 class VoucherController extends Controller
@@ -62,20 +63,18 @@ class VoucherController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(VoucherRequest $request, string $id)
-    {
-        $voucher = Voucher::findOrFail($id);
-        $voucher -> update([
-            'code' => $request->code,
-            'discount_percentage' => $request->discount_percentage,
-            'max_discount_amount' => $request->max_discount_amount,
-            'min_order_value' => $request->min_order_value,
-            'start_date' => $request->start_date,
-            'end_date' => $request->end_date,
-            'usage_limit' => $request->usage_limit,
-        ]);
-        return redirect()->route('vouchers.index');
-    }
+    public function update(updateVoucherRequest $request, $id)
+{
+    // Tìm voucher theo ID
+    $voucher = Voucher::findOrFail($id);
+
+    // Cập nhật voucher với dữ liệu đã được xác thực
+    $voucher->update($request->validated());
+
+    // Redirect về trang danh sách vouchers
+    return redirect()->route('vouchers.index')->with('success', 'Voucher updated successfully');
+}
+
 
     /**
      * Remove the specified resource from storage.

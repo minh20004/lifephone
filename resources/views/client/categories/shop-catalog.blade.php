@@ -67,7 +67,6 @@
           </div>
         </div>
       </aside>
-
       <!-- Product Grid -->
       <div class="col-lg-9">
         @if($latestProducts->isEmpty())

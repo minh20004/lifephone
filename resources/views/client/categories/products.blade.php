@@ -51,30 +51,14 @@
                 <input type="number" id="min_price" name="min_price" class="form-control"
                   value="{{ request('min_price', 10000000) }}" min="1000000" step="500000" placeholder="Nhập giá tối thiểu">
               </div>
-
               <div class="mb-3">
                 <label for="max_price" class="form-label">Giá tối đa:</label>
                 <input type="number" id="max_price" name="max_price" class="form-control"
                   value="{{ request('max_price', 1000000) }}" min="0" step="1000000" placeholder="Nhập giá tối đa">
               </div>
-
-              <!-- Bộ lọc dung lượng -->
-              <div class="mb-3">
-                <label for="capacity_id" class="form-label">Dung lượng</label>
-                <select id="capacity_id" name="capacity_id" class="form-select">
-                  <option value="">Chọn dung lượng</option>
-                  @foreach ($capacities as $capacity)
-                  <option value="{{ $capacity->id }}" {{ request('capacity_id') == $capacity->id ? 'selected' : '' }}>
-                    {{ $capacity->name }}
-                  </option>
-                  @endforeach
-                </select>
-              </div>
-
               <!-- Nút lọc -->
               <button type="submit" class="btn btn-primary w-100">Lọc sản phẩm</button>
             </form>
-
             <!-- Other filters (Price, Capacity, Color) giữ nguyên -->
           </div>
         </div>
