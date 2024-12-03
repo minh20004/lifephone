@@ -30,6 +30,7 @@ class updateVoucherRequest extends FormRequest
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'usage_limit' => 'required|integer|min:1',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ];
     }
 
@@ -61,6 +62,7 @@ class updateVoucherRequest extends FormRequest
             'usage_limit.required' => 'Voucher usage limit is required.',
             'usage_limit.integer' => 'Voucher usage limit must be an integer.',
             'usage_limit.min' => 'Voucher usage limit must be at least 1.',
+            'image.image' => 'Voucher image must be an image.',
         ];
     }
 }

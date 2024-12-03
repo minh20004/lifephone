@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('voucher', function (Blueprint $table) {
+        Schema::table('vouchers', function (Blueprint $table) {
             $table->string('image')->nullable(); // Thay 'column_name' bằng tên cột trước đó
         });
     }
@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('voucher', function (Blueprint $table) {
+        Schema::table('vouchers', function (Blueprint $table) {
             $table->dropColumn('image');
         });
     }
