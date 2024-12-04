@@ -180,7 +180,7 @@ Route::get('/customer/add', [AuthController::class, 'createCustomer'])->name('cu
 Route::post('/customer/creat', [AuthController::class, 'storeCustomer'])->name('customer.creat');
 Route::put('/customer/{id}/update', [AuthController::class, 'updateCustomer'])->name('customer.update');
 Route::put('/customer/{id}/updateContact', [AuthController::class, 'updateContact'])->name('customer.updateContact');
-Route::put('/customer/{id}/changePassword', [AuthController::class, 'changePassword'])->name('customer.changePassword');
+// Route::put('/customer/{id}/changePassword', [AuthController::class, 'changePassword'])->name('customer.changePassword');
 
 Route::put('/customer/update-avatar/{id}', [AuthController::class, 'updateAvatar'])->name('customer.updateAvatar');
 Route::delete('/customer/{id}/avatar', [AuthController::class, 'deleteAvatar'])->name('customer.deleteAvatar');
@@ -194,6 +194,8 @@ Route::post('/customer/login', [AuthController::class, 'customerLogin'])->name('
 Route::post('/customer/logout', [AuthController::class, 'customerLogout'])->name('customer.logout');
 
 Route::middleware(['auth:customer', 'isCustomer'])->group(function () {
+    Route::put('/customer/{id}/changePassword', [AuthController::class, 'changePassword'])->name('customer.changePassword');
+
     Route::post('/update-email', [AuthController::class, 'updateEmail'])->name('customer.updateEmail');
     
     Route::get('/customer/verify-email-change/{token}', [AuthController::class, 'verifyEmailChange'])->name('customer.verifyEmailChange');

@@ -558,52 +558,53 @@ class AuthController extends Controller
     public function updateEmail(Request $request)
     {
         $request->validate([
-            'new_email' => 'required|email|unique:customers,email',
+            'email' => 'required|email|unique:customers,email',
             'password' => 'required|string',
         ]);
-    
-        $customer = auth()->user();
-    
+
+        $customer = Auth::guard('customer')->user();
+
         // Kiểm tra mật khẩu hiện tại
         if (!Hash::check($request->password, $customer->password)) {
             return back()->withErrors(['password' => 'Mật khẩu hiện tại không chính xác']);
         }
-    
+
         // Tạo token xác nhận thay đổi email
         $verificationToken = Str::random(64);
-    
+
         // Lưu token và email mới vào session
         session([
             'verification_token' => $verificationToken,
-            'new_email' => $request->new_email,
+            'email' => $request->email,
         ]);
-    
-        // Gửi email xác nhận
+
+        // Gửi email xác nhận thay đổi email
         Mail::send('email.verify_email_change', ['token' => $verificationToken], function ($message) use ($request) {
-            $message->to($request->new_email)->subject('Xác nhận thay đổi email');
+            $message->to($request->email)->subject('Xác nhận thay đổi email');
         });
-    
+
         return back()->with('success', 'Vui lòng kiểm tra email mới để xác nhận thay đổi.');
     }
 
-
+    // Gửi lại email để thay đổi
     public function verifyEmailChange($token)
     {
-        $customer = auth()->user();
+        $customer = Auth::guard('customer')->user();
         $storedToken = session('verification_token');
-        $newEmail = session('new_email');
-    
-        if ($token !== $storedToken) {
+        $newEmail = session('email');
+
+        if (!$customer || $token !== $storedToken) {
             return redirect()->route('customer.profile')->withErrors(['email' => 'Token xác nhận không hợp lệ hoặc đã hết hạn.']);
         }
-    
+
         // Cập nhật email mới vào cơ sở dữ liệu
-        $customer->email = $newEmail;
-        $customer->save();
-    
+        $customer->update([
+            'email' => $newEmail,
+        ]);
+
         // Xóa token và email mới khỏi session
-        session()->forget(['verification_token', 'new_email']);
-    
+        session()->forget(['verification_token', 'email']);
+
         return redirect()->route('customer.profile')->with('success', 'Email của bạn đã được thay đổi thành công.');
     }
     

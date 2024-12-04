@@ -169,7 +169,7 @@ class ProductController extends Controller
         }
 
 
-        return redirect()->route('product.index')->with('success', 'Sản phẩm đã được tạo thành công!');
+        return redirect()->route('product-admin.index')->with('success', 'Sản phẩm đã được tạo thành công!');
     }
 
 
@@ -335,7 +335,7 @@ class ProductController extends Controller
 
         $product->delete();
 
-        return redirect()->route('product.index');
+        return redirect()->route('product-admin.index');
     }
 
     public function trashed(Request $request)
