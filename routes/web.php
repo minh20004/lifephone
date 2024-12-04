@@ -263,6 +263,7 @@ Route::get('/search', [ClientCategoryController::class, 'search'])->name('produc
 // categoy product
 Route::get('/danh-muc-san-pham', [FrontendControlle::class, 'index_cate_all'])->name('danh-muc-san-pham');
 Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+Route::get('/products/{id}/reviews', [ProductController::class, 'loadReviews'])->name('products.reviews');
 
 
 

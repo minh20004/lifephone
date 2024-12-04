@@ -117,17 +117,10 @@
         @endif
         @endfor
     </div>
-    <ul class="list-inline gap-2 pb-2 mb-1">
-      <li class="fs-sm me-4"><span class="text-dark-emphasis fw-medium">Color:</span>
-
-
-      <li class="fs-sm"><span class="text-dark-emphasis fw-medium">Dung lượng:</span>
-
-      </li>
-    </ul>
+<h6>đánh giá sản phẩm</h6>
     <p class="fs-sm">{{ $review->comment }}</p>
    
-    <button class="nav-link animate-underline px-0" data-bs-toggle="collapse" data-bs-target="#replyForm{{ $review->id }}">
+    <button class="nav-link animate-underline px-1" data-bs-toggle="collapse" data-bs-target="#replyForm{{ $review->id }}">
     <i class="ci-corner-down-right fs-base ms-1 me-1">Phản hồi</i></button>
     <div id="replyForm{{ $review->id }}" class="collapse mt-2">
       <form method="POST" action="{{ route('comments.reply', $review->id) }}">
@@ -143,20 +136,8 @@
     <div class="comments-section ms-4">
       @foreach($review->comments as $comment)
       <div class="comment mb-2">
-        <strong>{{ $comment->loadAllCustomer ? $comment->loadAllCustomer->name : 'ẩn danh'}}</strong>
+        <strong>{{ $comment->loadAllCustomer ? $comment->loadAllCustomer->name : 'Ẩn danh'}}</strong>
         <p>{{ $comment->comment }}</p>
-
-        <!-- Phản hồi cho bình luận -->
-        @if($comment->replies->count())
-        <div class="replies ms-4">
-          @foreach($comment->replies as $reply)
-          <div class="reply">
-            <strong>{{ $reply->customer->name ?? 'Ẩn danh' }}</strong>
-            <p>{{ $reply->comment }}</p>
-          </div>
-          @endforeach
-        </div>
-        @endif
       </div>
       @endforeach
     </div>
@@ -175,7 +156,7 @@
 
 
 <div class="nav">
-  <a class="nav-link text-primary animate-underline px-0" href="shop-product-reviews-electronics.html">
+  <a class="nav-link text-primary animate-underline px-0" href="{{ route('products.reviews', $product->id) }}">
     <span class="animate-target">Xem tất cả đánh giá</span>
     <i class="ci-chevron-right fs-base ms-1"></i>
   </a>
@@ -196,48 +177,6 @@
       // Gửi phản hồi đến server nếu cần
       // fetch('/api/reply', { method: 'POST', body: JSON.stringify({ reply: replyContent }) });
       document.getElementById('replyFormContainer').style.display = 'none';
-    }
-  });
-  document.addEventListener("DOMContentLoaded", () => {
-    // Like button
-    document.querySelectorAll('.like-btn').forEach(button => {
-      button.addEventListener('click', function() {
-        const reviewId = this.getAttribute('data-review-id');
-        handleLikeDislike(reviewId, 'like');
-      });
-    });
-
-    // Dislike button
-    document.querySelectorAll('.dislike-btn').forEach(button => {
-      button.addEventListener('click', function() {
-        const reviewId = this.getAttribute('data-review-id');
-        handleLikeDislike(reviewId, 'dislike');
-      });
-    });
-
-    function handleLikeDislike(reviewId, type) {
-      fetch(`/review/${type}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-          },
-          body: JSON.stringify({
-            review_id: reviewId
-          })
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
-            if (type === 'like') {
-              document.getElementById(`likes-${reviewId}`).textContent = data.likes;
-            } else if (type === 'dislike') {
-              document.getElementById(`dislikes-${reviewId}`).textContent = data.dislikes;
-            }
-          } else {
-            alert('An error occurred. Please try again.');
-          }
-        });
     }
   });
 </script>

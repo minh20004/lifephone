@@ -127,4 +127,5 @@ class ReviewController extends Controller
 
         return response()->json(['success' => false]);
 }
+
 }
