@@ -29,6 +29,7 @@ class VoucherRequest extends FormRequest
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'usage_limit' => 'required|integer|min:1',
+            'image' => 'required'
         ];
     }
 
@@ -42,6 +43,7 @@ class VoucherRequest extends FormRequest
             'start_date.required' => 'Voucher start date is required',
             'end_date.required' => 'Voucher end date is required',
             'usage_limit.required' => 'Voucher usage limit is required',
+            'image.image' => 'Voucher image must be an image',
         ];
     }
 }
