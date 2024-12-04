@@ -16,7 +16,8 @@ class ReviewController extends Controller
      */
     public function index()
     {
-        $listReview = Review::paginate(10);
+        
+        $listReview = Review::with('loadAllProduct')->paginate(10);
         return view('admin.page.review.index', compact('listReview'));
     }
 
@@ -103,7 +104,7 @@ class ReviewController extends Controller
     {
         $review = Review::findOrFail($id);
         $review->delete();
-        return redirect()->route('review.index');
+        return redirect()->route('review_admin.index');
     }
     public function like(Request $request)
     {
@@ -124,7 +125,6 @@ class ReviewController extends Controller
             return response()->json(['success' => true, 'dislikes' => $review->dislikes]);
         }
 
-        return response()->json(['success' => false])
-
+        return response()->json(['success' => false]);
 }
 }

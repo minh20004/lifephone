@@ -80,13 +80,13 @@ REVIEW
                                                                     <div class="d-flex align-items-center">
                                                                         <div class="flex-grow-1">
                                                                             <h5 class="fs-14 mb-1">
-                                                                                <a href="apps-ecommerce-product-details.html" class="text-body">{{$review->loadAllProduct->name}}</a>
+                                                                                <a  href="{{ url('product/' . $review->loadAllProduct->id) }}" class="text-body" target="_blank">{{$review->loadAllProduct->name}}</a>
                                                                             </h5>
                                                                         </div>
                                                                     </div>
                                                                 </span>
                                                             </td>
-                                                            <td data-column-id="user" class="gridjs-td">{{$review->loadAlluser->name}}</td>
+                                                            <td data-column-id="user" class="gridjs-td">{{$review->loadAllCustomer->name}}</td>
                                                             <td data-column-id="orders" class="gridjs-td">{{$review->comment}}</td>
                                                             <td data-column-id="rating" class="gridjs-td">
                                                                 <span>
@@ -100,7 +100,7 @@ REVIEW
                                                             </td>
                                                             <td data-column-id="action" class="gridjs-td">
                                                                 <div>
-                                                                    <form action="{{route('review.destroy',$review->id)}}" method="post">
+                                                                    <form action="{{route('review_admin.destroy',$review->id)}}" method="post">
                                                                         @method('DELETE')
                                                                         @csrf
                                                                         <button class="ri-delete-bin-fill align-bottom me-2 btn btn-danger text-white " onclick="return confirm('xoa')"> Delete

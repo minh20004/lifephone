@@ -137,20 +137,6 @@
         <button type="submit" class="btn btn-sm btn-primary mt-2">Gửi phản hồi</button>
       </form>
     </div>
-    <button type="button" class="nav-link text-body-secondary animate-scale px-0 ms-auto me-n1 like-btn"
-  data-review-id="{{ $review->id }}">
-  <i class="ci-thumbs-up fs-base animate-target me-1"></i>
-  <span id="likes-{{ $review->id }}">{{ $review->likes }}</span>
-</button>
-
-<hr class="vr my-2 mx-3">
-
-<!-- Dislike button -->
-<button type="button" class="nav-link text-body-secondary animate-scale px-0 ms-n1 dislike-btn"
-  data-review-id="{{ $review->id }}">
-  <i class="ci-thumbs-down fs-base animate-target me-1"></i>
-  <span id="dislikes-{{ $review->id }}">{{ $review->dislikes }}</span>
-</button>
 
     <!-- Hiển thị các phản hồi cho review -->
     @if($review->comments->count())

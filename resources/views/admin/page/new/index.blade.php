@@ -111,7 +111,7 @@ News
                                                         </tr>
                                                         @endforeach
                                                     </tbody>
-
+                                                    @endif
                                                 </table>
                                             </div>
                                             <div>
