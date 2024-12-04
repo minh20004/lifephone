@@ -102,7 +102,20 @@
             </li>
           </ul>
         </div>
-
+        <div class="dropdown">
+          <button type="button" class="theme-switcher btn btn-icon btn-lg btn-outline-secondary fs-lg border-0 rounded-circle animate-scale" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Toggle theme (light)">
+            <span class="theme-icon-active d-flex animate-target">
+              <i class="fa-solid fa-bell"></i>
+            </span>
+          </button>
+          <ul class="dropdown-menu" style="--cz-dropdown-min-width: 9rem">
+            <li>
+              Thông báo đơn hàng 
+            </li>
+            
+          </ul>
+        </div>
+        
         <!-- Search toggle button visible on screens < 992px wide (lg breakpoint) -->
         <button type="button" class="btn btn-icon btn-lg fs-xl btn-outline-secondary border-0 rounded-circle animate-shake d-lg-none" data-bs-toggle="collapse" data-bs-target="#searchBar" aria-expanded="false" aria-controls="searchBar" aria-label="Toggle search bar">
           <i class="ci-search animate-target"></i>
@@ -137,26 +150,27 @@
           </span>
       </button>
       <script>
-        // Hàm cập nhật số lượng sản phẩm trong giỏ hàng
-function updateCartItemCount() {
-    fetch('/cart/item-count') // Gọi API từ server
-        .then(response => response.json())
-        .then(data => {
-            const cartCountElement = document.getElementById('cartCount');
-            cartCountElement.textContent = data.count > 0 ? data.count : ''; // Ẩn khi giỏ hàng rỗng
-        })
-        .catch(error => console.error('Error fetching cart item count:', error));
-}
+        function updateCartItemCount() {
+            fetch('/cart/item-count') // Gọi API từ server
+                .then(response => response.json())
+                .then(data => {
+                    const cartCountElement = document.getElementById('cartCount');
+                    // Cập nhật số lượng vào phần tử cartCount
+                    cartCountElement.textContent = data.count > 0 ? data.count : ''; // Ẩn khi giỏ hàng rỗng
+                })
+                .catch(error => console.error('Error fetching cart item count:', error));
+        }
 
-// Gọi hàm khi trang được tải
-document.addEventListener('DOMContentLoaded', updateCartItemCount);
+        // Gọi hàm khi trang được tải
+        document.addEventListener('DOMContentLoaded', updateCartItemCount);
 
-// Gọi lại hàm khi thêm sản phẩm vào giỏ hàng (nếu bạn có nút thêm sản phẩm)
-document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-    button.addEventListener('click', () => {
-        updateCartItemCount();
-    });
-});
+        // Gọi lại hàm khi thêm sản phẩm vào giỏ hàng (nếu bạn có nút thêm sản phẩm)
+        document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                updateCartItemCount(); // Cập nhật số lượng sau khi thêm sản phẩm vào giỏ hàng
+            });
+        });
+
 
       </script>
       
@@ -378,3 +392,4 @@ document.querySelectorAll('.add-to-cart-btn').forEach(button => {
     </div>
   </nav>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

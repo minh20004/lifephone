@@ -281,7 +281,7 @@
 </script> --}}
 
 {{-- thay dổi số trong trên giỏ hàng --}}
-<script>
+{{-- <script>
     document.querySelectorAll('.add-to-cart-btn').forEach(button => {
         button.addEventListener('click', function (e) {
             e.preventDefault();
@@ -305,10 +305,10 @@
         });
     });
 
-</script>
+</script> --}}
 
 {{-- tăng giỏ số lượng nháp --}}
-{{-- <script>
+<script>
     document.querySelectorAll('.btn-increment, .btn-decrement').forEach(button => {
         button.addEventListener('click', function() {
             const row = this.closest('tr');
@@ -342,9 +342,9 @@
         });
     });
 
-</script> --}}
+</script>
 
-<script>
+{{-- <script>
     document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.btn-decrement, .btn-increment').forEach(function (button) {
         button.addEventListener('click', function () {
@@ -404,4 +404,4 @@
     });
 });
 
-</script>
+</script> --}}

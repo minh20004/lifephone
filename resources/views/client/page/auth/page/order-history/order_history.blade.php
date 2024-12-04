@@ -141,12 +141,12 @@
                                         @csrf
                                         <button type="submit" class="btn btn-success">Thanh toán lại</button>
                                     </form> --}}
-                                    @if($order->status == 'Thanh toán thất bại')
+                                    {{-- @if($order->status == 'Thanh toán thất bại')
                                         <form action="{{ route('order.retryPayment', $order->id) }}" method="POST">
                                             @csrf
                                             <button type="submit" class="btn btn-warning">Thanh toán lại</button>
                                         </form>
-                                    @endif
+                                    @endif --}}
 
                                     
 

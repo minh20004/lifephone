@@ -10,6 +10,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\FrontendControlle;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\CapacityController;
@@ -18,8 +19,8 @@ use App\Http\Controllers\ClientNewController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\CategoryNewsController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\OrderNotificationController;
 use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
-use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -106,7 +107,9 @@ Route::get('/order-detail/{id}', [AuthController::class, 'detail'])->name('order
 //giỏ hàng
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('cart/remove/{productId}/{modelId}/{colorId}', [CartController::class, 'remove'])->name('cart.remove');
+// Route::post('cart/remove/{productId}/{modelId}/{colorId}', [CartController::class, 'remove'])->name('cart.remove');
+Route::post('cart/remove/{productId}', [CartController::class, 'remove'])->name('cart.remove');
+
 Route::post('/cart/update', [CartController::class, 'updateQuantity'])->name('cart.update');
 Route::post('/cart/apply-voucher', [CartController::class, 'applyVoucher'])->name('cart.apply-voucher');
 Route::get('/cart/offcanvas', [CartController::class, 'getCart'])->name('cart.offcanvas');
@@ -130,12 +133,15 @@ Route::get('/payment/vnpay/callback', [OrderController::class, 'handleVNPayCallb
 // Route cho khách hàng yêu cầu hủy đơn hàng
 Route::post('/order/cancel/{id}', [AuthController::class, 'cancel'])->name('order.cancel');
 
+// thông báo khi đặt hàng thành công 
+Route::get('/admin/notifications', [OrderNotificationController::class, 'index'])->name('admin.notifications');
+Route::post('/admin/notifications/{id}/read', [OrderNotificationController::class, 'markAsRead'])->name('admin.notifications.read');
 
 
 Route::get('/public-order-history', [AuthController::class, 'publicHistory'])->name('order.publicHistory');
 Route::get('/public-order-detail/{id}', [AuthController::class, 'publicDetail'])->name('order.publicDetail');
 
-Route::get('/cart/item-count', [CartController::class, 'getCartItemCount'])->name('cart.item-count');
+Route::get('/cart/item-count', [CartController::class, 'getCartItemCount'])->name('cart.item-count'); //cập nhật số lượng trong giỏ hàng 
 
 // thanh toán vnpay
 Route::post('/vnpay-payment', [OrderController::class,'vnpay_payment'])->name('vnpay.payment');

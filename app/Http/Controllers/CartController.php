@@ -24,7 +24,6 @@ class CartController extends Controller
 
         // Kiểm tra nếu người dùng đã đăng nhập
         if (auth('customer')->check()) {
-            // $customerId = auth()->id();
             $customerId = auth('customer')->id();
             
 
@@ -375,36 +374,48 @@ class CartController extends Controller
         ]);
     }
     
-    public function remove($productId, $modelId, $colorId)
+    public function remove($productId)
     {
         if (auth('customer')->check()) {
+            // Lấy thông tin của khách hàng đã đăng nhập
             $customerId = auth('customer')->id();
+            
+            // Tìm sản phẩm trong giỏ hàng của người dùng
             $cartItem = Cart::where('customer_id', $customerId)
                             ->where('product_id', $productId)
-                            ->where('variant_id', "{$modelId}-{$colorId}")
                             ->first();
 
             if ($cartItem) {
+                // Xóa sản phẩm khỏi giỏ hàng
                 $cartItem->delete();
             }
+
+            // Kiểm tra nếu giỏ hàng trống sau khi xóa
+            $remainingItems = Cart::where('customer_id', $customerId)->count();
+            if ($remainingItems === 0) {
+                return redirect()->route('cart.index')->with('info', 'Giỏ hàng của bạn hiện trống.');
+            }
+
         } else {
+            // Xử lý cho giỏ hàng trong session nếu người dùng chưa đăng nhập
             $cart = session()->get('cart', []);
-            if (isset($cart[$productId][$modelId][$colorId])) {
-                unset($cart[$productId][$modelId][$colorId]);
+            if (isset($cart[$productId])) {
+                unset($cart[$productId]);
 
-                if (empty($cart[$productId][$modelId])) {
-                    unset($cart[$productId][$modelId]);
+                // Cập nhật lại session nếu giỏ hàng không còn sản phẩm
+                if (empty($cart)) {
+                    session()->forget('cart');
+                } else {
+                    session()->put('cart', $cart);
                 }
-                if (empty($cart[$productId])) {
-                    unset($cart[$productId]);
-                }
-
-                session()->put('cart', $cart);
             }
         }
 
         return redirect()->route('cart.index')->with('success', 'Sản phẩm đã được xóa khỏi giỏ hàng.');
     }
+
+
+
     
     public function checkout(Request $request)
     {
@@ -498,21 +509,28 @@ class CartController extends Controller
 
 
 
+    // hiển thị và tính toán số lượng trong giỏ hàng 
     public function getCartItemCount()
     {
-        $cart = session()->get('cart', []);
         $totalQuantity = 0;
 
-        foreach ($cart as $productId => $models) {
-            foreach ($models as $modelId => $colorModels) {
-                foreach ($colorModels as $item) {
-                    $totalQuantity += $item['quantity'];
+        if (auth('customer')->check()) {
+            $customerId = auth('customer')->id();
+            $totalQuantity = Cart::where('customer_id', $customerId)->sum('quantity');
+        } else {
+            $cart = session()->get('cart', []);
+            foreach ($cart as $productId => $models) {
+                foreach ($models as $modelId => $colorModels) {
+                    foreach ($colorModels as $item) {
+                        $totalQuantity += $item['quantity'];
+                    }
                 }
             }
         }
 
         return response()->json(['count' => $totalQuantity]);
     }
+
     
     
 

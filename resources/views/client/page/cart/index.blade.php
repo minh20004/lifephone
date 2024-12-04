@@ -99,11 +99,17 @@
                 </td>
                 <td class="h6 py-3 d-none d-md-table-cell" id="itemTotal-{{ $item['product']->id }}-{{ $item['capacity']->id }}-{{ $item['color']->id }}">{{ number_format($item['itemTotal'], 0, ',', '.') }} đ</td>
                 <td class="text-end py-3 px-0">
+                  {{-- <form action="{{ route('cart.remove', ['productId' => $item['product']->id, 'modelId' => $item['capacity']->id, 'colorId' => $item['color']->id]) }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn-close fs-sm" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-sm" data-bs-title="Remove" aria-label="Remove from cart"
+                    onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không ?')"></button>
+                  </form> --}}
                   <form action="{{ route('cart.remove', ['productId' => $item['product']->id, 'modelId' => $item['capacity']->id, 'colorId' => $item['color']->id]) }}" method="POST">
                     @csrf
                     <button type="submit" class="btn-close fs-sm" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-sm" data-bs-title="Remove" aria-label="Remove from cart"
                     onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không ?')"></button>
-                  </form>
+                </form>
+                
                 </td>
               </tr>
             @endforeach

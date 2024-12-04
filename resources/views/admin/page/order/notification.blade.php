@@ -1,25 +1,38 @@
 @extends('admin.layout.master')
 
 @section('content')
-    <div class="container-fluid">
-        <h2 class="mb-4">Danh sách thông báo đơn hàng</h2>
-
-        @if($notifications->count() > 0)
-            <div class="list-group">
-                @foreach ($notifications as $notification)
-                    <a href="{{ route('admin.notifications.markAsRead', $notification->id) }}" class="list-group-item list-group-item-action 
-                        @if($notification->is_read) bg-light @else bg-warning @endif">
-                        <h5 class="mb-1">Đơn hàng #{{ $notification->order->id }} đã được đặt!</h5>
-                        <p class="mb-1">{{ $notification->order->customer_name }} đã đặt đơn hàng vào {{ $notification->created_at->diffForHumans() }}</p>
-                    </a>
-                @endforeach
+        <div class="page-content">
+            <div class="container-fluid">
+                <div class="card">
+                    <div class="d-flex justify-content-between m-3" style="margin-left: 20px">
+                        <div>
+                            <a href="{{ route('admin.notifications') }}"><b class="fs-4 fw-bold">Danh sách Thông Báo Đơn Hàng</b></a>
+                        </div>
+                        <div class="d-flex align-items-center mt-1">
+                            <p class="badge bg-primary-subtle text-danger fs-13">{{ $notificationsCount }}</p>
+                        </div>
+                    </div>
+                </div>
+                <h2></h2>
+                <ul class="list-group">
+                    @forelse ($notifications as $notification)
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>Đơn hàng: {{ $notification->order->order_code }}</strong><br>
+                                <span>{{ $notification->order->name }} đã đặt hàng.</span>
+                                <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                            </div>
+                            @if (!$notification->is_read)
+                                <form method="POST" action="{{ route('admin.notifications.read', $notification->id) }}">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-primary">Đánh dấu đã đọc</button>
+                                </form>
+                            @endif
+                        </li>
+                    @empty
+                        <li class="list-group-item">Không có thông báo nào.</li>
+                    @endforelse
+                </ul>
             </div>
-
-            <div class="mt-3">
-                {{ $notifications->links() }} <!-- Phân trang -->
-            </div>
-        @else
-            <p>Không có thông báo nào.</p>
-        @endif
-    </div>
+        </div>
 @endsection
