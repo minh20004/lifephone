@@ -66,7 +66,7 @@
                                             </div>
 
                                             <div class="col-auto mt-4">
-                                                <a href="{{ route('product.create') }}" class="btn btn-soft-success"><i class="ri-add-circle-line align-middle me-1"></i> Thêm sản phẩm mới</a>
+                                                <a href="{{ route('product-admin.create') }}" class="btn btn-soft-success"><i class="ri-add-circle-line align-middle me-1"></i> Thêm sản phẩm mới</a>
                                             </div>
                                             
                                             <div class="col-auto mt-4">
@@ -109,7 +109,7 @@
                         </div>
                     </div>
 
-                    <h3 class="text-center mb-4">Danh sách thống kê từ: 
+                    <h3 class="text-center mb-4 mt-5">Danh sách thống kê từ: 
                         <span class="text-danger">{{ $formattedStartDate }}</span> đến 
                         <span class="text-danger">{{ $formattedEndDate }}</span> 
                     </h3>
@@ -186,18 +186,8 @@
                                        
 
                                         <div class="mt-3">
-                                            <table class="table">
-                                                <tbody>
-                                                        <tr>
-                                                            <td>Người đăng kí: </td>
-                                                            <td><strong><h4 style="color: rgb(248, 0, 0)">{{ $totalCustomers }}</h4></strong></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Số liệu thống kê:</td> 
-                                                            <td><strong><h4 style="color: rgb(248, 0, 0)">{{ $currentCustomerCount }}</h4></strong></td>
-                                                        </tr>
-                                                </tbody>
-                                            </table>
+                                            <h4 class="mb-4"><i class="fa-solid fa-user"></i> Người đăng kí: <span class="fw-bold" style="color: red">{{ $totalCustomers }}</span></h4>
+                                            <h4 class="mb-4"><i class="fa-solid fa-fire"></i> MỚi: <span class="fw-bold" style="color: red">{{ $currentCustomerCount }}</span></h4>
                                         </div>
                                         
 

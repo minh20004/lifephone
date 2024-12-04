@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewController;
+use Illuminate\Support\Facades\Request;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ChatController;
@@ -18,9 +19,10 @@ use App\Http\Controllers\ClientNewController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\CategoryNewsController;
 use App\Http\Controllers\SubscriptionController;
-use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
 
 use App\Http\Controllers\Admin\DashboardController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
 
 
 /*
@@ -39,13 +41,52 @@ use App\Http\Controllers\Admin\DashboardController;
 
 // font end trang chủ
 Route::get('/', [FrontendControlle::class, 'index'])->name('home');
+// Route cho người dùng bình thường - chỉ cần xác thực người dùng
+Route::middleware('auth:customer')->group(function () {
+    Route::resource('product', ProductController::class)->only([
+        'index', 'show'
+    ]);
+});
+
+
+
+
 
 // auth admin ------------------------------------------------------------------------------------------------------------------
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/admin/login', [AuthController::class, 'adminLogin'])->name('admin.login.submit');
 Route::post('/logout', [AuthController::class, 'adminLogout'])->name('admin.logout');
 
+
+
+
+Route::get('admin/verify/{token}', [AuthController::class, 'verify'])->name('verification.verify');
+
+// Route gửi lại email xác minh
+Route::post('admin/resend-verification', [AuthController::class, 'resendVerification'])->name('admin.resendVerification');
+
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect('/dashboard')->with('success', 'Tài khoản của bạn đã được xác minh.');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return back()->with('success', 'Email xác minh đã được gửi.');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+
+
+
+Route::resource('product', ProductController::class);
+
 Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
+    Route::resource('product-admin', ProductController::class);
+
     Route::get('/admin', [AuthController::class, 'Dashboards'])->name('admin.home');
 
     Route::get('/them-thanh-vien', [AuthController::class, 'create'])->name('admin.them-thanh-vien');
@@ -57,7 +98,6 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
 
     Route::resource('new_admin',  NewController::class);
     Route::resource('category_news', CategoryNewsController::class);
-    Route::resource('product', ProductController::class);
     Route::resource('index', AdminController::class);
     Route::resource('category', CategoryController::class);
     Route::resource('capacity', CapacityController::class);
@@ -119,6 +159,18 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
 // end auth admin ------------------------------------------------------------------------------------------------------------------
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 // auth customer ------------------------------------------------------------------------------------------------------------------------------
 // quản lý hồ sơ khách hàng
 Route::get('/customer/address', [AuthController::class, 'address'])->name('customer.adress');
@@ -141,6 +193,11 @@ Route::post('/customer/login', [AuthController::class, 'customerLogin'])->name('
 Route::post('/customer/logout', [AuthController::class, 'customerLogout'])->name('customer.logout');
 
 Route::middleware(['auth:customer', 'isCustomer'])->group(function () {
+    Route::post('/update-email', [AuthController::class, 'updateEmail'])->name('customer.updateEmail');
+    
+    Route::get('/customer/verify-email-change/{token}', [AuthController::class, 'verifyEmailChange'])->name('customer.verifyEmailChange');
+    // Route::get('/verify-new-email/{token}', [AuthController::class, 'verifyNewEmail'])->name('customer.verifyNewEmail');
+
     Route::get('/customer/address', [AuthController::class, 'address'])->name('customer.adress');
     Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
     Route::put('/customer/{id}/update-address', [AuthController::class, 'updateAddress'])->name('customer.updateAddress');
@@ -160,6 +217,10 @@ Route::middleware(['auth:customer', 'isCustomer'])->group(function () {
 
 Route::get('/order-detail/{id}', [AuthController::class, 'detail'])->name('order.detail');
 // end auth customer ------------------------------------------------------------------------------------------------------
+
+
+
+
 
 
 

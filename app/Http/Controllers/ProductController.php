@@ -321,7 +321,7 @@ class ProductController extends Controller
             ProductVariant::whereIn('id', $variantsToDelete)->delete();
         }
 
-        return redirect()->route('product.index')->with('success', 'Sản phẩm đã được cập nhật thành công!');
+        return redirect()->route('product-admin.index')->with('success', 'Sản phẩm đã được cập nhật thành công!');
     }
 
 

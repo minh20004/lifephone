@@ -11,10 +11,12 @@ use App\Mail\VerifyEmail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ProductVariant;
+use App\Mail\NewStaffNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\RateLimiter;
 
 class AuthController extends Controller
@@ -113,7 +115,7 @@ class AuthController extends Controller
             if ($previousIncome == 0 && $currentIncome > 0) {
                 $percentageChange = '100';
             } elseif ($previousIncome == 0 && $currentIncome == 0) {
-                $percentageChange = 'Không thay đổi';
+                $percentageChange = '0';
             } else {
                 $percentageChange = number_format((($currentIncome - $previousIncome) / $previousIncome) * 100, 2) . '%';
             }
@@ -245,11 +247,11 @@ class AuthController extends Controller
             'role' => 'required|in:admin,staff',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
+    
         // Lấy dữ liệu cần thiết từ request
         $data = $request->only(['name', 'email', 'role']); 
         $data['password'] = bcrypt($request->password);
-
+    
         // Kiểm tra xem có file avatar không
         if ($request->hasFile('avatar')) {
             if (!Storage::exists('avatars')) {
@@ -257,14 +259,43 @@ class AuthController extends Controller
             }
             $data['avatar'] = Storage::put('avatars', $request->file('avatar'));
         }
-
+    
         // Tạo người dùng mới với thông tin đã xác thực
-        User::create($data);
-
+        $user = User::create($data);
+    
+        // Gửi email thông báo
+        // Mail::to($user->email)->send(new NewStaffNotification($user));
+    
         return redirect()->route('admins.index')->with('success', 'Thêm người dùng thành công');
     }
 
+// public function store(Request $request)
+// {
+//     $request->validate([
+//         'name' => 'required|string|max:255',
+//         'email' => 'required|string|email|max:255|unique:users',
+//         'password' => 'required|string|min:8|confirmed',
+//         'role' => 'required|in:admin,staff',
+//         'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+//     ]);
 
+//     $data = $request->only(['name', 'email', 'role']);
+//     $data['password'] = bcrypt($request->password);
+
+//     if ($request->hasFile('avatar')) {
+//         if (!Storage::exists('avatars')) {
+//             Storage::makeDirectory('avatars');
+//         }
+//         $data['avatar'] = Storage::put('avatars', $request->file('avatar'));
+//     }
+
+//     $user = User::create($data);
+
+//     // Gửi email xác nhận
+//     event(new Registered($user));
+
+//     return redirect()->route('admins.index')->with('success', 'Thêm người dùng thành công. Vui lòng xác nhận email.');
+// }
     public function edit($id)
     {
         $user = User::findOrFail($id);
@@ -310,6 +341,9 @@ class AuthController extends Controller
         return view('admin.auth.login');
     }
     
+
+
+
     // hàm xử lý đăng nhập admin
     public function adminLogin(Request $request)
     {
@@ -340,7 +374,60 @@ class AuthController extends Controller
     
         return redirect()->back()->withErrors(['email' => 'Thông tin đăng nhập không đúng.']);
     }
-    
+    // Đăng nhập
+    //  public function adminLogin(Request $request)
+    // {
+    //     // Xác thực dữ liệu đầu vào
+    //     $request->validate([
+    //         'email' => 'required|string|email',
+    //         'password' => 'required|string',
+    //     ]);
+
+    //     $credentials = $request->only('email', 'password');
+
+    //     if (Auth::guard('admin')->attempt($credentials)) {
+    //         $user = Auth::guard('admin')->user();
+
+    //         // Kiểm tra email đã được xác minh chưa
+    //         if (!$user->hasVerifiedEmail()) {
+    //             Auth::guard('admin')->logout();
+    //             return redirect()->route('login')->withErrors(['email' => 'Tài khoản chưa được xác minh. Vui lòng kiểm tra email và xác nhận tài khoản.']);
+    //         }
+
+    //         // Kiểm tra quyền truy cập
+    //         if ($user->role === 'admin' || $user->role === 'staff') {
+    //             return redirect()->route('admin.home')->with('success', 'Đăng nhập thành công!');
+    //         } else {
+    //             Auth::guard('admin')->logout();
+    //             return redirect()->route('login')->withErrors(['email' => 'Bạn không có quyền truy cập.']);
+    //         }
+    //     }
+
+    //     return redirect()->back()->withErrors(['email' => 'Thông tin đăng nhập không đúng.']);
+    // }
+
+    public function verify($token)
+    {
+        // Tìm người dùng với remember_token
+        $user = User::where('remember_token', $token)->first();
+
+        // Kiểm tra xem người dùng có tồn tại không
+        if (!$user) {
+            return redirect()->route('login')->withErrors(['email' => 'Liên kết xác minh không hợp lệ.']);
+        }
+
+        // Cập nhật thời gian xác minh email
+        if (!$user->hasVerifiedEmail()) {
+            $user->email_verified_at = now();
+            $user->remember_token = null;  // Xóa token sau khi xác minh thành công
+            $user->save();
+        }
+
+        return redirect()->route('login')->with('success', 'Tài khoản của bạn đã được xác minh thành công. Vui lòng đăng nhập.');
+    }
+
+
+
     public function adminLogout()
     {
         Auth::guard('admin')->logout();
@@ -466,6 +553,63 @@ class AuthController extends Controller
 
         return redirect()->route('customer.login')->with('success', 'Đã gửi lại email xác nhận. Vui lòng kiểm tra email của bạn.');
     }
+
+    // Thay đổi email
+    public function updateEmail(Request $request)
+    {
+        $request->validate([
+            'new_email' => 'required|email|unique:customers,email',
+            'password' => 'required|string',
+        ]);
+    
+        $customer = auth()->user();
+    
+        // Kiểm tra mật khẩu hiện tại
+        if (!Hash::check($request->password, $customer->password)) {
+            return back()->withErrors(['password' => 'Mật khẩu hiện tại không chính xác']);
+        }
+    
+        // Tạo token xác nhận thay đổi email
+        $verificationToken = Str::random(64);
+    
+        // Lưu token và email mới vào session
+        session([
+            'verification_token' => $verificationToken,
+            'new_email' => $request->new_email,
+        ]);
+    
+        // Gửi email xác nhận
+        Mail::send('email.verify_email_change', ['token' => $verificationToken], function ($message) use ($request) {
+            $message->to($request->new_email)->subject('Xác nhận thay đổi email');
+        });
+    
+        return back()->with('success', 'Vui lòng kiểm tra email mới để xác nhận thay đổi.');
+    }
+
+
+    public function verifyEmailChange($token)
+    {
+        $customer = auth()->user();
+        $storedToken = session('verification_token');
+        $newEmail = session('new_email');
+    
+        if ($token !== $storedToken) {
+            return redirect()->route('customer.profile')->withErrors(['email' => 'Token xác nhận không hợp lệ hoặc đã hết hạn.']);
+        }
+    
+        // Cập nhật email mới vào cơ sở dữ liệu
+        $customer->email = $newEmail;
+        $customer->save();
+    
+        // Xóa token và email mới khỏi session
+        session()->forget(['verification_token', 'new_email']);
+    
+        return redirect()->route('customer.profile')->with('success', 'Email của bạn đã được thay đổi thành công.');
+    }
+    
+
+
+
 
     public function editCustomer($id)
     {

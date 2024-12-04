@@ -60,6 +60,7 @@
         </ul>
       </div>
     </div>
+
     <!-- Modal for editing basic info -->
     <div class="modal fade" id="basicInfoEditModal" tabindex="-1" aria-labelledby="basicInfoEditModalLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -124,7 +125,57 @@
       </div>
     </div>
 
-      <!-- Contact -->
+      <!-- email -->
+      <div class="border-bottom py-4">
+        <div class="nav flex-nowrap align-items-center justify-content-between pb-1 mb-3">
+          <div class="d-flex align-items-center gap-3 me-4">
+            <h2 class="h6 mb-0">Email</h2>
+          </div>
+          <!-- Button trigger modal -->
+          <a class="nav-link text-decoration-underline p-0" href="#" data-bs-toggle="modal" data-bs-target="#emailChangeModal">Thay đổi</a>
+        </div>
+      
+        <!-- Contact Info Preview -->
+        <div class="contact-info">
+          <ul class="list-unstyled fs-sm m-0">
+            <li class="mb-1">{{ Auth::user()->email }} <span class="text-success ms-1">Đã xác nhận</span></li>
+          </ul>
+        </div>
+      </div>
+      
+      <!-- Email Change Modal -->
+<div class="modal fade" id="emailChangeModal" tabindex="-1" aria-labelledby="emailChangeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="emailChangeModalLabel">Thay đổi email</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ route('customer.updateEmail') }}" method="POST">
+          @csrf
+          <div class="mb-3">
+            <label for="new_email" class="form-label">Email mới</label>
+            <input type="email" name="new_email" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Mật khẩu hiện tại</label>
+            <input type="password" name="password" class="form-control" required>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+            <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+      
+      
+
+      <!-- số điện thoại -->
       <div class="border-bottom py-4">
         <div class="nav flex-nowrap align-items-center justify-content-between pb-1 mb-3">
           <div class="d-flex align-items-center gap-3 me-4">
@@ -180,6 +231,7 @@
           </form>
         </div>
       </div>
+
 
 
       <!-- Password Section -->

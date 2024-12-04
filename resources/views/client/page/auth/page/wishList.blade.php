@@ -6,13 +6,13 @@
 
     <!-- Page title + Add list button-->
     <div class="d-flex align-items-center justify-content-between pb-3 mb-1 mb-sm-2 mb-md-3">
-      <h1 class="h2 me-3 mb-0">Danh sách sản phẩm</h1>
+      <h1 class="h2 me-3 mb-0">Danh sách sản phẩm yêu thích</h1>
     </div>
     <!-- Wishlist selector -->
     <div class="border-bottom pb-4 mb-3">
       <div class="row align-items-center justify-content-between">
         <div class="col-sm-7 col-md-8 col-xxl-9 d-flex align-items-center mb-3 mb-sm-0">
-          <h5 class="me-2 mb-0">Sản phẩm yêu thích</h5>
+          {{-- <h5 class="me-2 mb-0">Sản phẩm yêu thích</h5> --}}
           <div class="dropdown ms-auto ms-sm-0">
             <div class="dropdown-menu dropdown-menu-end">
               <div class="d-flex flex-column gap-1 mb-2">
@@ -41,14 +41,6 @@
             </div>
           </div>
         </div>
-        <div class="col-sm-5 col-md-4 col-xxl-3">
-          <select class="form-select" data-select="{&quot;removeItemButton&quot;: false}" aria-label="Wishlist sorting">
-            <option value="date">By date added</option>
-            <option value="price-ascend">By price ascending</option>
-            <option value="price-descend">By price descending</option>
-            <option value="rating">By rating</option>
-          </select>
-        </div>
       </div>
     </div>
 
@@ -59,17 +51,12 @@
         <label for="wishlist-master" class="form-check-label animate-target mt-1 ms-2">Chọn tất cả</label>
       </div>
       <div class="d-flex flex-wrap" id="action-buttons">
-        <a class="nav-link animate-underline px-0 pe-sm-2 py-2 me-4 addToCard" href="#!">
-          <i class="ci-shopping-cart fs-base me-2"></i>
-          <span class="animate-target d-none d-md-inline">Thêm vào giỏ hàng</span>
-        </a>
         <a class="nav-link animate-underline px-0 py-2 delete-selected" href="#!">
           <i class="ci-trash fs-base me-1"></i>
           <span class="animate-target d-none d-md-inline">Xóa đã chọn</span>
         </a>
       </div>
     </div>
-
 
     <!-- Wishlist items (Grid) -->
     <div class="row row-cols-2 row-cols-md-3 g-4" id="wishlistSelection">

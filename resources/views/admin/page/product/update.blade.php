@@ -9,7 +9,7 @@
                     style="font-weight: bold; border-bottom: 2px solid #FFD43B; font-family: 'Roboto', sans-serif; padding-bottom: 10px;padding-left: 5px ">
                     Sửa sản phẩm</h2>
                 <div class="card-body">
-                    <form action="{{ route('product.update', $product->id) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('product-admin.update', $product->id) }}" method="POST" enctype="multipart/form-data">
                         @method('put')
                         @csrf
                         <div class="row">
@@ -227,7 +227,7 @@
 
                         <div class="mb-3 d-flex justify-content-between">
                             <div>
-                                <a href="{{ route('product.index') }}" class="btn btn-dark"> Quay lại</a>
+                                <a href="{{ route('product-admin.index') }}" class="btn btn-dark"> Quay lại</a>
                             </div>
                             <button type="submit" class="btn btn-warning">Lưu lại</button>
 

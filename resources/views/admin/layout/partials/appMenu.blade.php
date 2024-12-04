@@ -117,7 +117,7 @@
                             </li>
                             <li class="nav-item">
                                 <a href="{{ route('admins.index') }}" class="nav-link" data-key="t-signin"> 
-                                    Tất cả người dùng
+                                    Tất cả Thành viên
                                 </a>
                             </li>
                         </ul>
@@ -135,7 +135,7 @@
                             <a href="{{route('category.index')}}" class="nav-link" data-key="t-starter"> Danh mục </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{route('product.index')}}" class="nav-link" data-key="t-team"> Sản phẩm  </a>
+                            <a href="{{route('product-admin.index')}}" class="nav-link" data-key="t-team"> Sản phẩm  </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('product.trashed') }}" class="nav-link" data-key="t-timeline"> Sản phẩm đã bị xóa  </a>

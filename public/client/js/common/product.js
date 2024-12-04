@@ -70,65 +70,65 @@ $('.search-header').on('click', function() {
     dropdown.append('<div class="py-2 px-3">Không có lịch sử tìm kiếm</div>');
     $('.search-history-dropdown').show();
   }
-  if($('.trend-product').length ==0){
-    let fire_url = $('.search-header').data('fire-url');
-    let text_trend = $(`<div class="py-2 ps-3 pe-5 trend-product" style="line-height:1.5;font-weight:700;display:flex;align-items:center;"> Xu hướng tìm kiếm <img src="${fire_url}" style="width: 25px; height: 25px; vertical-align: middle; margin-left: 5px;" /></div>`);
-    dropdown.append(text_trend);
-    $.ajax({
-      url: '/api/search-trend',  // URL của API
-      method: 'GET',
-      success: function(data) {
-        if (data && data.length >= 4) {
-          let featured_products = $(`
-            <div class="row">
-                <!-- Cột 1: Sản phẩm 1 -->
-                <div class="col-6">
-                    <div class="product-search d-flex justify-content-evenly align-items-center" data-id="${data[0].id}">
-                        <img src="${data[0].image_url}" alt="${data[0].name}" class="img-fluid" style="max-height: 60px; object-fit: cover;">
-                        <p class="text-center">${data[0].name}</p>
-                    </div>
-                    <div class="product-search d-flex justify-content-evenly align-items-center" data-id="${data[1].id}">
-                        <img src="${data[1].image_url}" alt="${data[1].name}" class="img-fluid" style="max-height: 60px; object-fit: cover;">
-                        <p class="text-center">${data[1].name}</p>
-                    </div>
-                </div>
+  // if($('.trend-product').length ==0){
+  //   let fire_url = $('.search-header').data('fire-url');
+  //   let text_trend = $(`<div class="py-2 ps-3 pe-5 trend-product" style="line-height:1.5;font-weight:700;display:flex;align-items:center;"> Xu hướng tìm kiếm <img src="${fire_url}" style="width: 25px; height: 25px; vertical-align: middle; margin-left: 5px;" /></div>`);
+  //   dropdown.append(text_trend);
+  //   $.ajax({
+  //     url: '/api/search-trend',  // URL của API
+  //     method: 'GET',
+  //     success: function(data) {
+  //       if (data && data.length >= 4) {
+  //         let featured_products = $(`
+  //           <div class="row">
+  //               <!-- Cột 1: Sản phẩm 1 -->
+  //               <div class="col-6">
+  //                   <div class="product-search d-flex justify-content-evenly align-items-center" data-id="${data[0].id}">
+  //                       <img src="${data[0].image_url}" alt="${data[0].name}" class="img-fluid" style="max-height: 60px; object-fit: cover;">
+  //                       <p class="text-center">${data[0].name}</p>
+  //                   </div>
+  //                   <div class="product-search d-flex justify-content-evenly align-items-center" data-id="${data[1].id}">
+  //                       <img src="${data[1].image_url}" alt="${data[1].name}" class="img-fluid" style="max-height: 60px; object-fit: cover;">
+  //                       <p class="text-center">${data[1].name}</p>
+  //                   </div>
+  //               </div>
 
-                <!-- Cột 2: Sản phẩm 2 -->
-                <div class="col-6">
-                    <div class="product-search d-flex justify-content-evenly align-items-center" data-id="${data[2].id}">
-                        <img src="${data[2].image_url}" alt="${data[2].name}" class="img-fluid" style="max-height: 60px; object-fit: cover;">
-                        <p class="text-center">${data[2].name}</p>
-                    </div>
-                    <div class="product-search d-flex justify-content-evenly align-items-center" data-id="${data[3].id}">
-                        <img src="${data[3].image_url}" alt="${data[3].name}" class="img-fluid" style="max-height: 60px; object-fit: cover;">
-                        <p class="text-center">${data[3].name}</p>
-                    </div>
-                </div>
-            </div>`);
+  //               <!-- Cột 2: Sản phẩm 2 -->
+  //               <div class="col-6">
+  //                   <div class="product-search d-flex justify-content-evenly align-items-center" data-id="${data[2].id}">
+  //                       <img src="${data[2].image_url}" alt="${data[2].name}" class="img-fluid" style="max-height: 60px; object-fit: cover;">
+  //                       <p class="text-center">${data[2].name}</p>
+  //                   </div>
+  //                   <div class="product-search d-flex justify-content-evenly align-items-center" data-id="${data[3].id}">
+  //                       <img src="${data[3].image_url}" alt="${data[3].name}" class="img-fluid" style="max-height: 60px; object-fit: cover;">
+  //                       <p class="text-center">${data[3].name}</p>
+  //                   </div>
+  //               </div>
+  //           </div>`);
 
-          dropdown.append(featured_products);
-          $('.product-search').hover(
-            function() {
-              $(this).addClass('highlight');
-            },
-            function() {
-              $(this).removeClass('highlight');
-            }
-          );
-          $('.product-search').click(function() {
-            var productId = $(this).data('id');  // Lấy id sản phẩm từ data-id
-            window.location.href = '/product/' + productId;  // Chuyển đến trang chi tiết sản phẩm
-          });
-        } else {
-          console.log('Không đủ sản phẩm để hiển thị.');
-        }
-      },
-      error: function(xhr, status, error) {
-        console.log('Đã có lỗi xảy ra: ', error);
-      }
-    });
+  //         dropdown.append(featured_products);
+  //         $('.product-search').hover(
+  //           function() {
+  //             $(this).addClass('highlight');
+  //           },
+  //           function() {
+  //             $(this).removeClass('highlight');
+  //           }
+  //         );
+  //         $('.product-search').click(function() {
+  //           var productId = $(this).data('id');  // Lấy id sản phẩm từ data-id
+  //           window.location.href = '/product/' + productId;  // Chuyển đến trang chi tiết sản phẩm
+  //         });
+  //       } else {
+  //         console.log('Không đủ sản phẩm để hiển thị.');
+  //       }
+  //     },
+  //     error: function(xhr, status, error) {
+  //       console.log('Đã có lỗi xảy ra: ', error);
+  //     }
+  //   });
 
-  }
+  // }
 });
 $('.search-header').on('blur', function() {
   var dropdown = $('.search-history-dropdown');
