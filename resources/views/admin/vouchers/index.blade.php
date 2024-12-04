@@ -37,11 +37,13 @@
                             <td>{{ $voucher->code }}</td>
                             <td>
                                 <!-- Kiểm tra nếu voucher có ảnh -->
-                                @if($voucher->image && Storage::exists('public/' . $voucher->image))
+                                {{-- @if($voucher->image && Storage::exists('public/' . $voucher->image))
                                     <img src="{{ asset('storage/' . $voucher->image) }}" alt="Voucher Image" class="img-fluid" style="max-width: 30px; max-height: 30px;">
                                 @else
                                     <img src="{{ asset('images/default-voucher.png') }}" alt="Default Image" class="img-fluid" style="max-width: 30px; max-height: 30px;">
-                                @endif
+                                @endif --}}
+                            <img src="{{ asset('storage/' . $voucher->image) }}" alt="Voucher Image" class="img-fluid rounded-3 shadow-sm" style="max-width: 50px; max-height: 50px;">
+
                             </td>
                             <td>{{ number_format($voucher->discount_percentage, 2) }}%</td>
                             <td>{{ number_format($voucher->max_discount_amount) }}</td>

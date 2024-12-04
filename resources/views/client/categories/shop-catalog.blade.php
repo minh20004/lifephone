@@ -5,8 +5,8 @@
   <!-- Breadcrumb -->
   <nav class="container pt-3 my-3 my-md-4" aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Shop Catalog</li>
+      <li class="breadcrumb-item"><a href="{{ route('home') }}">Trang chủ</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Sản phẩm</li>
     </ol>
   </nav>
 
@@ -26,7 +26,7 @@
           <div class="offcanvas-body flex-column pt-2 py-lg-0">
             <!-- Categories -->
             <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
-              <h4 class="h6 mb-2">Categories</h4>
+              <h4 class="h6 mb-2">Danh mục sản phẩm</h4>
               <ul class="list-unstyled d-block m-0">
                 @foreach ($categories as $item)
                 <li class="nav d-block pt-2 mt-1">
@@ -146,4 +146,64 @@
     </div>
   </section>
 </div>
+{{-- <script>
+  document.querySelectorAll('button[aria-label="Add to Wishlist"]').forEach(button => {
+  button.addEventListener('click', function() {
+    let productId = this.getAttribute('data-id');
+    let customerId = @json(Auth::guard('customer')->user()->id);
+
+    $.ajax({
+      url: '/api/favorites',
+      method: 'POST',
+      data: {
+        customer_id: customerId,
+        product_id: productId
+      },
+      success: function(response) {
+        console.log('Product added to wishlist:', response);
+        alert('Sản phẩm đã được thêm vào danh sách yêu thích!');
+      },
+      error: function(xhr, status, error) {
+        console.error('Error:', error);
+        alert('Đã có sản phẩm trong danh sách yêu thích, vui lòng chọn sản phẩm khác!');
+      }
+    });
+  });
+});
+</script> --}}
+<script>
+  document.querySelectorAll('button[aria-label="Add to Wishlist"]').forEach(button => {
+    button.addEventListener('click', function() {
+      let productId = this.getAttribute('data-id');
+
+      // Kiểm tra nếu người dùng đã đăng nhập
+      let customerId = @json(Auth::guard('customer')->user() ? Auth::guard('customer')->user()->id : null);
+
+      // Nếu customerId là null, yêu cầu người dùng đăng nhập
+      if (customerId === null) {
+        alert('Bạn cần đăng nhập để thêm sản phẩm vào danh sách yêu thích!');
+        return; // Dừng quá trình gửi yêu cầu AJAX
+      }
+
+      // Nếu đã có customerId, gửi yêu cầu AJAX
+      $.ajax({
+        url: '/api/favorites',
+        method: 'POST',
+        data: {
+          customer_id: customerId,
+          product_id: productId
+        },
+        success: function(response) {
+          console.log('Product added to wishlist:', response);
+          alert('Sản phẩm đã được thêm vào danh sách yêu thích!');
+        },
+        error: function(xhr, status, error) {
+          console.error('Error:', error);
+          alert('Đã có sản phẩm trong danh sách yêu thích, vui lòng chọn sản phẩm khác!');
+        }
+      });
+    });
+  });
+</script>
+
 @endsection

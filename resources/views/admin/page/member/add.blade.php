@@ -47,7 +47,7 @@
                             <option value="">Chọn vai trò</option>
                             <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Quản trị</option>
                             <option value="staff" {{ old('role') == 'staff' ? 'selected' : '' }}>Nhân viên</option>
-                            <option value="customer" {{ old('role') == 'customer' ? 'selected' : '' }}>Khách hàng</option>
+                            {{-- <option value="customer" {{ old('role') == 'customer' ? 'selected' : '' }}>Khách hàng</option> --}}
                         </select>
                         <div class="invalid-feedback">
                             Vui lòng chọn vai trò người dùng.
