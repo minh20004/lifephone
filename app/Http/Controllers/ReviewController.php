@@ -77,7 +77,7 @@ class ReviewController extends Controller
      */
     public function show(string $id)
     {
-        //
+        
     }
 
     /**
@@ -105,62 +105,26 @@ class ReviewController extends Controller
         $review->delete();
         return redirect()->route('review.index');
     }
-    public function like(Request $request, $reviewId)
-{
-    $customer_id  = auth()->id(); // Lấy ID của người dùng hiện tại
+    public function like(Request $request)
+    {
+        $review = Review::find($request->review_id);
+        if ($review) {
+            $review->increment('likes');
+            return response()->json(['success' => true, 'likes' => $review->likes]);
+        }
 
-    // Kiểm tra nếu người dùng đã like hoặc dislike bài review này
-    $existing = DB::table('likes_dislikes')
-        ->where('review_id', $reviewId)
-        ->where('customer_id ', $customer_id )
-        ->first();
-
-    if ($existing) {
-        return response()->json(['message' => 'Bạn đã thực hiện hành động này rồi!'], 403);
+        return response()->json(['success' => false]);
     }
 
-    // Thêm like
-    DB::table('likes_dislikes')->insert([
-        'review_id' => $reviewId,
-        'customer_id ' => $customer_id ,
-        'type' => 'like',
-        'created_at' => now(),
-        'updated_at' => now(),
-    ]);
+    public function dislike(Request $request)
+    {
+        $review = Review::find($request->review_id);
+        if ($review) {
+            $review->increment('dislikes');
+            return response()->json(['success' => true, 'dislikes' => $review->dislikes]);
+        }
 
-    // Tăng số lượt like
-    Review::where('id', $reviewId)->increment('likes');
+        return response()->json(['success' => false])
 
-    return response()->json(['message' => 'Like thành công!', 'likes' => Review::find($reviewId)->likes]);
 }
-
-public function dislike(Request $request, $reviewId)
-{
-    $customer_id = auth()->id();
-
-    // Kiểm tra nếu người dùng đã like hoặc dislike bài review này
-    $existing = DB::table('likes_dislikes')
-        ->where('review_id', $reviewId)
-        ->where('customer_id ', $customer_id)
-        ->first();
-
-    if ($existing) {
-        return response()->json(['message' => 'Bạn đã thực hiện hành động này rồi!'], 403);
-    }
-
-    // Thêm dislike
-    DB::table('likes_dislikes')->insert([
-        'review_id' => $reviewId,
-        'customer_id ' => $customer_id,
-        'type' => 'dislike',
-        'created_at' => now(),
-        'updated_at' => now(),
-    ]);
-
-    // Tăng số lượt dislike
-    Review::where('id', $reviewId)->increment('dislikes');
-
-    return response()->json(['message' => 'Dislike thành công!', 'dislikes' => Review::find($reviewId)->dislikes]);
-}
-
 }

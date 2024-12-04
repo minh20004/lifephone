@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewController;
 use App\Http\Controllers\AuthController;
@@ -19,11 +20,9 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\CategoryNewsController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
-<<<<<<< HEAD
 use App\Http\Controllers\ClientReviewController;
-=======
 use App\Http\Controllers\PaymentController;
->>>>>>> origin/tan
+
 
 /*
 |--------------------------------------------------------------------------
@@ -72,6 +71,9 @@ Route::middleware(['auth:customer'])->group(function () {
 Route::post('/customer/address', [AddressController::class, 'addAddress'])->name('customer.addAddress');
 // route bình luận
 Route::post('product/{id}/review', [ReviewController::class, 'store'])->middleware('auth')->name('reviews.store');
+Route::post('/comments/reply/{review}', [CommentController::class, 'reply'])->name('comments.reply');
+Route::post('/review/like', [ReviewController::class, 'like'])->name('review.like');
+Route::post('/review/dislike', [ReviewController::class, 'dislike'])->name('review.dislike');
 
 // Route xóa địa chỉ
 Route::delete('/customer/address/{addressId}', [AddressController::class, 'deleteAddress'])->name('customer.deleteAddress');
@@ -103,16 +105,16 @@ Route::middleware(['auth:customer', 'isCustomer'])->group(function () {
     Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
     Route::put('/customer/{id}/update-address', [AuthController::class, 'updateAddress'])->name('customer.updateAddress');
     Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
-<<<<<<< HEAD
+
     Route::get('/customer/wishList', [AuthController::class, 'wish_list'])->name('customer.wishList');
 
     Route::get('/order-history', [AuthController::class, 'history'])->name('order.history');
-=======
+
     Route::get('/order-history', [AuthController::class, 'history'])->name('order.history');
 Route::get('/order-detail/{id}', [AuthController::class, 'detail'])->name('order.detail');
 
 
->>>>>>> origin/tan
+
 });
 Route::get('/order-detail/{id}', [AuthController::class, 'detail'])->name('order.detail');
 // -----------------------------USER------------------------------------------------------------------------------
@@ -260,5 +262,7 @@ Route::get('/new/category/{slug}', [NewController::class, 'categoryNewsBlog'])->
 Route::get('/search', [ClientCategoryController::class, 'search'])->name('product.search');
 // categoy product
 Route::get('/danh-muc-san-pham', [FrontendControlle::class, 'index_cate_all'])->name('danh-muc-san-pham');
-Route::post('/reviews/{id}/like', [ReviewController::class, 'like'])->name('reviews.like');
-Route::post('/reviews/{id}/dislike', [ReviewController::class, 'dislike'])->name('reviews.dislike');
+Route::post('/comments', [CommentController::class, 'store'])->name('comments.store');
+
+
+

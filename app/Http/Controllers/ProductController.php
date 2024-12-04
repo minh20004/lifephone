@@ -447,27 +447,4 @@ class ProductController extends Controller
 
         return response()->json(['html' => $html]);
     }
-    public function showProductReviews($id)
-    {
-
-        // Tìm sản phẩm kèm theo các quan hệ cần thiết
-        $product = Product::with('variants.color', 'variants.capacity')
-            ->findOrFail($id);
-
-        // Lấy danh sách đánh giá của sản phẩm cùng với thông tin khách hàng và người dùng
-        $reviews = Review::with(['user', 'loadAllCustomer']) // Nạp quan hệ user và customer nếu cần
-            ->where('product_id', $id)
-            ->get();
-
-        // Tính toán số lượng đánh giá
-        $reviewCount = $reviews ? $reviews->count() : 0;
-
-        // Tính điểm đánh giá trung bình
-        $averageRating = $reviews->avg('rating') ?? 0;
-        dd($reviews);
-        dd($reviewCount);
-
-        // Trả về view với các dữ liệu cần thiết
-        return view('client.page.detail-product.general', compact('product', 'reviews', 'reviewCount', 'averageRating'));
-    }
 }

@@ -16,10 +16,7 @@ use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/tan
     public function index()
     {
         $cartItems = [];
@@ -269,11 +266,6 @@ class CartController extends Controller
         ]);
     }
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> origin/tan
     public function applyVoucher(Request $request)
     {
         $request->validate([

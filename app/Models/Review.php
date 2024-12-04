@@ -44,5 +44,8 @@ public function capacity()
 {
     return $this->belongsTo(Capacity::class);
 }
-
+public function comments()
+{
+    return $this->hasMany(Comment::class);
+}
 }
