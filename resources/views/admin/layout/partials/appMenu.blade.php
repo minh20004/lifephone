@@ -200,6 +200,9 @@
                         <li class="nav-item">
                             <a href="{{route('review_admin.index')}}" class="nav-link" data-key="t-team"> Bình luận </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{route('reviews.deleted')}}" class="nav-link" data-key="t-team"> Bình luận đã xóa</a>
+                        </li>
                     </ul>
                 </div>
             </li>

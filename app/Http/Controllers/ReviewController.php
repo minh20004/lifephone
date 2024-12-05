@@ -127,5 +127,21 @@ class ReviewController extends Controller
 
         return response()->json(['success' => false]);
 }
+public function showDeletedReviews()
+{
+    // Lấy tất cả review đã bị xóa mềm
+    $deletedReviews = Review::onlyTrashed()
+        ->paginate(10); // Phân trang nếu cần
 
+    return view('admin.page.review.deleted', compact('deletedReviews'));
+}
+public function restoreReview($id)
+{
+    $review = Review::onlyTrashed()->findOrFail($id);
+
+    // Khôi phục review
+    $review->restore();
+
+    return redirect()->route('reviews.deleted')->with('success', 'Review đã được khôi phục.');
+}
 }

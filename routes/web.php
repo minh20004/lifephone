@@ -230,6 +230,8 @@ Route::prefix('colors')->group(function () {
 Route::get('/product/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
 //router review và news
 Route::resource('review_admin',ReviewController::class);
+Route::get('/admin/reviews/deleted', [ReviewController::class, 'showDeletedReviews'])->name('reviews.deleted');
+Route::patch('/admin/reviews/restore/{id}', [ReviewController::class, 'restoreReview'])->name('review.restore');
 Route::resource('new_admin',  NewController::class);
 
 Route::get('new', [NewController::class, 'clientIndex'])->name('news.index');
