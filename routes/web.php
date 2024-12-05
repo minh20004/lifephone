@@ -19,6 +19,7 @@ use App\Http\Controllers\ClientNewController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\CategoryNewsController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\UserNotificationController;
 use App\Http\Controllers\OrderNotificationController;
 use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
 
@@ -99,7 +100,7 @@ Route::middleware(['auth:customer', 'isCustomer'])->group(function () {
     Route::put('/customer/{id}/update-address', [AuthController::class, 'updateAddress'])->name('customer.updateAddress');
     Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
     Route::get('/order-history', [AuthController::class, 'history'])->name('order.history');
-Route::get('/order-detail/{id}', [AuthController::class, 'detail'])->name('order.detail');
+    Route::get('/order-detail/{id}', [AuthController::class, 'detail'])->name('order.detail');
 
 
 });
@@ -111,7 +112,7 @@ Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('cart/remove/{productId}', [CartController::class, 'remove'])->name('cart.remove');
 
 Route::post('/cart/update', [CartController::class, 'updateQuantity'])->name('cart.update');
-Route::post('/cart/apply-voucher', [CartController::class, 'applyVoucher'])->name('cart.apply-voucher');
+// Route::post('/cart/apply-voucher', [CartController::class, 'applyVoucher'])->name('cart.apply-voucher');
 Route::get('/cart/offcanvas', [CartController::class, 'getCart'])->name('cart.offcanvas');
 
 // thanh toán
@@ -125,10 +126,10 @@ Route::post('/payment/vnpay', [OrderController::class, 'payWithVNPay'])->name('p
 Route::get('/payment/vnpay/callback', [OrderController::class, 'handleVNPayCallback'])->name('order.vnpay.callback');
 
 
-// lịch sử đơn hàng
 
-// Route::get('/order-history', [AuthController::class, 'orderHistory'])->name('order.history');
-// Route::post('/order-cancel/{id}', [AuthController::class, 'cancel'])->name('order.cancel');
+// Route::post('/order/apply-voucher', [OrderController::class, 'applyVoucher'])->name('order.apply-voucher');
+// Route::get('/apply-voucher', [OrderController::class, 'showVoucherForm'])->name('order.showVoucherForm');
+Route::post('/apply-voucher', [OrderController::class, 'applyVoucher'])->name('order.applyVoucher');
 
 // Route cho khách hàng yêu cầu hủy đơn hàng
 Route::post('/order/cancel/{id}', [AuthController::class, 'cancel'])->name('order.cancel');
@@ -163,7 +164,6 @@ Route::post('/order/{id}/retry-payment', [OrderController::class, 'retryPayment'
 Route::get('/checkout-failure/{id}', [OrderController::class, 'retryPayment'])->name('checkout-failure');
 // Trong web.php
 Route::get('/checkout/{order_id}', [OrderController::class, 'retryPayment'])->name('checkout-vnpay');
-
 
 // ------------------------------------------------- ADMIN---------------------------------------------------------
 // Quản lý thành viên admin

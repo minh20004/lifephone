@@ -102,20 +102,6 @@
             </li>
           </ul>
         </div>
-        <div class="dropdown">
-          <button type="button" class="theme-switcher btn btn-icon btn-lg btn-outline-secondary fs-lg border-0 rounded-circle animate-scale" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Toggle theme (light)">
-            <span class="theme-icon-active d-flex animate-target">
-              <i class="fa-solid fa-bell"></i>
-            </span>
-          </button>
-          <ul class="dropdown-menu" style="--cz-dropdown-min-width: 9rem">
-            <li>
-              Thông báo đơn hàng 
-            </li>
-            
-          </ul>
-        </div>
-        
         <!-- Search toggle button visible on screens < 992px wide (lg breakpoint) -->
         <button type="button" class="btn btn-icon btn-lg fs-xl btn-outline-secondary border-0 rounded-circle animate-shake d-lg-none" data-bs-toggle="collapse" data-bs-target="#searchBar" aria-expanded="false" aria-controls="searchBar" aria-label="Toggle search bar">
           <i class="ci-search animate-target"></i>

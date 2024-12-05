@@ -51,35 +51,90 @@
             <div class="mb-3">
                 <textarea name="description" class="form-control" rows="4" placeholder="Nội dung"></textarea>
             </div>
-            <div class="border-top pt-4 mt-4">
-                <div class="d-flex justify-content-between mb-3">
-                  <span class="fs-sm">Tổng ước tính:</span>
-                  <span class="h5 mb-0">{{ number_format($estimatedTotal, 0, ',', '.') }} đ</span>
+                
+                <ul class="list-unstyled fs-sm gap-3 mb-0">
+                    <li class="d-flex justify-content-between">
+                        <span class="text-dark-emphasis fw-medium" id="totalPrice">{{ session('totalPrice', number_format($totalPrice, 0, ',', '.')) }} đ</span>
+                    </li>
+                    <li class="d-flex justify-content-between">
+                        Giảm giá:
+                        <span id="discount" class="text-danger">
+                            {{ session('discount', '0 đ') }}
+                        </span>
+                    </li>
+                </ul>
+                
+                <div class="border-top pt-4 mt-4">
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="fs-sm">Tổng ước tính:</span>
+                        <span class="h5 mb-0" id="estimatedTotal">{{ session('estimatedTotal', number_format($estimatedTotal, 0, ',', '.')) }} đ</span>
+                    </div>
                 </div>
-              </div>
+                
             <button type="button" class="btn btn-primary w-100" id="place-order-btn">Đặt hàng</button>
         </form>
+        <div class="accordion bg-body-tertiary rounded-5 p-4">
+            <div class="accordion-item border-0">
+                <h3 class="accordion-header" id="promoCodeHeading">
+                    <button type="button" class="accordion-button animate-underline collapsed py-0 ps-sm-2 ps-lg-0 ps-xl-2" data-bs-toggle="collapse" data-bs-target="#promoCode" aria-expanded="false" aria-controls="promoCode">
+                        <i class="ci-percent fs-xl me-2"></i>
+                        <span class="animate-target me-2">Áp dụng mã khuyến mãi</span>
+                    </button>
+                </h3>
+                <div class="accordion-collapse collapse" id="promoCode" aria-labelledby="promoCodeHeading">
+                    <div class="accordion-body pt-3 pb-2 ps-sm-2 px-lg-0 px-xl-2">
+                        <form action="{{ route('order.applyVoucher') }}" method="POST" class="needs-validation d-flex gap-2" novalidate>
+                            @csrf
+                            <div class="position-relative w-100 mb-3">
+                                <input type="text" name="voucher_code" id="voucher_code" class="form-control" placeholder="Nhập mã khuyến mãi" required>
+                                <div class="invalid-tooltip bg-transparent py-0">Nhập mã khuyến mãi hợp lệ!</div>
+                            </div>
+                            <button type="submit" class="btn btn-dark">Áp dụng</button>
+                        </form>
+        
+                        <div class="mt-4">
+                            <p>Chọn một mã khuyến mãi:</p>
+                            <form id="voucher-selection-form" action="{{ route('order.applyVoucher') }}" method="POST" class="d-flex gap-2">
+                                @csrf
+                                @foreach($vouchers as $voucher)
+                                    <div class="voucher-option d-flex align-items-center">
+                                        <input type="radio" name="selected_voucher" id="voucher_{{ $voucher->id }}" value="{{ $voucher->code }}" class="me-2" 
+                                               {{ session('voucher.code') == $voucher->code ? 'checked' : '' }}>
+                                        <label for="voucher_{{ $voucher->id }}">
+                                            <div class="d-flex align-items-center">
+                                                {{-- @if($voucher->image)
+                                                    <img src="{{ asset('storage/' . $voucher->image) }}" alt="Voucher Image" class="voucher-image" width="50" height="50">
+                                                @endif --}}
+                                                <div class="ms-3">
+                                                    <strong>{{ $voucher->title }}</strong><br>
+                                                    {{ $voucher->discount_percentage }}% - HSD: {{ $voucher->end_date }}<br>
+                                                    <small>{{ $voucher->terms_conditions }}</small><br>
+                            
+                                                    @if($voucher->min_order_value)
+                                                        <small><strong>Đơn tối thiểu:</strong> {{ number_format($voucher->min_order_value, 0, ',', '.') }} VNĐ</small><br>
+                                                    @endif
+                                                    @if($voucher->max_discount_amount)
+                                                        <small><strong>Giảm tối đa:</strong> {{ number_format($voucher->max_discount_amount, 0, ',', '.') }} VNĐ</small>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                @endforeach
+                                <button type="submit" class="btn btn-dark">Áp dụng</button>
+                            </form>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        
     </div>
 </main>
 
-{{-- <script>
-    document.getElementById('place-order-btn').addEventListener('click', function () {
-        const selectedPaymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
-        const form = document.getElementById('checkout-form');
-
-        if (selectedPaymentMethod === 'VNPay') {
-            // Chuyển hướng sang xử lý VNPay
-            form.action = "{{ url('/vnpay-payment') }}";
-            form.method = "POST";
-        } else {
-            // Xử lý thanh toán COD
-            form.action = "{{ route('order.store') }}";
-            form.method = "POST";
-        }
-
-        form.submit();
-    });
-</script> --}}
 <script>
     document.getElementById('place-order-btn').addEventListener('click', function () {
         const selectedPaymentMethod = document.querySelector('input[name="payment_method"]:checked').value;

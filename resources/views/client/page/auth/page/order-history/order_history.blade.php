@@ -130,29 +130,6 @@
                         <div class="text-end mt-3 d-flex justify-content-between gap-2">
                             <p style="font-size:13px;">Ngày đặt hàng: {{ $order->created_at->format('d/m/Y ') }}</p>
                             <div class="d-flex gap-2">
-                                <div>
-                                    {{-- @if($order->status == 'Thanh toán thất bại')
-                                        <form action="{{ route('order.retryPayment', $order->id) }}" method="POST">
-                                            @csrf
-                                            <button class="btn btn-danger btn-sm">Thanh toán lại</button>
-                                        </form>
-                                    @endif --}}
-                                    {{-- <form action="{{ route('order.retryPaymentNow', $order->id) }}" method="POST">
-                                        @csrf
-                                        <button type="submit" class="btn btn-success">Thanh toán lại</button>
-                                    </form> --}}
-                                    {{-- @if($order->status == 'Thanh toán thất bại')
-                                        <form action="{{ route('order.retryPayment', $order->id) }}" method="POST">
-                                            @csrf
-                                            <button type="submit" class="btn btn-warning">Thanh toán lại</button>
-                                        </form>
-                                    @endif --}}
-
-                                    
-
-
-                                </div>
-                                
                                 <div><a href="{{ route('order.detail', $order->id) }}" class="btn border border-danger btn-sm text-dark">Xem Chi Tiết Đơn Hàng</a></div>
                                 <div>
                                     @if($order->status == 'Chờ xác nhận')

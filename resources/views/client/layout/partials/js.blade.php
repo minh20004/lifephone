@@ -280,34 +280,8 @@
     }
 </script> --}}
 
-{{-- thay dổi số trong trên giỏ hàng --}}
-{{-- <script>
-    document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-        button.addEventListener('click', function (e) {
-            e.preventDefault();
-            const form = this.closest('form');
-            const formData = new FormData(form);
 
-            fetch(form.action, {
-                method: 'POST',
-                body: formData,
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    updateCartItemCount(); // Cập nhật số lượng
-                    alert(data.message);  // Hiển thị thông báo
-                } else {
-                    alert(data.message);  // Thông báo lỗi
-                }
-            })
-            .catch(error => console.error('Error adding to cart:', error));
-        });
-    });
-
-</script> --}}
-
-{{-- tăng giỏ số lượng nháp --}}
+{{-- tăng số lượng giỏ hàng--}}
 <script>
     document.querySelectorAll('.btn-increment, .btn-decrement').forEach(button => {
         button.addEventListener('click', function() {
@@ -344,64 +318,101 @@
 
 </script>
 
-{{-- <script>
+{{-- cập nhật tổng tiền khi có mã giảm giá ajax --}}
+<script>
     document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.btn-decrement, .btn-increment').forEach(function (button) {
-        button.addEventListener('click', function () {
-            const isIncrement = this.classList.contains('btn-increment');
-            const input = this.closest('.count-input').querySelector('input');
-            let quantity = parseInt(input.value);
+    // Xử lý nút "Áp dụng mã giảm giá" khi nhập tay
+        document.getElementById('applyVoucherButton').addEventListener('click', function () {
+            const voucherCode = document.getElementById('voucherCodeInput').value.trim();
 
-            // Tăng hoặc giảm số lượng
-            if (isIncrement) {
-                quantity++;
-            } else if (quantity > 1) {
-                quantity--;
+            if (!voucherCode) {
+                alert('Vui lòng nhập mã giảm giá.');
+                return;
             }
 
-            // Cập nhật giá trị trong ô input
-            input.value = quantity;
+            applyVoucher(voucherCode);
+        });
 
-            // Lấy thông tin sản phẩm
-            const row = this.closest('tr');
-            const productId = row.dataset.productId;
-            const modelId = row.dataset.modelId;
-            const colorId = row.dataset.colorId;
+        // Xử lý nút "Áp dụng mã giảm giá" khi chọn từ danh sách
+        document.getElementById('applySelectedVoucherButton').addEventListener('click', function () {
+            const selectedVoucher = document.getElementById('selectedVoucher').value;
 
-            // Gửi yêu cầu AJAX để cập nhật số lượng
-            fetch('{{ route('cart.update') }}', {
+            if (!selectedVoucher) {
+                alert('Vui lòng chọn một mã giảm giá.');
+                return;
+            }
+
+            applyVoucher(selectedVoucher);
+        });
+
+        // Hàm gửi mã giảm giá lên server qua AJAX
+        function applyVoucher(voucherCode) {
+            fetch('/apply-voucher', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                 },
-                body: JSON.stringify({ productId, modelId, colorId, quantity })
+                body: JSON.stringify({ voucher_code: voucherCode }),
             })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.success) {
-                        // Cập nhật tổng giá của sản phẩm
-                        document.querySelector(`#itemTotal-${productId}-${modelId}-${colorId}`).textContent = data.itemTotal + ' VNĐ';
-
-                        // Cập nhật tổng giá trị giỏ hàng
-                        document.querySelector('#totalPrice').textContent = data.totalPrice + ' VNĐ';
-
-                        // Cập nhật tổng giá trị sau khi giảm giá (nếu có)
-                        if (data.totalAfterDiscount !== undefined) {
-                            document.querySelector('#totalAfterDiscount').textContent = data.totalAfterDiscount + ' VNĐ';
-                        }
-
-                        // Cập nhật giảm giá
-                        if (data.discount !== undefined) {
-                            document.querySelector('#discount').textContent = data.discount + ' VNĐ';
-                        }
+                    if (data.error) {
+                        alert(data.error);
                     } else {
-                        console.error('Lỗi khi cập nhật giỏ hàng:', data.message);
+                        // Cập nhật giảm giá và tổng ước tính trên giao diện
+                        document.getElementById('discount').textContent = `${data.discount} đ`;
+                        document.querySelector('.h5.mb-0').textContent = `${data.estimatedTotal} đ`;
+
+                        // Cập nhật lại tổng giá trị giỏ hàng trước giảm giá
+                        document.getElementById('totalPrice').textContent = `${data.totalPrice} đ`;
+
+                        alert('Mã giảm giá đã được áp dụng!');
                     }
                 })
-                .catch(error => console.error('Error:', error));
+                .catch(error => {
+                    console.error('Lỗi:', error);
+                    alert('Đã xảy ra lỗi, vui lòng thử lại.');
+                });
+        }
+    });
+
+
+</script>
+
+{{-- cập nhật mã giảm giá checkout --}}
+<script>
+    document.getElementById('apply-voucher-btn').addEventListener('click', function () {
+        const voucherCode = document.getElementById('voucher_code').value;
+
+        if (!voucherCode) {
+            alert('Vui lòng nhập mã giảm giá!');
+            return;
+        }
+
+        fetch("{{ route('order.applyVoucher') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ voucher_code: voucherCode })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Cập nhật phần giảm giá và tổng ước tính trên giao diện
+                document.getElementById('discount').innerText = `${data.discount} đ`;
+                document.getElementById('estimated-total').innerText = `${data.estimatedTotal} đ`;
+                alert('Mã giảm giá đã được áp dụng thành công!');
+            } else {
+                alert(data.message || 'Mã giảm giá không hợp lệ!');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra, vui lòng thử lại.');
         });
     });
-});
 
-</script> --}}
+</script>
