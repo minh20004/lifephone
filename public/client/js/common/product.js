@@ -79,12 +79,13 @@ $('.search-header').on('click', function() {
       method: 'GET',
       success: function(data) {
         if (data && data.length >= 4) {
+          console.log(data[0])
           let featured_products = $(`
             <div class="row">
                 <!-- Cột 1: Sản phẩm 1 -->
                 <div class="col-6">
                     <div class="product-search d-flex justify-content-evenly align-items-center" data-id="${data[0].id}">
-                        <img src="${data[0].image_url}" alt="${data[0].name}" class="img-fluid" style="max-height: 60px; object-fit: cover;">
+                        <img src="/storage/uploads/avtproduct/${data[0].image_url}" alt="${data[0].name}" class="img-fluid" style="max-height: 60px; object-fit: cover;">
                         <p class="text-center">${data[0].name}</p>
                     </div>
                     <div class="product-search d-flex justify-content-evenly align-items-center" data-id="${data[1].id}">

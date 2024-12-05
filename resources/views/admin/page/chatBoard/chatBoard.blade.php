@@ -11,7 +11,7 @@
         <div class="card">
           <div class="card-body">
 
-            <ul class="list-unstyled mb-0">
+            <ul class="list-unstyled list-customer mb-0">
             </ul>
 
           </div>
@@ -154,52 +154,55 @@
   var customer_info = null;
 
   socket.on('dashboard_data',(data)=>{
+    console.log(data)
     let list_conservations = '';
     listConversations = data;
-    data.forEach(conversation => {
-      const lastMessageDate = new Date(conversation.lastMessageCreatedAt);
-      const now = new Date();
-
-      // Tính toán sự chênh lệch thời gian giữa hiện tại và lastMessageCreatedAt
-      const timeDifference = now - lastMessageDate;
-      let timeAgo = 'Just now';
-
-      const seconds = Math.floor(timeDifference / 1000); // Chuyển đổi sang giây
-      const minutes = Math.floor(seconds / 60); // Chuyển đổi sang phút
-      const hours = Math.floor(minutes / 60); // Chuyển đổi sang giờ
-      const days = Math.floor(hours / 24); // Chuyển đổi sang ngày
-
-      // Tính toán thời gian chênh lệch và hiển thị
-      if (seconds < 60) {
-        timeAgo = `${seconds} second${seconds === 1 ? '' : 's'} ago`;
-      } else if (minutes < 60) {
-        timeAgo = `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
-      } else if (hours < 24) {
-        timeAgo = `${hours} hour${hours === 1 ? '' : 's'} ago`;
-      } else if (days < 30) {
-        timeAgo = `${days} day${days === 1 ? '' : 's'} ago`;
-      } else {
-        timeAgo = lastMessageDate.toLocaleDateString(); // Hiển thị theo định dạng ngày nếu quá 30 ngày
-      }
-      let item_html = ` <li class="p-2 border-bottom bg-body-tertiary con-item" data-id = "${conversation.conversationId}">
-                <a href="#!" class="d-flex justify-content-between">
-                  <div class="d-flex flex-row">
-                    <img src="${conversation.customerAvatar}" alt="avatar"
-                      class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
-                    <div class="pt-1">
-                      <p class="fw-bold mb-0">${conversation.customerName}</p>
-                      <p class="small text-muted">${conversation.lastMessageContent}</p>
+    setTimeout(() => {
+      data.forEach(conversation => {
+        const lastMessageDate = new Date(conversation.lastMessageCreatedAt);
+        const now = new Date();
+  
+        // Tính toán sự chênh lệch thời gian giữa hiện tại và lastMessageCreatedAt
+        const timeDifference = now - lastMessageDate;
+        let timeAgo = 'Just now';
+  
+        const seconds = Math.floor(timeDifference / 1000); // Chuyển đổi sang giây
+        const minutes = Math.floor(seconds / 60); // Chuyển đổi sang phút
+        const hours = Math.floor(minutes / 60); // Chuyển đổi sang giờ
+        const days = Math.floor(hours / 24); // Chuyển đổi sang ngày
+  
+        // Tính toán thời gian chênh lệch và hiển thị
+        if (seconds < 60) {
+          timeAgo = `${seconds} second${seconds === 1 ? '' : 's'} ago`;
+        } else if (minutes < 60) {
+          timeAgo = `${minutes} minute${minutes === 1 ? '' : 's'} ago`;
+        } else if (hours < 24) {
+          timeAgo = `${hours} hour${hours === 1 ? '' : 's'} ago`;
+        } else if (days < 30) {
+          timeAgo = `${days} day${days === 1 ? '' : 's'} ago`;
+        } else {
+          timeAgo = lastMessageDate.toLocaleDateString(); // Hiển thị theo định dạng ngày nếu quá 30 ngày
+        }
+        let item_html = ` <li class="p-2 border-bottom bg-body-tertiary con-item" data-id = "${conversation.conversationId}">
+                  <a href="#!" class="d-flex justify-content-between">
+                    <div class="d-flex flex-row">
+                      <img src="${conversation.customerAvatar}" alt="avatar"
+                        class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                      <div class="pt-1">
+                        <p class="fw-bold mb-0">${conversation.customerName}</p>
+                        <p class="small text-muted">${conversation.lastMessageContent}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div class="pt-1">
-                    <p class="small text-muted mb-1">${timeAgo}</p>
-                    <span class="badge bg-danger float-end count-mess-unread">${conversation.unreadMessagesCount}</span>
-                  </div>
-                </a>
-              </li>`
-      list_conservations += item_html;
-    });
-    document.querySelector('.list-unstyled').innerHTML = list_conservations;
+                    <div class="pt-1">
+                      <p class="small text-muted mb-1">${timeAgo}</p>
+                      <span class="badge bg-danger float-end count-mess-unread">${conversation.unreadMessagesCount}</span>
+                    </div>
+                  </a>
+                </li>`
+        list_conservations += item_html;
+      });
+      document.querySelector('.list-customer').innerHTML = list_conservations;
+    }, 500);
   });
 
   socket.on('previous_messages', (data) => {
@@ -298,15 +301,15 @@
     list.scrollTop = list.scrollHeight;  // Cuộn đến cuối cùng
   });
 
-  setTimeout(() => {
-    document.querySelector('.message-customer').addEventListener('scroll', function() {
-      var list = this;
-      if (list.scrollTop == 0) {
-          console.log('Đã đến đầu danh sách');
-          // Thực hiện hành động bạn muốn khi cuộn đến đầu
-      }
-    });
-  }, 200);
+  // setTimeout(() => {
+  //   document.querySelector('.message-customer').addEventListener('scroll', function() {
+  //     var list = this;
+  //     if (list.scrollTop == 0) {
+  //         console.log('Đã đến đầu danh sách');
+  //         // Thực hiện hành động bạn muốn khi cuộn đến đầu
+  //     }
+  //   });
+  // }, 200);
 
 
   // Xử lý khi nhấn nút gửi
