@@ -233,6 +233,8 @@ Route::resource('review_admin',ReviewController::class);
 Route::get('/admin/reviews/deleted', [ReviewController::class, 'showDeletedReviews'])->name('reviews.deleted');
 Route::patch('/admin/reviews/restore/{id}', [ReviewController::class, 'restoreReview'])->name('review.restore');
 Route::resource('new_admin',  NewController::class);
+Route::patch('/admin/reviews/{id}/replyAsAdmin', [CommentController::class, 'replyAsAdmin'])->name('reviews.replyAsAdmin');
+
 
 Route::get('new', [NewController::class, 'clientIndex'])->name('news.index');
 

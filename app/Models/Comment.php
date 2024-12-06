@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Comment extends Model
 {
     use HasFactory;
-    protected $fillable = ['review_id', 'customer_id', 'comment'];
+    protected $fillable = ['review_id', 'customer_id', 'comment','is_admin_reply','user_id'];
 
     public function review()
     {
@@ -21,6 +21,9 @@ class Comment extends Model
     }
     public function loadAllCustomer(){
         return $this->belongsTo(Customer::class,'customer_id' );
+    }
+    public function loadAllUser(){
+        return $this->belongsTo(User::class,'user_id' );
     }
     public function replies()
 {

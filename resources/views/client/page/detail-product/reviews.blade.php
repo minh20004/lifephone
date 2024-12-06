@@ -136,7 +136,16 @@
     <div class="comments-section ms-4">
       @foreach($review->comments as $comment)
       <div class="comment mb-2">
-        <strong>{{ $comment->loadAllCustomer ? $comment->loadAllCustomer->name : 'Ẩn danh'}}</strong>
+   
+      <strong>
+    @if ($comment->loadAllUser)
+        Nhân viên: {{ $comment->loadAllUser->name }}
+    @elseif ($comment->loadAllCustomer)
+        {{ $comment->loadAllCustomer->name }}
+    @endif
+
+</strong>
+
         <p>{{ $comment->comment }}</p>
       </div>
       @endforeach

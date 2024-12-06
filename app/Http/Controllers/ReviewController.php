@@ -144,4 +144,16 @@ public function restoreReview($id)
 
     return redirect()->route('reviews.deleted')->with('success', 'Review đã được khôi phục.');
 }
+public function respond(Request $request, $id)
+{
+    $request->validate([
+        'admin_response' => 'required|string|max:1000',
+    ]);
+
+    $review = Review::findOrFail($id);
+    $review->admin_response = $request->admin_response;
+    $review->save();
+
+    return redirect()->route('review_admin.index')->with('success', 'Phản hồi đã được gửi!');
+}
 }

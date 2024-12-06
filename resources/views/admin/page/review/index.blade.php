@@ -80,7 +80,7 @@ REVIEW
                                                                     <div class="d-flex align-items-center">
                                                                         <div class="flex-grow-1">
                                                                             <h5 class="fs-14 mb-1">
-                                                                                <a  href="{{ url('product/' . $review->loadAllProduct->id) }}" class="text-body" target="_blank">{{$review->loadAllProduct->name}}</a>
+                                                                                <a href="{{ url('product/' . $review->loadAllProduct->id) }}" class="text-body" target="_blank">{{$review->loadAllProduct->name}}</a>
                                                                             </h5>
                                                                         </div>
                                                                     </div>
@@ -100,12 +100,9 @@ REVIEW
                                                             </td>
                                                             <td data-column-id="action" class="gridjs-td">
                                                                 <div>
-                                                                    <form action="{{route('review_admin.destroy',$review->id)}}" method="post">
-                                                                        @method('DELETE')
-                                                                        @csrf
-                                                                        <button class="ri-delete-bin-fill align-bottom me-2 btn btn-danger text-white " onclick="return confirm('xoa')"> Delete
-                                                                        </button>
-                                                                    </form>
+                                                                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#responseModal{{ $review->id }}">
+                                                                        Phản hồi
+                                                                    </button>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -129,5 +126,25 @@ REVIEW
         </div>
     </div>
 </div>
-
+<div class="modal fade" id="responseModal{{ $review->id }}" tabindex="-1" aria-labelledby="responseModalLabel{{ $review->id }}" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form action="{{ route('reviews.replyAsAdmin', $review->id) }}" method="POST">
+                @csrf
+                @method('PATCH')
+                <div class="modal-header">
+                    <h5 class="modal-title" id="responseModalLabel{{ $review->id }}">Phản hồi khách hàng {{ $review->loadAllCustomer->name }} của sản phẩm {{$review->loadAllProduct->name}}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <textarea name="comment" class="form-control" rows="5" placeholder="Nhập nội dung phản hồi..." required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Gửi phản hồi</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection
