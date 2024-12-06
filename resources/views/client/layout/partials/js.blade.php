@@ -317,6 +317,60 @@
     });
 
 </script>
+{{-- <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const updateCart = (productId, modelId, colorId, quantity) => {
+            axios.post('{{ route('cart.update') }}', {
+                productId: productId,
+                modelId: modelId,
+                colorId: colorId,
+                quantity: quantity,
+                _token: '{{ csrf_token() }}'
+            })
+            .then(response => {
+                if (response.data.success) {
+                    document.querySelector(`#itemTotal-${productId}-${modelId}-${colorId}`).innerText = response.data.itemTotal;
+                    document.querySelector('#totalPrice').innerText = response.data.totalPrice;
+                } else {
+                    alert('Không thể cập nhật giỏ hàng. Vui lòng thử lại!');
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                alert('Đã xảy ra lỗi. Vui lòng thử lại!');
+            });
+        };
+
+        document.querySelectorAll('.btn-increment').forEach(button => {
+            button.addEventListener('click', function () {
+                const parentRow = this.closest('tr');
+                const productId = parentRow.getAttribute('data-product-id');
+                const modelId = parentRow.getAttribute('data-model-id');
+                const colorId = parentRow.getAttribute('data-color-id');
+                const input = parentRow.querySelector('.quantity-input');
+                let quantity = parseInt(input.value);
+                input.value = ++quantity;
+                updateCart(productId, modelId, colorId, quantity);
+            });
+        });
+
+        document.querySelectorAll('.btn-decrement').forEach(button => {
+            button.addEventListener('click', function () {
+                const parentRow = this.closest('tr');
+                const productId = parentRow.getAttribute('data-product-id');
+                const modelId = parentRow.getAttribute('data-model-id');
+                const colorId = parentRow.getAttribute('data-color-id');
+                const input = parentRow.querySelector('.quantity-input');
+                let quantity = parseInt(input.value);
+                if (quantity > 1) {
+                    input.value = --quantity;
+                    updateCart(productId, modelId, colorId, quantity);
+                }
+            });
+        });
+    });
+</script> --}}
 
 {{-- cập nhật tổng tiền khi có mã giảm giá ajax --}}
 <script>

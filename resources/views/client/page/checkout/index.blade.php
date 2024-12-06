@@ -51,6 +51,19 @@
             <div class="mb-3">
                 <textarea name="description" class="form-control" rows="4" placeholder="Nội dung"></textarea>
             </div>
+                <div>
+                    @foreach ($cart as $product)
+                                @foreach ($product as $model)
+                                    @foreach ($model as $item)
+                                      <div class="ratio ratio-1x1 " style="max-width: 64px">
+                                        <div class="">
+                                          <img src="{{ asset('storage/' . $item['image_url']) }}" class="d-block p-1" alt="iPhone" style="width: 70px; height:70px;">
+                                        </div>
+                                      </div>
+                                    @endforeach
+                                 @endforeach
+                              @endforeach
+                </div>
                 
                 <ul class="list-unstyled fs-sm gap-3 mb-0">
                     <li class="d-flex justify-content-between">
