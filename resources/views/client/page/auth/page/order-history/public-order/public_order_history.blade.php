@@ -51,23 +51,27 @@
                                     <span class="text-danger"><span class="text-dark">Mã đơn hàng: {{ $order->order_code }}</span> | {{ $order->status }}</span>
                                 </div>
                                 <div class="card-body">
-                                    <div class="d-flex align-items-center border-bottom">
+                                    <div class=" align-items-center">
                                         @foreach ($order->orderItems as $item)
-                                        <div class="col-md-1">
-                                            @if ($item->product->image_url)
-                                                <img src="{{ asset('storage/' . $item->product->image_url) }}" alt="Product" class="img-fluid rounded">
-                                            @else
-                                                Không có ảnh
-                                            @endif
-                                        </div>
-                                        <div class="col-md-5">
-                                            <p class="mb-1 ms-3 fw-bold">{{ $item->product->name }}</p>
-                                            <p class="mb-1 ms-3 text-muted">Phân loại hàng: {{ $item->variant->color->name ?? 'Không có màu' }}, {{ $item->variant->capacity->name ?? 'Không có dung lượng' }}</p>
-                                            <p class="mb-1 ms-3 text-dark">x{{ $item->quantity }}</p>
-                                        </div>
-                                        <div class="col-md-6 text-end">
-                                            <p class="mb-1 text-danger fw-600">{{ number_format($item->price, 0, ',', '.') }} đ</p>
-                                        </div>
+                                            <div class="col-12 mb-3 border-bottom pb-3">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="me-3">
+                                                        @if ($item->product->image_url)
+                                                            <img src="{{ asset('storage/' . $item->product->image_url) }}" alt="Product" class="img-fluid rounded" style="max-width: 80px; height: auto;">
+                                                        @else
+                                                            Không có ảnh
+                                                        @endif
+                                                    </div>
+                                                    <div class="flex-grow-1">
+                                                        <p class="mb-1 fw-bold">{{ $item->product->name }}</p>
+                                                        <p class="mb-1 text-muted">Phân loại hàng: {{ $item->variant->color->name ?? 'Không có màu' }}, {{ $item->variant->capacity->name ?? 'Không có dung lượng' }}</p>
+                                                        <p class="mb-1 text-dark">x{{ $item->quantity }}</p>
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <p class="mb-1 text-danger fw-600">{{ number_format($item->price, 0, ',', '.') }} đ</p>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         @endforeach
                                     </div>
                                     <div class="mt-3">
