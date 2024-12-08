@@ -101,20 +101,6 @@ Thêm Tin Tức
                             </div>
                         </div>
 
-                        <div class="card">
-                            <div class="card-header">
-                                <h5 class="card-title mb-0">Người đăng</h5>
-                            </div>
-                            <div class="card-body">
-                                <p class="text-muted mb-2"> <a href="#" class="float-end text-decoration-underline">Người đăng</a></p>
-                                <select class="form-select" id="choices-category-input" name="author_id" data-choices data-choices-search-false>
-                                    @foreach ($author_id as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
 
                     <div class="card">
                         <div class="card-header">

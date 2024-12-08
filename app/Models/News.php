@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class News extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
     protected $fillable = [
         'title',
         'content',
@@ -24,7 +24,6 @@ class News extends Model
     ];
 
     public $table = "news";
-
     protected $dates = ['delete_at', 'published_at', 'scheduled_at'];
 
     public function categoryNews()

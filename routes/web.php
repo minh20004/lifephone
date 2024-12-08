@@ -233,6 +233,10 @@ Route::resource('review_admin',ReviewController::class);
 Route::get('/admin/reviews/deleted', [ReviewController::class, 'showDeletedReviews'])->name('reviews.deleted');
 Route::patch('/admin/reviews/restore/{id}', [ReviewController::class, 'restoreReview'])->name('review.restore');
 Route::resource('new_admin',  NewController::class);
+Route::get('/admin/new_admin/trashed', [NewController::class, 'trashed'])->name('new_admin.trashed');
+Route::put('/admin/new_admin/restore/{id}', [NewController::class, 'restore'])->name('new_admin.restore');
+Route::get('/admin/category_news/trashed', [CategoryNewsController::class, 'trashed'])->name('category_news.trashed');
+Route::put('/admin/category_news/restore/{id}', [CategoryNewsController::class, 'restore'])->name('category_news.restore');
 Route::patch('/admin/reviews/{id}/replyAsAdmin', [CommentController::class, 'replyAsAdmin'])->name('reviews.replyAsAdmin');
 
 
