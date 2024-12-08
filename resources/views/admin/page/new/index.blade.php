@@ -104,11 +104,7 @@ News
                     @endif
                     <!-- end card body -->
                 </div>
-<<<<<<< HEAD
-                @endif
-=======
                 <!-- end card -->
->>>>>>> minh
             </div>
             <!-- end col -->
         </div>

@@ -2,15 +2,11 @@
 <div class="navbar-brand-box">
     <!-- Dark Logo-->
     <a href="{{ route('admin.home') }}" class="logo logo-dark" style="color: #FFF; font-size: 23px;">
-        <span >
-            LIFEPHONE
-        </span>
+        <h1 class="text-white mt-3" style="color: #FFF; font-size: 23px;">Lifephone</h1>
     </a>
     <!-- Light Logo-->
     <a href="{{ route('admin.home') }}" class="logo logo-light" style="color: #FFF; font-size: 23px;">
-        <span>
-            LIFEPHONE
-        </span>
+        <h1 class="text-white mt-3" style="color: #FFF; font-size: 23px;">Lifephone</h1>
     </a>
     <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
         <i class="ri-record-circle-line"></i>

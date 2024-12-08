@@ -1,26 +1,36 @@
 @extends('admin.layout.master')
 @section('title')
-    Thêm mới thành viên
+profile
 @endsection
 @section('content')
 <div class="page-content">
     <div class="container-fluid">
         <div class="profile-foreground position-relative mx-n4 mt-n4">
             <div class="profile-wid-bg">
-                <img src="assets/images/profile-bg.jpg" alt="" class="profile-wid-img" />
+                {{-- <img src="assets/images/profile-bg.jpg" alt="" class="profile-wid-img" /> --}}
             </div>
         </div>
         <div class="pt-4 mb-4 mb-lg-3 pb-lg-4 profile-wrapper">
             <div class="row g-4">
                 <div class="col-auto">
                     <div class="avatar-lg">
-                        <img src="assets/images/users/avatar-1.jpg" alt="user-img" class="img-thumbnail rounded-circle" />
+                        {{-- <img src="assets/images/users/avatar-1.jpg" alt="user-img" class="img-thumbnail rounded-circle" /> --}}
+                        <!-- Hiển thị ảnh đại diện -->
+                        @if(Auth::user()->avatar)
+                        <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Avatar của {{ Auth::user()->name }}" class="img-thumbnail rounded-circle" id="current-avatar">
+                        @else
+                            <img src="{{ asset('client/img/avtt.jpg') }}" alt="avtt" class="img-thumbnail rounded-circle" id="current-avatar">
+                        @endif
+                        @error('avatar')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        
                     </div>
                 </div>
                 <!--end col-->
                 <div class="col">
                     <div class="p-2">
-                        <h3 class="text-white mb-1">Anna Adame</h3>
+                        <h3 class="text-white mb-1">{{ Auth::user()->name ?? 'Tên chưa được cập nhật' }}</h3>
                         <p class="text-white text-opacity-75">Owner & Founder</p>
                         <div class="hstack text-white-50 gap-1">
                             <div class="me-2"><i class="ri-map-pin-user-line me-1 text-white text-opacity-75 fs-16 align-middle"></i>California, United States</div>
