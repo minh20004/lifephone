@@ -20,7 +20,7 @@
       bottom: 20px;
       right: 80px;
       width: 300px;
-      height: 400px;
+      height: 100%;
       background-color: #fff;
       border: 1px solid #ccc;
       border-radius: 10px;
@@ -457,7 +457,13 @@
         </div>
         <div id="messagesC" class="messagesC"></div>
         <input id="messageInputC" type="text" placeholder="Type your message..." />
-        <button id="sendMessageC" class="send-btnC">Send</button>
+        <!-- Nút gửi tin nhắn -->
+        <div class="d-flex">
+          <button id="sendMessageC" class="send-btnC w-75">Send</button>
+          <button id="uploadImageC" class="upload-btnC w-25" style="border: none; border-radius:10px;">📷 <span id="imageCount">0</span></button>
+        </div>
+        <!-- Nút tải ảnh -->
+        <input type="file" id="imageInputC" class="image-input" accept="image/*" />
       </div>
 
       <!-- <script type="module">
@@ -587,7 +593,22 @@
     const sendMessage = document.getElementById("sendMessageC");
     const messageInput = document.getElementById("messageInputC");
     const messagesDiv = document.getElementById("messagesC");
+    const messageImg = document.getElementById('imageInputC');
 
+    document.getElementById('uploadImageC').addEventListener('click', function() {
+        document.getElementById('imageInputC').click(); // Kích hoạt ô chọn tệp khi nhấn nút
+    });
+
+    let imageCount = 0;
+    document.getElementById('imageInputC').addEventListener('change', function(event) {
+    const files = event.target.files;  // Lấy các tệp được chọn
+    if (files.length > 0) {
+        imageCount += files.length;  // Cập nhật số lượng ảnh đã tải lên
+        console.log(imageCount)
+        // Cập nhật hiển thị số lượng ảnh trên nút tải ảnh
+        document.getElementById('imageCount').textContent = imageCount;
+    }
+});
 
     // Khi người dùng bấm nút "Chat with Admin"
     chatButton.addEventListener("click", () => {
@@ -617,22 +638,42 @@
                 const messageElement = document.createElement("div");
 
                 // Kiểm tra senderType để quyết định kiểu hiển thị
-                if (message.senderType === 'customer') {
-                    // Nếu là admin, căn trái và áp dụng các lớp CSS cho admin
-                    messageElement.classList.add('d-flex', 'justify-content-end', 'mb-3');
-                    messageElement.innerHTML = `
-                        <div class="message-bubble text-white p-2 rounded" style="max-width: 75%;background-color:rgb(77 87 103);">
-                            ${message.content}
-                        </div>
-                    `;
-                } else {
-                    // Nếu là customer, căn phải và áp dụng các lớp CSS cho customer
-                    messageElement.classList.add('d-flex', 'justify-content-star', 'mb-3');
-                    messageElement.innerHTML = `
-                        <div class="message-bubble text-dark p-2 rounded" style="max-width: 75%;background-color:rgb(222 222 222);">
-                            ${message.content}
-                        </div>
-                    `;
+                if(message.type == 'text'){
+                  if (message.senderType === 'customer') {
+                      // Nếu là admin, căn trái và áp dụng các lớp CSS cho admin
+                      messageElement.classList.add('d-flex', 'justify-content-end', 'mb-3');
+                      messageElement.innerHTML = `
+                          <div class="message-bubble text-white p-2 rounded" style="max-width: 75%;background-color:rgb(77 87 103);">
+                              ${message.content}
+                          </div>
+                      `;
+                  } else {
+                      // Nếu là customer, căn phải và áp dụng các lớp CSS cho customer
+                      messageElement.classList.add('d-flex', 'justify-content-star', 'mb-3');
+                      messageElement.innerHTML = `
+                          <div class="message-bubble text-dark p-2 rounded" style="max-width: 75%;background-color:rgb(222 222 222);">
+                              ${message.content}
+                          </div>
+                      `;
+                  }
+                }else if(message.type == 'img'){
+                  if (message.senderType === 'customer') {
+                      // Nếu là admin, căn trái và áp dụng các lớp CSS cho admin
+                      messageElement.classList.add('d-flex', 'justify-content-end', 'mb-3');
+                      messageElement.innerHTML = `
+                          <div class="message-bubble text-white p-2 rounded" style="max-width: 75%;background-color:rgb(77 87 103);">
+                            <img src="${message.content}" class="w-100" alt="">
+                          </div>
+                      `;
+                  } else {
+                      // Nếu là customer, căn phải và áp dụng các lớp CSS cho customer
+                      messageElement.classList.add('d-flex', 'justify-content-star', 'mb-3');
+                      messageElement.innerHTML = `
+                          <div class="message-bubble text-dark p-2 rounded" style="max-width: 75%;background-color:rgb(222 222 222);">
+                            <img src="${message.content}" class="w-100" alt="">
+                          </div>
+                      `;
+                  }
                 }
 
                 // Thêm phần tử tin nhắn vào phần tử DOM chứa tin nhắn (messagesDiv)
@@ -646,11 +687,54 @@
               console.log('new_message', data);
               console.log('++++++++++++++++');
 
-              const messageElement = document.createElement("div");
-              messageElement.textContent = data.message;
-              messagesDiv.appendChild(messageElement);
-              messagesDiv.scrollTop = messagesDiv.scrollHeight;  // Cuộn xuống cuối tin nhắn
+              let messageElement;
+
+              if (data.senderType === 'customer') {
+                    // Nếu là admin, căn trái và áp dụng các lớp CSS cho admin
+                    messageElement = `
+                        <div class="d-flex justify-content-end mb-3">
+                          <div class="message-bubble text-white p-2 rounded" style="max-width: 75%;background-color:rgb(77 87 103);">
+                              ${data.message}
+                          </div>
+                      </div>
+                    `;
+                } else {
+                    // Nếu là customer, căn phải và áp dụng các lớp CSS cho customer
+                    messageElement = `
+                        <div class="d-flex justify-content-star mb-3">
+                          <div class="message-bubble text-dark p-2 rounded" style="max-width: 75%;background-color:rgb(222 222 222);">
+                              ${data.message}
+                          </div>
+                      </div>
+                    `;
+                }
+                messagesDiv.innerHTML += messageElement;
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
             });
+
+            socket.on('new_img', (data) => {
+              let messageElement = document.createElement("div");
+
+              if (data.senderType === 'customer') {
+                    // Nếu là admin, căn trái và áp dụng các lớp CSS cho admin
+                    messageElement.classList.add('d-flex', 'justify-content-end', 'mb-3');
+                    messageElement.innerHTML = `
+                        <div class="message-bubble text-white p-2 rounded" style="max-width: 75%;background-color:rgb(77 87 103);">
+                           <img src="${data.content}" class="w-100" alt="">
+                        </div>
+                    `;
+                } else {
+                    // Nếu là customer, căn phải và áp dụng các lớp CSS cho customer
+                    messageElement.classList.add('d-flex', 'justify-content-star', 'mb-3');
+                    messageElement.innerHTML = `
+                        <div class="message-bubble text-dark p-2 rounded" style="max-width: 75%;background-color:rgb(222 222 222);">
+                            <img src="${data.content}" class="w-100" alt="">
+                        </div>
+                    `;
+                }
+              messagesDiv.innerHTML += messageElement;
+              messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            })
           },
           error: function(e) {
             console.log(e);
@@ -666,16 +750,38 @@
     // Khi người dùng gửi tin nhắn
     sendMessage.addEventListener("click", () => {
         const message = messageInput.value.trim();
+        const fileInput = messageImg.files[0];
         if (message) {
             // Gửi tin nhắn tới server
             socket.emit("sendMessage", {
               conversationId: conversationId,
               senderId: customerId,
               senderType: 'customer',
-              content: message
+              content: message,
+              type: 'text',
             });
             console.log('sendMessage', message);
             messageInput.value = "";  // Xóa nội dung sau khi gửi
+        }
+        if(fileInput){
+          const reader = new FileReader();
+          reader.onloadend = function() {
+              const base64Image = reader.result;
+
+              // Gửi ảnh qua socket
+              socket.emit("sendImg", {
+                  conversationId: conversationId,
+                  senderId: customerId,
+                  senderType: 'customer',
+                  content: base64Image, // Dữ liệu ảnh base64
+                  type: 'img'
+              });
+          };
+          console.log('send img', fileInput)
+          reader.readAsDataURL(fileInput); // Đọc ảnh thành base64
+          document.getElementById('imageInputC').value = "";  // Reset input ảnh
+          imageCount = 0;  // Reset số lượng ảnh
+          document.getElementById('imageCount').textContent = imageCount;
         }
     });
 

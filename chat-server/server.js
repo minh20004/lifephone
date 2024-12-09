@@ -4,6 +4,7 @@ const socketIo = require('socket.io');
 const mysql = require('mysql2');
 const crypto = require('crypto');
 const cors = require('cors'); // Import gói cors
+const { type } = require('os');
 
 // Tạo một ứng dụng Express
 const app = express();
@@ -19,7 +20,7 @@ const io = socketIo(server, {
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: '',
+  password: '0202',
   database: 'lifephone',
 });
 
@@ -72,7 +73,7 @@ io.on('connection', socket => {
       const query = `
         SELECT * FROM messages
         WHERE conversationId = ?
-        ORDER BY created_at ASC LIMIT 20;
+        ORDER BY created_at ASC LIMIT 50;
       `;
       db.query(query, [conversationId], (err, messages) => {
         if (err) {
@@ -123,7 +124,7 @@ io.on('connection', socket => {
 
   // Khi có một tin nhắn mới từ người dùng
   socket.on('sendMessage', (data) => {
-    const { conversationId, senderId, senderType, content } = data;
+    const { conversationId, senderId, senderType, content, type } = data;
 
     // Mã hóa tin nhắn trước khi lưu vào cơ sở dữ liệu
     console.log('content client emit:::::::::::',content)
@@ -135,10 +136,10 @@ io.on('connection', socket => {
 
     // Lưu tin nhắn vào cơ sở dữ liệu (tin nhắn đã mã hóa)
     const query = `
-    INSERT INTO messages (conversationId, senderId, senderType, content, iv, status, created_at)
-    VALUES (?, ?, ?, ?, ?, ?, NOW());
+    INSERT INTO messages (conversationId, senderId, senderType, content, iv, status, type, created_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, NOW());
     `;
-    db.query(query, [conversationId, senderId, senderType, encryptedContent, iv, status_mess], (err, results) => {
+    db.query(query, [conversationId, senderId, senderType, encryptedContent, iv, status_mess, type], (err, results) => {
       if (err) {
           console.error('Lỗi khi lưu tin nhắn:', err);
           return;
@@ -152,12 +153,48 @@ io.on('connection', socket => {
           senderType,
           message: content,
           created_at: new Date(),
+          type: type,
       };
 
       // Phát tin nhắn mới đến tất cả những người tham gia trong room (conversationId)
       io.to(conversationId).emit('new_message', newMessage);
     });
   });
+
+  socket.on('sendImg', (data) => {
+    const { conversationId, senderId, senderType, content, type } = data;
+
+    const { encryptedContent, iv } = encryptMessage(content);
+
+    const room = io.sockets.adapter.rooms[conversationId];
+    const lengthPeers = room ? room.length : 0;
+    const status_mess = lengthPeers == 2 ? 'read' : 'unread'
+
+    const query = `
+    INSERT INTO messages (conversationId, senderId, senderType, content, iv, status, type, created_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, NOW());
+    `;
+    db.query(query, [conversationId, senderId, senderType, encryptedContent, iv, status_mess, type], (err, results) => {
+      if (err) {
+          console.error('Lỗi khi lưu tin nhắn:', err);
+          return;
+      }
+
+      // Tin nhắn mới đã được lưu, phát lại cho tất cả những người tham gia cuộc trò chuyện
+      const newMessage = {
+          id: results.insertId,
+          conversationId,
+          senderId,
+          senderType,
+          img: content,
+          created_at: new Date(),
+          type: type,
+      };
+
+      // Phát tin nhắn mới đến tất cả những người tham gia trong room (conversationId)
+      io.to(conversationId).emit('new_img', newMessage);
+    });
+  })
 
   socket.on('getDashboard',(data) => {
     console.log('get dash board')

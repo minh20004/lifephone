@@ -79,17 +79,16 @@ $('.search-header').on('click', function() {
       method: 'GET',
       success: function(data) {
         if (data && data.length >= 4) {
-          console.log(data[0])
           let featured_products = $(`
             <div class="row">
                 <!-- Cột 1: Sản phẩm 1 -->
                 <div class="col-6">
                     <div class="product-search d-flex justify-content-evenly align-items-center" data-id="${data[0].id}">
-                        <img src="/storage/uploads/avtproduct/${data[0].image_url}" alt="${data[0].name}" class="img-fluid" style="max-height: 60px; object-fit: cover;">
+                        <img src="/storage/${data[0].image_url}" alt="${data[0].name}" class="img-fluid" style="max-height: 60px; object-fit: cover;">
                         <p class="text-center">${data[0].name}</p>
                     </div>
                     <div class="product-search d-flex justify-content-evenly align-items-center" data-id="${data[1].id}">
-                        <img src="${data[1].image_url}" alt="${data[1].name}" class="img-fluid" style="max-height: 60px; object-fit: cover;">
+                        <img src="/storage/${data[1].image_url}" alt="${data[1].name}" class="img-fluid" style="max-height: 60px; object-fit: cover;">
                         <p class="text-center">${data[1].name}</p>
                     </div>
                 </div>
@@ -97,11 +96,11 @@ $('.search-header').on('click', function() {
                 <!-- Cột 2: Sản phẩm 2 -->
                 <div class="col-6">
                     <div class="product-search d-flex justify-content-evenly align-items-center" data-id="${data[2].id}">
-                        <img src="${data[2].image_url}" alt="${data[2].name}" class="img-fluid" style="max-height: 60px; object-fit: cover;">
+                        <img src="/storage/${data[2].image_url}" alt="${data[2].name}" class="img-fluid" style="max-height: 60px; object-fit: cover;">
                         <p class="text-center">${data[2].name}</p>
                     </div>
                     <div class="product-search d-flex justify-content-evenly align-items-center" data-id="${data[3].id}">
-                        <img src="${data[3].image_url}" alt="${data[3].name}" class="img-fluid" style="max-height: 60px; object-fit: cover;">
+                        <img src="/storage/${data[3].image_url}" alt="${data[3].name}" class="img-fluid" style="max-height: 60px; object-fit: cover;">
                         <p class="text-center">${data[3].name}</p>
                     </div>
                 </div>
