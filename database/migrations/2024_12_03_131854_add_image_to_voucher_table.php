@@ -12,7 +12,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('vouchers', function (Blueprint $table) {
-            $table->string('image')->nullable(); // Thay 'column_name' bằng tên cột trước đó
+            $table->string('image')->nullable()->after('id'); // Thay 'column_name' bằng tên cột trước đó
         });
     }
 
