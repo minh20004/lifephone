@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Capacity;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -37,6 +38,47 @@ class FrontendControlle extends Controller
         }])->paginate(8);
 
         return view('client/page/category/cate-all', compact('categories'));
+    }
+
+    public function getProductsByCategory($id, Request $request)
+    {
+        // Lọc theo các tham số
+        $capacityId = $request->input('capacity_id');
+        $minPrice = $request->get('min_price', 1000000);
+        $maxPrice = $request->get('max_price', 10000000);
+        $perPage = $request->get('per_page', 6);  // Số sản phẩm mỗi trang
+        $category = Category::findOrFail($id);
+        $products = $category->products()->paginate(12);
+        // Lấy danh sách sản phẩm với các bộ lọc
+        $productsByCategory = Product::where('category_id', $id)
+            ->whereHas('variants', function ($query) use ($capacityId, $minPrice, $maxPrice) {
+                if ($capacityId) {
+                    $query->where('capacity_id', $capacityId);
+                }
+                $query->whereBetween('price_difference', [$minPrice, $maxPrice]);
+            })
+            ->with(['variants.capacity'])
+            ->paginate($perPage);  // Phân trang
+
+        // Các đối tượng khác (categories, capacities)
+        $categories = Category::withCount('products')->get();
+        $capacities = Capacity::withCount('products')->get();
+        $currentCategory = Category::findOrFail($id);
+
+        // Trả về view
+        return view('client.categories.products', compact(
+            'productsByCategory',
+            'categories',
+            'products',
+            'capacities',
+            'currentCategory'
+        ));
+    }
+
+    public function filter(Request $request)
+    {
+        $products = Product::whereIn('capacity_id', $request->capacities)->get();
+        return response()->json($products);
     }
     
 }

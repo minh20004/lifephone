@@ -25,7 +25,7 @@
   <!-- Breadcrumb -->
   <nav class="container pt-3 my-3 my-md-4" aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="home-electronics.html">Home</a></li>
+      <li class="breadcrumb-item"><a href="">trang chủ</a></li>
       <li class="breadcrumb-item active" aria-current="page">Sản phẩm tìm kiếm</li>
     </ol>
   </nav>
@@ -75,59 +75,6 @@
                 </li>
                 @endforeach
               </ul>
-            </div>
-
-
-            <!-- Price range -->
-            <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
-              <h4 class="h6 mb-2" id="slider-label">Price</h4>
-              <div class="range-slider" data-range-slider="{&quot;startMin&quot;: 340, &quot;startMax&quot;: 1250, &quot;min&quot;: 0, &quot;max&quot;: 1600, &quot;step&quot;: 1, &quot;tooltipPrefix&quot;: &quot;$&quot;}" aria-labelledby="slider-label">
-                <div class="range-slider-ui"></div>
-                <div class="d-flex align-items-center">
-                  <div class="position-relative w-50">
-                    <i class="ci-dollar-sign position-absolute top-50 start-0 translate-middle-y ms-3"></i>
-                    <input type="number" id="min_price" class="form-control form-icon-start" min="0" placeholder="Giá tối thiểu">
-                  </div>
-                  <i class="ci-minus text-body-emphasis mx-2"></i>
-                  <div class="position-relative w-50">
-                    <i class="ci-dollar-sign position-absolute top-50 start-0 translate-middle-y ms-3"></i>
-                    <input type="number" id="max_price" class="form-control form-icon-start" min="0" placeholder="Giá tối đa">
-                  </div>
-                </div>
-              </div>
-              <div id="product-list" class="mt-4"></div>
-            </div>
-
-
-            <!-- SSD size (checkboxes) -->
-            <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
-              <h4 class="h6">Capacity</h4>
-              <div class="d-flex flex-column gap-1">
-                @foreach ($capacities as $item)
-                <div class="d-flex align-items-center justify-content-between">
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input capacity-checkbox" id="tb-{{$item->id}}" value="{{ $item->id }}">
-                    <label for="tb-{{$item->id}}" class="form-check-label text-body-emphasis">{{$item->name}}</label>
-                  </div>
-                  <span class="text-body-secondary fs-xs">{{$item->products_count}}</span>
-                </div>
-                @endforeach
-              </div>
-            </div>
-
-            <!-- Color -->
-
-            <div class="w-100 border rounded p-3 p-xl-4">
-              <h4 class="h6">Color</h4>
-              <div class="nav d-block mt-n2">
-                @foreach ($colors as $color)
-                <button type="button" class="nav-link w-auto animate-underline fw-normal pt-2 pb-0 px-0">
-                <span class="rounded-circle me-2" style="width: .875rem; height: .875rem; margin-top: .125rem; background-color: {{ $color->code }}"></span>
-                <span class="animate-target">{{ $color->name }}</span>
-                </button>
-                @endforeach
-
-              </div>
             </div>
 
           </div>
@@ -277,69 +224,6 @@
 
   </section>
 
-
-  <!-- Subscription form + Vlog -->
-  <section class="bg-body-tertiary py-5">
-    <div class="container pt-sm-2 pt-md-3 pt-lg-4 pt-xl-5">
-      <div class="row">
-        <div class="col-md-6 col-lg-5 mb-5 mb-md-0">
-          <h2 class="h4 mb-2">Sign up to our newsletter</h2>
-          <p class="text-body pb-2 pb-ms-3">Receive our latest updates about our products &amp; promotions</p>
-          <form class="d-flex needs-validation pb-1 pb-sm-2 pb-md-3 pb-lg-0 mb-4 mb-lg-5" novalidate="">
-            <div class="position-relative w-100 me-2">
-              <input type="email" class="form-control form-control-lg" placeholder="Your email" required="">
-            </div>
-            <button type="submit" class="btn btn-lg btn-primary">Subscribe</button>
-          </form>
-          <div class="d-flex gap-3">
-            <a class="btn btn-icon btn-secondary rounded-circle" href="#!" aria-label="Instagram">
-              <i class="ci-instagram fs-base"></i>
-            </a>
-            <a class="btn btn-icon btn-secondary rounded-circle" href="#!" aria-label="Facebook">
-              <i class="ci-facebook fs-base"></i>
-            </a>
-            <a class="btn btn-icon btn-secondary rounded-circle" href="#!" aria-label="YouTube">
-              <i class="ci-youtube fs-base"></i>
-            </a>
-            <a class="btn btn-icon btn-secondary rounded-circle" href="#!" aria-label="Telegram">
-              <i class="ci-telegram fs-base"></i>
-            </a>
-          </div>
-        </div>
-        <div class="col-md-6 col-lg-5 col-xl-4 offset-lg-1 offset-xl-2">
-          <ul class="list-unstyled d-flex flex-column gap-4 ps-md-4 ps-lg-0 mb-3">
-            <li class="nav flex-nowrap align-items-center position-relative">
-              <img src="assets/img/home/electronics/vlog/01.jpg" class="rounded" width="140" alt="Video cover">
-              <div class="ps-3">
-                <div class="fs-xs text-body-secondary lh-sm mb-2">6:16</div>
-                <a class="nav-link fs-sm hover-effect-underline stretched-link p-0" href="#!">5 New Cool Gadgets You Must See on Cartzilla - Cheap Budget</a>
-              </div>
-            </li>
-            <li class="nav flex-nowrap align-items-center position-relative">
-              <img src="assets/img/home/electronics/vlog/02.jpg" class="rounded" width="140" alt="Video cover">
-              <div class="ps-3">
-                <div class="fs-xs text-body-secondary lh-sm mb-2">10:20</div>
-                <a class="nav-link fs-sm hover-effect-underline stretched-link p-0" href="#!">5 Super Useful Gadgets on Cartzilla You Must Have in 2023</a>
-              </div>
-            </li>
-            <li class="nav flex-nowrap align-items-center position-relative">
-              <img src="assets/img/home/electronics/vlog/03.jpg" class="rounded" width="140" alt="Video cover">
-              <div class="ps-3">
-                <div class="fs-xs text-body-secondary lh-sm mb-2">8:40</div>
-                <a class="nav-link fs-sm hover-effect-underline stretched-link p-0" href="#!">Top 5 New Amazing Gadgets on Cartzilla You Must See</a>
-              </div>
-            </li>
-          </ul>
-          <div class="nav ps-md-4 ps-lg-0">
-            <a class="btn nav-link animate-underline text-decoration-none px-0" href="#!">
-              <span class="animate-target">View all</span>
-              <i class="ci-chevron-right fs-base ms-1"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
   </main>
 </div>
 <!-- Thêm jQuery -->

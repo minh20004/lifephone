@@ -1,16 +1,12 @@
 <!-- LOGO -->
 <div class="navbar-brand-box">
     <!-- Dark Logo-->
-    <a href="#" class="logo logo-dark" style="color: #FFF; font-size: 23px;">
-        <span >
-            LIFEPHONE
-        </span>
+    <a href="{{ route('admin.home') }}" class="logo logo-dark" style="color: #FFF; font-size: 23px;">
+        <h1 class="text-white mt-3" style="color: #FFF; font-size: 23px;">Lifephone</h1>
     </a>
     <!-- Light Logo-->
-    <a href="#" class="logo logo-light" style="color: #FFF; font-size: 23px;">
-        <span>
-            LIFEPHONE
-        </span>
+    <a href="{{ route('admin.home') }}" class="logo logo-light" style="color: #FFF; font-size: 23px;">
+        <h1 class="text-white mt-3" style="color: #FFF; font-size: 23px;">Lifephone</h1>
     </a>
     <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
         <i class="ri-record-circle-line"></i>
@@ -31,7 +27,7 @@
                     <ul class="nav nav-sm flex-column">
                         <li class="nav-item">
                             <a href="{{ route('home') }}" class="nav-link" data-key="t-analytics"> Xem trang </a>
-                            <a href="dashboard-analytics.html" class="nav-link" data-key="t-analytics"> Analytics </a>
+                            <a href="{{ route('admin.home') }}" class="nav-link" data-key="t-analytics"> Thống kê </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('vouchers.index') }}" class="nav-link" data-key="t-job">Vouchers</a>
@@ -104,28 +100,25 @@
             <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-pages">Pages</span></li>
 
             <li class="nav-item">
-                <a class="nav-link menu-link" href="#sidebarAuth" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAuth">
-                 <i class="ri-account-circle-line"></i> <span data-key="t-authentication">Thành viên</span>
-                </a>
-                <div class="collapse menu-dropdown" id="sidebarAuth">
-                    <ul class="nav nav-sm flex-column">
-                        <li class="nav-item">
-                            <a href="{{ route('admin.them-thanh-vien') }}" class="nav-link" data-key="t-signin"> 
-                                Thêm thành viên mới
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('admins.index') }}" class="nav-link" data-key="t-signin"> 
-                                Tất cả người dùng
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('admin.hoso') }}" class="nav-link" data-key="t-signin"> 
-                                Hồ sơ
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                @if (Auth::user()->role === 'admin')
+                    <a class="nav-link menu-link" href="#sidebarAuth" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarAuth">
+                        <i class="ri-account-circle-line"></i> <span data-key="t-authentication">Thành viên</span>
+                    </a>
+                    <div class="collapse menu-dropdown" id="sidebarAuth">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('admin.them-thanh-vien') }}" class="nav-link" data-key="t-signin"> 
+                                    Thêm thành viên mới
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('admins.index') }}" class="nav-link" data-key="t-signin"> 
+                                    Tất cả Thành viên
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                @endif
             </li>
 
             <li class="nav-item">
@@ -138,7 +131,7 @@
                             <a href="{{route('category.index')}}" class="nav-link" data-key="t-starter"> Danh mục </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{route('product.index')}}" class="nav-link" data-key="t-team"> Sản phẩm  </a>
+                            <a href="{{route('product-admin.index')}}" class="nav-link" data-key="t-team"> Sản phẩm  </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('product.trashed') }}" class="nav-link" data-key="t-timeline"> Sản phẩm đã bị xóa  </a>
@@ -169,21 +162,6 @@
                         </li>
                         <li class="nav-item">
                             <a href="{{route('new_admin.create')}}" class="nav-link" data-key="t-team"> Thêm mới </a>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link menu-link" href="#sidebarPages1" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarPages1">
-                    <i class="ri-pages-line"></i> <span data-key="t-pages">Quản lý tin tức</span>
-                </a>
-                <div class="collapse menu-dropdown" id="sidebarPages1">
-                    <ul class="nav nav-sm flex-column">
-                        <li class="nav-item">
-                            <a href="{{route('category_news.index')}}" class="nav-link" data-key="t-starter"> Danh mục tin tức </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{route('new_admin.index')}}" class="nav-link" data-key="t-team"> Tin tức </a>
                         </li>
                     </ul>
                 </div>

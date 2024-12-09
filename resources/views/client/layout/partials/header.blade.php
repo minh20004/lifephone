@@ -136,29 +136,6 @@
               <i class="ci-shopping-cart animate-target ms-n1"></i>
           </span>
       </button>
-      <script>
-        // Hàm cập nhật số lượng sản phẩm trong giỏ hàng
-function updateCartItemCount() {
-    fetch('/cart/item-count') // Gọi API từ server
-        .then(response => response.json())
-        .then(data => {
-            const cartCountElement = document.getElementById('cartCount');
-            cartCountElement.textContent = data.count > 0 ? data.count : ''; // Ẩn khi giỏ hàng rỗng
-        })
-        .catch(error => console.error('Error fetching cart item count:', error));
-}
-
-// Gọi hàm khi trang được tải
-document.addEventListener('DOMContentLoaded', updateCartItemCount);
-
-// Gọi lại hàm khi thêm sản phẩm vào giỏ hàng (nếu bạn có nút thêm sản phẩm)
-document.querySelectorAll('.add-to-cart-btn').forEach(button => {
-    button.addEventListener('click', () => {
-        updateCartItemCount();
-    });
-});
-
-      </script>
       
       </div>
     </div>
@@ -192,7 +169,7 @@ document.querySelectorAll('.add-to-cart-btn').forEach(button => {
 
                 <!-- Buttton visible on screens > 991px wide (lg breakpoint) -->
                 <div class="cursor-pointer d-none d-lg-block" data-bs-toggle="dropdown" data-bs-trigger="hover" data-bs-theme="dark">
-                  <a class="position-absolute top-0 start-0 w-100 h-100" href="">
+                  <a class="position-absolute top-0 start-0 w-100 h-100" href="{{route('danh-muc-san-pham')}}">
                     <span class="visually-hidden">Danh mục</span>
                   </a>
                   <button type="button" class="btn btn-lg btn-secondary dropdown-toggle w-100 rounded-bottom-0 justify-content-start pe-none">
@@ -232,8 +209,8 @@ document.querySelectorAll('.add-to-cart-btn').forEach(button => {
                           <!-- Link cho danh mục lớn -->
                           <a class="dropdown-item fw-medium stretched-link d-none d-lg-flex" href="{{ route('category.show', $category->id) }}">
                             {{-- <i class="ci-smartphone-2 fs-xl opacity-60 pe-1 me-2"></i> --}}
-                             <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" style="width: 100px">
-                            {{-- <span class="text-truncate">{{ $category->name }}</span> --}}
+                             {{-- <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" style="width: 100px"> --}}
+                            <span class="text-truncate">{{ $category->name }}</span>
                             <i class="ci-chevron-right fs-base ms-auto me-n1"></i>
                           </a>
 
@@ -244,7 +221,7 @@ document.querySelectorAll('.add-to-cart-btn').forEach(button => {
                             <i class="ci-chevron-down fs-base ms-auto me-n1"></i>
                           </div>
                         </div>
-                        <div class="dropdown-menu rounded-4 p-4" style="top: 1rem;">
+                        <div class="dropdown-menu rounded-4 p-4" style="top: 1rem; height: 100%;">
                           <div class="d-flex flex-column flex-lg-row h-100 gap-4">
                             <div style="min-width: 194px">
                               <div class="d-flex w-100">
@@ -282,76 +259,7 @@ document.querySelectorAll('.add-to-cart-btn').forEach(button => {
               <li class="nav-item dropdown position-static me-lg-n1 me-xl-0">
                 <a class="nav-link" href="{{ route('news.index') }}">Tin tức</a>
               </li>
-              <li class="nav-item dropdown me-lg-n1 me-xl-0">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" data-bs-auto-close="outside" aria-expanded="false">Account</a>
-                <ul class="dropdown-menu">
-                  <li class="dropend">
-                    <a class="dropdown-item dropdown-toggle" href="#!" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">Auth Pages</a>
-                    <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="account-signin.html">Sign In</a></li>
-                      <li><a class="dropdown-item" href="account-signup.html">Sign Up</a></li>
-                      <li><a class="dropdown-item" href="account-password-recovery.html">Password Recovery</a></li>
-                    </ul>
-                  </li>
-                  <li><a class="dropdown-item" href="account-orders.html">Orders History</a></li>
-                  <li><a class="dropdown-item" href="account-wishlist.html">Wishlist</a></li>
-                  <li><a class="dropdown-item" href="account-payment.html">Payment Methods</a></li>
-                  <li><a class="dropdown-item" href="account-reviews.html">My Reviews</a></li>
-                  <li><a class="dropdown-item" href="account-info.html">Personal Info</a></li>
-                  <li><a class="dropdown-item" href="account-addresses.html">Addresses</a></li>
-                  <li><a class="dropdown-item" href="account-notifications.html">Notifications</a></li>
-                </ul>
-              </li>
-              {{-- Pages --}}
-              <li class="nav-item dropdown me-lg-n1 me-xl-0">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" data-bs-auto-close="outside" aria-expanded="false">Pages</a>
-                <ul class="dropdown-menu">
-                  <li class="dropend">
-                    <a class="dropdown-item dropdown-toggle" href="#!" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">About</a>
-                    <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="about-v1.html">About v.1</a></li>
-                      <li><a class="dropdown-item" href="about-v2.html">About v.2</a></li>
-                    </ul>
-                  </li>
-                  <li class="dropend">
-                    <a class="dropdown-item dropdown-toggle" href="#!" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">Blog</a>
-                    <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="blog-grid-v1.html">Grid View v.1</a></li>
-                      <li><a class="dropdown-item" href="blog-grid-v2.html">Grid View v.2</a></li>
-                      <li><a class="dropdown-item" href="blog-list.html">List View</a></li>
-                      <li><a class="dropdown-item" href="blog-single-v1.html">Single Post v.1</a></li>
-                      <li><a class="dropdown-item" href="blog-single-v2.html">Single Post v.2</a></li>
-                    </ul>
-                  </li>
-                  <li class="dropend">
-                    <a class="dropdown-item dropdown-toggle" href="#!" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">Contact</a>
-                    <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="contact-v1.html">Contact v.1</a></li>
-                      <li><a class="dropdown-item" href="contact-v2.html">Contact v.2</a></li>
-                      <li><a class="dropdown-item" href="contact-v3.html">Contact v.3</a></li>
-                    </ul>
-                  </li>
-                  <li class="dropend">
-                    <a class="dropdown-item dropdown-toggle" href="#!" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">Help Center</a>
-                    <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="help-topics-v1.html">Help Topics v.1</a></li>
-                      <li><a class="dropdown-item" href="help-topics-v2.html">Help Topics v.2</a></li>
-                      <li><a class="dropdown-item" href="help-single-article-v1.html">Help Single Article v.1</a></li>
-                      <li><a class="dropdown-item" href="help-single-article-v2.html">Help Single Article v.2</a></li>
-                    </ul>
-                  </li>
-                  <li class="dropend">
-                    <a class="dropdown-item dropdown-toggle" href="#!" role="button" data-bs-toggle="dropdown" data-bs-trigger="hover" aria-expanded="false">404 Error</a>
-                    <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" href="404-electronics.html">404 Electronics</a></li>
-                      <li><a class="dropdown-item" href="404-fashion.html">404 Fashion</a></li>
-                      <li><a class="dropdown-item" href="404-furniture.html">404 Furniture</a></li>
-                      <li><a class="dropdown-item" href="404-grocery.html">404 Grocery</a></li>
-                    </ul>
-                  </li>
-                  <li><a class="dropdown-item" href="terms-and-conditions.html">Terms &amp; Conditions</a></li>
-                </ul>
-              </li>
+
               <li class="nav-item me-lg-n2 me-xl-0">
                 <a class="nav-link" href="{{route('cart.index')}}">Giỏ hàng</a>
               </li>
@@ -378,3 +286,27 @@ document.querySelectorAll('.add-to-cart-btn').forEach(button => {
     </div>
   </nav>
 </div>
+
+<script>
+  // Hàm cập nhật số lượng sản phẩm trong giỏ hàng
+  function updateCartItemCount() {
+      fetch('/cart/item-count') // Gọi API từ server
+          .then(response => response.json())
+          .then(data => {
+              const cartCountElement = document.getElementById('cartCount');
+              cartCountElement.textContent = data.count > 0 ? data.count : ''; // Ẩn khi giỏ hàng rỗng
+          })
+          .catch(error => console.error('Error fetching cart item count:', error));
+  }
+
+  // Gọi hàm khi trang được tải
+  document.addEventListener('DOMContentLoaded', updateCartItemCount);
+
+  // Gọi lại hàm khi thêm sản phẩm vào giỏ hàng (nếu bạn có nút thêm sản phẩm)
+  document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+      button.addEventListener('click', () => {
+          updateCartItemCount();
+      });
+  });
+
+</script>
