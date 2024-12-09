@@ -9,37 +9,25 @@ class Cart extends Model
 {
     use HasFactory;
 
-    // Bảng liên kết với model
-    protected $table = 'carts';
-
-    // Các cột được phép gán giá trị (Mass Assignment)
-    protected $fillable = [
-        'customer_id',
-        'product_id',
-        'model_id',
-        'color_id',
-        'quantity',
-        'price',
-    ];
-
-    // Thiết lập quan hệ
-    public function customer()
-    {
-        return $this->belongsTo(Customer::class, 'customer_id');
-    }
+    protected $fillable = ['customer_id', 'product_id', 'variant_id', 'quantity', 'price'];
 
     public function product()
     {
-        return $this->belongsTo(Product::class, 'product_id');
+        return $this->belongsTo(Product::class);
     }
 
-    public function model()
+    public function variant()
     {
-        return $this->belongsTo(Capacity::class, 'model_id');
+        return $this->belongsTo(ProductVariant::class);
+    }
+    
+    public function capacity()
+    {
+        return $this->belongsTo(Capacity::class);
     }
 
     public function color()
     {
-        return $this->belongsTo(Color::class, 'color_id');
+        return $this->belongsTo(Color::class);
     }
 }

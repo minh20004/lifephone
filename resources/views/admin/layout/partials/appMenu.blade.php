@@ -179,7 +179,7 @@
                             <a href="{{route('order.cancelRequests')}}" class="nav-link" data-key="t-nft-landing"> Hủy đơn hàng </a>
                         </li>
                         <li class="nav-item">
-                            <a href="job-landing.html" class="nav-link" data-key="t-job">Job</a>
+                            <a href="{{route('admin.notifications')}}" class="nav-link" data-key="t-job">Thông báo</a>
                         </li>
                     </ul>
                 </div>
