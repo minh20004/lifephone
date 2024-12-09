@@ -113,10 +113,10 @@ Route::post('cart/remove/{productId}', [CartController::class, 'remove'])->name(
 
 Route::post('/cart/update', [CartController::class, 'updateQuantity'])->name('cart.update');
 // Route::post('/cart/apply-voucher', [CartController::class, 'applyVoucher'])->name('cart.apply-voucher');
-Route::get('/cart/offcanvas', [CartController::class, 'getCart'])->name('cart.offcanvas');
+// Route::get('/cart/offcanvas', [CartController::class, 'getCart'])->name('cart.offcanvas');
 
 // thanh toán
-Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
+Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
 Route::post('/order/store', [OrderController::class, 'storeOrder'])->name('order.store');
 Route::get('/order-success', function () {
     return view('client.page.checkout.order_success'); // Thông báo thành công

@@ -52,17 +52,17 @@
                 <textarea name="description" class="form-control" rows="4" placeholder="Nội dung"></textarea>
             </div>
                 <div>
-                    @foreach ($cart as $product)
-                                @foreach ($product as $model)
-                                    @foreach ($model as $item)
-                                      <div class="ratio ratio-1x1 " style="max-width: 64px">
-                                        <div class="">
-                                          <img src="{{ asset('storage/' . $item['image_url']) }}" class="d-block p-1" alt="iPhone" style="width: 70px; height:70px;">
-                                        </div>
-                                      </div>
-                                    @endforeach
-                                 @endforeach
-                              @endforeach
+                    @foreach ($selectedCart  as $product)
+                        @foreach ($product as $model)
+                            @foreach ($model as $item)
+                                <div class="ratio ratio-1x1 " style="max-width: 64px">
+                                <div class="">
+                                    <img src="{{ asset('storage/' . $item['image_url']) }}" class="d-block p-1" alt="iPhone" style="width: 70px; height:70px;">
+                                </div>
+                                </div>
+                            @endforeach
+                        @endforeach
+                    @endforeach
                 </div>
                 
                 <ul class="list-unstyled fs-sm gap-3 mb-0">
@@ -84,7 +84,7 @@
                     </div>
                 </div>
                 
-            <button type="button" class="btn btn-primary w-100" id="place-order-btn">Đặt hàng</button>
+            <button type="submit" class="btn btn-primary w-100" id="place-order-btn">Đặt hàng</button>
         </form>
         <div class="accordion bg-body-tertiary rounded-5 p-4">
             <div class="accordion-item border-0">
@@ -148,7 +148,7 @@
     </div>
 </main>
 
-<script>
+{{-- <script>
     document.getElementById('place-order-btn').addEventListener('click', function () {
         const selectedPaymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
         const form = document.getElementById('checkout-form');
@@ -172,6 +172,27 @@
 
         form.submit();
     });
-</script>
+</script> --}}
+<script>
+    document.getElementById('place-order-btn').addEventListener('click', function (e) {
+    e.preventDefault(); // Ngăn form tự động gửi
 
+    const selectedPaymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
+    const form = document.getElementById('checkout-form');
+
+    // Thay đổi action và method của form tùy thuộc vào phương thức thanh toán
+    if (selectedPaymentMethod === 'VNPay') {
+        form.action = "{{ url('/vnpay-payment') }}";
+    } else {
+        form.action = "{{ route('order.store') }}";
+    }
+
+    form.method = "POST";
+
+    // Gửi form
+    form.submit();
+});
+
+
+</script>
 @endsection
