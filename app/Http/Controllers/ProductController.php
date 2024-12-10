@@ -168,7 +168,7 @@ class ProductController extends Controller
     public function show(string $id)
     {
         // Lấy thông tin sản phẩm và các biến thể
-        $product = Product::with('variants.color', 'variants.capacity')->findOrFail($id);
+        $product = Product::with('variants.color', 'variants.capacity')->findOrFail(id: $id);
 
         // Tăng lượt xem
         $product->increment('views');
@@ -182,9 +182,8 @@ class ProductController extends Controller
         $minPrice = $availableVariants->min('price_difference');
 
         // Lấy danh sách đánh giá của sản phẩm cùng với thông tin khách hàng và người dùng
-        $reviews = Review::with(['user', 'loadAllCustomer']) // Nạp quan hệ user và customer nếu cần
+        $reviews = Review::with('user', 'loadAllCustomer') // Nạp quan hệ user và customer nếu cần
             ->where('product_id', $id)
-
             ->get();
 
 
@@ -218,7 +217,10 @@ class ProductController extends Controller
 
         // Lấy danh sách các màu sắc từ OrderItem
         if (!$hasPurchased) {
-            return redirect()->back()->with('error', 'Bạn cần mua sản phẩm trước khi đánh giá.');
+            // Truyền thông báo lỗi vào view thay vì redirect
+            $canReview = false;
+        } else {
+            $canReview = true;
         }
         // Trả về view với dữ liệu sản phẩm và giá nhỏ nhất
         return view('client.page.detail-product.general', compact(
@@ -229,6 +231,7 @@ class ProductController extends Controller
             'averageRating',
             'ratingPercentages',
             'ratingCounts',
+            'canReview'
 
         ));
     }
