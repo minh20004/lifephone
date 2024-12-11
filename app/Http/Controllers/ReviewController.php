@@ -7,6 +7,7 @@ use App\Models\OrderItem;
 use App\Models\Product;
 use App\Models\Review;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class ReviewController extends Controller
@@ -78,7 +79,8 @@ class ReviewController extends Controller
      */
     public function show(string $id)
     {
-        
+
+
     }
 
     /**
@@ -156,4 +158,5 @@ public function respond(Request $request, $id)
 
     return redirect()->route('review_admin.index')->with('success', 'Phản hồi đã được gửi!');
 }
+
 }

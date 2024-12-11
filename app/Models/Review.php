@@ -28,8 +28,9 @@ class Review extends Model
     public function loadAlluser(){
         return $this->belongsTo(User::class,'user_id' );
     }
-    public function loadAllCustomer(){
-        return $this->belongsTo(Customer::class,'customer_id' );
+    public function loadAllCustomer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
     }
     public function reviews()
 {

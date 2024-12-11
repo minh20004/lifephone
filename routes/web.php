@@ -74,7 +74,7 @@ Route::post('product/{id}/review', [ReviewController::class, 'store'])->middlewa
 Route::post('/comments/reply/{review}', [CommentController::class, 'reply'])->name('comments.reply');
 Route::post('/review/like', [ReviewController::class, 'like'])->name('review.like');
 Route::post('/review/dislike', [ReviewController::class, 'dislike'])->name('review.dislike');
-
+Route::get('/products/{id}/reviews', [ProductController::class, 'showReview'])->name('products.showReview');
 // Route xóa địa chỉ
 Route::delete('/customer/address/{addressId}', [AddressController::class, 'deleteAddress'])->name('customer.deleteAddress');
 
@@ -192,7 +192,6 @@ Route::resource('index', AdminController::class);
 Route::resource('category', CategoryController::class);
 Route::resource('capacity', CapacityController::class);
 Route::resource('color', ColorController::class);
-
 // order
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::post('/orders/{id}/update-status', [OrderController::class, 'updateStatus'])->name('order.updateStatus');

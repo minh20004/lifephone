@@ -688,10 +688,9 @@
                   @foreach ($latestProducts as $product)
                       <div class="col-sm-6 col-lg-6 d-flex flex-column gap-3 pt-4 py-lg-4">
                           <div class="position-relative animate-underline d-flex align-items-center ps-xl-3">
-                            {{-- <a class="stretched-link d-block fs-sm fw-medium text-truncate" --}}
-                                          {{-- href="{{ route('product.show', $product->id) }}"> --}}
+            
                               <div class="ratio ratio-1x1 flex-shrink-0" style="width: 110px">
-                                {{-- <img class="rounded" src="{{ Storage::url($product->image_url) }}" alt="{{ $product->name }}"> --}}
+                
                                 <img class="rounded" src="{{ asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}">
                               </div>
                               <div class="w-100 min-w-0 ps-2 ps-sm-3">
@@ -720,7 +719,6 @@
                                       {{ number_format($minPrice, 0, ',', '.') }} VNĐ
                                   </div>
                               </div>
-                            {{-- </a> --}}
                           </div>
                       </div>
                   @endforeach
