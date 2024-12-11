@@ -96,7 +96,7 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
     Route::get('/thanh-vien', [AuthController::class, 'index'])->name('admin.thanh-vien');
     Route::get('cap-nhat/thanh-vien/{id}/edit', [AuthController::class, 'edit'])->name('admin.edit');
     Route::get('profile/admin', [AuthController::class, 'hoso'])->name('admin.profile');
-    
+
     Route::resource('admins', AuthController::class);
 
     Route::resource('new_admin',  NewController::class);
@@ -109,7 +109,7 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
         Route::get('/trashed', [ProductController::class, 'trashed'])->name('product.trashed');
         Route::post('/restore/{id}', [ProductController::class, 'restore'])->name('product.restore');
         Route::get('trashed/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
-    
+
     });
     // order
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
@@ -158,9 +158,10 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
     Route::resource('admin/review',ReviewController::class);
     // Route::resource('new_admin',  NewController::class);
 
-    // thông báo khi đặt hàng thành công 
+    // thông báo khi đặt hàng thành công
     Route::get('/admin/notifications', [OrderNotificationController::class, 'index'])->name('admin.notifications');
     Route::post('/admin/notifications/{id}/read', [OrderNotificationController::class, 'markAsRead'])->name('admin.notifications.read');
+    Route::get('/admin/chatBoard', [AuthController::class, 'indexChatBoard'])->name('admin.chatBoard');
 
 });
 // end auth admin ------------------------------------------------------------------------------------------------------------------
@@ -203,7 +204,7 @@ Route::middleware(['auth:customer', 'isCustomer'])->group(function () {
     Route::put('/customer/{id}/changePassword', [AuthController::class, 'changePassword'])->name('customer.changePassword');
 
     Route::post('/update-email', [AuthController::class, 'updateEmail'])->name('customer.updateEmail');
-    
+
     Route::get('/customer/verify-email-change/{token}', [AuthController::class, 'verifyEmailChange'])->name('customer.verifyEmailChange');
     // Route::get('/verify-new-email/{token}', [AuthController::class, 'verifyNewEmail'])->name('customer.verifyNewEmail');
 
@@ -262,7 +263,7 @@ Route::post('/apply-voucher', [OrderController::class, 'applyVoucher'])->name('o
 // Route cho khách hàng yêu cầu hủy đơn hàng
 Route::post('/order/cancel/{id}', [AuthController::class, 'cancel'])->name('order.cancel');
 
-// thông báo khi đặt hàng thành công 
+// thông báo khi đặt hàng thành công
 // Route::get('/admin/notifications', [OrderNotificationController::class, 'index'])->name('admin.notifications');
 Route::post('/admin/notifications/{id}/read', [OrderNotificationController::class, 'markAsRead'])->name('admin.notifications.read');
 
@@ -270,7 +271,7 @@ Route::post('/admin/notifications/{id}/read', [OrderNotificationController::clas
 Route::get('/public-order-history', [AuthController::class, 'publicHistory'])->name('order.publicHistory');
 Route::get('/public-order-detail/{id}', [AuthController::class, 'publicDetail'])->name('order.publicDetail');
 
-Route::get('/cart/item-count', [CartController::class, 'getCartItemCount'])->name('cart.item-count'); //cập nhật số lượng trong giỏ hàng 
+Route::get('/cart/item-count', [CartController::class, 'getCartItemCount'])->name('cart.item-count'); //cập nhật số lượng trong giỏ hàng
 
 // thanh toán vnpay
 Route::post('/vnpay-payment', [OrderController::class,'vnpay_payment'])->name('vnpay.payment');

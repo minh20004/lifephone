@@ -91,10 +91,10 @@ io.on('connection', socket => {
               content: decryptedContent, // Thay đổi nội dung đã giải mã
             };
           });
-          io.to(conversationId).emit('previous_messages', decryptedMessages);
+          io.to(socket.id).emit('previous_messages', decryptedMessages);
 
         }else {
-          io.to(conversationId).emit('previous_messages', []);
+          io.to(socket.id).emit('previous_messages', []);
         }
 
         console.log('-------------')
@@ -158,6 +158,9 @@ io.on('connection', socket => {
 
       // Phát tin nhắn mới đến tất cả những người tham gia trong room (conversationId)
       io.to(conversationId).emit('new_message', newMessage);
+      if(senderType == 'customer'){
+        io.emit('broadcast_message', 'Một tin nhắn mới đã được gửi đi!');
+      }
     });
   });
 
