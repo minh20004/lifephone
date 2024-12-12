@@ -65,13 +65,13 @@
                                                 <button type="submit" class="btn btn-primary w-100">Xem thống kê</button>
                                             </div>
 
-                                            <div class="col-auto mt-4">
+                                            {{-- <div class="col-auto mt-4">
                                                 <a href="{{ route('product-admin.create') }}" class="btn btn-soft-success"><i class="ri-add-circle-line align-middle me-1"></i> Thêm sản phẩm mới</a>
                                             </div>
                                             
                                             <div class="col-auto mt-4">
                                                 <button type="button" class="btn btn-soft-info btn-icon waves-effect waves-light layout-rightside-btn"><i class="ri-pulse-line"></i></button>
-                                            </div>
+                                            </div> --}}
                                         </div>
                                     </form>
                                     

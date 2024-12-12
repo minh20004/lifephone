@@ -84,4 +84,13 @@ class SubscriptionController extends Controller
         return redirect()->route('subscriptions.index')->with('success', 'Email đã được gửi đến tất cả người đăng ký!');
     }
 
+    public function show($id)
+    {
+        // Lấy thông tin chi tiết của email đã gửi
+        $sentEmail = SentEmail::findOrFail($id);
+
+        // Trả về view với thông tin chi tiết email
+        return view('admin.page.subscription.show', compact('sentEmail'));
+    }
+
 }

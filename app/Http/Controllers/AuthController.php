@@ -197,6 +197,7 @@ class AuthController extends Controller
 
         ));
     }
+
     //phần trăm thu nhập
     private function calculatePercentageChange($previousIncome, $currentIncome)
     {
@@ -605,26 +606,26 @@ class AuthController extends Controller
     }
 
     // Gửi lại email để thay đổi
-    public function verifyEmailChange($token)
-    {
-        $customer = Auth::guard('customer')->user();
-        $storedToken = session('verification_token');
-        $newEmail = session('email');
+    // public function verifyEmailChange($token)
+    // {
+    //     $customer = Auth::guard('customer')->user();
+    //     $storedToken = session('verification_token');
+    //     $newEmail = session('email');
 
-        if (!$customer || $token !== $storedToken) {
-            return redirect()->route('customer.profile')->withErrors(['email' => 'Token xác nhận không hợp lệ hoặc đã hết hạn.']);
-        }
+    //     if (!$customer || $token !== $storedToken) {
+    //         return redirect()->route('customer.profile')->withErrors(['email' => 'Token xác nhận không hợp lệ hoặc đã hết hạn.']);
+    //     }
 
-        // Cập nhật email mới vào cơ sở dữ liệu
-        $customer->update([
-            'email' => $newEmail,
-        ]);
+    //     // Cập nhật email mới vào cơ sở dữ liệu
+    //     $customer->update([
+    //         'email' => $newEmail,
+    //     ]);
 
-        // Xóa token và email mới khỏi session
-        session()->forget(['verification_token', 'email']);
+    //     // Xóa token và email mới khỏi session
+    //     session()->forget(['verification_token', 'email']);
 
-        return redirect()->route('customer.profile')->with('success', 'Email của bạn đã được thay đổi thành công.');
-    }
+    //     return redirect()->route('customer.profile')->with('success', 'Email của bạn đã được thay đổi thành công.');
+    // }
     
 
 

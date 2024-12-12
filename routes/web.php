@@ -130,6 +130,8 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
     Route::get('/subscriptions/send', [SubscriptionController::class, 'create'])->name('subscriptions.create'); // Form gửi email
     // Trang hiển thị các email đã gửi (giả sử bạn có một bảng ghi lại thông tin các email đã gửi)
     Route::get('/subscriptions/index', [SubscriptionController::class, 'sentEmails'])->name('subscriptions.index');
+    // Trang hiển thị các email đã gửi (giả sử bạn có một bảng ghi lại thông tin các email đã gửi)
+    Route::get('/subscriptions/list', [SubscriptionController::class, 'index'])->name('subscriptions.list');
     // routes/web.php
     Route::post('/subscriptions/send', [SubscriptionController::class, 'sendBulkEmails'])->name('subscriptions.send');
 

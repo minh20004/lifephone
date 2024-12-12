@@ -192,7 +192,7 @@
                 <div class="collapse menu-dropdown" id="sidebarForms">
                     <ul class="nav nav-sm flex-column">
                         <li class="nav-item">
-                            <a href="{{route('subscriptions.index')}}" class="nav-link" data-key="t-basic-elements">Danh sách người đăng kí</a>
+                            <a href="{{route('subscriptions.list')}}" class="nav-link" data-key="t-basic-elements">Danh sách người đăng kí</a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('subscriptions.create') }}" class="nav-link" data-key="t-form-select">Gửi thông báo</a>
