@@ -425,10 +425,10 @@
       let item_html = ` <li class="p-2 border-bottom bg-body-tertiary con-item" data-id = "${conversation.conversationId}">
                 <a href="#!" class="d-flex justify-content-between">
                   <div class="d-flex flex-row">
-                    <img src="${conversation.customerAvatar}" alt="avatar"
+                    <img src="/storage/${conversation.customerAvatar}" alt="avatar"
                       class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
                     <div class="pt-1">
-                      <p class="fw-bold mb-0">${conversation.customerName}</p>
+                      <p class="fw-bold mb-0">${conversation.customerEmail}</p>
                       <p class="small text-muted">${conversation.lastMessageContent}</p>
                     </div>
                   </div>
@@ -464,7 +464,7 @@
                 class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
               <div class="card">
                 <div class="card-header d-flex justify-content-between p-3">
-                  <p class="fw-bold mb-0 mx-3">${customer_info.customerName}</p>
+                  <p class="fw-bold mb-0 mx-3">${customer_info.customerEmail}</p>
                   <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${calTime(message.created_at)}</p>
                 </div>
                 <div class="card-body">
@@ -557,7 +557,7 @@
             class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
           <div class="card">
             <div class="card-header d-flex justify-content-between p-3">
-              <p class="fw-bold mb-0 mx-3">${customer_info.customerName}</p>
+              <p class="fw-bold mb-0 mx-3">${customer_info.customerEmail}</p>
               <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${calTime(data.created_at)}</p>
             </div>
             <div class="card-body">
@@ -604,7 +604,7 @@
             class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
           <div class="card">
             <div class="card-header d-flex justify-content-between p-3">
-              <p class="fw-bold mb-0 mx-3">${customer_info.customerName}</p>
+              <p class="fw-bold mb-0 mx-3">${customer_info.customerEmail}</p>
               <p class="text-muted small mb-0"><i class="far fa-clock"></i> ${calTime(data.created_at)}</p>
             </div>
             <div class="card-body">

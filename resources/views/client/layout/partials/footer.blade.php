@@ -638,11 +638,11 @@
 
         // Gửi yêu cầu join vào room với admin
         // socket.emit('join', conversationId, userId, senderType);
-        console.log('Chat with Admin');
         customerId = @json(Auth::guard('customer')->check() ? Auth::guard('customer')->user()->id : null);
+        console.log('Chat with Admin',customerId);
           // Mở cửa sổ chat
         $.ajax({
-          url: 'http://localhost:8000/api/getConversation',
+          url: '/api/getConversation',
           type: 'POST',
           data: {
             customerId: customerId,
@@ -651,6 +651,7 @@
             console.log(data);
             conversationId = data.conversationId;
             socket = io('http://localhost:3000');
+            console.log(socket)
             socket.emit('join',conversationId, 'customer')
 
             socket.on('previous_messages', (data) => {

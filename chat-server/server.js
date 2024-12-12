@@ -20,7 +20,7 @@ const io = socketIo(server, {
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: '0202',
+  password: '',
   database: 'lifephone',
 });
 
@@ -208,6 +208,7 @@ io.on('connection', socket => {
           c.customerId,
           cu.name AS customerName,
           cu.avatar AS customerAvatar,
+          cu.email AS customerEmail,
           m.content AS lastMessageContent,
           m.iv AS lastMessageIV,
           m.created_at AS lastMessageCreatedAt,
