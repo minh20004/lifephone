@@ -210,221 +210,123 @@
 <span class="position-absolute top-0 start-0 w-100 h-100 bg-body d-none d-block-dark"></span>
       <div class="container position-relative z-1 pt-sm-2 pt-md-3 pt-lg-4" data-bs-theme="dark">
 
-        <!-- Columns with links that are turned into accordion on screens < 500px wide (sm breakpoint) -->
-        <div class="accordion py-5" id="footerLinks">
-          <div class="row">
-            <div class="col-md-4 d-sm-flex flex-md-column align-items-center align-items-md-start pb-3 mb-sm-4">
-              <h4 class="mb-sm-0 mb-md-4 me-4">
-                <a class="text-dark-emphasis text-decoration-none" href="index.html">Cartzilla</a>
-              </h4>
-              <p class="text-body fs-sm text-sm-end text-md-start mb-sm-0 mb-md-3 ms-0 ms-sm-auto ms-md-0 me-4">Got questions? Contact us 24/7</p>
-              <div class="dropdown" style="max-width: 250px">
-                <button type="button" class="btn btn-light dropdown-toggle justify-content-between w-100 d-none-dark" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Help and consultation
-                </button>
-                <button type="button" class="btn btn-secondary dropdown-toggle justify-content-between w-100 d-none d-flex-dark" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Help and consultation
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#!">Help center &amp; FAQ</a></li>
-                  <li><a class="dropdown-item" href="#!">Support chat</a></li>
-                  <li><a class="dropdown-item" href="#!">Open support ticket</a></li>
-                  <li><a class="dropdown-item" href="#!">Call center</a></li>
-                </ul>
-              </div>
-            </div>
-            <div class="col-md-8">
-              <div class="row row-cols-1 row-cols-sm-3 gx-3 gx-md-4">
-                <div class="accordion-item col border-0">
-                  <h6 class="accordion-header" id="companyHeading">
-                    <span class="text-dark-emphasis d-none d-sm-block">Company</span>
-                    <button type="button" class="accordion-button collapsed py-3 d-sm-none" data-bs-toggle="collapse" data-bs-target="#companyLinks" aria-expanded="false" aria-controls="companyLinks">Company</button>
-                  </h6>
-                  <div class="accordion-collapse collapse d-sm-block" id="companyLinks" aria-labelledby="companyHeading" data-bs-parent="#footerLinks">
-                    <ul class="nav flex-column gap-2 pt-sm-3 pb-3 mt-n1 mb-1">
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">About company</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Our team</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Careers</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Contact us</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">News</a>
-                      </li>
-                    </ul>
-                  </div>
-                  <hr class="d-sm-none my-0">
-                </div>
-                <div class="accordion-item col border-0">
-                  <h6 class="accordion-header" id="accountHeading">
-                    <span class="text-dark-emphasis d-none d-sm-block">Account</span>
-                    <button type="button" class="accordion-button collapsed py-3 d-sm-none" data-bs-toggle="collapse" data-bs-target="#accountLinks" aria-expanded="false" aria-controls="accountLinks">Account</button>
-                  </h6>
-                  <div class="accordion-collapse collapse d-sm-block" id="accountLinks" aria-labelledby="accountHeading" data-bs-parent="#footerLinks">
-                    <ul class="nav flex-column gap-2 pt-sm-3 pb-3 mt-n1 mb-1">
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Your account</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Shipping rates &amp; policies</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Refunds &amp; replacements</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Delivery info</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Order tracking</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Taxes &amp; fees</a>
-                      </li>
-                    </ul>
-                  </div>
-                  <hr class="d-sm-none my-0">
-                </div>
-                <div class="accordion-item col border-0">
-                  <h6 class="accordion-header" id="customerHeading">
-                    <span class="text-dark-emphasis d-none d-sm-block">Customer service</span>
-                    <button type="button" class="accordion-button collapsed py-3 d-sm-none" data-bs-toggle="collapse" data-bs-target="#customerLinks" aria-expanded="false" aria-controls="customerLinks">Customer service</button>
-                  </h6>
-                  <div class="accordion-collapse collapse d-sm-block" id="customerLinks" aria-labelledby="customerHeading" data-bs-parent="#footerLinks">
-                    <ul class="nav flex-column gap-2 pt-sm-3 pb-3 mt-n1 mb-1">
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Payment methods</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Money back guarantee</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Product returns</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Support center</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Shipping</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Terms &amp; conditions</a>
-                      </li>
-                    </ul>
-                  </div>
-                  <hr class="d-sm-none my-0">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="container position-relative z-1 pt-sm-2 pt-md-3 pt-lg-4" data-bs-theme="dark">
 
-        <!-- Category / tag links -->
-        <div class="d-flex flex-column gap-3 pb-3 pb-md-4 pb-lg-5 mt-n2 mt-sm-n4 mt-lg-0 mb-4">
-          <ul class="nav align-items-center text-body-tertiary gap-2">
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Computers</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Smartphones</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">TV, Video</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Speakers</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Cameras</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Printers</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Video Games</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Headphones</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Wearable</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">HDD/SSD</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Smart Home</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Apple Devices</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Tablets</a>
-            </li>
-          </ul>
-          <ul class="nav align-items-center text-body-tertiary gap-2">
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Monitors</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Scanners</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Servers</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Heating and Cooling</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">E-readers</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Data Storage</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Networking</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Power Strips</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Plugs and Outlets</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Detectors and Sensors</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Accessories</a>
-            </li>
-          </ul>
-        </div>
+          <!-- Cột với liên kết được chuyển thành accordion trên màn hình < 500px -->
+          <div class="accordion py-5" id="footerLinks">
+              <div class="row">
+                  <div class="col-md-4 d-sm-flex flex-md-column align-items-center align-items-md-start pb-3 mb-sm-4">
+                      <h4 class="mb-sm-0 mb-md-4 me-4">
+                          <a class="text-dark-emphasis text-decoration-none" href="index.html">Cartzilla</a>
+                      </h4>
+                      <p class="text-body fs-sm text-sm-end text-md-start mb-sm-0 mb-md-3 ms-0 ms-sm-auto ms-md-0 me-4">Có câu hỏi? Liên hệ với chúng tôi 24/7</p>
+                      <div class="dropdown" style="max-width: 250px">
+                          <button type="button" class="btn btn-light dropdown-toggle justify-content-between w-100 d-none-dark" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Hỗ trợ và tư vấn
+                          </button>
+                          <button type="button" class="btn btn-secondary dropdown-toggle justify-content-between w-100 d-none d-flex-dark" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Hỗ trợ và tư vấn
+                          </button>
+                          <ul class="dropdown-menu">
+                              <li><a class="dropdown-item" href="#!">Trung tâm hỗ trợ &amp; Câu hỏi thường gặp</a></li>
+                              <li><a class="dropdown-item" href="#!">Trò chuyện hỗ trợ</a></li>
+                              <li><a class="dropdown-item" href="#!">Mở yêu cầu hỗ trợ</a></li>
+                              <li><a class="dropdown-item" href="#!">Tổng đài</a></li>
+                          </ul>
+                      </div>
+                  </div>
+                  <div class="col-md-8">
+                      <div class="row row-cols-1 row-cols-sm-3 gx-3 gx-md-4">
+                          <div class="accordion-item col border-0">
+                              <h6 class="accordion-header" id="companyHeading">
+                                  <span class="text-dark-emphasis d-none d-sm-block">Công ty</span>
+                                  <button type="button" class="accordion-button collapsed py-3 d-sm-none" data-bs-toggle="collapse" data-bs-target="#companyLinks" aria-expanded="false" aria-controls="companyLinks">Công ty</button>
+                              </h6>
+                              <div class="accordion-collapse collapse d-sm-block" id="companyLinks" aria-labelledby="companyHeading" data-bs-parent="#footerLinks">
+                                  <ul class="nav flex-column gap-2 pt-sm-3 pb-3 mt-n1 mb-1">
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Giới thiệu công ty</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Đội ngũ của chúng tôi</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Cơ hội nghề nghiệp</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Liên hệ</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Tin tức</a>
+                                      </li>
+                                  </ul>
+                              </div>
+                              <hr class="d-sm-none my-0">
+                          </div>
+                          <div class="accordion-item col border-0">
+                              <h6 class="accordion-header" id="accountHeading">
+                                  <span class="text-dark-emphasis d-none d-sm-block">Tài khoản</span>
+                                  <button type="button" class="accordion-button collapsed py-3 d-sm-none" data-bs-toggle="collapse" data-bs-target="#accountLinks" aria-expanded="false" aria-controls="accountLinks">Tài khoản</button>
+                              </h6>
+                              <div class="accordion-collapse collapse d-sm-block" id="accountLinks" aria-labelledby="accountHeading" data-bs-parent="#footerLinks">
+                                  <ul class="nav flex-column gap-2 pt-sm-3 pb-3 mt-n1 mb-1">
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Tài khoản của bạn</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Chi phí vận chuyển</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Hoàn tiền và thay thế</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Thông tin giao hàng</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Theo dõi đơn hàng</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Thuế &amp; phí</a>
+                                      </li>
+                                  </ul>
+                              </div>
+                              <hr class="d-sm-none my-0">
+                          </div>
+                          <div class="accordion-item col border-0">
+                              <h6 class="accordion-header" id="customerHeading">
+                                  <span class="text-dark-emphasis d-none d-sm-block">Dịch vụ khách hàng</span>
+                                  <button type="button" class="accordion-button collapsed py-3 d-sm-none" data-bs-toggle="collapse" data-bs-target="#customerLinks" aria-expanded="false" aria-controls="customerLinks">Dịch vụ khách hàng</button>
+                              </h6>
+                              <div class="accordion-collapse collapse d-sm-block" id="customerLinks" aria-labelledby="customerHeading" data-bs-parent="#footerLinks">
+                                  <ul class="nav flex-column gap-2 pt-sm-3 pb-3 mt-n1 mb-1">
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Phương thức thanh toán</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Cam kết hoàn tiền</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Trả lại sản phẩm</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Trung tâm hỗ trợ</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Vận chuyển</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Điều khoản &amp; điều kiện</a>
+                                      </li>
+                                  </ul>
+                              </div>
+                              <hr class="d-sm-none my-0">
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      
 
         <!-- Copyright + Payment methods -->
         <div class="d-md-flex align-items-center border-top py-4">
@@ -481,120 +383,6 @@
           </div>
         </div>
       </div>
-      <!-- <script type="module">
-        // Import Firebase SDKs
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-        import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
-
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBLLwzBZbaTTFXyFQivnv5Nr3PQSNU-Gaw",
-            authDomain: "lifephone-3cf47.firebaseapp.com",
-            projectId: "lifephone-3cf47",
-            storageBucket: "lifephone-3cf47.firebasestorage.app",
-            messagingSenderId: "327624309067",
-            appId: "1:327624309067:web:1dacaecec6351c889750ce",
-            measurementId: "G-0L8MLP1BX9"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const database = getDatabase(app);
-
-        // Handle User Sign Up
-        function signUp() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    console.log('User signed up: ', user);
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    console.error(errorCode, errorMessage);
-                });
-        }
-
-        // Handle User Sign In
-        function signIn() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    console.log('User signed in: ', user);
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    console.error(errorCode, errorMessage);
-                });
-        }
-
-        // Listen for Auth State Change (if user is logged in)
-        onAuthStateChanged(auth, (user) => {
-            const chatContainer = document.getElementById('chatContainer');
-            if (user) {
-                chatContainer.style.display = 'block'; // Show chat container when logged in
-            } else {
-                chatContainer.style.display = 'none'; // Hide chat when not logged in
-            }
-        });
-
-        // Handle Sign Out
-        function signOutUser() {
-            signOut(auth).then(() => {
-                console.log('User signed out');
-            }).catch((error) => {
-                console.error('Error signing out:', error);
-            });
-        }
-
-        // Send Message Function
-        function sendMessage() {
-            const messageInput = document.getElementById('messageInput');
-            const messageContent = messageInput.value;
-
-            if (messageContent.trim() !== "") {
-                const messagesRef = ref(database, 'messages');
-                const newMessageRef = push(messagesRef);
-                set(newMessageRef, {
-                    content: messageContent,
-                    timestamp: Date.now()
-                });
-
-                // Clear the input field
-                messageInput.value = "";
-            }
-        }
-
-        // Listen for New Messages
-        function listenForMessages() {
-            const messagesRef = ref(database, 'messages');
-            onValue(messagesRef, (snapshot) => {
-                const messages = snapshot.val();
-                const chatBox = document.getElementById('chatBox');
-                chatBox.innerHTML = ""; // Clear existing messages
-
-                // Display each message
-                for (const messageId in messages) {
-                    const message = messages[messageId];
-                    const messageElement = document.createElement('div');
-                    messageElement.textContent = message.content;
-                    chatBox.appendChild(messageElement);
-                }
-            });
-        }
-
-        // Listen for new messages when the page loads
-        window.onload = listenForMessages;
-    </script> -->
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0-alpha1/js/bootstrap.min.js"></script>

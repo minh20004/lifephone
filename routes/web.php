@@ -91,6 +91,8 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
     Route::resource('product-admin', ProductController::class);
 
     Route::get('/admin', [AuthController::class, 'Dashboards'])->name('admin.home');
+    Route::get('/admin/staff', [AuthController::class, 'staff'])->name('admin.staff');
+
 
     Route::get('/them-thanh-vien', [AuthController::class, 'create'])->name('admin.them-thanh-vien');
     Route::get('/thanh-vien', [AuthController::class, 'index'])->name('admin.thanh-vien');
@@ -134,6 +136,8 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
     Route::get('/subscriptions/list', [SubscriptionController::class, 'index'])->name('subscriptions.list');
     // routes/web.php
     Route::post('/subscriptions/send', [SubscriptionController::class, 'sendBulkEmails'])->name('subscriptions.send');
+    
+    Route::get('/subscriptions/{id}', [SubscriptionController::class, 'detailsub'])->name('subscriptions.detailsub');
 
     Route::get('/get-statistics', [DashboardController::class, 'getStatistics'])->name('admin.getStatistics');
 

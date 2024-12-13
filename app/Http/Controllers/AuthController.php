@@ -197,7 +197,114 @@ class AuthController extends Controller
 
         ));
     }
+//     public function Dashboards(Request $request)
+// {
+//     // Lấy ngày bắt đầu và kết thúc từ request
+//     $startDate = $request->input('start_date') 
+//         ? Carbon::parse($request->input('start_date'))->startOfDay()
+//         : Carbon::now()->startOfMonth();
 
+//     $endDate = $request->input('end_date') 
+//         ? Carbon::parse($request->input('end_date'))->endOfDay()
+//         : Carbon::now()->endOfMonth();
+
+//     // Format ngày tháng để hiển thị
+//     $formattedStartDate = $startDate->format('d/m/Y');
+//     $formattedEndDate = $endDate->format('d/m/Y');
+
+//     // Tính toán khoảng thời gian trước đó (1 tháng trước)
+//     $previousStartDate = $startDate->copy()->subMonth();
+//     $previousEndDate = $endDate->copy()->subMonth();
+
+//     // Lấy thông tin thống kê cho admin hoặc nhân viên
+//     $user = auth()->user();
+
+//     if ($user->role === 'admin') {
+//         // Admin xem tất cả thông tin
+//         $currentOrdersByStatus = [
+//             'Chờ xác nhận' => Order::where('status', 'Chờ xác nhận')->whereBetween('updated_at', [$startDate, $endDate])->count(),
+//             'Đã xác nhận' => Order::where('status', 'Đã xác nhận')->whereBetween('updated_at', [$startDate, $endDate])->count(),
+//             'Đang giao hàng' => Order::where('status', 'Đang giao hàng')->whereBetween('updated_at', [$startDate, $endDate])->count(),
+//             'Đã hoàn thành' => Order::where('status', 'Đã hoàn thành')->whereBetween('updated_at', [$startDate, $endDate])->count(),
+//             'Đã hủy' => Order::where('status', 'Đã hủy')->whereBetween('updated_at', [$startDate, $endDate])->count(),
+//         ];
+
+//         // Thống kê thu nhập, đơn hàng của admin
+//         $previousIncome = Order::where('status', 'Đã hoàn thành')
+//             ->whereBetween('updated_at', [$previousStartDate, $previousEndDate])
+//             ->sum('total_price');
+//         $currentIncome = Order::where('status', 'Đã hoàn thành')
+//             ->whereBetween('updated_at', [$startDate, $endDate])
+//             ->sum('total_price');
+
+//         // Tính toán phần trăm thay đổi thu nhập
+//         $incomeChangePercentage = 0; // Khởi tạo giá trị mặc định
+//         if ($previousIncome > 0) {
+//             $incomeChangePercentage = (($currentIncome - $previousIncome) / $previousIncome) * 100;
+//             $incomeChangePercentage = number_format($incomeChangePercentage, 2);
+//         } elseif ($previousIncome == 0 && $currentIncome > 0) {
+//             $incomeChangePercentage = 100;
+//         } elseif ($previousIncome == 0 && $currentIncome == 0) {
+//             $incomeChangePercentage = 0;
+//         }
+
+//         // Các thông tin thống kê khác cho admin
+//         $previousOrdersByStatus = [
+//             'Chờ xác nhận' => Order::where('status', 'Chờ xác nhận')->whereBetween('updated_at', [$previousStartDate, $previousEndDate])->count(),
+//             'Đã xác nhận' => Order::where('status', 'Đã xác nhận')->whereBetween('updated_at', [$previousStartDate, $previousEndDate])->count(),
+//             'Đang giao hàng' => Order::where('status', 'Đang giao hàng')->whereBetween('updated_at', [$previousStartDate, $previousEndDate])->count(),
+//             'Đã hoàn thành' => Order::where('status', 'Đã hoàn thành')->whereBetween('updated_at', [$previousStartDate, $previousEndDate])->count(),
+//             'Đã hủy' => Order::where('status', 'Đã hủy')->whereBetween('updated_at', [$previousStartDate, $previousEndDate])->count(),
+//         ];
+
+//         // Thông tin khách hàng
+//         $currentCustomerCount = Customer::whereBetween('created_at', [$startDate, $endDate])->count();
+//         $previousCustomerCount = Customer::whereBetween('created_at', [$previousStartDate, $previousEndDate])->count();
+//         $totalCustomers = Customer::count();
+//         $customerChangePercentage = $this->calculatePercentageChange($previousCustomerCount, $currentCustomerCount);
+
+//         // Truyền dữ liệu vào view cho admin
+//         return view('admin.index', compact(
+//             'currentOrdersByStatus',
+//             'previousOrdersByStatus',
+//             'previousIncome',
+//             'currentIncome',
+//             'incomeChangePercentage',
+//             'startDate',
+//             'endDate',
+//             'formattedStartDate',
+//             'formattedEndDate',
+//             'totalProducts',
+//             'incomeData',
+//             'dailyIncome'
+//         ));
+//     } else {
+//         // Nhân viên chỉ xem thống kê đơn hàng và thu nhập của họ
+//         $currentOrdersByStatus = [
+//             'Chờ xác nhận' => Order::where('status', 'Chờ xác nhận')->where('staff_id', auth()->id())->whereBetween('updated_at', [$startDate, $endDate])->count(),
+//             'Đã xác nhận' => Order::where('status', 'Đã xác nhận')->where('staff_id', auth()->id())->whereBetween('updated_at', [$startDate, $endDate])->count(),
+//             'Đang giao hàng' => Order::where('status', 'Đang giao hàng')->where('staff_id', auth()->id())->whereBetween('updated_at', [$startDate, $endDate])->count(),
+//             'Đã hoàn thành' => Order::where('status', 'Đã hoàn thành')->where('staff_id', auth()->id())->whereBetween('updated_at', [$startDate, $endDate])->count(),
+//             'Đã hủy' => Order::where('status', 'Đã hủy')->where('staff_id', auth()->id())->whereBetween('updated_at', [$startDate, $endDate])->count(),
+//         ];
+
+//         $currentIncome = Order::where('status', 'Đã hoàn thành')
+//             ->where('staff_id', auth()->id())
+//             ->whereBetween('updated_at', [$startDate, $endDate])
+//             ->sum('total_price');
+
+//         // Truyền dữ liệu vào view cho nhân viên
+//         return view('staff.index', compact(
+//             'currentOrdersByStatus',
+//             'currentIncome',
+//             'startDate',
+//             'endDate',
+//             'formattedStartDate',
+//             'formattedEndDate'
+//         ));
+//     }
+// }
+ 
     //phần trăm thu nhập
     private function calculatePercentageChange($previousIncome, $currentIncome)
     {
@@ -212,7 +319,152 @@ class AuthController extends Controller
         
         return round($percentageChange, 2);
     }
-    // hiển thị trang thống kê
+
+    public function staff(Request $request)
+{
+    // Lấy ngày bắt đầu và kết thúc từ request (hoặc sử dụng mặc định)
+    $startDate = $request->input('start_date') 
+        ? Carbon::parse($request->input('start_date'))->startOfDay()
+        : Carbon::now()->startOfMonth();
+
+    $endDate = $request->input('end_date') 
+        ? Carbon::parse($request->input('end_date'))->endOfDay()
+        : Carbon::now()->endOfMonth();
+
+    // Format ngày tháng để hiển thị
+    $formattedStartDate = $startDate->format('d/m/Y');
+    $formattedEndDate = $endDate->format('d/m/Y');
+
+    // Tính toán khoảng thời gian trước đó (1 tháng trước)
+    $previousStartDate = $startDate->copy()->subMonth();
+    $previousEndDate = $endDate->copy()->subMonth();
+
+    // Lấy thông tin nhân viên hiện tại (có thể liên kết với đơn hàng)
+    $userId = auth()->user()->id;
+
+    // Thống kê số lượng đơn hàng theo trạng thái cho nhân viên trong khoảng thời gian hiện tại
+    $currentOrdersByStatus = [
+        'Chờ xác nhận' => Order::where('user_id', $userId)
+                                 ->where('status', 'Chờ xác nhận')
+                                 ->whereBetween('updated_at', [$startDate, $endDate])
+                                 ->count(),
+        'Đã xác nhận' => Order::where('user_id', $userId)
+                               ->where('status', 'Đã xác nhận')
+                               ->whereBetween('updated_at', [$startDate, $endDate])
+                               ->count(),
+        'Đang giao hàng' => Order::where('user_id', $userId)
+                                 ->where('status', 'Đang giao hàng')
+                                 ->whereBetween('updated_at', [$startDate, $endDate])
+                                 ->count(),
+        'Đã hoàn thành' => Order::where('user_id', $userId)
+                                 ->where('status', 'Đã hoàn thành')
+                                 ->whereBetween('updated_at', [$startDate, $endDate])
+                                 ->count(),
+        'Đã hủy' => Order::where('user_id', $userId)
+                          ->where('status', 'Đã hủy')
+                          ->whereBetween('updated_at', [$startDate, $endDate])
+                          ->count(),
+    ];
+
+    // Thống kê số lượng đơn hàng theo trạng thái cho nhân viên trong khoảng thời gian trước đó
+    $previousOrdersByStatus = [
+        'Chờ xác nhận' => Order::where('user_id', $userId)
+                                 ->where('status', 'Chờ xác nhận')
+                                 ->whereBetween('updated_at', [$previousStartDate, $previousEndDate])
+                                 ->count(),
+        'Đã xác nhận' => Order::where('user_id', $userId)
+                               ->where('status', 'Đã xác nhận')
+                               ->whereBetween('updated_at', [$previousStartDate, $previousEndDate])
+                               ->count(),
+        'Đang giao hàng' => Order::where('user_id', $userId)
+                                 ->where('status', 'Đang giao hàng')
+                                 ->whereBetween('updated_at', [$previousStartDate, $previousEndDate])
+                                 ->count(),
+        'Đã hoàn thành' => Order::where('user_id', $userId)
+                                 ->where('status', 'Đã hoàn thành')
+                                 ->whereBetween('updated_at', [$previousStartDate, $previousEndDate])
+                                 ->count(),
+        'Đã hủy' => Order::where('user_id', $userId)
+                          ->where('status', 'Đã hủy')
+                          ->whereBetween('updated_at', [$previousStartDate, $previousEndDate])
+                          ->count(),
+    ];
+
+    // Thu nhập của nhân viên trong khoảng thời gian hiện tại (dựa trên các đơn hàng đã hoàn thành)
+    $currentIncome = Order::where('user_id', $userId) // Thay 'assigned_to' bằng 'user_id'
+        ->where('status', 'Đã hoàn thành')
+        ->whereBetween('updated_at', [$startDate, $endDate])
+        ->sum('total_price');
+
+    // Thu nhập của nhân viên trong khoảng thời gian trước đó
+    $previousIncome = Order::where('user_id', $userId) // Thay 'assigned_to' bằng 'user_id'
+        ->where('status', 'Đã hoàn thành')
+        ->whereBetween('updated_at', [$previousStartDate, $previousEndDate])
+        ->sum('total_price');
+
+    // Tính phần trăm thay đổi thu nhập
+    $incomeChangePercentage = $this->calculatePercentageChange($previousIncome, $currentIncome);
+
+    // Tính phần trăm thay đổi số lượng đơn hàng
+    $orderChangePercentage = [];
+    foreach ($currentOrdersByStatus as $status => $currentCount) {
+        $previousCount = $previousOrdersByStatus[$status] ?? 0;
+        $orderChangePercentage[$status] = $this->calculatePercentageChange($previousCount, $currentCount);
+    }
+
+    // Truyền dữ liệu vào view
+    return view('admin.staff', compact(
+        'currentOrdersByStatus',
+        'previousOrdersByStatus',  // Đảm bảo biến này đã được khai báo và gán giá trị
+        'previousIncome',
+        'currentIncome',
+        'incomeChangePercentage',
+        'orderChangePercentage',
+        'startDate',
+        'endDate',
+        'formattedStartDate',
+        'formattedEndDate'
+    ));
+}
+
+    
+    // Hàm tính phần trăm thay đổi
+    // private function calculatePercentageChange($previousValue, $currentValue)
+    // {
+    //     if ($previousValue == 0) {
+    //         return $currentValue > 0 ? 100 : 0;  // Nếu giá trị trước đó bằng 0, giới hạn tăng 100%
+    //     }
+    
+    //     $percentageChange = (($currentValue - $previousValue) / $previousValue) * 100;
+    
+    //     // Giới hạn phần trăm thay đổi tối đa là 100% và làm tròn đến 2 chữ số
+    //     return round(min($percentageChange, 100), 2);
+    // }
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // hiển thị trang thống kê nhân viên
     public function index()
     {
         // Kiểm tra role của người dùng
@@ -272,33 +524,6 @@ class AuthController extends Controller
         return redirect()->route('admins.index')->with('success', 'Thêm người dùng thành công');
     }
 
-// public function store(Request $request)
-// {
-//     $request->validate([
-//         'name' => 'required|string|max:255',
-//         'email' => 'required|string|email|max:255|unique:users',
-//         'password' => 'required|string|min:8|confirmed',
-//         'role' => 'required|in:admin,staff',
-//         'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-//     ]);
-
-//     $data = $request->only(['name', 'email', 'role']);
-//     $data['password'] = bcrypt($request->password);
-
-//     if ($request->hasFile('avatar')) {
-//         if (!Storage::exists('avatars')) {
-//             Storage::makeDirectory('avatars');
-//         }
-//         $data['avatar'] = Storage::put('avatars', $request->file('avatar'));
-//     }
-
-//     $user = User::create($data);
-
-//     // Gửi email xác nhận
-//     event(new Registered($user));
-
-//     return redirect()->route('admins.index')->with('success', 'Thêm người dùng thành công. Vui lòng xác nhận email.');
-// }
     public function edit($id)
     {
         $user = User::findOrFail($id);
@@ -367,7 +592,7 @@ class AuthController extends Controller
                 return redirect()->route('admin.home')->with('success', 'Đăng nhập thành công!');
             } elseif ($user->role === 'staff') {
 
-                return redirect()->route('admin.home')->with('success', 'Đăng nhập thành công!');
+                return redirect()->route('admin.staff')->with('success', 'Đăng nhập thành công!');
             } else {
 
                 Auth::guard('admin')->logout();
@@ -377,37 +602,6 @@ class AuthController extends Controller
     
         return redirect()->back()->withErrors(['email' => 'Thông tin đăng nhập không đúng.']);
     }
-    // Đăng nhập
-    //  public function adminLogin(Request $request)
-    // {
-    //     // Xác thực dữ liệu đầu vào
-    //     $request->validate([
-    //         'email' => 'required|string|email',
-    //         'password' => 'required|string',
-    //     ]);
-
-    //     $credentials = $request->only('email', 'password');
-
-    //     if (Auth::guard('admin')->attempt($credentials)) {
-    //         $user = Auth::guard('admin')->user();
-
-    //         // Kiểm tra email đã được xác minh chưa
-    //         if (!$user->hasVerifiedEmail()) {
-    //             Auth::guard('admin')->logout();
-    //             return redirect()->route('login')->withErrors(['email' => 'Tài khoản chưa được xác minh. Vui lòng kiểm tra email và xác nhận tài khoản.']);
-    //         }
-
-    //         // Kiểm tra quyền truy cập
-    //         if ($user->role === 'admin' || $user->role === 'staff') {
-    //             return redirect()->route('admin.home')->with('success', 'Đăng nhập thành công!');
-    //         } else {
-    //             Auth::guard('admin')->logout();
-    //             return redirect()->route('login')->withErrors(['email' => 'Bạn không có quyền truy cập.']);
-    //         }
-    //     }
-
-    //     return redirect()->back()->withErrors(['email' => 'Thông tin đăng nhập không đúng.']);
-    // }
 
     public function verify($token)
     {

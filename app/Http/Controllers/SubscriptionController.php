@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Mail\BulkMail;
 use App\Models\SentEmail;
 use App\Models\Subscription;
 use Illuminate\Http\Request;
@@ -38,7 +39,7 @@ class SubscriptionController extends Controller
     public function destroy($id)
     {
         Subscription::findOrFail($id)->delete();
-        return redirect()->route('subscriptions.index')->with('success', 'Xóa email thành công!');
+        return redirect()->route('subscriptions.list')->with('success', 'Xóa email thành công!');
     }
 
 
@@ -53,7 +54,6 @@ class SubscriptionController extends Controller
     return view('admin.page.subscription.send');  // Trỏ tới view form gửi email
     }
     
-    // Phương thức gửi email hàng loạt
     public function sendBulkEmails(Request $request)
     {
         // Kiểm tra dữ liệu gửi lên
@@ -71,20 +71,21 @@ class SubscriptionController extends Controller
 
         // Lấy tất cả email từ cơ sở dữ liệu
         $subscriptions = Subscription::all();
-
-        // Gửi email cho từng người đăng ký
         foreach ($subscriptions as $subscription) {
-            Mail::raw($request->message, function ($message) use ($subscription, $request) {
-                $message->to($subscription->email)
-                        ->subject($request->subject);
-            });
-        }
-
-        // Chuyển hướng với thông báo thành công
+            Mail::to($subscription->email)
+                ->send(new BulkMail($request->subject, $request->message));
+        }        
+        
         return redirect()->route('subscriptions.index')->with('success', 'Email đã được gửi đến tất cả người đăng ký!');
     }
 
-    public function show($id)
+    // protected function cleanHtml($message)
+    // {
+    //     return strip_tags($message, '<p><a><b><i><u><strong><em><ul><ol><li><img><br>');
+    // }
+    
+    
+    public function detailsub($id)
     {
         // Lấy thông tin chi tiết của email đã gửi
         $sentEmail = SentEmail::findOrFail($id);

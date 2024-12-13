@@ -18,7 +18,7 @@ Danh sách email đã gửi
                 <tr>
                     <th>Tiêu đề</th>
                     <th>Ngày gửi</th>
-                    <th>Thao tác</th>
+                    <th>Chi tiết</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,7 +27,7 @@ Danh sách email đã gửi
                         <td>{{ $email->subject }}</td>
                         <td>{{ $email->sent_at }}</td>
                         <td>
-                            <!-- Bạn có thể thêm các thao tác khác ở đây, ví dụ: xem chi tiết, xóa -->
+                            <a href="{{ route('subscriptions.detailsub', $email->id) }}" class="btn btn-info"><i class="bi bi-eye-fill"></i></a>
                         </td>
                     </tr>
                 @endforeach

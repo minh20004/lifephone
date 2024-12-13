@@ -576,9 +576,14 @@
                     @if (in_array(Auth::user()->role, ['admin', 'staff']))
                         <span class="d-flex align-items-center">
                             <!-- Hiển thị ảnh avatar -->
-                            {{-- <img src="{{ asset('storage/' . $user->avatar) }}" alt=""  width="70px" height="70px" class="header-profile-user"> --}}
-                            {{-- <img class="header-profile-user" src="{{ asset(Auth::user()->avatar ?? 'client/img/avtt.jpg') }}" alt="Header Avatar"> --}}
-                            <img class="header-profile-user" src="{{ asset('storage/' . Auth::user()->avatar) }}"  alt="Avatar của {{ Auth::user()->name }}">
+                            @if(Auth::user()->avatar)
+                            <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Avatar của {{ Auth::user()->name }}" class="header-profile-user" id="current-avatar">
+                            @else
+                                <img src="{{ asset('client/img/avtt.jpg') }}" alt="avtt" class="header-profile-user" id="current-avatar">
+                            @endif
+                            @error('avatar')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                             <span class="text-start ms-xl-2">
                                 <!-- Hiển thị tên người dùng -->
                                 <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ Auth::user()->name }}</span>
@@ -594,12 +599,23 @@
                     <!-- item-->
                     <h6 class="dropdown-header">Xin chào {{ Auth::user()->name }} !</h6>
                     <a class="dropdown-item" href="{{ route('admin.profile') }}"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Hồ sơ</span></a>
-                    <a class="dropdown-item" href="apps-chat.html"><i class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Tin nhắn</span></a>
-                    <a class="dropdown-item" href="apps-tasks-kanban.html"><i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Thống kê</span></a>
-                    {{-- <a class="dropdown-item" href="pages-faqs.html"><i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Help</span></a> --}}
+                    <a class="dropdown-item" href="{{ route('admin.chatBoard') }}"><i class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Tin nhắn</span></a>
+                    {{-- <a class="dropdown-item" href="{{ route('admin.home') }}"><i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Thống kê</span></a> --}}
+                    @if(auth()->user()->role === 'admin')
+                        <a class="dropdown-item" href="{{ route('admin.home') }}">
+                            <i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
+                            <span class="align-middle">Thống kê</span>
+                        </a>
+                    @else
+                        <a class="dropdown-item" href="{{ route('admin.staff') }}">
+                            <i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
+                            <span class="align-middle">Thống kê</span>
+                        </a>
+                    @endif
+                    
                     <div class="dropdown-divider"></div>
                     {{-- <a class="dropdown-item" href="pages-profile.html"><i class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Balance : <b>$5971.67</b></span></a> --}}
-                    <a class="dropdown-item" href="pages-profile-settings.html"><span class="badge bg-success-subtle text-success mt-1 float-end">New</span><i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Settings</span></a>
+                    {{-- <a class="dropdown-item" href="pages-profile-settings.html"><span class="badge bg-success-subtle text-success mt-1 float-end">New</span><i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Settings</span></a> --}}
                     {{-- <a class="dropdown-item" href="auth-lockscreen-basic.html"><i class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Lock screen</span></a> --}}
 
                     <form id="logout-form" class="dropdown-item" action="{{ route('admin.logout') }}" method="POST" style="display: inline;">
