@@ -20,6 +20,20 @@
         background-color: #fff;
         z-index: 1;
     }
+    .stat-button {
+    padding: 8px 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px;
+    }
+
+    .stat-button.active {
+        background-color: #405189;
+        color: white;
+    }
+
 </style>
 
 @extends('admin.layout.master')
@@ -80,189 +94,172 @@
                             <!-- end card header -->
                         </div>
                     </div>
-                    <!--end row-->
 
-                    {{-- biểu đồ --}}
-                    <h3 class="text-center mb-4">Biểu đồ thống kê từ: 
+                    {{-- <h3 class="text-center mb-4">Biểu đồ thống kê từ: 
                         <span class="text-danger">{{ $formattedStartDate }}</span> đến 
                         <span class="text-danger">{{ $formattedEndDate }}</span> 
-                    </h3>
-                    {{-- Biểu đồ số lượng đơn hàng theo trạng thái --}}
-                    <div class="row">
-                        <div class="col-6 col-xl-6 col-md-6">
-                            <div class="card card-animate">
-                                <div class="card-body">
-                                    <h5 class="card-title">Số lượng đơn hàng theo trạng thái</h5>
-                                    <canvas id="orderStatusChart"></canvas>
+                    </h3> --}}
+                    <button id="chartButton" class="stat-button active">Thống kê biểu đồ</button>
+                    <button id="listButton" class="stat-button">Thống kê danh sách</button>
+                    
+                    <!-- Biểu đồ -->
+                    <div id="chartSection">
+                        <div class="row">
+                            <div class="col-6 col-xl-6 col-md-6">
+                                <div class="card card-animate">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Số lượng đơn hàng theo trạng thái</h5>
+                                        <canvas id="orderStatusChart"></canvas>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        {{-- Biểu đồ thu nhập --}}
-                        <div class="col-6 col-xl-6 col-md-6">
-                            <div class="card card-animate">
-                                <div class="card-body">
-                                    <h5 class="card-title">Thu nhập theo ngày</h5>
-                                    <canvas id="incomeChart"></canvas>
+                    
+                            <div class="col-6 col-xl-6 col-md-6">
+                                <div class="card card-animate">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Thu nhập theo ngày</h5>
+                                        <canvas id="incomeChart"></canvas>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <h3 class="text-center mb-4 mt-5">Danh sách thống kê từ: 
-                        <span class="text-danger">{{ $formattedStartDate }}</span> đến 
-                        <span class="text-danger">{{ $formattedEndDate }}</span> 
-                    </h3>
-
-                    {{-- danh sách --}}
-                    <div class="row">
-                        {{-- Đơn hàng --}}
-                        <div class="col-md-3">
-                            <!-- card -->
-                            <div class="card card-animate" style="height: 424px">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center">
-                                        <div class="flex-grow-1 overflow-hidden">
-                                            <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Đơn hàng chờ xác nhận</p>
+                    
+                    <!-- Danh sách -->
+                    <div id="listSection" style="display:none;">
+                        <!-- Danh sách thống kê từ ... -->
+                        <div class="row">
+                            <!-- Đơn hàng -->
+                            <div class="col-md-3">
+                                <div class="card card-animate" style="height: 424px">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-grow-1 overflow-hidden">
+                                                <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Đơn hàng chờ xác nhận</p>
+                                            </div>
+                                            <div class="flex-shrink-0">
+                                                <h5 class="{{ $orderChangePercentage['Chờ xác nhận'] >= 0 ? 'text-success' : 'text-danger' }} fs-14 mb-0">
+                                                    <i class="ri-arrow-{{ $orderChangePercentage['Chờ xác nhận'] >= 0 ? 'right-up' : 'right-down' }}-line fs-13 align-middle"></i>
+                                                    {{ number_format(abs($orderChangePercentage['Chờ xác nhận']), 2) }} %
+                                                </h5>
+                                            </div>
                                         </div>
-                                        <div class="flex-shrink-0">
-                                            <h5 class="{{ $orderChangePercentage['Chờ xác nhận'] >= 0 ? 'text-success' : 'text-danger' }} fs-14 mb-0">
-                                                <i class="ri-arrow-{{ $orderChangePercentage['Chờ xác nhận'] >= 0 ? 'right-up' : 'right-down' }}-line fs-13 align-middle"></i>
-                                                {{ number_format(abs($orderChangePercentage['Chờ xác nhận']), 2) }} %
-                                            </h5>
+                                        <div class="d-flex align-items-end justify-content-between mt-4 mb-3">
+                                            <div>
+                                                <a href="{{ route('orders.index') }}" class="text-decoration-underline">Xem tất cả đơn hàng</a>
+                                            </div>
+                                            <div class="avatar-sm flex-shrink-0">
+                                                <span class="avatar-title bg-info-subtle rounded fs-3">
+                                                    <i class="bx bx-shopping-bag text-info"></i>
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="d-flex align-items-end justify-content-between mt-4 mb-3">
-                                        <div>
-                                            <a href="{{ route('orders.index') }}" class="text-decoration-underline">Xem tất cả đơn hàng</a>
+                                        <div class="don-hang">
+                                            <table class="table">
+                                                <tbody>
+                                                    @foreach ($currentOrdersByStatus as $status => $count)
+                                                        <tr>
+                                                            <td>{{ $status }}:</td>
+                                                            <td style="color: rgb(248, 0, 0)"><strong>{{ $count }}</strong></td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
                                         </div>
-                                        <div class="avatar-sm flex-shrink-0">
-                                            <span class="avatar-title bg-info-subtle rounded fs-3">
-                                                <i class="bx bx-shopping-bag text-info"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="don-hang">
-                                        <table class="table">
-                                            <tbody>
-                                                @foreach ($currentOrdersByStatus as $status => $count)
-                                                    <tr>
-                                                        <td>{{ $status }}:</td>
-                                                        <td style="color: rgb(248, 0, 0)"><strong>{{ $count }}</strong></td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-
-                        {{-- khách hàng đăng kí --}}
-                        <div class="col-xl-3 col-md-6">
-                            <div class="card card-animate" style="height: 424px">
-                                <div class="card-body">
-                                    <div class="d-flex align-items-center">
-                                        <div class="flex-grow-1 overflow-hidden">
-                                            <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Khách hàng đăng ký</p>
+                    
+                            <!-- Khách hàng đăng ký -->
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card card-animate" style="height: 424px">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-grow-1 overflow-hidden">
+                                                <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Khách hàng đăng ký</p>
+                                            </div>
+                                            <div class="flex-shrink-0">
+                                                <h5 class="{{ $customerChangePercentage >= 0 ? 'text-success' : 'text-danger' }} fs-14 mb-0">
+                                                    <i class="{{ $customerChangePercentage >= 0 ? 'ri-arrow-right-up-line' : 'ri-arrow-right-down-line' }} fs-13 align-middle"></i>
+                                                    {{ number_format(abs($customerChangePercentage), 2) }} %
+                                                </h5>
+                                            </div>
                                         </div>
-                                        <div class="flex-shrink-0">
-                                            <h5 class="{{ $customerChangePercentage >= 0 ? 'text-success' : 'text-danger' }} fs-14 mb-0">
-                                                <i class="{{ $customerChangePercentage >= 0 ? 'ri-arrow-right-up-line' : 'ri-arrow-right-down-line' }} fs-13 align-middle"></i>
-                                                {{ number_format(abs($customerChangePercentage), 2) }} %
-                                            </h5>
+                                        <div class="d-flex align-items-end justify-content-between mb-3">
+                                            <div>
+                                            </div>
+                                            <div class="avatar-sm flex-shrink-0 mt-4 ">
+                                                <span class="avatar-title bg-warning-subtle rounded fs-3 text-end">
+                                                    <i class="bx bx-user-circle text-warning"></i>
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="d-flex align-items-end justify-content-between mb-3">
-                                        <div>
-                                        </div>
-                                        <div class="avatar-sm flex-shrink-0 mt-4 ">
-                                            <span class="avatar-title bg-warning-subtle rounded fs-3 text-end">
-                                                <i class="bx bx-user-circle text-warning"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-
-                                       
-
                                         <div class="mt-3">
                                             <h4 class="mb-4"><i class="fa-solid fa-user"></i> Người đăng kí: <span class="fw-bold" style="color: red">{{ $totalCustomers }}</span></h4>
                                             <h4 class="mb-4"><i class="fa-solid fa-fire"></i> MỚi: <span class="fw-bold" style="color: red">{{ $currentCustomerCount }}</span></h4>
                                         </div>
-                                        
-
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-
-                        <!-- Tổng thu nhập -->
-                        <div class="col-6">
-                            <!-- card -->
-                            <div class="card card-animate" >
-                                <div class="card-body">
-                                    <div class="d-flex align-items-end justify-content-between">
-                                        <div>
-                                            <p class="fs-22 fw-semibold ff-secondary mb-4">
-                                                Tổng thu nhập từ <span>{{ $formattedStartDate }}</span> đến 
-                                                <span >{{ $formattedEndDate }}: </span> <br>
-                                                <span class="text-danger">{{ number_format($totalIncome ?? 0, 0, ',', '.') }} VNĐ</span>
-                                            </p>
-                                            
-                                            {{-- <a href="" class="text-decoration-underline">Xem tất cả</a> --}}
+                    
+                            <!-- Tổng thu nhập -->
+                            <div class="col-6">
+                                <div class="card card-animate">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-end justify-content-between">
+                                            <div>
+                                                <p class="fs-22 fw-semibold ff-secondary mb-4">
+                                                    Tổng thu nhập từ <span>{{ $formattedStartDate }}</span> đến 
+                                                    <span>{{ $formattedEndDate }}: </span><br>
+                                                    <span class="text-danger">{{ number_format($totalIncome ?? 0, 0, ',', '.') }} VNĐ</span>
+                                                </p>
+                                            </div>
                                         </div>
-                                        {{-- <div class="avatar-sm flex-shrink-0">
-                                            <span class="avatar-title bg-success-subtle rounded fs-3">
-                                                <i class="bx bx-dollar-circle text-success"></i>
-                                            </span>
-                                        </div> --}}
-                                    </div>
-                                    <div class="d-flex align-items-center">
-                                        <div class="flex-shrink-0">
-                                            <h5 class="{{ $incomeChangePercentage >= 0 ? 'text-success' : 'text-danger' }} fs-14 mb-0">
-                                                <div style="max-height: 300px; overflow-y: auto;">
-                                                    <table class="table col">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Ngày</th>
-                                                                <th>Ngày trước (VND)</th>
-                                                                <th>Hiện tại (VND)</th>
-                                                                <th>% thay đổi</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <?php foreach ($dailyChanges as $change): ?>
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <h5 class="{{ $incomeChangePercentage >= 0 ? 'text-success' : 'text-danger' }} fs-14 mb-0">
+                                                    <div style="max-height: 300px; overflow-y: auto;">
+                                                        <table class="table col">
+                                                            <thead>
                                                                 <tr>
-                                                                    <td><?php echo $change['date']; ?></td>
-                                                                    <td><?php echo $change['previous_income']; ?></td>
-                                                                    <td><?php echo $change['current_income']; ?></td>
-                                                                    <td>
-                                                                        <?php
-                                                                        if ($change['percentage_change'] === 'Không có dữ liệu ngày trước') {
-                                                                            echo "<span class='text-danger'>Không thể tính toán</span>";
-                                                                        } else {
-                                                                            echo $change['percentage_change'] . '%';
-                                                                        }
-                                                                        ?>
-                                                                    </td>
+                                                                    <th>Ngày</th>
+                                                                    <th>Ngày trước (VND)</th>
+                                                                    <th>Hiện tại (VND)</th>
+                                                                    <th>% thay đổi</th>
                                                                 </tr>
-                                                            <?php endforeach; ?>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </h5>
+                                                            </thead>
+                                                            <tbody>
+                                                                <?php foreach ($dailyChanges as $change): ?>
+                                                                    <tr>
+                                                                        <td><?php echo $change['date']; ?></td>
+                                                                        <td><?php echo $change['previous_income']; ?></td>
+                                                                        <td><?php echo $change['current_income']; ?></td>
+                                                                        <td>
+                                                                            <?php
+                                                                            if ($change['percentage_change'] === 'Không có dữ liệu ngày trước') {
+                                                                                echo "<span class='text-danger'>Không thể tính toán</span>";
+                                                                            } else {
+                                                                                echo $change['percentage_change'] . '%';
+                                                                            }
+                                                                            ?>
+                                                                        </td>
+                                                                    </tr>
+                                                                <?php endforeach; ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </h5>
+                                            </div>
                                         </div>
                                     </div>
-                                    
                                 </div>
                             </div>
                         </div>
                     </div>
                     
                 </div> 
-
             </div>
         </div>
-
     </div>
     <!-- container-fluid -->
 </div>
@@ -306,24 +303,6 @@
         }
     });
 
-    // Biểu đồ thu nhập theo ngày
-    // var incomeCtx = document.getElementById('incomeChart').getContext('2d');
-    // var incomeChart = new Chart(incomeCtx, {
-    //     type: 'line',
-    //     data: {
-    //         labels: ['Ngày 1', 'Ngày 2', 'Ngày 3', 'Ngày 4', 'Ngày 5', 'Ngày 6', 'Ngày 7'],
-    //         datasets: [{
-    //             label: 'Thu nhập',
-    //             data: [{{ $currentIncome }}, {{ $previousIncome }}, 0, 0, 0, 0, 0],
-    //             fill: false,
-    //             borderColor: 'rgba(75, 192, 192, 1)',
-    //             tension: 0.1
-    //         }]
-    //     },
-    //     options: {
-    //         responsive: true
-    //     }
-    // });
     var incomeCtx = document.getElementById('incomeChart').getContext('2d');
     var incomeChart = new Chart(incomeCtx, {
     type: 'line',
@@ -360,4 +339,34 @@
     counter.innerHTML = target.toLocaleString();
     });
 </script>
+
+<script>
+    // Lấy các button và section
+    const listButton = document.getElementById('listButton');
+    const chartButton = document.getElementById('chartButton');
+    const listSection = document.getElementById('listSection');
+    const chartSection = document.getElementById('chartSection');
+
+    // Lắng nghe sự kiện click cho mỗi button
+    listButton.addEventListener('click', () => {
+        // Thay đổi màu sắc button
+        listButton.classList.add('active');
+        chartButton.classList.remove('active');
+
+        // Hiển thị/ẩn các section tương ứng
+        listSection.style.display = 'block';
+        chartSection.style.display = 'none';
+    });
+
+    chartButton.addEventListener('click', () => {
+        // Thay đổi màu sắc button
+        chartButton.classList.add('active');
+        listButton.classList.remove('active');
+
+        // Hiển thị/ẩn các section tương ứng
+        chartSection.style.display = 'block';
+        listSection.style.display = 'none';
+    });
+</script>
+
 @endsection
