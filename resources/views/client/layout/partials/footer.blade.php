@@ -20,13 +20,13 @@
       bottom: 20px;
       right: 80px;
       width: 300px;
-      height: 100%;
+      height: 400px;
       background-color: #fff;
       border: 1px solid #ccc;
       border-radius: 10px;
-      display: none;  /* Ẩn cửa sổ chat ban đầu */
       flex-direction: column;
       z-index: 5000;
+      visibility: hidden;
   }
 
   .chat-headerC {
@@ -210,221 +210,123 @@
 <span class="position-absolute top-0 start-0 w-100 h-100 bg-body d-none d-block-dark"></span>
       <div class="container position-relative z-1 pt-sm-2 pt-md-3 pt-lg-4" data-bs-theme="dark">
 
-        <!-- Columns with links that are turned into accordion on screens < 500px wide (sm breakpoint) -->
-        <div class="accordion py-5" id="footerLinks">
-          <div class="row">
-            <div class="col-md-4 d-sm-flex flex-md-column align-items-center align-items-md-start pb-3 mb-sm-4">
-              <h4 class="mb-sm-0 mb-md-4 me-4">
-                <a class="text-dark-emphasis text-decoration-none" href="index.html">Cartzilla</a>
-              </h4>
-              <p class="text-body fs-sm text-sm-end text-md-start mb-sm-0 mb-md-3 ms-0 ms-sm-auto ms-md-0 me-4">Got questions? Contact us 24/7</p>
-              <div class="dropdown" style="max-width: 250px">
-                <button type="button" class="btn btn-light dropdown-toggle justify-content-between w-100 d-none-dark" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Help and consultation
-                </button>
-                <button type="button" class="btn btn-secondary dropdown-toggle justify-content-between w-100 d-none d-flex-dark" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Help and consultation
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#!">Help center &amp; FAQ</a></li>
-                  <li><a class="dropdown-item" href="#!">Support chat</a></li>
-                  <li><a class="dropdown-item" href="#!">Open support ticket</a></li>
-                  <li><a class="dropdown-item" href="#!">Call center</a></li>
-                </ul>
-              </div>
-            </div>
-            <div class="col-md-8">
-              <div class="row row-cols-1 row-cols-sm-3 gx-3 gx-md-4">
-                <div class="accordion-item col border-0">
-                  <h6 class="accordion-header" id="companyHeading">
-                    <span class="text-dark-emphasis d-none d-sm-block">Company</span>
-                    <button type="button" class="accordion-button collapsed py-3 d-sm-none" data-bs-toggle="collapse" data-bs-target="#companyLinks" aria-expanded="false" aria-controls="companyLinks">Company</button>
-                  </h6>
-                  <div class="accordion-collapse collapse d-sm-block" id="companyLinks" aria-labelledby="companyHeading" data-bs-parent="#footerLinks">
-                    <ul class="nav flex-column gap-2 pt-sm-3 pb-3 mt-n1 mb-1">
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">About company</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Our team</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Careers</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Contact us</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">News</a>
-                      </li>
-                    </ul>
-                  </div>
-                  <hr class="d-sm-none my-0">
-                </div>
-                <div class="accordion-item col border-0">
-                  <h6 class="accordion-header" id="accountHeading">
-                    <span class="text-dark-emphasis d-none d-sm-block">Account</span>
-                    <button type="button" class="accordion-button collapsed py-3 d-sm-none" data-bs-toggle="collapse" data-bs-target="#accountLinks" aria-expanded="false" aria-controls="accountLinks">Account</button>
-                  </h6>
-                  <div class="accordion-collapse collapse d-sm-block" id="accountLinks" aria-labelledby="accountHeading" data-bs-parent="#footerLinks">
-                    <ul class="nav flex-column gap-2 pt-sm-3 pb-3 mt-n1 mb-1">
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Your account</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Shipping rates &amp; policies</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Refunds &amp; replacements</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Delivery info</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Order tracking</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Taxes &amp; fees</a>
-                      </li>
-                    </ul>
-                  </div>
-                  <hr class="d-sm-none my-0">
-                </div>
-                <div class="accordion-item col border-0">
-                  <h6 class="accordion-header" id="customerHeading">
-                    <span class="text-dark-emphasis d-none d-sm-block">Customer service</span>
-                    <button type="button" class="accordion-button collapsed py-3 d-sm-none" data-bs-toggle="collapse" data-bs-target="#customerLinks" aria-expanded="false" aria-controls="customerLinks">Customer service</button>
-                  </h6>
-                  <div class="accordion-collapse collapse d-sm-block" id="customerLinks" aria-labelledby="customerHeading" data-bs-parent="#footerLinks">
-                    <ul class="nav flex-column gap-2 pt-sm-3 pb-3 mt-n1 mb-1">
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Payment methods</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Money back guarantee</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Product returns</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Support center</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Shipping</a>
-                      </li>
-                      <li class="d-flex w-100 pt-1">
-                        <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Terms &amp; conditions</a>
-                      </li>
-                    </ul>
-                  </div>
-                  <hr class="d-sm-none my-0">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="container position-relative z-1 pt-sm-2 pt-md-3 pt-lg-4" data-bs-theme="dark">
 
-        <!-- Category / tag links -->
-        <div class="d-flex flex-column gap-3 pb-3 pb-md-4 pb-lg-5 mt-n2 mt-sm-n4 mt-lg-0 mb-4">
-          <ul class="nav align-items-center text-body-tertiary gap-2">
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Computers</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Smartphones</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">TV, Video</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Speakers</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Cameras</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Printers</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Video Games</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Headphones</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Wearable</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">HDD/SSD</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Smart Home</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Apple Devices</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Tablets</a>
-            </li>
-          </ul>
-          <ul class="nav align-items-center text-body-tertiary gap-2">
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Monitors</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Scanners</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Servers</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Heating and Cooling</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">E-readers</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Data Storage</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Networking</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Power Strips</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Plugs and Outlets</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Detectors and Sensors</a>
-            </li>
-            <li class="px-1">/</li>
-            <li class="animate-underline">
-              <a class="nav-link fw-normal p-0 animate-target" href="#!">Accessories</a>
-            </li>
-          </ul>
-        </div>
+          <!-- Cột với liên kết được chuyển thành accordion trên màn hình < 500px -->
+          <div class="accordion py-5" id="footerLinks">
+              <div class="row">
+                  <div class="col-md-4 d-sm-flex flex-md-column align-items-center align-items-md-start pb-3 mb-sm-4">
+                      <h4 class="mb-sm-0 mb-md-4 me-4">
+                          <a class="text-dark-emphasis text-decoration-none" href="index.html">Cartzilla</a>
+                      </h4>
+                      <p class="text-body fs-sm text-sm-end text-md-start mb-sm-0 mb-md-3 ms-0 ms-sm-auto ms-md-0 me-4">Có câu hỏi? Liên hệ với chúng tôi 24/7</p>
+                      <div class="dropdown" style="max-width: 250px">
+                          <button type="button" class="btn btn-light dropdown-toggle justify-content-between w-100 d-none-dark" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Hỗ trợ và tư vấn
+                          </button>
+                          <button type="button" class="btn btn-secondary dropdown-toggle justify-content-between w-100 d-none d-flex-dark" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Hỗ trợ và tư vấn
+                          </button>
+                          <ul class="dropdown-menu">
+                              <li><a class="dropdown-item" href="#!">Trung tâm hỗ trợ &amp; Câu hỏi thường gặp</a></li>
+                              <li><a class="dropdown-item" href="#!">Trò chuyện hỗ trợ</a></li>
+                              <li><a class="dropdown-item" href="#!">Mở yêu cầu hỗ trợ</a></li>
+                              <li><a class="dropdown-item" href="#!">Tổng đài</a></li>
+                          </ul>
+                      </div>
+                  </div>
+                  <div class="col-md-8">
+                      <div class="row row-cols-1 row-cols-sm-3 gx-3 gx-md-4">
+                          <div class="accordion-item col border-0">
+                              <h6 class="accordion-header" id="companyHeading">
+                                  <span class="text-dark-emphasis d-none d-sm-block">Công ty</span>
+                                  <button type="button" class="accordion-button collapsed py-3 d-sm-none" data-bs-toggle="collapse" data-bs-target="#companyLinks" aria-expanded="false" aria-controls="companyLinks">Công ty</button>
+                              </h6>
+                              <div class="accordion-collapse collapse d-sm-block" id="companyLinks" aria-labelledby="companyHeading" data-bs-parent="#footerLinks">
+                                  <ul class="nav flex-column gap-2 pt-sm-3 pb-3 mt-n1 mb-1">
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Giới thiệu công ty</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Đội ngũ của chúng tôi</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Cơ hội nghề nghiệp</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Liên hệ</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Tin tức</a>
+                                      </li>
+                                  </ul>
+                              </div>
+                              <hr class="d-sm-none my-0">
+                          </div>
+                          <div class="accordion-item col border-0">
+                              <h6 class="accordion-header" id="accountHeading">
+                                  <span class="text-dark-emphasis d-none d-sm-block">Tài khoản</span>
+                                  <button type="button" class="accordion-button collapsed py-3 d-sm-none" data-bs-toggle="collapse" data-bs-target="#accountLinks" aria-expanded="false" aria-controls="accountLinks">Tài khoản</button>
+                              </h6>
+                              <div class="accordion-collapse collapse d-sm-block" id="accountLinks" aria-labelledby="accountHeading" data-bs-parent="#footerLinks">
+                                  <ul class="nav flex-column gap-2 pt-sm-3 pb-3 mt-n1 mb-1">
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Tài khoản của bạn</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Chi phí vận chuyển</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Hoàn tiền và thay thế</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Thông tin giao hàng</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Theo dõi đơn hàng</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Thuế &amp; phí</a>
+                                      </li>
+                                  </ul>
+                              </div>
+                              <hr class="d-sm-none my-0">
+                          </div>
+                          <div class="accordion-item col border-0">
+                              <h6 class="accordion-header" id="customerHeading">
+                                  <span class="text-dark-emphasis d-none d-sm-block">Dịch vụ khách hàng</span>
+                                  <button type="button" class="accordion-button collapsed py-3 d-sm-none" data-bs-toggle="collapse" data-bs-target="#customerLinks" aria-expanded="false" aria-controls="customerLinks">Dịch vụ khách hàng</button>
+                              </h6>
+                              <div class="accordion-collapse collapse d-sm-block" id="customerLinks" aria-labelledby="customerHeading" data-bs-parent="#footerLinks">
+                                  <ul class="nav flex-column gap-2 pt-sm-3 pb-3 mt-n1 mb-1">
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Phương thức thanh toán</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Cam kết hoàn tiền</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Trả lại sản phẩm</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Trung tâm hỗ trợ</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Vận chuyển</a>
+                                      </li>
+                                      <li class="d-flex w-100 pt-1">
+                                          <a class="nav-link animate-underline animate-target d-inline fw-normal text-truncate p-0" href="#!">Điều khoản &amp; điều kiện</a>
+                                      </li>
+                                  </ul>
+                              </div>
+                              <hr class="d-sm-none my-0">
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      
 
         <!-- Copyright + Payment methods -->
         <div class="d-md-flex align-items-center border-top py-4">
@@ -449,137 +351,42 @@
         </div>
       </div>
 
-      <button id="chatButtonC" class="chat-buttonC" style="line-height: 1;"><i class="fa-regular fa-comment"></i></button>
-      <div id="chatBoxC" class="chat-boxC">
+      <button id="chatButtonC" class="chat-buttonC" style="line-height: 1; ">
+        <i class="fa-regular fa-comment"></i>
+        <div id="numberUnread" class="numberUnread" style="position:absolute; top:-10%; right:-10%; border-radius: 50%; background-color: red; line-height:1; width:45%; height:45%; display:grid; place-items:center;">0</div>
+      </button>
+      <div id="chatBoxC" class="chat-boxC d-flex">
         <div class="chat-headerC">
-            <p class="m-0">Chat with Admin</p>
+            <p class="m-0">Chăm sóc khách hàng</p>
             <button id="closeChatC" class="close-btnC">X</button>
         </div>
         <div id="messagesC" class="messagesC"></div>
-        <input id="messageInputC" type="text" placeholder="Type your message..." />
+        <input id="messageInputC" type="text" placeholder="Nhập tin nhắn...." />
         <!-- Nút gửi tin nhắn -->
         <div class="d-flex">
-          <button id="sendMessageC" class="send-btnC w-75">Send</button>
+          <button id="sendMessageC" class="send-btnC w-75">Gửi</button>
           <button id="uploadImageC" class="upload-btnC w-25" style="border: none; border-radius:10px;">📷 <span id="imageCount">0</span></button>
         </div>
         <!-- Nút tải ảnh -->
-        <input type="file" id="imageInputC" class="image-input" accept="image/*" />
+        <input type="file" id="imageInputC" class="image-input d-none" accept="image/*" />
       </div>
 
-      <!-- <script type="module">
-        // Import Firebase SDKs
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-        import { getDatabase, ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-database.js";
+      <div class="toast-container position-fixed top-50 end-0 p-3">
+        <div id="toast_new_mess" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header">
+            <strong class="me-auto">Tin nhắn mới</strong>
+            <small>Vừa xong</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body">
+            Bạn có một tin nhắn mới!
+          </div>
+        </div>
+      </div>
 
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBLLwzBZbaTTFXyFQivnv5Nr3PQSNU-Gaw",
-            authDomain: "lifephone-3cf47.firebaseapp.com",
-            projectId: "lifephone-3cf47",
-            storageBucket: "lifephone-3cf47.firebasestorage.app",
-            messagingSenderId: "327624309067",
-            appId: "1:327624309067:web:1dacaecec6351c889750ce",
-            measurementId: "G-0L8MLP1BX9"
-        };
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.3.0-alpha1/js/bootstrap.min.js"></script>
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const database = getDatabase(app);
-
-        // Handle User Sign Up
-        function signUp() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            createUserWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    console.log('User signed up: ', user);
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    console.error(errorCode, errorMessage);
-                });
-        }
-
-        // Handle User Sign In
-        function signIn() {
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    console.log('User signed in: ', user);
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    console.error(errorCode, errorMessage);
-                });
-        }
-
-        // Listen for Auth State Change (if user is logged in)
-        onAuthStateChanged(auth, (user) => {
-            const chatContainer = document.getElementById('chatContainer');
-            if (user) {
-                chatContainer.style.display = 'block'; // Show chat container when logged in
-            } else {
-                chatContainer.style.display = 'none'; // Hide chat when not logged in
-            }
-        });
-
-        // Handle Sign Out
-        function signOutUser() {
-            signOut(auth).then(() => {
-                console.log('User signed out');
-            }).catch((error) => {
-                console.error('Error signing out:', error);
-            });
-        }
-
-        // Send Message Function
-        function sendMessage() {
-            const messageInput = document.getElementById('messageInput');
-            const messageContent = messageInput.value;
-
-            if (messageContent.trim() !== "") {
-                const messagesRef = ref(database, 'messages');
-                const newMessageRef = push(messagesRef);
-                set(newMessageRef, {
-                    content: messageContent,
-                    timestamp: Date.now()
-                });
-
-                // Clear the input field
-                messageInput.value = "";
-            }
-        }
-
-        // Listen for New Messages
-        function listenForMessages() {
-            const messagesRef = ref(database, 'messages');
-            onValue(messagesRef, (snapshot) => {
-                const messages = snapshot.val();
-                const chatBox = document.getElementById('chatBox');
-                chatBox.innerHTML = ""; // Clear existing messages
-
-                // Display each message
-                for (const messageId in messages) {
-                    const message = messages[messageId];
-                    const messageElement = document.createElement('div');
-                    messageElement.textContent = message.content;
-                    chatBox.appendChild(messageElement);
-                }
-            });
-        }
-
-        // Listen for new messages when the page loads
-        window.onload = listenForMessages;
-    </script> -->
   <script>
     // Kết nối tới server Socket.IO
     var socket = null;
@@ -601,24 +408,29 @@
 
     let imageCount = 0;
     document.getElementById('imageInputC').addEventListener('change', function(event) {
-    const files = event.target.files;  // Lấy các tệp được chọn
-    if (files.length > 0) {
-        imageCount += files.length;  // Cập nhật số lượng ảnh đã tải lên
-        console.log(imageCount)
-        // Cập nhật hiển thị số lượng ảnh trên nút tải ảnh
-        document.getElementById('imageCount').textContent = imageCount;
-    }
-});
+      const files = event.target.files;  // Lấy các tệp được chọn
+      if (files.length > 0) {
+          imageCount += files.length;  // Cập nhật số lượng ảnh đã tải lên
+          console.log(imageCount)
+          // Cập nhật hiển thị số lượng ảnh trên nút tải ảnh
+          document.getElementById('imageCount').textContent = imageCount;
+      }
+    });
 
-    // Khi người dùng bấm nút "Chat with Admin"
     chatButton.addEventListener("click", () => {
+      chatBox.style.visibility = "visible";
+      document.getElementById('numberUnread').textContent = 0;
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+    // Khi người dùng bấm nút "Chat with Admin"
+
         // Gửi yêu cầu join vào room với admin
         // socket.emit('join', conversationId, userId, senderType);
-        console.log('Chat with Admin');
         customerId = @json(Auth::guard('customer')->check() ? Auth::guard('customer')->user()->id : null);
-        chatBox.style.display = "flex";  // Mở cửa sổ chat
+        console.log('Chat with Admin',customerId);
+          // Mở cửa sổ chat
         $.ajax({
-          url: 'http://localhost:8000/api/getConversation',
+          url: '/api/getConversation',
           type: 'POST',
           data: {
             customerId: customerId,
@@ -627,6 +439,7 @@
             console.log(data);
             conversationId = data.conversationId;
             socket = io('http://localhost:3000');
+            console.log(socket)
             socket.emit('join',conversationId, 'customer')
 
             socket.on('previous_messages', (data) => {
@@ -710,30 +523,44 @@
                 }
                 messagesDiv.innerHTML += messageElement;
                 messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                if(data.senderType === 'admin'){
+                  var toastEl = document.getElementById('toast_new_mess');
+                  var toast = new bootstrap.Toast(toastEl);
+                  toast.show();
+                  document.getElementById('numberUnread').textContent = parseInt(document.getElementById('numberUnread').textContent) + 1;
+                }
+
             });
 
             socket.on('new_img', (data) => {
               let messageElement = document.createElement("div");
 
               if (data.senderType === 'customer') {
-                    // Nếu là admin, căn trái và áp dụng các lớp CSS cho admin
-                    messageElement.classList.add('d-flex', 'justify-content-end', 'mb-3');
-                    messageElement.innerHTML = `
+                  messageElement = `
+                      <div class="d-flex justify-content-end mb-3">
                         <div class="message-bubble text-white p-2 rounded" style="max-width: 75%;background-color:rgb(77 87 103);">
-                           <img src="${data.content}" class="w-100" alt="">
+                            <img src="${data.img}" class="w-100" alt="">
                         </div>
-                    `;
-                } else {
-                    // Nếu là customer, căn phải và áp dụng các lớp CSS cho customer
-                    messageElement.classList.add('d-flex', 'justify-content-star', 'mb-3');
-                    messageElement.innerHTML = `
+                    </div>
+                  `;
+              } else {
+                  // Nếu là customer, căn phải và áp dụng các lớp CSS cho customer
+                  messageElement = `
+                      <div class="d-flex justify-content-star mb-3">
                         <div class="message-bubble text-dark p-2 rounded" style="max-width: 75%;background-color:rgb(222 222 222);">
-                            <img src="${data.content}" class="w-100" alt="">
+                            <img src="${data.img}" class="w-100" alt="">
                         </div>
-                    `;
-                }
+                    </div>
+                  `;
+              }
               messagesDiv.innerHTML += messageElement;
               messagesDiv.scrollTop = messagesDiv.scrollHeight;
+              if(data.senderType === 'admin'){
+                var toastEl = document.getElementById('toast_new_mess');
+                var toast = new bootstrap.Toast(toastEl);
+                toast.show();
+                document.getElementById('numberUnread').textContent = parseInt(document.getElementById('numberUnread').textContent) + 1;
+              }
             })
           },
           error: function(e) {
@@ -744,7 +571,7 @@
 
     // Khi người dùng đóng cửa sổ chat
     closeChat.addEventListener("click", () => {
-        chatBox.style.display = "none";  // Ẩn cửa sổ chat
+        chatBox.style.visibility = "hidden";  // Ẩn cửa sổ chat
     });
 
     // Khi người dùng gửi tin nhắn

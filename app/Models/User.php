@@ -44,4 +44,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function hasVerifiedEmail()
+    {
+        return !is_null($this->email_verified_at);
+    }
+    /**
+     * Phương thức kiểm tra vai trò người dùng
+     */
+    public function hasRole($role)
+    {
+        return $this->role === $role;
+    }
 }
