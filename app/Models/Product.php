@@ -44,5 +44,16 @@ class Product extends Model
     {
         return $this->hasMany(Review::class);
     }
+    public function product()
+{
+    return $this->belongsTo(Product::class);
+}
 
+public function loadAllCustomer(){
+    return $this->belongsTo(Customer::class,'customer_id' );
+}
+public function order()
+{
+    return $this->belongsTo(Order::class);
+}
 }

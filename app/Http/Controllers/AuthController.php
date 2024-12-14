@@ -2,243 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Order;
-use App\Models\Product;
 use App\Models\Customer;
 use App\Mail\VerifyEmail;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\ProductVariant;
-use App\Mail\NewStaffNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\RateLimiter;
 use App\Models\Conversation;
 use App\Models\Message;
 
 class AuthController extends Controller
 {
-//  admin ------------------------------------------------------------------------------------------------------------------------------  
-    // Thống kê
-    public function Dashboards(Request $request)
-    {
-        // Lấy ngày bắt đầu và kết thúc từ request
-        $startDate = $request->input('start_date') 
-            ? Carbon::parse($request->input('start_date'))->startOfDay()
-            : Carbon::now()->startOfMonth();
-
-        $endDate = $request->input('end_date') 
-            ? Carbon::parse($request->input('end_date'))->endOfDay()
-            : Carbon::now()->endOfMonth();
-
-        // Format ngày tháng để hiển thị
-        $formattedStartDate = $startDate->format('d/m/Y');
-        $formattedEndDate = $endDate->format('d/m/Y');
-
-        // Tính toán khoảng thời gian trước đó (1 tháng trước)
-        $previousStartDate = $startDate->copy()->subMonth();
-        $previousEndDate = $endDate->copy()->subMonth();
-
-        // Thống kê số lượng đơn hàng theo trạng thái trong khoảng thời gian hiện tại
-        $currentOrdersByStatus = [
-            'Chờ xác nhận' => Order::where('status', 'Chờ xác nhận')->whereBetween('updated_at', [$startDate, $endDate])->count(),
-            'Đã xác nhận' => Order::where('status', 'Đã xác nhận')->whereBetween('updated_at', [$startDate, $endDate])->count(),
-            'Đang giao hàng' => Order::where('status', 'Đang giao hàng')->whereBetween('updated_at', [$startDate, $endDate])->count(),
-            'Đã hoàn thành' => Order::where('status', 'Đã hoàn thành')->whereBetween('updated_at', [$startDate, $endDate])->count(),
-            'Đã hủy' => Order::where('status', 'Đã hủy')->whereBetween('updated_at', [$startDate, $endDate])->count(),
-        ];
-
-        // Thống kê số lượng đơn hàng theo trạng thái trong khoảng thời gian trước đó
-        $previousOrdersByStatus = [
-            'Chờ xác nhận' => Order::where('status', 'Chờ xác nhận')->whereBetween('updated_at', [$previousStartDate, $previousEndDate])->count(),
-            'Đã xác nhận' => Order::where('status', 'Đã xác nhận')->whereBetween('updated_at', [$previousStartDate, $previousEndDate])->count(),
-            'Đang giao hàng' => Order::where('status', 'Đang giao hàng')->whereBetween('updated_at', [$previousStartDate, $previousEndDate])->count(),
-            'Đã hoàn thành' => Order::where('status', 'Đã hoàn thành')->whereBetween('updated_at', [$previousStartDate, $previousEndDate])->count(),
-            'Đã hủy' => Order::where('status', 'Đã hủy')->whereBetween('updated_at', [$previousStartDate, $previousEndDate])->count(),
-        ];
-
-        // Thống kê số người dùng đăng ký trong khoảng thời gian hiện tại
-        $currentCustomerCount = Customer::whereBetween('created_at', [$startDate, $endDate])->count();
-
-        // Thống kê số người dùng đăng ký trong khoảng thời gian trước đó
-        $previousCustomerCount = Customer::whereBetween('created_at', [$previousStartDate, $previousEndDate])->count();
-
-        // Tổng số người dùng đăng ký
-        $totalCustomers = Customer::count();
-
-        // Tính phần trăm thay đổi số lượng người dùng đăng ký
-        $customerChangePercentage = $this->calculatePercentageChange($previousCustomerCount, $currentCustomerCount);
-        
-        // Thu nhập trong khoảng thời gian hiện tại
-        $currentIncome = Order::where('status', 'Đã hoàn thành')->whereBetween('updated_at', [$startDate, $endDate])->sum('total_price');
-
-        // Thu nhập trong khoảng thời gian trước đó
-        $previousIncome = Order::where('status', 'Đã hoàn thành')
-        ->whereBetween('updated_at', [$previousStartDate, $previousEndDate])
-        ->sum('total_price');
-
-        // Lấy thu nhập từng ngày trong khoảng thời gian
-        $incomePerDay = Order::where('status', 'Đã hoàn thành')
-            ->whereBetween('updated_at', [$startDate, $endDate])
-            ->selectRaw('DATE(updated_at) as date, SUM(total_price) as daily_income')
-            ->groupBy('date')
-            ->orderBy('date')
-            ->get();
-
-        // Tạo dãy ngày từ startDate đến endDate
-        $datesRange = [];
-        $currentDate = Carbon::parse($startDate);
-        $endDateCarbon = Carbon::parse($endDate);
-
-        while ($currentDate <= $endDateCarbon) {
-            $datesRange[] = $currentDate->format('Y-m-d');
-            $currentDate->addDay();
-        }
-
-        // Lấy thu nhập cho từng ngày và thêm 0 nếu không có thu nhập
-        $dailyIncome = [];
-        foreach ($datesRange as $date) {
-            $income = $incomePerDay->firstWhere('date', $date);
-            $dailyIncome[$date] = $income ? $income->daily_income : 0;
-        }
-
-        // Xử lý tính phần trăm thay đổi thu nhập cho từng ngày
-        $dailyChanges = [];
-        for ($i = 1; $i < count($datesRange); $i++) {
-            $previousIncome = $dailyIncome[$datesRange[$i - 1]];
-            $currentIncome = $dailyIncome[$datesRange[$i]];
-
-            // Tính phần trăm thay đổi, tránh chia cho 0
-            if ($previousIncome == 0 && $currentIncome > 0) {
-                $percentageChange = '100';
-            } elseif ($previousIncome == 0 && $currentIncome == 0) {
-                $percentageChange = '0';
-            } else {
-                $percentageChange = number_format((($currentIncome - $previousIncome) / $previousIncome) * 100, 2) . '%';
-            }
-
-            // Chuyển đổi định dạng ngày thành d/m/Y
-            $formattedDate = Carbon::parse($datesRange[$i])->format('d/m/Y');
-
-            // Định dạng thu nhập để không hiển thị phần .00 khi là số nguyên
-            $formattedPreviousIncome = (intval($previousIncome) == $previousIncome) ? number_format($previousIncome, 0) : number_format($previousIncome, 2);
-            $formattedCurrentIncome = (intval($currentIncome) == $currentIncome) ? number_format($currentIncome, 0) : number_format($currentIncome, 2);
-
-            // Lưu thông tin vào mảng
-            $dailyChanges[] = [
-                'date' => $formattedDate,
-                'previous_income' => $formattedPreviousIncome,  
-                'current_income' => $formattedCurrentIncome,
-                'percentage_change' => $percentageChange  
-            ];
-        }
-        
-        //Tính tổng tiền thời điểm thống kê
-        $totalIncome = Order::where('status', 'Đã hoàn thành')
-            ->whereBetween('updated_at', [$startDate, $endDate])
-            ->sum('total_price');
-
-        // Tính phần trăm thay đổi thu nhập
-        $incomeChangePercentage = $this->calculatePercentageChange($previousIncome, $currentIncome);
-
-        // Tính phần trăm thay đổi số lượng đơn hàng
-        $orderChangePercentage = [];
-        foreach ($currentOrdersByStatus as $status => $currentCount) {
-            $previousCount = $previousOrdersByStatus[$status] ?? 0;
-            $orderChangePercentage[$status] = $this->calculatePercentageChange($previousCount, $currentCount);
-        }
-        
-        $totalProducts = Product::count();
-        // Tạo mảng các ngày trong khoảng thời gian đã chọn
-        $dates = [];
-        $currentDate = $startDate->copy();
-        while ($currentDate->lte($endDate)) {
-            $dates[] = $currentDate->format('d/m/Y');
-            $currentDate->addDay();
-        }
-
-        // Tính toán thu nhập cho từng ngày trong khoảng thời gian
-        $incomeData = [];
-        foreach ($dates as $date) {
-            $incomeData[] = Order::where('status', 'Đã hoàn thành')
-                                ->whereDate('updated_at', Carbon::createFromFormat('d/m/Y', $date))
-                                ->sum('total_price');
-        }
-        // Truyền dữ liệu vào view
-        return view('admin.index', compact(
-            'currentOrdersByStatus',
-            'previousOrdersByStatus',
-            'previousIncome',
-            'currentIncome',
-            'incomeChangePercentage',
-            'orderChangePercentage',
-            'currentCustomerCount',
-            'previousCustomerCount',
-            'totalCustomers',
-            'customerChangePercentage',
-            'startDate',
-            'endDate',
-            'formattedStartDate',
-            'formattedEndDate',
-            'totalProducts',
-            'dates',
-            'incomeData',
-            'incomePerDay',
-            'dailyChanges',
-            'datesRange',
-            'currentDate',
-            'dailyIncome',
-            'totalIncome'
-
-        ));
-    }
-    //phần trăm thu nhập
-    private function calculatePercentageChange($previousIncome, $currentIncome)
-    {
-        if ($previousIncome == 0) {
-            return $currentIncome > 0 ? 100 : 0;  // Nếu thu nhập trước đó bằng 0, giới hạn tăng 100%.
-        }
-
-        $percentageChange = (($currentIncome - $previousIncome) / $previousIncome) * 100;
-
-        // Giới hạn phần trăm thay đổi tối đa là 100% và làm tròn đến 2 chữ số
-        $percentageChange = min($percentageChange, 100);
-        
-        return round($percentageChange, 2);
-    }
-    // hiển thị trang thống kê
+//  admin ------------------------------------------------------------------------------------------------------------------------------
     public function index()
     {
-        // Kiểm tra role của người dùng
-        if (Auth::user()->role !== 'admin') {
-            return back()->withErrors('Bạn không có quyền truy cập vào trang này.');
-        } 
-        $users = User::latest('id')->paginate(10);
+        $users = User::latest('id')->paginate(2);
         return view('admin.page.member.list-member', compact('users'));
     }
-
     public function hoso()
     {
         // $user = User::findOrFail($id);
-        return view('admin.page.member.profile.index');
+        return view('admin.page.member.file');
     }
-
     // Show form to create a new user
     public function create()
     {
-        // Kiểm tra role của người dùng
-        if (Auth::user()->role !== 'admin') {
-            return back()->withErrors('Bạn không có quyền truy cập vào trang này.');
-        }   
         return view('admin.page.member.add');
     }
 
-    // Thêm nhân viên
+    // Store a new user
     public function store(Request $request)
     {
         // Xác thực dữ liệu yêu cầu đầu vào
@@ -246,58 +44,25 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role' => 'required|in:admin,staff',
+            'role' => 'required|in:admin,staff,customer',
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-    
-        // Lấy dữ liệu cần thiết từ request
-        $data = $request->only(['name', 'email', 'role']); 
-        $data['password'] = bcrypt($request->password);
-    
-        // Kiểm tra xem có file avatar không
+
+        $data = $request->only(['name', 'email']);
+        $data['password'] = bcrypt($request->password); // Mã hóa mật khẩu
+
         if ($request->hasFile('avatar')) {
             if (!Storage::exists('avatars')) {
                 Storage::makeDirectory('avatars');
             }
             $data['avatar'] = Storage::put('avatars', $request->file('avatar'));
         }
-    
-        // Tạo người dùng mới với thông tin đã xác thực
-        $user = User::create($data);
-    
-        // Gửi email thông báo
-        // Mail::to($user->email)->send(new NewStaffNotification($user));
-    
-        return redirect()->route('admins.index')->with('success', 'Thêm người dùng thành công');
+
+        User::create($data);
+
+        return redirect()->route('admins.index')->with('success', 'Thêm thành công');
     }
 
-// public function store(Request $request)
-// {
-//     $request->validate([
-//         'name' => 'required|string|max:255',
-//         'email' => 'required|string|email|max:255|unique:users',
-//         'password' => 'required|string|min:8|confirmed',
-//         'role' => 'required|in:admin,staff',
-//         'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-//     ]);
-
-//     $data = $request->only(['name', 'email', 'role']);
-//     $data['password'] = bcrypt($request->password);
-
-//     if ($request->hasFile('avatar')) {
-//         if (!Storage::exists('avatars')) {
-//             Storage::makeDirectory('avatars');
-//         }
-//         $data['avatar'] = Storage::put('avatars', $request->file('avatar'));
-//     }
-
-//     $user = User::create($data);
-
-//     // Gửi email xác nhận
-//     event(new Registered($user));
-
-//     return redirect()->route('admins.index')->with('success', 'Thêm người dùng thành công. Vui lòng xác nhận email.');
-// }
     public function edit($id)
     {
         $user = User::findOrFail($id);
@@ -342,97 +107,32 @@ class AuthController extends Controller
     {
         return view('admin.auth.login');
     }
-    
 
-
-
-    // hàm xử lý đăng nhập admin
     public function adminLogin(Request $request)
     {
-        // Xác thực dữ liệu đầu vào
         $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
-    
+
         $credentials = $request->only('email', 'password');
-    
-        if (Auth::guard('admin')->attempt($credentials)) {
 
-            $user = Auth::guard('admin')->user();
-    
+        if (Auth::attempt($credentials)) {
+            $user = Auth::user();
             if ($user->role === 'admin') {
-
-                return redirect()->route('admin.home')->with('success', 'Đăng nhập thành công!');
-            } elseif ($user->role === 'staff') {
-
                 return redirect()->route('admin.home')->with('success', 'Đăng nhập thành công!');
             } else {
-
-                Auth::guard('admin')->logout();
-                return redirect()->route('login')->withErrors(['email' => 'Bạn không có quyền truy cập.']);
+                Auth::logout();
+                return redirect()->route('login')->withErrors('Bạn không có quyền truy cập trang admin.');
             }
+        } else {
+            return redirect()->back()->withErrors('Thông tin đăng nhập không đúng.');
         }
-    
-        return redirect()->back()->withErrors(['email' => 'Thông tin đăng nhập không đúng.']);
     }
-    // Đăng nhập
-    //  public function adminLogin(Request $request)
-    // {
-    //     // Xác thực dữ liệu đầu vào
-    //     $request->validate([
-    //         'email' => 'required|string|email',
-    //         'password' => 'required|string',
-    //     ]);
-
-    //     $credentials = $request->only('email', 'password');
-
-    //     if (Auth::guard('admin')->attempt($credentials)) {
-    //         $user = Auth::guard('admin')->user();
-
-    //         // Kiểm tra email đã được xác minh chưa
-    //         if (!$user->hasVerifiedEmail()) {
-    //             Auth::guard('admin')->logout();
-    //             return redirect()->route('login')->withErrors(['email' => 'Tài khoản chưa được xác minh. Vui lòng kiểm tra email và xác nhận tài khoản.']);
-    //         }
-
-    //         // Kiểm tra quyền truy cập
-    //         if ($user->role === 'admin' || $user->role === 'staff') {
-    //             return redirect()->route('admin.home')->with('success', 'Đăng nhập thành công!');
-    //         } else {
-    //             Auth::guard('admin')->logout();
-    //             return redirect()->route('login')->withErrors(['email' => 'Bạn không có quyền truy cập.']);
-    //         }
-    //     }
-
-    //     return redirect()->back()->withErrors(['email' => 'Thông tin đăng nhập không đúng.']);
-    // }
-
-    public function verify($token)
-    {
-        // Tìm người dùng với remember_token
-        $user = User::where('remember_token', $token)->first();
-
-        // Kiểm tra xem người dùng có tồn tại không
-        if (!$user) {
-            return redirect()->route('login')->withErrors(['email' => 'Liên kết xác minh không hợp lệ.']);
-        }
-
-        // Cập nhật thời gian xác minh email
-        if (!$user->hasVerifiedEmail()) {
-            $user->email_verified_at = now();
-            $user->remember_token = null;  // Xóa token sau khi xác minh thành công
-            $user->save();
-        }
-
-        return redirect()->route('login')->with('success', 'Tài khoản của bạn đã được xác minh thành công. Vui lòng đăng nhập.');
-    }
-
-
 
     public function adminLogout()
     {
-        Auth::guard('admin')->logout();
+        Auth::guard('web')->logout();
         return redirect()->route('login');
     }
 
@@ -440,7 +140,6 @@ class AuthController extends Controller
 
     public function showLogin_customer()
     {
-        
         return view('client/page/auth/signin-customer'); 
     }
 
@@ -463,17 +162,17 @@ class AuthController extends Controller
             // Xóa session voucher khi đăng nhập thành công
             session()->forget('voucher');
         }
-    
         // Kiểm tra nếu thông tin đăng nhập hợp lệ
         if (Auth::guard('customer')->attempt($credentials)) {
             $customer = Auth::guard('customer')->user();
 
             if (!$customer->is_verified) {
-
+                // Nếu tài khoản chưa xác nhận, đăng xuất và trả về thông báo lỗi
                 Auth::guard('customer')->logout();
                 return redirect()->route('customer.login')->withErrors(['email' => 'Tài khoản chưa được xác nhận. Vui lòng kiểm tra email để kích hoạt tài khoản.']);
             }
 
+            // Nếu tài khoản đã xác nhận, đăng nhập thành công
             return redirect()->route('customer.file')->with('success', 'Đăng nhập thành công!');
         }
 
@@ -567,68 +266,6 @@ class AuthController extends Controller
 
         return redirect()->route('customer.login')->with('success', 'Đã gửi lại email xác nhận. Vui lòng kiểm tra email của bạn.');
     }
-
-    // Thay đổi email
-    public function updateEmail(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email|unique:customers,email',
-            'password' => 'required|string',
-        ]);
-
-        $customer = Auth::guard('customer')->user();
-
-        // Kiểm tra mật khẩu hiện tại
-        if (!Hash::check($request->password, $customer->password)) {
-            return back()->withErrors(['password' => 'Mật khẩu hiện tại không chính xác']);
-        }
-
-        // Tạo token xác nhận thay đổi email
-
-
-
-        
-        $verificationToken = Str::random(64);
-
-        // Lưu token và email mới vào session
-        session([
-            'verification_token' => $verificationToken,
-            'email' => $request->email,
-        ]);
-
-        // Gửi email xác nhận thay đổi email
-        Mail::send('email.verify_email_change', ['token' => $verificationToken], function ($message) use ($request) {
-            $message->to($request->email)->subject('Xác nhận thay đổi email');
-        });
-
-        return back()->with('success', 'Vui lòng kiểm tra email mới để xác nhận thay đổi.');
-    }
-
-    // Gửi lại email để thay đổi
-    public function verifyEmailChange($token)
-    {
-        $customer = Auth::guard('customer')->user();
-        $storedToken = session('verification_token');
-        $newEmail = session('email');
-
-        if (!$customer || $token !== $storedToken) {
-            return redirect()->route('customer.profile')->withErrors(['email' => 'Token xác nhận không hợp lệ hoặc đã hết hạn.']);
-        }
-
-        // Cập nhật email mới vào cơ sở dữ liệu
-        $customer->update([
-            'email' => $newEmail,
-        ]);
-
-        // Xóa token và email mới khỏi session
-        session()->forget(['verification_token', 'email']);
-
-        return redirect()->route('customer.profile')->with('success', 'Email của bạn đã được thay đổi thành công.');
-    }
-    
-
-
-
 
     public function editCustomer($id)
     {
@@ -916,13 +553,13 @@ class AuthController extends Controller
         $order->save();
 
         // Hoàn trả số lượng sản phẩm vào kho
-        foreach ($order->orderItems as $orderItem) {
-            $variant = ProductVariant::find($orderItem->variant_id);
-            if ($variant) {
-                $variant->stock += $orderItem->quantity;
-                $variant->save();
-            }
+    foreach ($order->orderItems as $orderItem) {
+        $variant = ProductVariant::find($orderItem->variant_id);
+        if ($variant) {
+            $variant->stock += $orderItem->quantity;
+            $variant->save();
         }
+    }
 
         return redirect()->route('order.history')->with('success', 'Đơn hàng của bạn đã được yêu cầu hủy và đang chờ xác nhận.');
     }

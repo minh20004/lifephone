@@ -91,7 +91,7 @@
 
                     </table>
                     <div class="d-flex justify-content-between">
-                        <a href="{{ route('product-admin.index') }}" class="btn btn-dark mb-3">Quay lại </a>
+                        <a href="{{ route('product.index') }}" class="btn btn-dark mb-3">Quay lại </a>
                         {{-- phân trang  --}}
                         <div >
                             <nav>

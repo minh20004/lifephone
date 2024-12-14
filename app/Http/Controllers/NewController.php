@@ -27,7 +27,7 @@ class NewController extends Controller
                 $news->published_at = Carbon::now(); // Ghi lại ngày hiện tại
                 $news->save(); // Lưu lại thay đổi
             }
-    }
+        }
         return view('admin.page.new.index', compact('listNews'));
     }
 
@@ -51,7 +51,6 @@ class NewController extends Controller
         $validateData = $request->validate([
             'title' => 'required',
             'content' => 'required',
-            'author_id' => 'required|exists:users,id',
             'thumbnail' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048',
             'category_news_id' => 'required|exists:category_news,id',
             'status' => 'required|in:Công khai,Đã lên lịch,Bản nháp',
@@ -62,8 +61,6 @@ class NewController extends Controller
         ], [
             'title.required' => 'Tiêu đề không được để trống.',
             'content.required' => 'Nội dung không được để trống.',
-            'author_id.required' => 'Tác giả không được để trống.',
-            'author_id.exists' => 'Tác giả không tồn tại trong cơ sở dữ liệu.',
             'thumbnail.file' => 'Ảnh đại diện phải là một file.',
             'thumbnail.mimes' => 'Ảnh đại diện phải có định dạng: png, jpg, jpeg, hoặc gif.',
             'thumbnail.max' => 'Ảnh đại diện không được vượt quá 2MB.',
@@ -80,7 +77,7 @@ class NewController extends Controller
             'slug.required' => 'Slug không được để trống.',
             'slug.unique' => 'Slug đã tồn tại. Vui lòng chọn một slug khác.',
         ]);
-
+        $author_id = auth()->user()->id;
         // Xử lý file thumbnail nếu có
         $thumbnail = $request->hasFile('thumbnail') ? $request->file('thumbnail')->store('uploads/thumbnail', 'public') : null;
 
@@ -97,7 +94,7 @@ class NewController extends Controller
                 'category_news_id' => $validateData['category_news_id'],
                 'published_at' => $publishedAt,
                 'status' => $validateData['status'],
-                'author_id' => $validateData['author_id'],
+                'author_id' => $author_id,
                 'scheduled_at' => $scheduledAt,
                 'slug' => $slug,
                 'views' => $validateData['views'] ?? 0,
@@ -114,7 +111,8 @@ class NewController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $news = News::where('id', $id)->firstOrFail();
+        return view('admin.page.new.show', compact('news'));
     }
 
     /**
@@ -170,18 +168,18 @@ class NewController extends Controller
             'slug.required' => 'Slug không được để trống.',
             'slug.unique' => 'Slug đã tồn tại. Vui lòng chọn một slug khác.',
         ]);
-        
+
         // Xử lý file thumbnail nếu có
         if ($request->hasFile('thumbnail')) {
             $thumbnail = $request->file('thumbnail')->store('uploads/thumbnail', 'public');
         } else {
             $thumbnail = $news->thumbnail; // Giữ lại thumbnail cũ nếu không có file mới
         }
-        
+
         $slug = Str::slug($validateData['title']);
         $publishedAt = $request->status == 'Công khai' ? now() : $news->published_at;
         $scheduledAt = $request->status == 'Đã lên lịch' ? $validateData['scheduled_at'] : null;
-        
+
         try {
             // Cập nhật dữ liệu của bài viết
             $news->update([
@@ -197,12 +195,11 @@ class NewController extends Controller
                 'slug' => $slug,
                 'views' => $validateData['views'] ?? $news->views,
             ]);
-        
+
             return redirect()->route('new_admin.index')->with('success', 'Tin tức đã được cập nhật thành công!');
         } catch (\Exception $e) {
             return back()->withErrors(['error' => 'Có lỗi xảy ra khi cập nhật tin tức: ' . $e->getMessage()]);
         }
-        
     }
 
     /**
@@ -210,16 +207,16 @@ class NewController extends Controller
      */
     public function destroy(string $id)
     {
-   
-        $News=News::findOrFail($id);
+
+        $News = News::findOrFail($id);
         $News->delete();
         return redirect()->route('new_admin.index');
     }
     public function clientIndex()
     {
-        
+
         $category_news = DB::table('category_news')->get();
-        $categories = Category_new::limit(6)->get(); 
+        $categories = Category_new::limit(6)->get();
         // Lấy tất cả các bản tin có trạng thái 'Công khai'
         $allNews = News::where('status', 'Công khai')
             ->paginate(6); // Sử dụng paginate để giới hạn 10 bản tin mỗi trang
@@ -229,18 +226,18 @@ class NewController extends Controller
 
         // Lấy 3 bài viết tiếp theo có lượt xem cao sau bài viết nhiều view nhất
         $additionalMostViewedNews = News::where('status', 'Công khai')
-        ->when(isset($mostViewedNews), function ($query) use ($mostViewedNews) {
-            return $query->where('id', '!=', $mostViewedNews->id); // Loại trừ bài viết nếu tồn tại
-        })
-        ->orderBy('views', 'desc')
-        ->take(3)
-        ->get();
-    
+            ->when(isset($mostViewedNews), function ($query) use ($mostViewedNews) {
+                return $query->where('id', '!=', $mostViewedNews->id); // Loại trừ bài viết nếu tồn tại
+            })
+            ->orderBy('views', 'desc')
+            ->take(3)
+            ->get();
+
 
         $latestNews = News::latest()->take(5)->get();
 
         // Lấy 3 bản tin có trạng thái 'Công khai' và lượt xem cao nhất
-        return view('client.page.news.news', compact('allNews', 'additionalMostViewedNews', 'mostViewedNews', 'latestNews','categories'));
+        return view('client.page.news.news', compact('allNews', 'additionalMostViewedNews', 'mostViewedNews', 'latestNews', 'categories'));
     }
 
 
@@ -258,32 +255,49 @@ class NewController extends Controller
     public function singlepost($slug)
     {
         $latestNews = News::latest()->take(5)->get();
-        
+
         // Tìm bài viết theo slug
         $news = News::where('slug', $slug)->firstOrFail();
+        $news->increment('views');
         $relatedPost = News::where('category_news_id', $news->category_news_id)
-                        ->where('id', '!=', $news->id) // Loại bỏ bài viết hiện tại
-                        ->limit(5) // Giới hạn số bài viết liên quan
-                        ->get();
+            ->where('id', '!=', $news->id) // Loại bỏ bài viết hiện tại
+            ->limit(5) // Giới hạn số bài viết liên quan
+            ->get();
         // Trả về view hiển thị bài viết
-        $categories = Category_new::limit(6)->get(); 
-        return view('client.page.news.show', compact('news','relatedPost','categories','latestNews'));
+        $categories = Category_new::limit(6)->get();
+        return view('client.page.news.show', compact('news', 'relatedPost', 'categories', 'latestNews'));
     }
     public function categoryNewsBlog($slug)
     {
-    
+
         $category = Category_new::where('slug', $slug)->firstOrFail();
 
-      
+
         $posts = News::where('category_news_id', $category->id)
-                      ->where('status', 'Công khai') 
-                      ->orderBy('published_at', 'desc') 
-                      ->paginate(6); 
-                      $categories = Category_new::limit(6)->get(); 
-                      
+            ->where('status', 'Công khai')
+            ->orderBy('published_at', 'desc')
+            ->paginate(6);
+        $categories = Category_new::limit(6)->get();
+
         $latestNews = News::latest()->take(5)->get();
-        return view('client.page.news.categoryNewsBlog', compact('category', 'posts','categories','latestNews'));
+        return view('client.page.news.categoryNewsBlog', compact('category', 'posts', 'categories', 'latestNews'));
+    }
+    public function trashed()
+    {
+        $trashedNews = News::onlyTrashed()->paginate(10);
+
+        return view('admin.page.new.trashed', compact('trashedNews'));
+    }
+
+    public function restore($id)
+    {
+        $news = News::withTrashed()->findOrFail($id);
+
+        if ($news->trashed()) {
+            $news->restore();
+            return redirect()->route('new_admin.trashed')->with('success', 'Tin tức đã được khôi phục.');
+        }
+
+        return redirect()->route('new_admin.trashed')->with('error', 'Tin tức không nằm trong thùng rác.');
     }
 }
-
-

@@ -69,7 +69,7 @@
                 </div>
                 
             </div>
-            <a href="{{ route('product-admin.index') }}" class="btn btn-dark mb-3">Quay lại </a>
+            <a href="{{ route('product.index') }}" class="btn btn-dark mb-3">Quay lại </a>
         </div>
     </div>
 

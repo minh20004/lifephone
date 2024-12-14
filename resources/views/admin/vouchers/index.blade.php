@@ -15,13 +15,13 @@
                 </a>
             </div>
 
+
             <!-- Bảng danh sách vouchers -->
             <div class="table-responsive">
                 <table class="table table-hover table-bordered table-striped shadow-lg bg-light rounded-3">
                     <thead class="table-secondary">
                         <tr>
                             <th>Mã Vouchers</th>
-                            <th>Ảnh</th>
                             <th>Tỷ lệ chiết khấu</th>
                             <th>Số tiền chiết khấu tối đa</th>
                             <th>Giá trị đơn hàng tối thiểu</th>
@@ -35,16 +35,6 @@
                         @foreach($vouchers as $voucher)
                         <tr class="hover:bg-light transition-all duration-200">
                             <td>{{ $voucher->code }}</td>
-                            <td>
-                                <!-- Kiểm tra nếu voucher có ảnh -->
-                                {{-- @if($voucher->image && Storage::exists('public/' . $voucher->image))
-                                    <img src="{{ asset('storage/' . $voucher->image) }}" alt="Voucher Image" class="img-fluid" style="max-width: 30px; max-height: 30px;">
-                                @else
-                                    <img src="{{ asset('images/default-voucher.png') }}" alt="Default Image" class="img-fluid" style="max-width: 30px; max-height: 30px;">
-                                @endif --}}
-                            <img src="{{ asset('storage/' . $voucher->image) }}" alt="Voucher Image" class="img-fluid rounded-3 shadow-sm" style="max-width: 50px; max-height: 50px;">
-
-                            </td>
                             <td>{{ number_format($voucher->discount_percentage, 2) }}%</td>
                             <td>{{ number_format($voucher->max_discount_amount) }}</td>
                             <td>{{ number_format($voucher->min_order_value) }}</td>

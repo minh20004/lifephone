@@ -54,9 +54,9 @@
                                 <th scope="col">Tên người dùng</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Vai trò</th>
-                                {{-- <th scope="col">Bài viết</th> --}}
-                                {{-- <th scope="col">Trạng thái 2FA</th> --}}
-                                <th scope="col"></th>
+                                <th scope="col">Bài viết</th>
+                                <th scope="col">Trạng thái 2FA</th>
+                                <th scope="col">Chức năng</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -65,32 +65,30 @@
                                     {{-- <td>
                                         <a href="{{ route('users.show', $user->id) }}" class="fw-medium link-primary">{{ $user->id }}</a>
                                     </td> --}}
-                                    <td class="gridjs-td">
+                                    <td>
                                         <div class="d-flex align-items-center">
                                             <div class="flex-shrink-0 me-2">
-                                                {{-- <img src="{{ asset('storage/' . $user->avatar) }}" alt=""  width="70px" height="70px"> --}}
-                                                <img src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('client/img/avtt.jpg') }}" alt="User Avatar" class="rounded" width="60px" height="60px">
+                                                <img src="{{ asset('storage/' . $user->avatar) }}" alt=""  width="70px" height="70px">
+                                                {{-- <img src="{{ asset('storage/' . $user->avatar) }}" alt="" class="avatar-xs rounded-circle" /> --}}
                                             </div>
                                             <div class="flex-grow-1">{{ $user->name }}</div>
                                         </div>
                                     </td>
-                                    <td class="gridjs-td">{{ $user->email }}</td>
-                                    <td class="gridjs-td">{{ $user->role }}</td>
-                                    {{-- <td class="gridjs-td">{{ $user->posts_count }}</td> --}}
-                                    {{-- <td class="gridjs-td">
+                                    <td>{{ $user->email }}</td>
+                                    <td>{{ $user->role }}</td>
+                                    <td>{{ $user->posts_count }}</td>
+                                    <td>
                                         <span class="badge {{ $user->two_factor_enabled ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger' }}">
                                             {{ $user->two_factor_enabled ? 'Đã kích hoạt' : 'Chưa kích hoạt' }}
                                         </span>
-                                    </td> --}}
-                                    <td class="gridjs-td">
-                                        <div class="d-flex justify-content-center">
-                                            {{-- <a href="{{route('admin.edit', $user)}}" class="btn btn-warning btn-sm me-2">Sửa</a> --}}
-                                            <form action="{{route('admins.destroy', $user)}}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" onclick="return confirm('xác nhận xóa!')" class="btn btn-dark btn-sm me-2"> <i class="fa-solid fa-delete-left"></i></button>
-                                            </form>
-                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="{{route('admin.edit', $user)}}" class="btn btn-warning mt-3 btn-sm">Sửa</a>
+                                        <form action="{{route('admins.destroy', $user)}}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" onclick="return confirm('xác nhận xóa!')" class="btn btn-danger btn-sm mt-3"> Xóa</button>
+                                        </form>
                                     </td>
                                     <td>
                                     </td>

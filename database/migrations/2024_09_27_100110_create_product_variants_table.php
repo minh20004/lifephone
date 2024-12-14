@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('product_variants', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
-            $table->foreignId('color_id')
-                ->constrained('colors')
-                ->onDelete('cascade');
-            $table->foreignId('capacity_id') 
-                ->constrained('capacities') 
+            $table->foreignId('color_id')      // Khai báo cột color_id
+                ->constrained('colors')       // Khóa ngoại tham chiếu bảng colors
+                ->onDelete('cascade');        // Hành động khi xóa (xóa cascade)
+            $table->foreignId('capacity_id')   // Khai báo cột capacity_id
+                ->constrained('capacities')   // Khóa ngoại tham chiếu bảng capacities
                 ->onDelete('cascade');
             $table->string('variant_name');
             $table->string('variant_value');

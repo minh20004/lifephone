@@ -40,7 +40,7 @@
                             </div>
                     </div>
                     
-                    <form action="{{ route('product-admin.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row">
                             <div class="form-group col-md-4 mb-3">
@@ -253,7 +253,7 @@
 
                             <div class="mb-3 d-flex justify-content-between">
                                 <div>
-                                    <a href="{{ route('product-admin.index') }}" class="btn btn-dark"> Quay lại</a>
+                                    <a href="{{ route('product.index') }}" class="btn btn-dark"> Quay lại</a>
                                 </div>
                                 <button type="submit" class="btn btn-success">Lưu lại</button>
 
