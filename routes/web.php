@@ -47,7 +47,98 @@ Route::post('/admin/login', [AuthController::class, 'adminLogin'])->name('admin.
 Route::post('/logout', [AuthController::class, 'adminLogout'])->name('admin.logout');
 
 Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
+<<<<<<< Updated upstream
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.home');
+=======
+    Route::resource('product-admin', ProductController::class);
+
+    Route::get('/admin', [AuthController::class, 'Dashboards'])->name('admin.home');
+    Route::get('/admin/staff', [AuthController::class, 'staff'])->name('admin.staff');
+
+
+    Route::get('/them-thanh-vien', [AuthController::class, 'create'])->name('admin.them-thanh-vien');
+    Route::get('/thanh-vien', [AuthController::class, 'index'])->name('admin.thanh-vien');
+    Route::get('cap-nhat/thanh-vien/{id}/edit', [AuthController::class, 'edit'])->name('admin.edit');
+    Route::get('profile/admin', [AuthController::class, 'hoso'])->name('admin.profile');
+
+    Route::resource('admins', AuthController::class);
+
+    Route::resource('new_admin',  NewController::class);
+    Route::resource('category_news', CategoryNewsController::class);
+    Route::resource('index', AdminController::class);
+    Route::resource('category', CategoryController::class);
+    Route::resource('capacity', CapacityController::class);
+    Route::resource('color', ColorController::class);
+    Route::prefix('products')->group(function () {
+        Route::get('/trashed', [ProductController::class, 'trashed'])->name('product.trashed');
+        Route::post('/restore/{id}', [ProductController::class, 'restore'])->name('product.restore');
+        Route::get('trashed/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
+    });
+    // order
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::post('/orders/{id}/update-status', [OrderController::class, 'updateStatus'])->name('order.updateStatus');
+    Route::get('/admin/orders/{id}', [OrderController::class, 'show'])->name('order.show');
+
+    // Route cho admin xác nhận yêu cầu hủy đơn hàng
+    Route::get('/admin/orders/cancel-requests', [OrderController::class, 'cancelRequests'])->name('order.cancelRequests');
+    Route::post('/admin/order/confirm-cancel/{id}', [OrderController::class, 'confirmCancel'])->name('order.confirmCancel');
+
+    // Route cho Voucher
+    // Route::resource('vouchers', VoucherController::class);
+    Route::resource('vouchers', VoucherController::class);
+
+    // sub;
+    Route::resource('/subscriptions', SubscriptionController::class)->except(['show']);
+    // Trang gửi email hàng loạt
+    Route::get('/subscriptions/send', [SubscriptionController::class, 'create'])->name('subscriptions.create'); // Form gửi email
+    // Trang hiển thị các email đã gửi (giả sử bạn có một bảng ghi lại thông tin các email đã gửi)
+    Route::get('/subscriptions/index', [SubscriptionController::class, 'sentEmails'])->name('subscriptions.index');
+    // Trang hiển thị các email đã gửi (giả sử bạn có một bảng ghi lại thông tin các email đã gửi)
+    Route::get('/subscriptions/list', [SubscriptionController::class, 'index'])->name('subscriptions.list');
+    // routes/web.php
+    Route::post('/subscriptions/send', [SubscriptionController::class, 'sendBulkEmails'])->name('subscriptions.send');
+
+    Route::get('/subscriptions/{id}', [SubscriptionController::class, 'detailsub'])->name('subscriptions.detailsub');
+
+    // Route::get('/get-statistics', [DashboardController::class, 'getStatistics'])->name('admin.getStatistics');
+
+
+    // Route danh mục bị xóa
+    Route::prefix('categories')->group(function () {
+        Route::get('/trashed', [CategoryController::class, 'trashed'])->name('category.trashed');
+        Route::post('/restore/{id}', [CategoryController::class, 'restore'])->name('category.restore');
+    });
+    // Route dung lượng bị xóa
+    Route::prefix('capacities')->group(function () {
+        Route::get('/trashed', [CapacityController::class, 'trashed'])->name('capacity.trashed');
+        Route::post('/restore/{id}', [CapacityController::class, 'restore'])->name('capacity.restore');
+    });
+    // Route màu sắc bị xóa
+    Route::prefix('colors')->group(function () {
+        Route::get('/trashed', [ColorController::class, 'trashed'])->name('color.trashed');
+        Route::post('/restore/{id}', [ColorController::class, 'restore'])->name('color.restore');
+    });
+    // chuyển trang biến thể
+    Route::get('/product/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
+    //router review và news
+    Route::resource('admin/review', ReviewController::class);
+    // Route::resource('new_admin',  NewController::class);
+
+    // thông báo khi đặt hàng thành công
+    Route::get('/admin/notifications', [OrderNotificationController::class, 'index'])->name('admin.notifications');
+    Route::post('/admin/notifications/{id}/read', [OrderNotificationController::class, 'markAsRead'])->name('admin.notifications.read');
+    Route::get('/admin/chatBoard', [AuthController::class, 'indexChatBoard'])->name('admin.chatBoard');
+    //route tin tức và bình luận 
+    Route::resource('review_admin', ReviewController::class);
+
+    Route::get('/admin/reviews/deleted', [ReviewController::class, 'showDeletedReviews'])->name('reviews.deleted');
+    Route::patch('/admin/reviews/restore/{id}', [ReviewController::class, 'restoreReview'])->name('review.restore');
+    Route::get('/admin/new_admin/trashed', [NewController::class, 'trashed'])->name('new_admin.trashed');
+    Route::put('/admin/new_admin/restore/{id}', [NewController::class, 'restore'])->name('new_admin.restore');
+    Route::get('/admin/category_news/trashed', [CategoryNewsController::class, 'trashed'])->name('category_news.trashed');
+    Route::put('/admin/category_news/restore/{id}', [CategoryNewsController::class, 'restore'])->name('category_news.restore');
+    Route::patch('/admin/reviews/{id}/replyAsAdmin', [CommentController::class, 'replyAsAdmin'])->name('reviews.replyAsAdmin');
+>>>>>>> Stashed changes
 });
 
 // auth customer ------------------------------------------------------
