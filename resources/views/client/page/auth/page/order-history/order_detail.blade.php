@@ -92,11 +92,8 @@
                                 <div class="d-flex align-items-center justify-content-end pe-3 text-end border-bottom">
                                     <div class="pe-3"><span>Giảm giá</span></div>
                                     <div class="w-25 border-start p-3">
-<<<<<<< HEAD
-                                        <div >{{ $order->voucher->discount_percentage ?? '0' }} %</div>
-=======
+
                                         <div >{{ $order->voucher->discount_percentage  ?? '0' }} %</div>
->>>>>>> origin/tan
                                         
                                     </div>
                                 </div>

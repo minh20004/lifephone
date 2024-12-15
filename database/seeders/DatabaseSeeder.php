@@ -12,6 +12,8 @@ use Database\Seeders\ProductVariantSeeder;
 use Database\Seeders\VoucherSeeder;
 use Database\Seeders\OrderSeeder;
 use Database\Seeders\OrderItemSeeder;
+use Database\Seeders\ConversationsTableSeeder;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -29,7 +31,9 @@ class DatabaseSeeder extends Seeder
             // ProductVariantSeeder::class,
             // VoucherSeeder::class,
             // OrderSeeder::class,
-            OrderItemSeeder::class,
+            // OrderItemSeeder::class,
+            // ConversationsTableSeeder::class,
+            MessagesTableSeeder::class,
         ]);
     }
 }
