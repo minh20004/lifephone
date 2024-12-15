@@ -104,6 +104,32 @@
                     
                     <!-- Biểu đồ -->
                     <div id="chartSection">
+                    <div class="row mb-4">
+                        <h3>Thống kê nhân viên</h3>
+
+                        <table border="1" cellpadding="5" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Tên nhân viên</th>
+                                    <th>Số lượng đơn hàng hoàn thành</th>
+                                    <th>Tổng thu nhập</th>
+                                    <th>Chi tiết</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($employees as $index => $employee)
+                                    <tr>
+                                        <td>{{ $index + 1 }}</td>
+                                        <td>{{ $employee->name }}</td>
+                                        <td>{{ $employee->orders_count }}</td>
+                                        <td>{{ number_format($employee->orders_sum_total_price, 0, ',', '.') }} VND</td>
+                                        <td><a href="{{ route('employee.orders', $employee->id) }}">Xem</a></td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                         <div class="row">
                             <div class="col-6 col-xl-6 col-md-6">
                                 <div class="card card-animate">
@@ -255,6 +281,28 @@
                                 </div>
                             </div>
                         </div>
+                        
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tên nhân viên</th>
+                                    <th>Số đơn hàng đã xử lý</th>
+                                    <th>Tổng thu nhập</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($employees as $employee)
+                                    <tr>
+                                        <td>{{ $employee->name }}</td>
+                                        <td>{{ $employee->orders_count }}</td>
+                                        <td>{{ number_format($employee->orders_sum_total_price, 0, ',', '.') }} VND</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        
+                        
+
                     </div>
                     
                 </div> 

@@ -24,7 +24,7 @@ use App\Models\Message;
 class AuthController extends Controller
 {
 //  admin ------------------------------------------------------------------------------------------------------------------------------  
-    // Thống kê
+    // Thống kê của admin
     public function Dashboards(Request $request)
     {
         // Lấy ngày bắt đầu và kết thúc từ request
@@ -169,7 +169,26 @@ class AuthController extends Controller
                                 ->whereDate('updated_at', Carbon::createFromFormat('d/m/Y', $date))
                                 ->sum('total_price');
         }
-        // Truyền dữ liệu vào view
+
+        // Lấy dữ liệu nhân viên và thống kê theo ngày, tháng, năm
+        $employees = User::where('role', 'staff') // Lọc chỉ những người dùng là nhân viên
+        ->withCount([
+            'orders' => function ($query) use ($startDate, $endDate) {
+                // Đếm các đơn hàng có trạng thái "Đã hoàn thành" trong khoảng thời gian
+                $query->where('status', 'Đã hoàn thành')
+                    ->whereBetween('updated_at', [$startDate, $endDate]); // Lọc theo ngày
+            }
+        ])
+        ->withSum([
+            'orders' => function ($query) use ($startDate, $endDate) {
+                // Tính tổng thu nhập từ các đơn hàng có trạng thái "Đã hoàn thành" trong khoảng thời gian
+                $query->where('status', 'Đã hoàn thành')
+                    ->whereBetween('updated_at', [$startDate, $endDate]); // Lọc theo ngày
+            }
+        ], 'total_price')
+        ->get();
+
+
         return view('admin.index', compact(
             'currentOrdersByStatus',
             'previousOrdersByStatus',
@@ -193,7 +212,8 @@ class AuthController extends Controller
             'datesRange',
             'currentDate',
             'dailyIncome',
-            'totalIncome'
+            'totalIncome',
+            'employees'
 
         ));
     }
@@ -213,6 +233,7 @@ class AuthController extends Controller
         return round($percentageChange, 2);
     }
 
+    // thống kê của nhân viên
     public function staff(Request $request)
     {
         // Lấy ngày bắt đầu và kết thúc từ request (hoặc sử dụng mặc định)
@@ -331,6 +352,64 @@ class AuthController extends Controller
             'incomeData'
         ));
     }
+
+    public function showEmployeeOrders($employeeId, Request $request)
+{
+    // Khởi tạo mảng $orders rỗng để tránh lỗi khi không có đơn hàng
+    $orders = collect();
+
+    // Lấy thông tin nhân viên
+    $employee = User::findOrFail($employeeId);
+
+    // Kiểm tra quyền của admin và nhân viên
+    if (Auth::guard('admin')->check()) {
+        // Admin có thể xem tất cả đơn hàng của nhân viên
+        $orders = Order::where('user_id', $employeeId)
+            ->where('status', 'Đã hoàn thành') // Lọc theo trạng thái "Đã hoàn thành"
+            ->whereBetween('updated_at', [
+                $request->input('start_date', now()->startOfMonth()),
+                $request->input('end_date', now()->endOfMonth())
+            ]) // Lọc theo thời gian
+            ->get();
+    } elseif (Auth::guard('employee')->check()) {
+        // Nhân viên chỉ có thể xem đơn hàng của chính mình
+        $orders = Order::where('user_id', Auth::guard('employee')->user()->id)
+            ->where('status', 'Đã hoàn thành')
+            ->whereBetween('updated_at', [
+                $request->input('start_date', now()->startOfMonth()),
+                $request->input('end_date', now()->endOfMonth())
+            ])
+            ->get();
+    } else {
+        // Nếu không phải admin hay nhân viên, chuyển hướng về login
+        return redirect()->route('login')->withErrors('Bạn không có quyền truy cập.');
+    }
+
+    // Kiểm tra nếu không có đơn hàng
+    if ($orders->isEmpty()) {
+        return redirect()->back()->with('message', 'Không có đơn hàng nào trong khoảng thời gian này.');
+    }
+
+    // Truyền danh sách đơn hàng và thông tin nhân viên vào view
+    return view('admin.page.order.employee_orders', compact('orders', 'employee'));
+}
+
+
+    
+
+    
+    public function showOrderDetails($orderId)
+    {
+        // Lấy thông tin chi tiết của đơn hàng
+        $order = Order::with(['orderItems.product', 'orderItems.variant'])
+            ->findOrFail($orderId);
+
+        // Truyền thông tin đơn hàng vào view
+        return view('admin.page.order.employee_order_show', compact('order'));
+    }
+
+
+
 
 
 
