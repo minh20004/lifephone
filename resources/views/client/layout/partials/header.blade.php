@@ -168,7 +168,7 @@
 
                 <!-- Buttton visible on screens > 991px wide (lg breakpoint) -->
                 <div class="cursor-pointer d-none d-lg-block" data-bs-toggle="dropdown" data-bs-trigger="hover" data-bs-theme="dark">
-                  <a class="position-absolute top-0 start-0 w-100 h-100" href="{{route('danh-muc-san-pham')}}">
+                  <a class="position-absolute top-0 start-0 w-100 h-100" href="{{route('shop')}}">
                     <span class="visually-hidden">Danh mục</span>
                   </a>
                   <button type="button" class="btn btn-lg btn-secondary dropdown-toggle w-100 rounded-bottom-0 justify-content-start pe-none">
@@ -206,7 +206,7 @@
                         <div class="position-relative rounded pt-2 pb-1 px-lg-2" data-bs-toggle="dropdown" data-bs-trigger="hover">
 
                           <!-- Link cho danh mục lớn -->
-                          <a class="dropdown-item fw-medium stretched-link d-none d-lg-flex" href="{{ route('category.show', $category->id) }}">
+                          <a class="dropdown-item fw-medium stretched-link d-none d-lg-flex" href="{{ route('client.category.products', $category->id) }}">
                             {{-- <i class="ci-smartphone-2 fs-xl opacity-60 pe-1 me-2"></i> --}}
                              {{-- <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" style="width: 100px"> --}}
                             <span class="text-truncate">{{ $category->name }}</span>
@@ -224,7 +224,7 @@
                           <div class="d-flex flex-column flex-lg-row h-100 gap-4">
                             <div style="min-width: 194px">
                               <div class="d-flex w-100">
-                                <a class="h6 text-dark-emphasis text-decoration-none text-truncate" href="{{ route('category.show', $category->id) }}">{{ $category->name }}</a>
+                                <a class="h6 text-dark-emphasis text-decoration-none text-truncate" href="#">{{ $category->name }}</a>
                               </div>
                               <ul class="nav flex-column gap-2 mt-n2">
                                 @foreach ($category->products as $product)

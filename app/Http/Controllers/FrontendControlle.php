@@ -75,6 +75,7 @@ class FrontendControlle extends Controller
         ));
     }
 
+    
     public function filter(Request $request)
     {
         $products = Product::whereIn('capacity_id', $request->capacities)->get();
