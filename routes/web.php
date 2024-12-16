@@ -92,7 +92,7 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
 
     Route::get('/admin', [AuthController::class, 'Dashboards'])->name('admin.home');
     Route::get('/admin/staff', [AuthController::class, 'staff'])->name('admin.staff');
-
+    Route::put('/profile/update', [AuthController::class, 'update'])->name('profile.update');
 
 
     // Route hiển thị danh sách đơn hàng của nhân viên
