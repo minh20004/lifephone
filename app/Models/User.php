@@ -50,5 +50,17 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return !is_null($this->email_verified_at);
     }
+    /**
+     * Phương thức kiểm tra vai trò người dùng
+     */
+    public function hasRole($role)
+    {
+        return $this->role === $role;
+    }
+    
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 
 }

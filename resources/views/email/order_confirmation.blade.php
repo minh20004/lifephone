@@ -17,7 +17,19 @@
         <li>Khuyến mãi: {{ $order->voucher->discount_percentage ?? '0' }} 
             (Mã: {{ $order->voucher->code ?? 'Không có' }})</li>
         <li>Phương thức thanh toán: {{ $order->payment_method }}</li>
-        <li class="text-danger"><strong>Tổng tiền thanh toán:</strong> {{ number_format($order->total_price, 0, ',', '.') }} đ</li>
+        {{-- <li class="text-danger"><strong>Tổng tiền thanh toán:</strong> {{ number_format($order->total_price, 0, ',', '.') }} đ</li> --}}
+        <div>
+            @if ($order->additional_status === 'Đã thanh toán')
+                <div class="alert alert-success text-center my-3">
+                    Đơn hàng của bạn đã được thanh toán. Số tiền cần thanh toán khi nhận hàng là <strong class="text-danger">0 đồng</strong>.
+                </div>
+            @else
+                <div class="alert alert-warning text-center my-3">
+                    Đơn hàng của bạn chưa được thanh toán. Tổng số tiền cần thanh toán khi nhận hàng là <strong class="text-danger">{{ number_format($order->total_price, 0, ',', '.') }} đ</strong>.
+                </div>
+            @endif
+    
+        </div>
     </ul>
     <h3>Chi tiết đơn hàng:</h3>
     <table border="1" cellspacing="0" cellpadding="5">
@@ -44,6 +56,7 @@
             @endforeach
         </tbody>
     </table>
+    
     <p>Chúng tôi sẽ liên hệ với bạn sớm nhất để xác nhận đơn hàng.</p>
     <p>Trân trọng,</p>
     <p><strong>Đội ngũ hỗ trợ</strong></p>

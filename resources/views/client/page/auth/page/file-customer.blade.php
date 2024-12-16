@@ -138,99 +138,123 @@
         <!-- Contact Info Preview -->
         <div class="contact-info">
           <ul class="list-unstyled fs-sm m-0">
-            <li class="mb-1">{{ Auth::user()->email }} <span class="text-success ms-1">Đã xác nhận</span></li>
+            <li class="mb-1">
+              @php
+                $email = Auth::user()->email ?? 'Email chưa cập nhật';
+                // Find the position of the "@" symbol
+                $atPosition = strpos($email, '@');
+                // If "@" exists and the email is valid
+                if ($atPosition !== false) {
+                    // Get the first two characters of the email before "@" and mask the rest
+                    $maskedEmail = substr($email, 0, 2) . str_repeat('*', $atPosition - 2) . substr($email, $atPosition);
+                } else {
+                    $maskedEmail = $email; // If there is no "@" symbol, show the email as it is
+                }
+              @endphp
+              {{ $maskedEmail }} <span class="text-success ms-1">Đã xác nhận</span>
+            </li>
+            
           </ul>
         </div>
       </div>
       
       <!-- Email Change Modal -->
-<div class="modal fade" id="emailChangeModal" tabindex="-1" aria-labelledby="emailChangeModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="emailChangeModalLabel">Thay đổi email</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form action="{{ route('customer.updateEmail') }}" method="POST">
-          @csrf
-          <div class="mb-3">
-            <label for="new_email" class="form-label">Email mới</label>
-            <input type="email" name="new_email" class="form-control" required>
+    <div class="modal fade" id="emailChangeModal" tabindex="-1" aria-labelledby="emailChangeModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="emailChangeModalLabel">Thay đổi email</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
-          <div class="mb-3">
-            <label for="password" class="form-label">Mật khẩu hiện tại</label>
-            <input type="password" name="password" class="form-control" required>
+          <div class="modal-body">
+            <form action="{{ route('customer.updateEmail') }}" method="POST">
+              @csrf
+              <div class="mb-3">
+                <label for="email" class="form-label">Email mới</label>
+                <input type="email" name="email" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                <label for="password" class="form-label">Mật khẩu hiện tại</label>
+                <input type="password" name="password" class="form-control" required>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
+              </div>
+            </form>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-            <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
       
       
 
-      <!-- số điện thoại -->
+      <!-- Số điện thoại -->
       <div class="border-bottom py-4">
         <div class="nav flex-nowrap align-items-center justify-content-between pb-1 mb-3">
           <div class="d-flex align-items-center gap-3 me-4">
-            <h2 class="h6 mb-0">Liên hệ</h2>
+            <h2 class="h6 mb-0">Số điện thoại</h2>
           </div>
-          <a class="nav-link hiding-collapse-toggle text-decoration-underline p-0 collapsed" href="#contactInfoEdit" data-bs-toggle="collapse" aria-expanded="false" aria-controls="contactInfoPreview contactInfoEdit">Chỉnh sửa</a>
+          <!-- Trigger for modal -->
+          <a class="nav-link text-decoration-underline p-0" href="#" data-bs-toggle="modal" data-bs-target="#phoneModal">Thay đổi</a>
         </div>
 
         <!-- Contact Info Preview -->
-        <div class="collapse contact-info show" id="contactInfoPreview">
+        <div class="contact-info">
           <ul class="list-unstyled fs-sm m-0">
-            <li class="mb-1">{{ Auth::user()->email }} <span class="text-success ms-1">Đã xác nhận</span></li>
-            <li>{{ Auth::user()->phone ?? 'Số điện thoại chưa cập nhật' }}</li>
+            <li>
+              @php
+                $phone = Auth::user()->phone ?? 'Số điện thoại chưa cập nhật';
+                // Check if the phone number has 10 digits
+                if (strlen($phone) == 10) {
+                    $maskedPhone = substr($phone, 0, 3) . '****' . substr($phone, 7);
+                } else {
+                    $maskedPhone = $phone; // If the phone number isn't 10 digits, don't mask it
+                }
+              @endphp
+              {{ $maskedPhone }}
+            </li>
           </ul>
         </div>
+      </div>
 
-        <!-- Contact Info Edit Form -->
-        <div class="collapse contact-info" id="contactInfoEdit">
-          <form class="row g-3 g-sm-4 needs-validation" method="POST" action="{{ route('customer.updateContact', Auth::user()->id) }}" novalidate>
-            @csrf
-            @method('PUT')
-            
-            <!-- Email Address -->
-            <div class="col-sm-6">
-              <label for="email" class="form-label">Địa chỉ email</label>
-              <div class="position-relative">
-                <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" value="{{ old('email', Auth::user()->email) }}" required>
-                <div class="invalid-feedback">Vui lòng nhập địa chỉ email hợp lệ!</div>
-                @error('email')
-                  <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-              </div>
+       <!-- Modal for Phone Number Edit -->
+      <div class="modal fade" id="phoneModal" tabindex="-1" aria-labelledby="phoneModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="phoneModalLabel">Thay đổi số điện thoại</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <div class="modal-body">
+              <form class="row g-3 g-sm-4 needs-validation" method="POST" action="{{ route('customer.updateContact', Auth::user()->id) }}" novalidate>
+                @csrf
+                @method('PUT')
+                <!-- Phone Number -->
+                <div class="col-sm-12">
+                  <label for="phone" class="form-label">Số điện thoại</label>
+                  <div class="position-relative">
+                    <input type="number" class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone', Auth::user()->phone) }}" required>
+                    <div class="invalid-feedback">Vui lòng nhập số điện thoại của bạn!</div>
+                    @error('phone')
+                      <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                  </div>
+                </div>
 
-            <!-- Phone Number -->
-            <div class="col-sm-6">
-              <label for="phone" class="form-label">Số điện thoại</label>
-              <div class="position-relative">
-                <input type="number" class="form-control @error('phone') is-invalid @enderror" id="phone" name="phone" value="{{ old('phone', Auth::user()->phone) }}" required>
-                <div class="invalid-feedback">Vui lòng nhập số điện thoại của bạn!</div>
-                @error('phone')
-                  <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-              </div>
+                <div class="col-12">
+                  <div class="d-flex gap-3 pt-2 pt-sm-0">
+                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Đóng</button>
+                  </div>
+                </div>
+              </form>
             </div>
-
-            <div class="col-12">
-              <div class="d-flex gap-3 pt-2 pt-sm-0">
-                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
-                <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target=".contact-info" aria-expanded="true" aria-controls="contactInfoPreview contactInfoEdit">Đóng</button>
-              </div>
-            </div>
-          </form>
+          </div>
         </div>
       </div>
+
 
 
 
@@ -241,74 +265,88 @@
           <div class="d-flex align-items-center gap-3 me-4">
             <h2 class="h6 mb-0">Password</h2>
           </div>
-          <a class="nav-link hiding-collapse-toggle text-decoration-underline p-0 collapsed" href="#passChangeEdit" data-bs-toggle="collapse" aria-expanded="false" aria-controls="passChangePreview passChangeEdit">Chỉnh sửa</a>
+          <!-- Trigger Modal -->
+          <a class="nav-link text-decoration-underline p-0" href="#" data-bs-toggle="modal" data-bs-target="#passwordModal">Thay đổi</a>
         </div>
 
         <!-- Password Preview -->
-        <div class="collapse password-change show" id="passChangePreview">
+        <div class="password-preview">
           <ul class="list-unstyled fs-sm m-0">
             <li>**************</li>
           </ul>
         </div>
+      </div>
 
-        <!-- Password Edit Form -->
-        <div class="collapse password-change" id="passChangeEdit">
-          <form class="row g-3 g-sm-4 needs-validation" method="POST" action="{{ route('customer.changePassword', Auth::user()->id) }}" novalidate>
-            @csrf
-            @method('PUT')
-
-            <!-- Current Password -->
-            <div class="col-sm-6">
-              <label for="current-password" class="form-label">Current Password</label>
-              <div class="password-toggle">
-                <input type="password" class="form-control @error('current_password') is-invalid @enderror" id="current-password" name="current_password" placeholder="Enter your current password" required>
-                <label class="password-toggle-button" aria-label="Show/hide password">
-                  <input type="checkbox" class="btn-check">
-                </label>
-                @error('current_password')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-              </div>
+      <!-- Modal for Password Change -->
+      <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="passwordModalLabel">Thay đổi mật khẩu</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+            <div class="modal-body">
+              <form class="row g-3 g-sm-4 needs-validation" method="POST" action="{{ route('customer.changePassword', Auth::user()->id) }}" novalidate>
+                @csrf
+                @method('PUT')
 
-            <!-- New Password -->
-            <div class="col-sm-6">
-              <label for="new-password" class="form-label">New Password</label>
-              <div class="password-toggle">
-                <input type="password" class="form-control @error('new_password') is-invalid @enderror" id="new-password" name="new_password" placeholder="Create new password" required>
-                <label class="password-toggle-button" aria-label="Show/hide password">
-                  <input type="checkbox" class="btn-check">
-                </label>
-                @error('new_password')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-              </div>
-            </div>
+                <!-- Current Password -->
+                <div class="col-sm-6">
+                  <label for="current-password" class="form-label">Current Password</label>
+                  <div class="password-toggle">
+                    <input type="password" class="form-control @error('current_password') is-invalid @enderror" id="current-password" name="current_password" placeholder="Enter your current password" required>
+                    <label class="password-toggle-button" aria-label="Show/hide password">
+                      <input type="checkbox" class="btn-check">
+                    </label>
+                    @error('current_password')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                  </div>
+                </div>
 
-            <!-- Confirm New Password -->
-            <div class="col-sm-6">
-              <label for="new-password-confirmation" class="form-label">Confirm New Password</label>
-              <div class="password-toggle">
-                <input type="password" class="form-control @error('new_password_confirmation') is-invalid @enderror" id="new-password-confirmation" name="new_password_confirmation" placeholder="Confirm new password" required>
-                <label class="password-toggle-button" aria-label="Show/hide password">
-                  <input type="checkbox" class="btn-check">
-                </label>
-                @error('new_password_confirmation')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-              </div>
-            </div>
+                <!-- New Password -->
+                <div class="col-sm-6">
+                  <label for="new-password" class="form-label">New Password</label>
+                  <div class="password-toggle">
+                    <input type="password" class="form-control @error('new_password') is-invalid @enderror" id="new-password" name="new_password" placeholder="Create new password" required>
+                    <label class="password-toggle-button" aria-label="Show/hide password">
+                      <input type="checkbox" class="btn-check">
+                    </label>
+                    @error('new_password')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                  </div>
+                </div>
 
-            <!-- Submit Buttons -->
-            <div class="col-12">
-              <div class="d-flex gap-3 pt-2 pt-sm-0">
-                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
-                <button type="button" class="btn btn-secondary" data-bs-toggle="collapse" data-bs-target=".password-change" aria-expanded="true" aria-controls="passChangePreview passChangeEdit">Đóng</button>
-              </div>
+                <!-- Confirm New Password -->
+                <div class="col-sm-6">
+                  <label for="new-password-confirmation" class="form-label">Confirm New Password</label>
+                  <div class="password-toggle">
+                    <input type="password" class="form-control @error('new_password_confirmation') is-invalid @enderror" id="new-password-confirmation" name="new_password_confirmation" placeholder="Confirm new password" required>
+                    <label class="password-toggle-button" aria-label="Show/hide password">
+                      <input type="checkbox" class="btn-check">
+                    </label>
+                    @error('new_password_confirmation')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                  </div>
+                </div>
+
+                <!-- Submit Buttons -->
+                <div class="col-12">
+                  <div class="d-flex gap-3 pt-2 pt-sm-0">
+                    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Đóng</button>
+                  </div>
+                </div>
+              </form>
             </div>
-          </form>
+          </div>
         </div>
       </div>
+
+
+
     </div>
 
     <!-- Ảnh đại diện------------------ col-12 col-lg-3----------------------------------------------------------------------------------------------> 

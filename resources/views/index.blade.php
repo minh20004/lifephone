@@ -1,3 +1,4 @@
+
 @extends('client.layout.master')
 @section('title')
     Lifephone
@@ -111,7 +112,7 @@
             </div>
         </div>
     </section>
-
+    
     <!-- Features miễn phí vận chuyển -->
     <section class="container pt-5 mt-1 mt-sm-3 mt-lg-4 mb-sm-3 mb-md-4 mb-lg-5">
         <div class="row row-cols-2 row-cols-md-4 g-4">

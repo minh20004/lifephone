@@ -58,24 +58,28 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="d-flex align-items-center ">
+                        <div class=" align-items-center ">
                             @foreach ($order->orderItems as $item)
-                            <div class="col-md-1">
-                                @if ($item->product->image_url)
-                                    <img src="{{ asset('storage/' . $item->product->image_url) }}" alt="Product" class="img-fluid rounded">
-                                @else
-                                    Không có ảnh
-                                @endif
-                            </div>
-                            <div class="col-md-5">
-                                <p class="mb-1 ms-3 fw-bold">{{ $item->product->name }}</p>
-                                <p class="mb-1 ms-3 text-muted">Phân loại hàng: {{ $item->variant->color->name ?? 'Không có màu' }}, {{ $item->variant->capacity->name ?? 'Không có dung lượng' }}</p>
-                                <p class="mb-1 ms-3 text-dark">x{{ $item->quantity }}</p>
-                            </div>
-                            <div class="col-md-6 text-end">
-                                <p class="mb-1 text-danger fw-600 ">{{ number_format($item->price, 0, ',', '.') }} đ</p>
-                            </div>
-                            @endforeach
+                                <div class="col-12 mb-3">
+                                    <div class="d-flex align-items-center border-bottom">
+                                        <div class="me-3">
+                                            @if ($item->product->image_url)
+                                                <img src="{{ asset('storage/' . $item->product->image_url) }}" alt="Product" class="img-fluid rounded" style="max-width: 80px; height: auto;">
+                                            @else
+                                                Không có ảnh
+                                            @endif
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <p class="mb-1 fw-bold">{{ $item->product->name }}</p>
+                                            <p class="mb-1 text-muted">Phân loại hàng: {{ $item->variant->color->name ?? 'Không có màu' }}, {{ $item->variant->capacity->name ?? 'Không có dung lượng' }}</p>
+                                            <p class="mb-1 text-dark">x{{ $item->quantity }}</p>
+                                        </div>
+                                        <div class="text-end">
+                                            <p class="mb-1 text-danger fw-600">{{ number_format($item->price, 0, ',', '.') }} đ</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endforeach
                         </div>
                     </div>
                         <div class="border-top">
@@ -88,7 +92,7 @@
                                 <div class="d-flex align-items-center justify-content-end pe-3 text-end border-bottom">
                                     <div class="pe-3"><span>Giảm giá</span></div>
                                     <div class="w-25 border-start p-3">
-                                        <div >{{ $order->voucher->discount_percentage ?? '0' }} %</div>
+                                        <div >{{ $order->voucher->discount_percentage  ?? '0' }} %</div>
                                         
                                     </div>
                                 </div>
@@ -101,12 +105,23 @@
                                 <div class="d-flex align-items-center justify-content-end pe-3 text-end border-bottom">
                                     <div class="pe-3"><span>Phương thức thanh toán</span></div>
                                     <div class="w-25 border-start p-3">
-                                        <div class="fs-6"><b>Thanh toán khi nhận hàng</b></div>
+                                        <div class="fs-6"><b>{{$order->payment_method}}</b></div>
                                     </div>
                                 </div>
                         </div>
                     </div>
+                    <div>
+                        @if ($order->additional_status === 'Đã thanh toán')
+                            <div class="alert alert-success text-center my-3">
+                                Đơn hàng của bạn đã được thanh toán. Số tiền cần thanh toán là <strong>0 đồng</strong>.
+                            </div>
+                        @else
+                            <div class="alert alert-warning text-center my-3">
+                                Đơn hàng của bạn chưa được thanh toán. Tổng số tiền cần thanh toán là <strong>{{ number_format($order->total_price, 0, ',', '.') }} đ</strong>.
+                            </div>
+                        @endif
 
+                    </div>
                     
                 
                 

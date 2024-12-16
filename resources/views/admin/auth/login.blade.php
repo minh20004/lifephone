@@ -47,15 +47,6 @@
         <div class="mt-4">
             <button class="btn btn-success w-100" type="submit">Đăng nhập</button>
         </div>
-    
-        {{-- Gửi lại email xác nhận --}}
-        <div class="mt-3 text-center">
-            <form action="{{ route('admin.resendVerification') }}" method="POST">
-                @csrf
-                <button type="submit">Gửi lại email xác minh</button>
-            </form>
-            {{-- <a href="{{ route('admin.resendVerification') }}" class="text-muted">Gửi lại email xác nhận?</a> --}}
-        </div>
     </form>
     
     

@@ -72,8 +72,8 @@
 
 
     $(document).ready(function(){
-      const selectedProducts = [];
-      const unselectedProducts = [];
+      var selectedProducts = [];
+      var unselectedProducts = [];
 
 
       function getProduct()
@@ -114,7 +114,7 @@
                           </a>
                         </h3>
                         <div class="d-flex align-items-center justify-content-between">
-                          <div class="h5 lh-1 mb-0">${product.price}</div>
+                          <div class="h5 lh-1 mb-0">9.000.000 vnđ</div>
                           <button type="button" class="product-card-button btn btn-icon btn-secondary animate-slide-end ms-2" aria-label="Add to Cart">
                             <i class="ci-shopping-cart fs-base animate-target"></i>
                           </button>
