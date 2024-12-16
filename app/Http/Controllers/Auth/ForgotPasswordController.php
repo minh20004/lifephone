@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ForgotPasswordController extends Controller
 {
-    public function __invoke(Request $request)
+    public function sendResetLinkEmail(Request $request)
     {
         $request->validate([
             'email' => 'required|email',

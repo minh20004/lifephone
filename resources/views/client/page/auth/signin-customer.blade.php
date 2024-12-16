@@ -237,6 +237,9 @@
         </form>
         @endif --}}
         <!-- Divider -->
+         <div class="nav mb-4 mt-4">
+         <a class="nav-link text-decoration-underline p-0 ms-2" href="{{ route('password.email') }}">Quên mật khẩu</a>
+         </div>
         <div class="d-flex align-items-center my-4">
           <hr class="w-100 m-0">
           <span class="text-body-emphasis fw-medium text-nowrap mx-4">hoặc tiếp tục với</span>
