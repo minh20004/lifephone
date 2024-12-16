@@ -70,140 +70,73 @@
                 </form>
             </form>
 
-            <div class="card mt-4">
-                <div class="card-body">
-                    <h5 class="card-title">Tổng quan đơn hàng</h5>
-                    <ul>
-                        @foreach ($currentOrdersByStatus as $status => $count)
-                            <li>
-                                <strong>{{ $status }}:</strong> 
-                                {{ $count }} đơn - 
-                                <span class="{{ $orderChangePercentage[$status] >= 0 ? 'text-success' : 'text-danger' }}">
-                                    {{ $orderChangePercentage[$status] }}%
-                                </span>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-
-            <div class="card mt-4">
-                <div class="card-body">
-                    <h5 class="card-title">Thu nhập</h5>
-                    <p><strong>Thu nhập hiện tại: </strong>{{ number_format($currentIncome, 0) }} VND</p>
-                    <p><strong>Thu nhập trước đó: </strong>{{ number_format($previousIncome, 0) }} VND</p>
-                    <p><strong>Thay đổi thu nhập: </strong>
-                        <span class="{{ $incomeChangePercentage >= 0 ? 'text-success' : 'text-danger' }}">
-                            {{ $incomeChangePercentage }}%
-                        </span>
-                    </p>
-                </div>
-            </div>
-
-             {{-- Biểu đồ số lượng đơn hàng theo trạng thái --}}
-             <div class="row bieu-do">
-                <div class="col-6 col-xl-6 col-md-6">
-                    <div class="card card-animate">
+            <div class="row mt-4">
+                <!-- Tổng quan đơn hàng -->
+                <div class="col-md-6">
+                    <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Số lượng đơn hàng theo trạng thái</h5>
-                            <canvas id="orderStatusChart"></canvas>
+                            <h5 class="card-title text-center">Tổng quan đơn hàng</h5>
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Trạng thái</th>
+                                        <th>Số lượng</th>
+                                        <th>Thay đổi (%)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($currentOrdersByStatus as $status => $count)
+                                        <tr>
+                                            <td><strong>{{ $status }}</strong></td>
+                                            <td>{{ $count }} đơn</td>
+                                            <td>
+                                                <span class="{{ $orderChangePercentage[$status] >= 0 ? 'text-success' : 'text-danger' }}">
+                                                    {{ $orderChangePercentage[$status] }}%
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
-
-                {{-- Biểu đồ thu nhập --}}
-                <div class="col-6 col-xl-6 col-md-6">
-                    <div class="card card-animate">
+            
+                <!-- Thu nhập -->
+                <div class="col-md-6">
+                    <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Thu nhập theo ngày</h5>
-                            <canvas id="incomeChart"></canvas>
+                            <h5 class="card-title text-center">Thu nhập</h5>
+                            <table class="table table-striped table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th>Thu nhập hiện tại</th>
+                                        <td>{{ number_format($currentIncome, 0) }} VND</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Thu nhập trước đó</th>
+                                        <td>{{ number_format($previousIncome, 0) }} VND</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Thay đổi thu nhập</th>
+                                        <td>
+                                            <span class="{{ $incomeChangePercentage >= 0 ? 'text-success' : 'text-danger' }}">
+                                                {{ $incomeChangePercentage }}%
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
             </div>
+            
+            
+
         </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-    // Biểu đồ số lượng đơn hàng theo trạng thái
-    var ctx = document.getElementById('orderStatusChart').getContext('2d');
-    var orderStatusChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: ['Chờ xác nhận', 'Đã xác nhận', 'Đang giao hàng', 'Đã hoàn thành', 'Đã hủy'],
-            datasets: [{
-                label: 'Số lượng đơn hàng',
-                data: [
-                    {{ $currentOrdersByStatus['Chờ xác nhận'] }},
-                    {{ $currentOrdersByStatus['Đã xác nhận'] }},
-                    {{ $currentOrdersByStatus['Đang giao hàng'] }},
-                    {{ $currentOrdersByStatus['Đã hoàn thành'] }},
-                    {{ $currentOrdersByStatus['Đã hủy'] }}
-                ],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-
-    // Biểu đồ thu nhập theo ngày
-    var incomeCtx = document.getElementById('incomeChart').getContext('2d');
-    var incomeChart = new Chart(incomeCtx, {
-        type: 'line',
-        data: {
-            labels: {!! json_encode($dates) !!}, // Các ngày trong khoảng thời gian
-            datasets: [{
-                label: 'Thu nhập',
-                data: {!! json_encode($incomeData) !!}, // Thu nhập cho từng ngày
-                fill: false,
-                borderColor: 'rgba(75, 192, 192, 1)', // Màu đường
-                tension: 0.1
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return value.toLocaleString(); // Hiển thị số với dấu phân cách nghìn
-                        }
-                    }
-                }
-            }
-        }
-    });
-
-    // Định dạng các giá trị số với dấu phân cách nghìn
-    document.querySelectorAll('.counter-value').forEach(function (counter) {
-        const target = +counter.getAttribute('data-target');
-        counter.innerHTML = target.toLocaleString();
-    });
-</script>
 
 @endsection

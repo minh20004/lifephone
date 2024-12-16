@@ -30,7 +30,8 @@
         </form>
 
         <!-- Hiển thị danh sách đơn hàng -->
-        @if($orders->count() > 0)
+        <div class="card p-3">
+            @if($orders->count() > 0)
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -38,7 +39,7 @@
                         <th>Trạng thái</th>
                         <th>thu nhập</th>
                         <th>Ngày cập nhật</th>
-                        <th>Thao tác</th>
+                        <th>Chi tiết</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,15 +50,17 @@
                             <td>{{ $order->total_price }}</td>
                             <td>{{ $order->updated_at->format('d/m/Y H:i') }}</td>
                             <td>
-                                <a href="{{ route('order.show', $order->id) }}" class="btn btn-info">Xem chi tiết</a>
+                                <a href="{{ route('order.show', $order->id) }}" class="btn btn-dark">Xem</a>
                             </td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
-        @else
-            <p>Không có đơn hàng nào trong khoảng thời gian này.</p>
-        @endif
+            @else
+                <p>Không có đơn hàng nào trong khoảng thời gian này.</p>
+            @endif
+        </div>
+        
     </div>
 </div>
 @endsection

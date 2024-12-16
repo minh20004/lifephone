@@ -354,45 +354,45 @@ class AuthController extends Controller
     }
 
     public function showEmployeeOrders($employeeId, Request $request)
-{
-    // Khởi tạo mảng $orders rỗng để tránh lỗi khi không có đơn hàng
-    $orders = collect();
+    {
+        // Khởi tạo mảng $orders rỗng để tránh lỗi khi không có đơn hàng
+        $orders = collect();
 
-    // Lấy thông tin nhân viên
-    $employee = User::findOrFail($employeeId);
+        // Lấy thông tin nhân viên
+        $employee = User::findOrFail($employeeId);
 
-    // Kiểm tra quyền của admin và nhân viên
-    if (Auth::guard('admin')->check()) {
-        // Admin có thể xem tất cả đơn hàng của nhân viên
-        $orders = Order::where('user_id', $employeeId)
-            ->where('status', 'Đã hoàn thành') // Lọc theo trạng thái "Đã hoàn thành"
-            ->whereBetween('updated_at', [
-                $request->input('start_date', now()->startOfMonth()),
-                $request->input('end_date', now()->endOfMonth())
-            ]) // Lọc theo thời gian
-            ->get();
-    } elseif (Auth::guard('employee')->check()) {
-        // Nhân viên chỉ có thể xem đơn hàng của chính mình
-        $orders = Order::where('user_id', Auth::guard('employee')->user()->id)
-            ->where('status', 'Đã hoàn thành')
-            ->whereBetween('updated_at', [
-                $request->input('start_date', now()->startOfMonth()),
-                $request->input('end_date', now()->endOfMonth())
-            ])
-            ->get();
-    } else {
-        // Nếu không phải admin hay nhân viên, chuyển hướng về login
-        return redirect()->route('login')->withErrors('Bạn không có quyền truy cập.');
+        // Kiểm tra quyền của admin và nhân viên
+        if (Auth::guard('admin')->check()) {
+            // Admin có thể xem tất cả đơn hàng của nhân viên
+            $orders = Order::where('user_id', $employeeId)
+                ->where('status', 'Đã hoàn thành') // Lọc theo trạng thái "Đã hoàn thành"
+                ->whereBetween('updated_at', [
+                    $request->input('start_date', now()->startOfMonth()),
+                    $request->input('end_date', now()->endOfMonth())
+                ]) // Lọc theo thời gian
+                ->get();
+        } elseif (Auth::guard('employee')->check()) {
+            // Nhân viên chỉ có thể xem đơn hàng của chính mình
+            $orders = Order::where('user_id', Auth::guard('employee')->user()->id)
+                ->where('status', 'Đã hoàn thành')
+                ->whereBetween('updated_at', [
+                    $request->input('start_date', now()->startOfMonth()),
+                    $request->input('end_date', now()->endOfMonth())
+                ])
+                ->get();
+        } else {
+            // Nếu không phải admin hay nhân viên, chuyển hướng về login
+            return redirect()->route('login')->withErrors('Bạn không có quyền truy cập.');
+        }
+
+        // Kiểm tra nếu không có đơn hàng
+        if ($orders->isEmpty()) {
+            return redirect()->back()->with('message', 'Không có đơn hàng nào trong khoảng thời gian này.');
+        }
+
+        // Truyền danh sách đơn hàng và thông tin nhân viên vào view
+        return view('admin.page.order.employee_orders', compact('orders', 'employee'));
     }
-
-    // Kiểm tra nếu không có đơn hàng
-    if ($orders->isEmpty()) {
-        return redirect()->back()->with('message', 'Không có đơn hàng nào trong khoảng thời gian này.');
-    }
-
-    // Truyền danh sách đơn hàng và thông tin nhân viên vào view
-    return view('admin.page.order.employee_orders', compact('orders', 'employee'));
-}
 
 
     
@@ -407,18 +407,6 @@ class AuthController extends Controller
         // Truyền thông tin đơn hàng vào view
         return view('admin.page.order.employee_order_show', compact('order'));
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
