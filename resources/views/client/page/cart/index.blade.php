@@ -8,9 +8,9 @@
     <!-- Breadcrumb -->
     <nav class="container pt-3 my-3 my-md-4" aria-label="breadcrumb">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="home-electronics.html">Home</a></li>
-        <li class="breadcrumb-item"><a href="shop-catalog-electronics.html">Shop</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Cart</li>
+        <li class="breadcrumb-item"><a href="home-electronics.html">Trang chủ</a></li>
+        <li class="breadcrumb-item"><a href="shop-catalog-electronics.html">Sản phẩm</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Giỏ hàng</li>
       </ol>
     </nav>
 
@@ -269,7 +269,7 @@
               <span class="text-dark-emphasis fw-medium"><span id="totalPrice">{{ number_format($totalPrice, 0, ',', '.') }} đ</span>
             </li>
             <li class="d-flex justify-content-between">
-              Vận chuyển:
+              Giảm giá:
               <span class="text-dark-emphasis fw-medium">Tính Toán khi thanh toán</span>
             </li>
           </ul>

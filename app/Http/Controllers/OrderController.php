@@ -442,7 +442,9 @@ class OrderController extends Controller
         }
 
         // Tạo chữ ký hash
-        $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
+        if (isset($vnp_HashSecret)) {
+            $vnpSecureHash = hash_hmac('sha512', $hashdata, $vnp_HashSecret);
+        }
 
         // Kiểm tra chữ ký
         if ($vnp_SecureHash === $vnpSecureHash) {
@@ -451,10 +453,8 @@ class OrderController extends Controller
                 // Thanh toán thành công
                 $order = Order::where('order_code', $inputData['vnp_TxnRef'])->first();
                 if ($order) {
-                    // Kiểm tra trạng thái đơn hàng chưa được xử lý
-                    if ($order->status === 'Chờ thanh toán') {
-                        // Cập nhật trạng thái đơn hàng
-                        $order->status = 'Đã thanh toán';
+                    if ($order->status !== 'Chờ xác nhận') {
+                        $order->status = 'Chờ xác nhận';
                         $order->additional_status = 'Đã thanh toán';
                         $order->payment_method = 'Thanh toán trực tuyến (VNPay)';
                         $order->payment_date = now();
@@ -464,26 +464,10 @@ class OrderController extends Controller
                         foreach ($order->orderItems as $orderItem) {
                             $variant = ProductVariant::find($orderItem->variant_id);
                             if ($variant) {
-                                // Kiểm tra nếu kho còn đủ số lượng
-                                if ($variant->stock >= $orderItem->quantity) {
-                                    // Trừ số lượng trong kho
-                                    $variant->stock -= $orderItem->quantity;
-                                    $variant->save();
-                                } else {
-                                    // Nếu kho không đủ số lượng, báo lỗi và không tiếp tục
-                                    return redirect()->route('order.failure')->with('error', 'Không đủ số lượng sản phẩm trong kho!');
-                                }
-                            } else {
-                                // Nếu không tìm thấy variant, báo lỗi
-                                return redirect()->route('order.failure')->with('error', 'Sản phẩm không tồn tại!');
+                                $variant->stock -= $orderItem->quantity;
+                                $variant->save();
                             }
                         }
-
-                        // Tạo thông báo cho Admin
-                        OrderNotification::create([
-                            'order_id' => $order->id,
-                            'is_read' => false,
-                        ]);
 
                         // Gửi email xác nhận đơn hàng
                         Mail::to($order->email)->send(new OrderConfirmationMail($order));
@@ -491,11 +475,6 @@ class OrderController extends Controller
                         // Xóa session giỏ hàng và mã giảm giá
                         session()->forget('cart');
                         session()->forget('voucher');
-
-                        // Nếu người dùng đã đăng nhập, xóa giỏ hàng trong cơ sở dữ liệu
-                        if (auth('customer')->check()) {
-                            Cart::where('customer_id', auth('customer')->id())->delete();
-                        }
 
                         // Chuyển hướng về trang chủ với thông báo thành công
                         return redirect()->route('order.success')->with('success', 'Thanh toán thành công!');
@@ -505,6 +484,7 @@ class OrderController extends Controller
                 // Thanh toán thất bại
                 $order = Order::where('order_code', $inputData['vnp_TxnRef'])->first();
                 if ($order) {
+                    // Cập nhật trạng thái đơn hàng là "Thanh toán thất bại"
                     $order->status = 'Thanh toán thất bại';
                     $order->payment_method = 'Thanh toán trực tuyến (VNPay)';
                     $order->payment_date = null; // Không có ngày thanh toán

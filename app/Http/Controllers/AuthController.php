@@ -992,7 +992,7 @@ class AuthController extends Controller
                                 ->get();
 
         $ordersCompleted = Order::where('customer_id', $customerId)
-                                ->where('status', 'Hoàn Thành')
+                                ->where('status', 'Đã hoàn thành')
                                 ->orderBy('created_at', 'desc')
                                 ->get();
 
