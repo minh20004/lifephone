@@ -620,7 +620,7 @@ class OrderController extends Controller
 
 
 
-    
+    // voucher
     public function getVoucherByCode($code)
     {
         // Tìm voucher theo mã, có điều kiện voucher hợp lệ và còn lượt sử dụng
