@@ -1,31 +1,33 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\NewController;
-use Illuminate\Support\Facades\Request;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\ChatController;
-use App\Http\Controllers\ColorController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CapacityController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CategoryNewsController;
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
+use App\Http\Controllers\ClientNewController;
+use App\Http\Controllers\ColorController;
 use App\Http\Controllers\FrontendControlle;
+use App\Http\Controllers\NewController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderNotificationController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\VoucherController;
-use App\Http\Controllers\CapacityController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ClientNewController;
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\CategoryNewsController;
-use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\ReviewController;
 
-use App\Http\Controllers\Admin\DashboardController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserNotificationController;
-use App\Http\Controllers\OrderNotificationController;
-use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
+use App\Http\Controllers\VoucherController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -210,6 +212,12 @@ Route::post('/customer/resend-verification', [AuthController::class, 'resendVeri
 Route::get('/customer/login', [AuthController::class, 'showLogin_customer'])->name('customer.login');
 Route::post('/customer/login', [AuthController::class, 'customerLogin'])->name('customer.login.submit');
 Route::post('/customer/logout', [AuthController::class, 'customerLogout'])->name('customer.logout');
+
+// quenmatkhau
+
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+// Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+// Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 
 Route::middleware(['auth:customer', 'isCustomer'])->group(function () {
     Route::put('/customer/{id}/changePassword', [AuthController::class, 'changePassword'])->name('customer.changePassword');

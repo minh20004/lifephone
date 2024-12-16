@@ -12,7 +12,7 @@
           <h1 class="pt-xl-4 mb-4">ĐẶT HÀNG THÀNH CÔNG </h1>
           <p class="text-dark-emphasis pb-3 pb-sm-4"><span class="fw-semibold">Cảm ơn bạn đã đặt hàng!</span> Đơn hàng của bạn đã được chấp nhận và sẽ được xử lý trong thời gian ngắn. </p>
           <a class="btn btn-lg btn-success rounded-pill mb-xl-4" href="{{route('home')}}">Tiếp Tục Mua Sắm</a>
-          <a class="btn btn-lg btn-danger rounded-pill mb-xl-4" href="#">Lịch Sử Đơn Hàng</a>
+          <a class="btn btn-lg btn-danger rounded-pill mb-xl-4" href="{{route('order.publicHistory')}}">Lịch Sử Đơn Hàng</a>
         </div>
         <img src="{{asset('client/img/shop/grocery/thankyou-bg-1.png')}}" class="animate-up-down position-absolute top-0 start-0 w-100 h-100 object-fit-cover" alt="Background image">
         <img src="{{asset('client/img/shop/grocery/thankyou-bg-2.png')}}" class="animate-down-up position-absolute top-0 start-0 w-100 h-100 object-fit-cover" alt="Background image">
