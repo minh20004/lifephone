@@ -178,8 +178,8 @@
       </div>
     </div>
   </aside> --}}
-                
-      {{-- @if(count($cartItems) > 0)
+    <form action="{{ route('cart.update') }}" method="POST" class="" novalidate="">
+      @if(count($cartItems) > 0)
             <table class="table position-relative z-2 mb-4">
               <thead>
                 <tr>
@@ -247,9 +247,52 @@
             </table>
       @else
       <p>Giỏ hàng của bạn hiện đang trống.</p>
-      @endif --}}
+      @endif
+      
+
+
+
+      <div class="nav position-relative z-2 mb-4 mb-lg-0">
+        <a class="nav-link animate-underline px-0" href="{{route('home')}}">
+          <i class="ci-chevron-left fs-lg me-1"></i>
+          <span class="animate-target">Tiếp tục mua sắm</span>
+        </a>
+      </div>
+    </div>
+  </div>
+  <!-- Tóm tắt đơn hàng (sticky sidebar) -->
+  <aside class="col-lg-4" style="margin-top: -100px">
+    <div class="position-sticky top-0" style="padding-top: 100px">
+      <div class="bg-body-tertiary rounded-5 p-4 mb-3">
+        <div class="p-sm-2 p-lg-0 p-xl-2">
+          <h5 class="border-bottom pb-4 mb-4">Tóm tắt đơn hàng</h5>
+          <ul class="list-unstyled fs-sm gap-3 mb-0">
+            <li class="d-flex justify-content-between">
+              <span id="totalQuantity">(Tổng cộng <b>{{ $totalQuantity }}</b> sản phẩm):</span> 
+              <span class="text-dark-emphasis fw-medium"><span id="totalPrice">{{ number_format($totalPrice, 0, ',', '.') }} đ</span>
+            </li>
+            <li class="d-flex justify-content-between">
+              Vận chuyển:
+              <span class="text-dark-emphasis fw-medium">Tính Toán khi thanh toán</span>
+            </li>
+          </ul>
+          <div class="border-top pt-4 mt-4">
+            <div class="d-flex justify-content-between mb-3">
+              <span class="fs-sm">Tổng ước tính:</span>
+              <span class="h5 mb-0"><span id="totalAfterDiscount">{{ number_format($totalPrice, 0, ',', '.') }} đ</span>
+            </div>
+            <a class="btn btn-lg btn-primary w-100" href="{{ route('checkout') }}">
+              Tiến hành thanh toán
+              <i class="ci-chevron-right fs-lg ms-1 me-n1"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+</form>
       {{-- lấy 1 sản phẩm --}}
-      @if(count($cartItems) > 0)
+      {{-- @if(count($cartItems) > 0)
           <form action="{{ route('checkout') }}" method="POST">
               @csrf
               <table class="table position-relative z-2 mb-4">
@@ -312,49 +355,7 @@
           </form>
       @else
           <p>Giỏ hàng của bạn hiện đang trống.</p>
-      @endif
-
-
-      <div class="nav position-relative z-2 mb-4 mb-lg-0">
-        <a class="nav-link animate-underline px-0" href="{{route('home')}}">
-          <i class="ci-chevron-left fs-lg me-1"></i>
-          <span class="animate-target">Tiếp tục mua sắm</span>
-        </a>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Tóm tắt đơn hàng (sticky sidebar) -->
-  <aside class="col-lg-4" style="margin-top: -100px">
-    <div class="position-sticky top-0" style="padding-top: 100px">
-      <div class="bg-body-tertiary rounded-5 p-4 mb-3">
-        <div class="p-sm-2 p-lg-0 p-xl-2">
-          <h5 class="border-bottom pb-4 mb-4">Tóm tắt đơn hàng</h5>
-          <ul class="list-unstyled fs-sm gap-3 mb-0">
-            <li class="d-flex justify-content-between">
-              <span id="totalQuantity">(Tổng cộng <b>{{ $totalQuantity }}</b> sản phẩm):</span> 
-              <span class="text-dark-emphasis fw-medium"><span id="totalPrice">{{ number_format($totalPrice, 0, ',', '.') }} đ</span>
-            </li>
-            <li class="d-flex justify-content-between">
-              Vận chuyển:
-              <span class="text-dark-emphasis fw-medium">Tính Toán khi thanh toán</span>
-            </li>
-          </ul>
-          <div class="border-top pt-4 mt-4">
-            <div class="d-flex justify-content-between mb-3">
-              <span class="fs-sm">Tổng ước tính:</span>
-              <span class="h5 mb-0"><span id="totalAfterDiscount">{{ number_format($totalPrice, 0, ',', '.') }} đ</span>
-            </div>
-            <a class="btn btn-lg btn-primary w-100" href="{{ route('checkout') }}">
-              Tiến hành thanh toán
-              <i class="ci-chevron-right fs-lg ms-1 me-n1"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </aside>
-
+      @endif --}}
 
 
     </section>
@@ -493,5 +494,129 @@
   </div>
 @endsection
 
+{{-- @if(count($cartItems) > 0)
+          <form id="checkoutForm">
+              <table class="table position-relative z-2 mb-4">
+                  <thead>
+                      <tr>
+                          <th scope="col" class="fs-sm fw-normal py-3 ps-0">
+                              <span class="text-body">Chọn</span>
+                          </th>
+                          <th scope="col" class="fs-sm fw-normal py-3 ps-0">
+                              <span class="text-body">Sản phẩm</span>
+                          </th>
+                          <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-xl-table-cell">
+                              <span class="text-body">Giá</span>
+                          </th>
+                          <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-md-table-cell">
+                              <span class="text-body">Số lượng</span>
+                          </th>
+                          <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-md-table-cell">
+                              <span class="text-body">Tổng cộng</span>
+                          </th>
+                      </tr>
+                  </thead>
+                  <tbody class="align-middle">
+                      @foreach ($cartItems as $item)
+                          <tr data-product-id="{{ $item['product']->id }}" 
+                              data-model-id="{{ $item['capacity']->id }}" 
+                              data-color-id="{{ $item['color']->id }}">
+                              <!-- Checkbox -->
+                              <td class="py-3 ps-0">
+                                  <input type="checkbox" class="select-product" 
+                                        data-product-id="{{ $item['product']->id }}" 
+                                        data-model-id="{{ $item['capacity']->id }}" 
+                                        data-color-id="{{ $item['color']->id }}">
+                              </td>
+                              <!-- Product Info -->
+                              <td class="py-3 ps-0">
+                                  <div class="d-flex align-items-center">
+                                      <a class="flex-shrink-0" href="#">
+                                          <img src="{{ asset('storage/' . $item['product']->image_url) }}" 
+                                              width="110" alt="{{ $item['product']->name }}">
+                                      </a>
+                                      <div class="w-100 min-w-0 ps-2 ps-xl-3">
+                                          <h5 class="d-flex animate-underline mb-2">
+                                              <a class="d-block fs-sm fw-medium text-truncate animate-target" href="#">
+                                                  {{ $item['product']->name }}
+                                              </a>
+                                          </h5>
+                                          <ul class="list-unstyled gap-1 fs-xs mb-0">
+                                              <li><span class="text-body-secondary">Màu sắc:</span> 
+                                                  <span class="text-dark-emphasis fw-medium">
+                                                      {{ $item['color']->name }}
+                                                  </span>
+                                              </li>
+                                              <li><span class="text-body-secondary">Dung lượng:</span> 
+                                                  <span class="text-dark-emphasis fw-medium">
+                                                      {{ $item['capacity']->name }}
+                                                  </span>
+                                              </li>
+                                          </ul>
+                                      </div>
+                                  </div>
+                              </td>
+                              <td class="h6 py-3 d-none d-xl-table-cell">
+                                  {{ number_format($item['price'], 0, ',', '.') }} đ
+                              </td>
+                              <td class="py-3 d-none d-md-table-cell">{{ $item['quantity'] }}</td>
+                              <td class="h6 py-3 d-none d-md-table-cell">
+                                  {{ number_format($item['itemTotal'], 0, ',', '.') }} đ
+                              </td>
+                          </tr>
+                      @endforeach
+                  </tbody>
+              </table>
+              <button type="button" id="checkoutButton" class="btn btn-primary mt-3">
+                  Thanh toán
+              </button>
+          </form>
+      @else
+          <p>Giỏ hàng của bạn hiện đang trống.</p>
+      @endif
 
+
+
+      <script>
+          document.getElementById('checkoutButton').addEventListener('click', function () {
+              // Lấy danh sách sản phẩm đã chọn
+              const selectedProducts = [];
+              document.querySelectorAll('.select-product:checked').forEach((checkbox) => {
+                  selectedProducts.push({
+                      product_id: checkbox.dataset.productId,
+                      model_id: checkbox.dataset.modelId,
+                      color_id: checkbox.dataset.colorId,
+                  });
+              });
+
+              if (selectedProducts.length === 0) {
+                  alert('Vui lòng chọn ít nhất một sản phẩm để thanh toán!');
+                  return;
+              }
+
+              // Gửi dữ liệu qua AJAX
+              fetch("{{ route('cart.prepareCheckout') }}", {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                      'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                  },
+                  body: JSON.stringify({ selectedProducts }),
+              })
+              .then((response) => response.json())
+              .then((data) => {
+                  if (data.success) {
+                      window.location.href = "{{ route('checkout.index') }}";
+                  } else {
+                      alert(data.message || 'Đã xảy ra lỗi, vui lòng thử lại.');
+                  }
+              })
+              .catch((error) => {
+                  console.error('Error:', error);
+                  alert('Đã xảy ra lỗi, vui lòng thử lại.');
+              });
+          });
+
+
+      </script> --}}
 

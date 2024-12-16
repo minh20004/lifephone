@@ -16,15 +16,16 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\CapacityController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ClientNewController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\CategoryNewsController;
-use App\Http\Controllers\SubscriptionController;
 
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\Admin\DashboardController;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\UserNotificationController;
 use App\Http\Controllers\OrderNotificationController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
 
 /*
@@ -223,6 +224,9 @@ Route::middleware(['auth:customer', 'isCustomer'])->group(function () {
     // Route cập nhật địa chỉ
     Route::put('/customer/address/{addressId}', [AddressController::class, 'updateAddress'])->name('customer.updateAddress');
     Route::get('/order-detail/{id}', [AuthController::class, 'detail'])->name('order.detail');
+
+    Route::get('/cart/items', [CartController::class, 'getCartItems']);
+    Route::post('/cart/select-items', [CartController::class, 'selectCartItemsForCheckout']);
 });
 
 // Route::get('/order-detail/{id}', [AuthController::class, 'detail'])->name('order.detail');
@@ -244,19 +248,25 @@ Route::post('/cart/update', [CartController::class, 'updateQuantity'])->name('ca
 // Route::get('/cart/offcanvas', [CartController::class, 'getCart'])->name('cart.offcanvas');
 
 // thanh toán
-Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
+
+// Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
+
+// Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+
+// Route::post('/checkout/selected', [CartController::class, 'checkoutSelected'])->name('checkout.selected');
+// Route::post('/cart/prepare-checkout', [CartController::class, 'prepareCheckout'])->name('cart.prepareCheckout');
+
+Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
 Route::post('/order/store', [OrderController::class, 'storeOrder'])->name('order.store');
 Route::get('/order-success', function () {
     return view('client.page.checkout.order_success'); // Thông báo thành công
 })->name('order.success');
 
-Route::post('/payment/vnpay', [OrderController::class, 'payWithVNPay'])->name('payment.vnpay');
-Route::get('/payment/vnpay/callback', [OrderController::class, 'handleVNPayCallback'])->name('order.vnpay.callback');
+// Route::post('/payment/vnpay', [OrderController::class, 'payWithVNPay'])->name('payment.vnpay');
+// Route::get('/payment/vnpay/callback', [OrderController::class, 'handleVNPayCallback'])->name('order.vnpay.callback');
 
 
 
-// Route::post('/order/apply-voucher', [OrderController::class, 'applyVoucher'])->name('order.apply-voucher');
-// Route::get('/apply-voucher', [OrderController::class, 'showVoucherForm'])->name('order.showVoucherForm');
 Route::post('/apply-voucher', [OrderController::class, 'applyVoucher'])->name('order.applyVoucher');
 
 // Route cho khách hàng yêu cầu hủy đơn hàng
@@ -270,7 +280,7 @@ Route::post('/admin/notifications/{id}/read', [OrderNotificationController::clas
 Route::get('/public-order-history', [AuthController::class, 'publicHistory'])->name('order.publicHistory');
 Route::get('/public-order-detail/{id}', [AuthController::class, 'publicDetail'])->name('order.publicDetail');
 
-Route::get('/cart/item-count', [CartController::class, 'getCartItemCount'])->name('cart.item-count'); //cập nhật số lượng trong giỏ hàng 
+Route::post('/cart/item-count', [CartController::class, 'getCartItemCount'])->name('cart.item-count'); //cập nhật số lượng trong giỏ hàng 
 
 // thanh toán vnpay
 Route::post('/vnpay-payment', [OrderController::class,'vnpay_payment'])->name('vnpay.payment');
