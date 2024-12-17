@@ -1,3 +1,4 @@
+
 @extends('admin.layout.master')
 @section('title')
 
@@ -46,105 +47,84 @@ REVIEW
                                                                 <div class="gridjs-th-content">STT</div>
                                                             </th>
                                                             <th data-column-id="product" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 300;">
-                                                                <div class="gridjs-th-content">Product</div>
+                                                                <div class="gridjs-th-content">Sản phẩm</div>
                                                             </th>
                                                             <th data-column-id="user" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 105px;">
-                                                                <div class="gridjs-th-content">User</div>
+                                                                <div class="gridjs-th-content">Khách hàng</div>
                                                             </th>
                                                             <th data-column-id="comment" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 360px;">
-                                                                <div class="gridjs-th-content">comment</div>
+                                                                <div class="gridjs-th-content">Bình luận</div>
                                                             </th>
                                                             <th data-column-id="rating" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 105px;">
-                                                                <div class="gridjs-th-content">Rating</div>
+                                                                <div class="gridjs-th-content">Đánh giá </div>
                                                             </th>
                                                             <th data-column-id="action" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 140px;">
-                                                                <div class="gridjs-th-content">crate-at</div>
+                                                                <div class="gridjs-th-content">Ngày gửi</div>
                                                             <th data-column-id="action" class="gridjs-th gridjs-th-sort text-muted" tabindex="0" style="width: 80px;">
-                                                                <div class="gridjs-th-content">Action</div> 
+                                                                <div class="gridjs-th-content">Hành động</div>
                                                         </tr>
                                                     </thead>
                                                     <tbody class="gridjs-tbody">
-    @foreach ($listReview as $key => $review)
-    <tr class="gridjs-tr">
-        <td data-column-id="#" class="gridjs-td">
-            <span>
-                <div class="form-check checkbox-product-list">
-                    <input class="form-check-input" type="checkbox" value="3" id="checkbox-3">
-                    <label class="form-check-label" for="checkbox-3"></label>
-                </div>
-            </span>
-        </td>
-        <td data-column-id="STT" class="gridjs-td">{{$key+1}}</td>
-        <td data-column-id="product" class="gridjs-td">
-            <span>
-                <div class="d-flex align-items-center">
-                    <div class="flex-grow-1">
-                        <h5 class="fs-14 mb-1">
-                            <a href="apps-ecommerce-product-details.html" class="text-body">{{$review->loadAllProduct->name}}</a>
-                        </h5>
-                    </div>
-                </div>
-            </span>
-        </td>
-        <td data-column-id="user" class="gridjs-td">{{$review->loadAlluser->name}}</td>
-        <td data-column-id="orders" class="gridjs-td">{{$review->comment}}</td>
-        <td data-column-id="rating" class="gridjs-td">
-            <span>
-                <span class="badge bg-light text-body fs-12 fw-medium">
-                    <i class="mdi mdi-star text-warning me-1"></i>{{$review->rating}}
-                </span>
-            </span>
-        </td>
-        <td data-column-id="published" class="gridjs-td">
-            <span>{{$review->created_at}}</span>
-        </td>
-        <td data-column-id="action" class="gridjs-td">
-            <div>
-                <form action="{{route('review.destroy',$review->id)}}" method="post">
-                    @method('DELETE')
-                    @csrf
-                    <button class="ri-delete-bin-fill align-bottom me-2 btn btn-danger text-white "onclick="return confirm('xoa')"> Delete
-                    </button>
-                </form>
-            </div>
-        </td>
-    </tr>
-    @endforeach
-</tbody>
+                                                        @foreach ($listReview as $key => $review)
+                                                        <tr class="gridjs-tr">
+                                                            <td data-column-id="#" class="gridjs-td">
+                                                                <span>
+                                                                    <div class="form-check checkbox-product-list">
+                                                                        <input class="form-check-input" type="checkbox" value="3" id="checkbox-3">
+                                                                        <label class="form-check-label" for="checkbox-3"></label>
+                                                                    </div>
+                                                                </span>
+                                                            </td>
+                                                            <td data-column-id="STT" class="gridjs-td">{{$key+1}}</td>
+                                                            <td data-column-id="product" class="gridjs-td">
+                                                                <span>
+                                                                    <div class="d-flex align-items-center">
+                                                                        <div class="flex-grow-1">
+                                                                            <h5 class="fs-14 mb-1">
+                                                                                <a href="{{ url('product/' . $review->loadAllProduct->id) }}" class="text-body" target="_blank">{{$review->loadAllProduct->name}}</a>
+                                                                            </h5>
+                                                                        </div>
+                                                                    </div>
+                                                                </span>
+                                                            </td>
+                                                            <td data-column-id="user" class="gridjs-td">{{$review->loadAllCustomer->name}}</td>
+                                                            <td data-column-id="orders" class="gridjs-td">{{$review->comment}}</td>
+                                                            <td data-column-id="rating" class="gridjs-td">
+                                                                <span>
+                                                                    <span class="badge bg-light text-body fs-12 fw-medium">
+                                                                        <i class="mdi mdi-star text-warning me-1"></i>{{$review->rating}}
+                                                                    </span>
+                                                                </span>
+                                                            </td>
+                                                            <td data-column-id="published" class="gridjs-td">
+                                                                <span>{{$review->created_at}}</span>
+                                                            </td>
+                                                            <td data-column-id="action" class="gridjs-td">
+                                                                <div>
+                                                                  
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
+                                                    </tbody>
 
-                                            </table>
-                                        </div>
-                                        <div class="gridjs-footer">
-                                            <div class="gridjs-pagination">
-                                                <div role="status" aria-live="polite" class="gridjs-summary" title="Page 1 of 2">Showing <b>1</b> to <b>10</b> of <b>12</b> results</div>
-                                                <div class="gridjs-pages"><button tabindex="0" role="button" disabled="" title="Previous" aria-label="Previous" class="">Previous</button><button tabindex="0" role="button" class="gridjs-currentPage" title="Page 1" aria-label="Page 1">1</button><button tabindex="0" role="button" class="" title="Page 2" aria-label="Page 2">2</button><button tabindex="0" role="button" title="Next" aria-label="Next" class="">Next</button></div>
+                                                </table>
+                                            </div>
+                                            <div>
+                                                {{ $listReview->links() }}
                                             </div>
                                         </div>
-                                        <div id="gridjs-temp" class="gridjs-temp"></div>
+                                        <!-- end col -->
                                     </div>
                                 </div>
                             </div>
-                            <!-- end tab pane -->
-
-                            <div class="tab-pane" id="productnav-draft" role="tabpanel">
-                                <div class="py-4 text-center">
-                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style="width:72px;height:72px">
-                                    </lord-icon>
-                                    <h5 class="mt-4">Sorry! No Result Found</h5>
-                                </div>
-                            </div>
-                            <!-- end tab pane -->
                         </div>
-                        <!-- end tab content -->
-
                     </div>
-                    <!-- end card body -->
                 </div>
-                <!-- end card -->
             </div>
         </div>
-        <!-- end col -->
     </div>
 </div>
-</div>
+
 @endsection
+ 
