@@ -65,7 +65,7 @@
 
                         <div class="px-2 pt-2">
                             <ul class="nav nav-tabs dropdown-tabs nav-tabs-custom" data-dropdown-tabs="true" id="notificationItemsTab" role="tablist">
-                                <li class="nav-item waves-effect waves-light">
+                                {{-- <li class="nav-item waves-effect waves-light">
                                     <a class="nav-link active" data-bs-toggle="tab" href="#all-noti-tab" role="tab" aria-selected="true">
                                         Tất cả (4)
                                     </a>
@@ -74,7 +74,7 @@
                                     <a class="nav-link" data-bs-toggle="tab" href="#messages-tab" role="tab" aria-selected="false">
                                         Tin nhắn
                                     </a>
-                                </li>
+                                </li> --}}
                                 <li class="nav-item waves-effect waves-light">
                                     <a class="nav-link" data-bs-toggle="tab" href="#alerts-tab" role="tab" aria-selected="false">
                                         Đơn hàng <span > ({{ $unreadCount }})</span>
@@ -87,38 +87,34 @@
 
                     <div class="tab-content position-relative" id="notificationItemsTabContent">
                         <div class="tab-pane fade show active py-2 ps-2" id="all-noti-tab" role="tabpanel">
-                            <div data-simplebar style="max-height: 300px;" class="pe-2">
-                                <div class="text-reset notification-item d-block dropdown-item position-relative">
-                                    <div class="d-flex">
-                                        <div class="avatar-xs me-3 flex-shrink-0">
-                                            <span class="avatar-title bg-info-subtle text-info rounded-circle fs-16">
-                                                <i class="bx bx-badge-check"></i>
-                                            </span>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <a href="#!" class="stretched-link">
-                                                <h6 class="mt-0 mb-2 lh-base">Your <b>Elite</b> author Graphic
-                                                    Optimization <span class="text-secondary">reward</span> is
-                                                    ready!
-                                                </h6>
-
-                                            </a>
-                                            <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
-                                                <span><i class="mdi mdi-clock-outline"></i> Just 30 sec ago</span>
-                                            </p>
-                                        </div>
-                                        <div class="px-2 fs-15">
-                                            <div class="form-check notification-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="all-notification-check01">
-                                                <label class="form-check-label" for="all-notification-check01"></label>
+                            <div data-simplebar style="max-height: 300px;" class="p-2">
+                                <div>
+                                    @php
+                                        use App\Models\OrderNotification;
+                                        $notifications = OrderNotification::with('order')
+                                            ->orderBy('created_at', 'desc')
+                                            ->limit(10)
+                                            ->get();
+                                    @endphp
+    
+                                    @forelse ($notifications as $notification)
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div class="border-bottom mb-2" >
+                                                <strong>Đơn hàng: {{ $notification->order->order_code }}</strong><br>
+                                                <span>{{ $notification->order->name }} đã đặt hàng.</span>
+                                                <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
                                             </div>
-                                        </div>
-                                    </div>
+                                        </li>
+                                    @empty
+                                        <li class="list-group-item">Không có thông báo nào.</li>
+                                    @endforelse
                                 </div>
-
                                 <div class="my-3 text-center view-all">
-                                    <button type="button" class="btn btn-soft-success waves-effect waves-light">Xem tất cả Thông báo <i class="ri-arrow-right-line align-middle"></i></button>
+                                    <a href="{{route('admin.notifications')}}" class="btn btn-soft-success waves-effect waves-light">Xem tất cả Thông báo <i class="ri-arrow-right-line align-middle"></i></a>
                                 </div>
+                            </div>
+                            <div class="my-3 text-center view-all">
+                                <a href="{{route('admin.notifications')}}" class="btn btn-soft-success waves-effect waves-light">Xem tất cả Thông báo <i class="ri-arrow-right-line align-middle"></i></a>
                             </div>
 
                         </div>
@@ -156,7 +152,7 @@
                         <div class="tab-pane fade py-2 ps-2" id="alerts-tab" role="tabpanel" aria-labelledby="alerts-tab">
                             <div data-simplebar style="max-height: 300px;" class="pe-2">
                             <div class="text-reset notification-item d-block ">
-                            <div>
+                            {{-- <div>
                                 @php
                                     use App\Models\OrderNotification;
                                     $notifications = OrderNotification::with('order')
@@ -176,10 +172,10 @@
                                 @empty
                                     <li class="list-group-item">Không có thông báo nào.</li>
                                 @endforelse
-                            </div>
-                            <div class="my-3 text-center view-all">
+                            </div> --}}
+                            {{-- <div class="my-3 text-center view-all">
                                 <a href="{{route('admin.notifications')}}" class="btn btn-soft-success waves-effect waves-light">Xem tất cả Thông báo <i class="ri-arrow-right-line align-middle"></i></a>
-                            </div>
+                            </div> --}}
                             </div>
                             </div>
 

@@ -48,30 +48,6 @@ class OrderController extends Controller
 
         return view('admin.page.order.index', compact('groupedOrders', 'orderCounts'));
     }
-    // Hàm tạo đơn hàng
-    // public function updateStatus(Request $request, $id)
-    // {
-    //     $validated = $request->validate([
-    //         'status' => 'required|in:Chờ xác nhận,Đã xác nhận,Đang giao hàng,Đã hoàn thành,Đã hủy',
-    //     ]);
-    //     $order = Order::findOrFail($id);
-    //     if ($request->status === 'Đã hủy' && $order->status !== 'Đã hủy') {
-    //         // Hoàn trả số lượng sản phẩm vào kho
-    //         foreach ($order->orderItems as $orderItem) {
-    //             $variant = ProductVariant::find($orderItem->variant_id);
-    //             if ($variant) {
-    //                 $variant->stock += $orderItem->quantity;
-    //                 $variant->save();
-    //             }
-    //         }
-    //     }
-    //     // $order = Order::findOrFail($id);
-    //     $order->status = $request->status;
-    //     $order->save();
-
-    //     return redirect()->route('orders.index')->with('success', 'Cập nhật trạng thái đơn hàng thành công.');
-    // }
-    
     public function updateStatus(Request $request, $id)
     {
         // Validate trạng thái đơn hàng
@@ -101,10 +77,6 @@ class OrderController extends Controller
         // Chuyển hướng về trang danh sách đơn hàng với thông báo thành công
         return redirect()->route('orders.index')->with('success', 'Cập nhật trạng thái đơn hàng thành công.');
     }
-
-
-
-
 
 
     public function show(string $id)
@@ -272,7 +244,10 @@ class OrderController extends Controller
                 }
             }
         }
-
+        OrderNotification::create([
+            'order_id' => $order->id,
+            'is_read' => false,
+        ]);
         // Gửi email xác nhận đơn hàng
         Mail::to($request->email)->send(new OrderConfirmationMail($order));
 
@@ -468,7 +443,13 @@ class OrderController extends Controller
                                 $variant->save();
                             }
                         }
-
+                        if (auth('customer')->check()) {
+                            Cart::where('customer_id', auth('customer')->id())->delete();
+                        }
+                        OrderNotification::create([
+                            'order_id' => $order->id,
+                            'is_read' => false,
+                        ]);
                         // Gửi email xác nhận đơn hàng
                         Mail::to($order->email)->send(new OrderConfirmationMail($order));
 

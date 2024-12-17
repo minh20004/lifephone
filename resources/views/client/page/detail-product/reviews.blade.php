@@ -8,7 +8,7 @@
   </div>
 
   <!-- Reviews stats -->
-  <div class="row g-4 pb-3">
+  {{-- <div class="row g-4 pb-3">
     <div class="col-sm-4">
 
       <!-- Overall rating card -->
@@ -85,97 +85,15 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> --}}
 
-  <!-- Review -->
-  <div class="border-bottom py-3 mb-3">
-    <div class="d-flex align-items-center mb-3">
-      <div class="text-nowrap me-3">
-        <span class="h6 mb-0">Rafael Marquez</span>
-        <i class="ci-check-circle text-success align-middle ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Verified customer"></i>
-      </div>
-      <span class="text-body-secondary fs-sm ms-auto">June 28, 2024</span>
-    </div>
-    <div class="d-flex gap-1 fs-sm pb-2 mb-1">
-      <i class="ci-star-filled text-warning"></i>
-      <i class="ci-star-filled text-warning"></i>
-      <i class="ci-star-filled text-warning"></i>
-      <i class="ci-star-filled text-warning"></i>
-      <i class="ci-star-filled text-warning"></i>
-    </div>
-    <ul class="list-inline gap-2 pb-2 mb-1">
-      <li class="fs-sm me-4"><span class="text-dark-emphasis fw-medium">Color:</span> Blue</li>
-      <li class="fs-sm"><span class="text-dark-emphasis fw-medium">Model:</span> 128GB</li>
-    </ul>
-    <p class="fs-sm">The phone has a new A15 Bionic chip, which makes it lightning-fast and responsive. The camera system has also been upgraded, and it now includes a 12-megapixel ultra-wide lens and a 12-megapixel wide lens.</p>
-    <ul class="list-unstyled fs-sm pb-2 mb-1">
-      <li><span class="text-dark-emphasis fw-medium">Pros:</span> Powerful A15 Bionic chip, improved camera</li>
-      <li><span class="text-dark-emphasis fw-medium">Cons:</span> High price tag</li>
-    </ul>
-    <div class="nav align-items-center">
-      <button type="button" class="nav-link animate-underline px-0">
-        <i class="ci-corner-down-right fs-base ms-1 me-1"></i>
-        <span class="animate-target">Reply</span>
-      </button>
-      <button type="button" class="nav-link text-body-secondary animate-scale px-0 ms-auto me-n1">
-        <i class="ci-thumbs-up fs-base animate-target me-1"></i>
-        0
-      </button>
-      <hr class="vr my-2 mx-3">
-      <button type="button" class="nav-link text-body-secondary animate-scale px-0 ms-n1">
-        <i class="ci-thumbs-down fs-base animate-target me-1"></i>
-        0
-      </button>
-    </div>
-  </div>
 
-  <!-- Review -->
-  <div class="border-bottom py-3 mb-3">
-    <div class="d-flex align-items-center mb-3">
-      <div class="text-nowrap me-3">
-        <span class="h6 mb-0">Daniel Adams</span>
-      </div>
-      <span class="text-body-secondary fs-sm ms-auto">May 15, 2024</span>
-    </div>
-    <div class="d-flex gap-1 fs-sm pb-2 mb-1">
-      <i class="ci-star-filled text-warning"></i>
-      <i class="ci-star-filled text-warning"></i>
-      <i class="ci-star-filled text-warning"></i>
-      <i class="ci-star-filled text-warning"></i>
-      <i class="ci-star text-body-tertiary opacity-75"></i>
-    </div>
-    <ul class="list-inline gap-2 pb-2 mb-1">
-      <li class="fs-sm me-4"><span class="text-dark-emphasis fw-medium">Color:</span> Blue</li>
-      <li class="fs-sm"><span class="text-dark-emphasis fw-medium">Model:</span> 128GB</li>
-    </ul>
-    <p class="fs-sm">The phone has a new A15 Bionic chip, which makes it lightning-fast and responsive. The camera system has also been upgraded, and it now includes a 12-megapixel ultra-wide lens and a 12-megapixel wide lens.</p>
-    <ul class="list-unstyled fs-sm pb-2 mb-1">
-      <li><span class="text-dark-emphasis fw-medium">Pros:</span> Powerful A15 Bionic chip, improved camera</li>
-      <li><span class="text-dark-emphasis fw-medium">Cons:</span> High price tag</li>
-    </ul>
-    <div class="nav align-items-center">
-      <button type="button" class="nav-link animate-underline px-0">
-        <i class="ci-corner-down-right fs-base ms-1 me-1"></i>
-        <span class="animate-target">Reply</span>
-      </button>
-      <button type="button" class="nav-link text-body-secondary animate-scale px-0 ms-auto me-n1">
-        <i class="ci-thumbs-up text-success fs-base animate-target me-1"></i>
-        18
-      </button>
-      <hr class="vr my-2 mx-3">
-      <button type="button" class="nav-link text-body-secondary animate-scale px-0 ms-n1">
-        <i class="ci-thumbs-down text-danger fs-base animate-target me-1"></i>
-        2
-      </button>
-    </div>
-  </div>
-
-  <div class="nav">
+  {{-- <div class="nav">
     <a class="nav-link text-primary animate-underline px-0" href="shop-product-reviews-electronics.html">
       <span class="animate-target">Xem tất cả đánh giá</span>
       <i class="ci-chevron-right fs-base ms-1"></i>
     </a>
-  </div>
+  </div> --}}
 </div>
 
 

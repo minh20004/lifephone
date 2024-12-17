@@ -142,20 +142,25 @@
                                 <a class="nav-link text-decoration-underline p-0" href="{{route('cart.index')}}">Sửa</a>
                               </div>
                             </div>
-                            
                                   <a class="d-flex align-items-center gap-2 text-decoration-none " href="#orderPreview" data-bs-toggle="offcanvas">
-                                    @foreach ($cart as $product)
-                                      @foreach ($product as $model)
-                                          @foreach ($model as $item)
-                                            <div class="ratio ratio-1x1 " style="max-width: 64px">
-                                              <div class="">
-                                                <img src="{{ asset('storage/' . $item['image_url']) }}" class="d-block p-1" alt="iPhone" style="width: 70px; height:70px;">
-                                              </div>
+                                    @if (auth('customer')->check())
+                                        @foreach ($cartItems as $cartItem)
+                                            <div class="ratio ratio-1x1" style="max-width: 64px">
+                                                <img src="{{ asset('storage/' . $cartItem->image_url) }}" class="d-block p-1" alt="{{ $cartItem->product->name }}" style="width: 70px; height:70px;">
                                             </div>
-                                          @endforeach
-                                       @endforeach
-                                    @endforeach
-                            <i class="ci-chevron-right text-body fs-xl p-0 ms-auto"></i>
+                                        @endforeach
+                                    @else
+                                        @foreach ($cart as $productId => $models)
+                                            @foreach ($models as $modelId => $colors)
+                                                @foreach ($colors as $colorId => $item)
+                                                    <div class="ratio ratio-1x1" style="max-width: 64px">
+                                                        <img src="{{ asset('storage/' . $item['image_url']) }}" class="d-block p-1" alt="Sản phẩm" style="width: 70px; height:70px;">
+                                                    </div>
+                                                @endforeach
+                                            @endforeach
+                                        @endforeach
+                                    @endif
+                                    <i class="ci-chevron-right text-body fs-xl p-0 ms-auto"></i>
                                   </a>
                                 </div>
                                 
