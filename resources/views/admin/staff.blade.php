@@ -33,7 +33,8 @@
     Trang quản trị nhân viên
 @endsection
 @section('content')
-<div class="container">
+<div class="page-content">
+    <div class="container-fluid">
     <div class="row">
         <div class="col-12">
             <h3 class=" mb-1">Xin chào <strong style="color: red">{{ Auth::user()->name }}</strong>!</h3>
@@ -70,39 +71,9 @@
                 </form>
             </form>
 
-            <div class="card mt-4">
-                <div class="card-body">
-                    <h5 class="card-title">Tổng quan đơn hàng</h5>
-                    <ul>
-                        @foreach ($currentOrdersByStatus as $status => $count)
-                            <li>
-                                <strong>{{ $status }}:</strong> 
-                                {{ $count }} đơn - 
-                                <span class="{{ $orderChangePercentage[$status] >= 0 ? 'text-success' : 'text-danger' }}">
-                                    {{ $orderChangePercentage[$status] }}%
-                                </span>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-
-            <div class="card mt-4">
-                <div class="card-body">
-                    <h5 class="card-title">Thu nhập</h5>
-                    <p><strong>Thu nhập hiện tại: </strong>{{ number_format($currentIncome, 0) }} VND</p>
-                    <p><strong>Thu nhập trước đó: </strong>{{ number_format($previousIncome, 0) }} VND</p>
-                    <p><strong>Thay đổi thu nhập: </strong>
-                        <span class="{{ $incomeChangePercentage >= 0 ? 'text-success' : 'text-danger' }}">
-                            {{ $incomeChangePercentage }}%
-                        </span>
-                    </p>
-                </div>
-            </div>
-
-             {{-- Biểu đồ số lượng đơn hàng theo trạng thái --}}
-             <div class="row bieu-do">
-                <div class="col-6 col-xl-6 col-md-6">
+            <div class="row mt-4">
+                {{-- Biểu đồ số lượng đơn hàng theo trạng thái --}}
+                <div class="col-8 col-xl-8 col-md-8">
                     <div class="card card-animate">
                         <div class="card-body">
                             <h5 class="card-title">Số lượng đơn hàng theo trạng thái</h5>
@@ -112,19 +83,146 @@
                 </div>
 
                 {{-- Biểu đồ thu nhập --}}
-                <div class="col-6 col-xl-6 col-md-6">
+                {{-- <div class="col-6 col-xl-6 col-md-6">
                     <div class="card card-animate">
                         <div class="card-body">
                             <h5 class="card-title">Thu nhập theo ngày</h5>
                             <canvas id="incomeChart"></canvas>
                         </div>
                     </div>
+                </div> --}}
+                <!-- Tổng quan đơn hàng -->
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Tổng quan đơn hàng</h5>
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Trạng thái</th>
+                                        <th>Số lượng</th>
+                                        {{-- <th>Thay đổi (%)</th> --}}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($currentOrdersByStatus as $status => $count)
+                                        <tr>
+                                            <td><strong>{{ $status }}</strong></td>
+                                            <td>{{ $count }} đơn</td>
+                                            {{-- <td>
+                                                <span class="{{ $orderChangePercentage[$status] >= 0 ? 'text-success' : 'text-danger' }}">
+                                                    {{ $orderChangePercentage[$status] }}%
+                                                </span>
+                                            </td> --}}
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            
+                <!-- Thu nhập -->
+                <div class="col-md-6">
+                    <div class="card" style="height: 190px">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Thu nhập</h5>
+                            <table class="table table-striped table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <th>Tổng thu nhập theo thống kê</th>
+                                        <td>{{ number_format($currentIncome, 0) }} VND</td>
+                                    </tr>
+                                    {{-- <tr>
+                                        <th>Thu nhập trước đó</th>
+                                        <td>{{ number_format($previousIncome, 0) }} VND</td>
+                                    </tr> --}}
+                                    {{-- <tr>
+                                        <th>Thay đổi thu nhập</th>
+                                        <td>
+                                            <span class="{{ $incomeChangePercentage >= 0 ? 'text-success' : 'text-danger' }}">
+                                                {{ $incomeChangePercentage }}%
+                                            </span>
+                                        </td>
+                                    </tr> --}}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                {{-- tổng sản phẩm --}}
+                <div class="col-xl-3 col-md-6">
+                    <div class="card card-animate">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1 overflow-hidden">
+                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Tổng sản phẩm</p>
+                                </div>
+                                
+                                <div class="flex-shrink-0">
+                                    {{-- <h5 class="{{ $customerChangePercentage >= 0 ? 'text-success' : 'text-danger' }} fs-14 mb-0">
+                                        <i class="{{ $customerChangePercentage >= 0 ? 'ri-arrow-right-up-line' : 'ri-arrow-right-down-line' }} fs-13 align-middle"></i>
+                                        {{ number_format(abs($customerChangePercentage), 2) }} %
+                                    </h5> --}}
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-end justify-content-between mb-3">
+                                <div>
+                                    <a href="{{route('product-admin.index')}}" class="text-decoration-underline">Xem tất cả sản phẩm</a>
+                                </div>
+                                <div class="avatar-sm flex-shrink-0 mt-4 ">
+                                    <span class="avatar-title bg-warning-subtle rounded fs-3 text-end">
+                                        <i class="bx bx-user-circle text-warning"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <h4 class="mb-4"><span class="" style="color: red">{{ $totalProducts }} Sản phẩm</span></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- tổng tin tức --}}
+                <div class="col-xl-3 col-md-6">
+                    <div class="card card-animate">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-grow-1 overflow-hidden">
+                                    <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Tổng tin tức</p>
+                                </div>
+                                
+                                <div class="flex-shrink-0">
+                                    {{-- <h5 class="{{ $customerChangePercentage >= 0 ? 'text-success' : 'text-danger' }} fs-14 mb-0">
+                                        <i class="{{ $customerChangePercentage >= 0 ? 'ri-arrow-right-up-line' : 'ri-arrow-right-down-line' }} fs-13 align-middle"></i>
+                                        {{ number_format(abs($customerChangePercentage), 2) }} %
+                                    </h5> --}}
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-end justify-content-between mb-3">
+                                <div>
+                                    <a href="{{route('category_news.index')}}" class="text-decoration-underline">Xem tất cả tin tức</a>
+                                </div>
+                                <div class="avatar-sm flex-shrink-0 mt-4 ">
+                                    <span class="avatar-title bg-warning-subtle rounded fs-3 text-end">
+                                        <i class="bx bx-user-circle text-warning"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <h4 class="mb-4"><span class="" style="color: red">{{ $totalNews }} tin tức</span></h4>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            
+            
+
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>

@@ -78,58 +78,21 @@
                                             <div class="col-md-4 d-flex align-items-end">
                                                 <button type="submit" class="btn btn-primary w-100">Xem thống kê</button>
                                             </div>
-
-                                            {{-- <div class="col-auto mt-4">
-                                                <a href="{{ route('product-admin.create') }}" class="btn btn-soft-success"><i class="ri-add-circle-line align-middle me-1"></i> Thêm sản phẩm mới</a>
-                                            </div>
-                                            
-                                            <div class="col-auto mt-4">
-                                                <button type="button" class="btn btn-soft-info btn-icon waves-effect waves-light layout-rightside-btn"><i class="ri-pulse-line"></i></button>
-                                            </div> --}}
                                         </div>
                                     </form>
                                     
                                 </div>
                             </div>
-                            <!-- end card header -->
                         </div>
                     </div>
 
-                    {{-- <h3 class="text-center mb-4">Biểu đồ thống kê từ: 
-                        <span class="text-danger">{{ $formattedStartDate }}</span> đến 
-                        <span class="text-danger">{{ $formattedEndDate }}</span> 
-                    </h3> --}}
+                    {{-- nút xem thống kê --}}
                     <button id="chartButton" class="stat-button active">Thống kê biểu đồ</button>
                     <button id="listButton" class="stat-button">Thống kê danh sách</button>
                     
                     <!-- Biểu đồ -->
                     <div id="chartSection">
-                    <div class="row mb-4">
-                        <h3>Thống kê nhân viên</h3>
-
-                        <table border="1" cellpadding="5" cellspacing="0">
-                            <thead>
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Tên nhân viên</th>
-                                    <th>Số lượng đơn hàng hoàn thành</th>
-                                    <th>Tổng thu nhập</th>
-                                    <th>Chi tiết</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($employees as $index => $employee)
-                                    <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $employee->name }}</td>
-                                        <td>{{ $employee->orders_count }}</td>
-                                        <td>{{ number_format($employee->orders_sum_total_price, 0, ',', '.') }} VND</td>
-                                        <td><a href="{{ route('employee.orders', $employee->id) }}">Xem</a></td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                        
                         <div class="row">
                             <div class="col-6 col-xl-6 col-md-6">
                                 <div class="card card-animate">
@@ -149,10 +112,104 @@
                                 </div>
                             </div>
                         </div>
+                        <h3>Thống kê nhân viên</h3>
+                        <div class="row mb-8 mt-4">
+                            <div  class="col-6 col-xl-6 col-md-6 pt-3 card">
+                                <table class="table" border="1" cellpadding="5" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Tên nhân viên</th>
+                                            <th>Số lượng đơn hàng hoàn thành</th>
+                                            <th>Tổng thu nhập</th>
+                                            <th>Chi tiết</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($employees as $index => $employee)
+                                            <tr>
+                                                <td>{{ $index + 1 }}</td>
+                                                <td>{{ $employee->name }}</td>
+                                                <td>{{ $employee->orders_count }}</td>
+                                                <td>{{ number_format($employee->orders_sum_total_price, 0, ',', '.') }} VND</td>
+                                                <td><a href="{{ route('employee.orders', $employee->id) }}" class="btn btn-dark btn-sm">Xem</a></td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            {{-- tổng sản phẩm --}}
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card card-animate" style="height: 424px">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-grow-1 overflow-hidden">
+                                                <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Tổng sản phẩm</p>
+                                            </div>
+                                            
+                                            <div class="flex-shrink-0">
+                                                {{-- <h5 class="{{ $customerChangePercentage >= 0 ? 'text-success' : 'text-danger' }} fs-14 mb-0">
+                                                    <i class="{{ $customerChangePercentage >= 0 ? 'ri-arrow-right-up-line' : 'ri-arrow-right-down-line' }} fs-13 align-middle"></i>
+                                                    {{ number_format(abs($customerChangePercentage), 2) }} %
+                                                </h5> --}}
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-end justify-content-between mb-3">
+                                            <div>
+                                                <a href="{{route('product-admin.index')}}" class="text-decoration-underline">Xem tất cả sản phẩm</a>
+                                            </div>
+                                            <div class="avatar-sm flex-shrink-0 mt-4 ">
+                                                <span class="avatar-title bg-warning-subtle rounded fs-3 text-end">
+                                                    <i class="bx bx-user-circle text-warning"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
+                                            <h4 class="mb-4"><span class="" style="color: red">{{ $totalProducts }} Sản phẩm</span></h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {{-- tổng tin tức --}}
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card card-animate" style="height: 424px">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-grow-1 overflow-hidden">
+                                                <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Tổng tin tức</p>
+                                            </div>
+                                            
+                                            <div class="flex-shrink-0">
+                                                {{-- <h5 class="{{ $customerChangePercentage >= 0 ? 'text-success' : 'text-danger' }} fs-14 mb-0">
+                                                    <i class="{{ $customerChangePercentage >= 0 ? 'ri-arrow-right-up-line' : 'ri-arrow-right-down-line' }} fs-13 align-middle"></i>
+                                                    {{ number_format(abs($customerChangePercentage), 2) }} %
+                                                </h5> --}}
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-end justify-content-between mb-3">
+                                            <div>
+                                                <a href="{{route('new_admin.index')}}" class="text-decoration-underline">Xem tất cả tin tức</a>
+                                            </div>
+                                            <div class="avatar-sm flex-shrink-0 mt-4 ">
+                                                <span class="avatar-title bg-warning-subtle rounded fs-3 text-end">
+                                                    <i class="bx bx-user-circle text-warning"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
+                                            <h4 class="mb-4"><span class="" style="color: red">{{ $totalNews }} tin tức</span></h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                     
                     <!-- Danh sách -->
                     <div id="listSection" style="display:none;">
+
                         <!-- Danh sách thống kê từ ... -->
                         <div class="row">
                             <!-- Đơn hàng -->
@@ -244,21 +301,21 @@
                                         <div class="d-flex align-items-center">
                                             <div class="flex-shrink-0">
                                                 <h5 class="{{ $incomeChangePercentage >= 0 ? 'text-success' : 'text-danger' }} fs-14 mb-0">
-                                                    <div style="max-height: 300px; overflow-y: auto;">
-                                                        <table class="table col">
+                                                    <div style="max-height: 300px; width: 580px; overflow-y: auto;">
+                                                        <table class="table w-100">
                                                             <thead>
                                                                 <tr>
                                                                     <th>Ngày</th>
-                                                                    <th>Ngày trước (VND)</th>
-                                                                    <th>Hiện tại (VND)</th>
-                                                                    <th>% thay đổi</th>
+                                                                    {{-- <th>Ngày trước (VND)</th> --}}
+                                                                    <th>Thu nhập (VNĐ)</th>
+                                                                    <th></th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 <?php foreach ($dailyChanges as $change): ?>
                                                                     <tr>
                                                                         <td><?php echo $change['date']; ?></td>
-                                                                        <td><?php echo $change['previous_income']; ?></td>
+                                                                        {{-- <td><?php echo $change['previous_income']; ?></td> --}}
                                                                         <td><?php echo $change['current_income']; ?></td>
                                                                         <td>
                                                                             <?php
@@ -280,29 +337,103 @@
                                     </div>
                                 </div>
                             </div>
+
+
                         </div>
                         
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>Tên nhân viên</th>
-                                    <th>Số đơn hàng đã xử lý</th>
-                                    <th>Tổng thu nhập</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($employees as $employee)
-                                    <tr>
-                                        <td>{{ $employee->name }}</td>
-                                        <td>{{ $employee->orders_count }}</td>
-                                        <td>{{ number_format($employee->orders_sum_total_price, 0, ',', '.') }} VND</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        
-                        
+                        <h3>Thống kê nhân viên</h3>
+                        <div class="row mb-8 mt-4">
+                            <div  class="col-6 col-xl-6 col-md-6 pt-3 card">
+                                <table class="table" border="1" cellpadding="5" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>STT</th>
+                                            <th>Tên nhân viên</th>
+                                            <th>Số lượng đơn hàng hoàn thành</th>
+                                            <th>Tổng thu nhập</th>
+                                            <th>Chi tiết</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($employees as $index => $employee)
+                                            <tr>
+                                                <td>{{ $index + 1 }}</td>
+                                                <td>{{ $employee->name }}</td>
+                                                <td>{{ $employee->orders_count }}</td>
+                                                <td>{{ number_format($employee->orders_sum_total_price, 0, ',', '.') }} VND</td>
+                                                <td><a href="{{ route('employee.orders', $employee->id) }}" class="btn btn-dark btn-sm">Xem</a></td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            {{-- tổng sản phẩm --}}
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card card-animate" style="height: 424px">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-grow-1 overflow-hidden">
+                                                <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Tổng sản phẩm</p>
+                                            </div>
+                                            
+                                            <div class="flex-shrink-0">
+                                                {{-- <h5 class="{{ $customerChangePercentage >= 0 ? 'text-success' : 'text-danger' }} fs-14 mb-0">
+                                                    <i class="{{ $customerChangePercentage >= 0 ? 'ri-arrow-right-up-line' : 'ri-arrow-right-down-line' }} fs-13 align-middle"></i>
+                                                    {{ number_format(abs($customerChangePercentage), 2) }} %
+                                                </h5> --}}
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-end justify-content-between mb-3">
+                                            <div>
+                                                <a href="{{route('product-admin.index')}}" class="text-decoration-underline">Xem tất cả sản phẩm</a>
+                                            </div>
+                                            <div class="avatar-sm flex-shrink-0 mt-4 ">
+                                                <span class="avatar-title bg-warning-subtle rounded fs-3 text-end">
+                                                    <i class="bx bx-user-circle text-warning"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
+                                            <h4 class="mb-4"><span class="" style="color: red">{{ $totalProducts }} Sản phẩm</span></h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
+                            {{-- tổng tin tức --}}
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card card-animate" style="height: 424px">
+                                    <div class="card-body">
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-grow-1 overflow-hidden">
+                                                <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Tổng tin tức</p>
+                                            </div>
+                                            
+                                            <div class="flex-shrink-0">
+                                                {{-- <h5 class="{{ $customerChangePercentage >= 0 ? 'text-success' : 'text-danger' }} fs-14 mb-0">
+                                                    <i class="{{ $customerChangePercentage >= 0 ? 'ri-arrow-right-up-line' : 'ri-arrow-right-down-line' }} fs-13 align-middle"></i>
+                                                    {{ number_format(abs($customerChangePercentage), 2) }} %
+                                                </h5> --}}
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-end justify-content-between mb-3">
+                                            <div>
+                                                <a href="{{route('new_admin.index')}}" class="text-decoration-underline">Xem tất cả tin tức</a>
+                                            </div>
+                                            <div class="avatar-sm flex-shrink-0 mt-4 ">
+                                                <span class="avatar-title bg-warning-subtle rounded fs-3 text-end">
+                                                    <i class="bx bx-user-circle text-warning"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
+                                            <h4 class="mb-4"><span class="" style="color: red">{{ $totalNews }} tin tức</span></h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                  
+                        
                     </div>
                     
                 </div> 

@@ -30,17 +30,10 @@ class   CategoryController extends Controller
             ->paginate(9); // Phân trang, mỗi trang 9 sản phẩm
 
         // Lấy sản phẩm mới nhất
-        $newestProducts = Product::with(['variants.color', 'variants.capacity'])
-            ->orderBy('created_at', 'desc') // Sắp xếp theo thời gian tạo
-            ->paginate(9);
+        $newestProducts = Product::latest('created_at')->paginate(9);
 
         return view('client.categories.shop-catalog', compact('categories', 'latestProducts', 'newestProducts'));
     }
-
-
-
-
-
 
     public function getProductsByCategory($id, Request $request)
     {

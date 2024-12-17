@@ -84,15 +84,17 @@
                                     </td> --}}
                                     <td class="gridjs-td">
                                         <div class="d-flex justify-content-center">
-                                            {{-- <a href="{{route('admin.edit', $user)}}" class="btn btn-warning btn-sm me-2">Sửa</a> --}}
+                                            {{-- Chỉ hiển thị nút xóa nếu role không phải là admin --}}
+                                            @if($user->role !== 'admin')
                                             <form action="{{route('admins.destroy', $user)}}" method="POST">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" onclick="return confirm('xác nhận xóa!')" class="btn btn-dark btn-sm me-2"> <i class="fa-solid fa-delete-left"></i></button>
+                                                <button type="submit" onclick="return confirm('xác nhận xóa!')" class="btn btn-dark btn-sm me-2"> 
+                                                    <i class="fa-solid fa-delete-left"></i>
+                                                </button>
                                             </form>
+                                            @endif
                                         </div>
-                                    </td>
-                                    <td>
                                     </td>
                                 </tr>
                             @endforeach

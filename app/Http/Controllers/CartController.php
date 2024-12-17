@@ -98,8 +98,9 @@ class CartController extends Controller
             'model-options' => 'required|integer|exists:capacities,id',
             'color-options' => 'required|integer|exists:colors,id',
             'quantity' => 'required|integer|min:1',
+        ],[
+            'color-options' => 'Vui lòng chọn màu sắc sản phẩm'
         ]);
-
         $productId = $request->input('product_id');
         $modelId = $request->input('model-options');
         $colorId = $request->input('color-options');
@@ -177,7 +178,7 @@ class CartController extends Controller
         return redirect()->route('cart.index')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
     }
 
-    // public function updateQuantity(Request $request)
+    // public function updateQuantity(Request $request) //lỗi
     // {
     //     $productId = $request->input('productId');
     //     $modelId = $request->input('modelId');
@@ -234,131 +235,66 @@ class CartController extends Controller
     //     ]);
     // }
 
-    // public function updateQuantity(Request $request)
-    // {
-    //     $productId = $request->input('productId');
-    //     $modelId = $request->input('modelId');
-    //     $colorId = $request->input('colorId');
-    //     $quantity = (int) $request->input('quantity');
-    //     $totalPrice = 0;
-
-    //     if (auth('customer')->check()) {
-    //         $customerId = auth('customer')->id();
-    //         $cartItem = Cart::where('customer_id', $customerId)
-    //             ->where('product_id', $productId)
-    //             ->whereHas('variant', function ($query) use ($modelId, $colorId) {
-    //                 $query->where('capacity_id', $modelId)->where('color_id', $colorId);
-    //             })
-    //             ->first();
-
-    //         if ($cartItem) {
-    //             if ($quantity > 0) {
-    //                 $cartItem->quantity = $quantity;
-    //                 $cartItem->save();
-    //             } else {
-    //                 $cartItem->delete();
-    //             }
-    //         }
-
-    //         $cartItems = Cart::where('customer_id', $customerId)->get();
-    //         foreach ($cartItems as $item) {
-    //             $totalPrice += $item->price * $item->quantity;
-    //         }
-    //     } else {
-    //         $cart = session()->get('cart', []);
-    //         if (isset($cart[$productId][$modelId][$colorId])) {
-    //             if ($quantity > 0) {
-    //                 $cart[$productId][$modelId][$colorId]['quantity'] = $quantity;
-    //             } else {
-    //                 unset($cart[$productId][$modelId][$colorId]);
-    //                 if (empty($cart[$productId][$modelId])) unset($cart[$productId][$modelId]);
-    //                 if (empty($cart[$productId])) unset($cart[$productId]);
-    //             }
-    //         }
-    //         session()->put('cart', $cart);
-
-    //         foreach ($cart as $product) {
-    //             foreach ($product as $model) {
-    //                 foreach ($model as $color) {
-    //                     $totalPrice += $color['price'] * $color['quantity'];
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     $itemTotal = $quantity > 0 ? number_format($cartItem ? $cartItem->price * $quantity : $cart[$productId][$modelId][$colorId]['price'] * $quantity, 0, ',', '.') : '0';
-
-    //     return response()->json([
-    //         'success' => true,
-    //         'itemTotal' => $itemTotal,
-    //         'totalPrice' => number_format($totalPrice, 0, ',', '.')
-    //     ]);
-    // }
     public function updateQuantity(Request $request)
-{
-    $productId = $request->input('productId');
-    $modelId = $request->input('modelId');
-    $colorId = $request->input('colorId');
-    $quantity = (int) $request->input('quantity');
-    $totalPrice = 0;
+    {
+        $productId = $request->input('productId');
+        $modelId = $request->input('modelId');
+        $colorId = $request->input('colorId');
+        $quantity = (int) $request->input('quantity');
+        $totalPrice = 0;
 
-    if (auth('customer')->check()) {
-        $customerId = auth('customer')->id();
-        $cartItem = Cart::where('customer_id', $customerId)
-            ->where('product_id', $productId)
-            ->whereHas('variant', function ($query) use ($modelId, $colorId) {
-                $query->where('capacity_id', $modelId)->where('color_id', $colorId);
-            })
-            ->first();
+        if (auth('customer')->check()) {
+            $customerId = auth('customer')->id();
+            $cartItem = Cart::where('customer_id', $customerId)
+                ->where('product_id', $productId)
+                ->whereHas('variant', function ($query) use ($modelId, $colorId) {
+                    $query->where('capacity_id', $modelId)->where('color_id', $colorId);
+                })
+                ->first();
 
-        if ($cartItem) {
-            if ($quantity > 0) {
-                $cartItem->quantity = $quantity;
-                $cartItem->save();
-            } else {
-                $cartItem->delete();
+            if ($cartItem) {
+                if ($quantity > 0) {
+                    $cartItem->quantity = $quantity;
+                    $cartItem->save();
+                } else {
+                    $cartItem->delete();
+                }
             }
-        }
 
-        // Cập nhật tổng giá trị giỏ hàng
-        $cartItems = Cart::where('customer_id', $customerId)->get();
-        foreach ($cartItems as $item) {
-            $totalPrice += $item->price * $item->quantity;
-        }
-    } else {
-        // Lấy giỏ hàng từ session
-        $cart = session()->get('cart', []);
-        if (isset($cart[$productId][$modelId][$colorId])) {
-            if ($quantity > 0) {
-                $cart[$productId][$modelId][$colorId]['quantity'] = $quantity;
-            } else {
-                unset($cart[$productId][$modelId][$colorId]);
-                if (empty($cart[$productId][$modelId])) unset($cart[$productId][$modelId]);
-                if (empty($cart[$productId])) unset($cart[$productId]);
+            $cartItems = Cart::where('customer_id', $customerId)->get();
+            foreach ($cartItems as $item) {
+                $totalPrice += $item->price * $item->quantity;
             }
-        }
-        session()->put('cart', $cart);
+        } else {
+            $cart = session()->get('cart', []);
+            if (isset($cart[$productId][$modelId][$colorId])) {
+                if ($quantity > 0) {
+                    $cart[$productId][$modelId][$colorId]['quantity'] = $quantity;
+                } else {
+                    unset($cart[$productId][$modelId][$colorId]);
+                    if (empty($cart[$productId][$modelId])) unset($cart[$productId][$modelId]);
+                    if (empty($cart[$productId])) unset($cart[$productId]);
+                }
+            }
+            session()->put('cart', $cart);
 
-        // Tính tổng giá trị giỏ hàng
-        foreach ($cart as $product) {
-            foreach ($product as $model) {
-                foreach ($model as $color) {
-                    $totalPrice += $color['price'] * $color['quantity'];
+            foreach ($cart as $product) {
+                foreach ($product as $model) {
+                    foreach ($model as $color) {
+                        $totalPrice += $color['price'] * $color['quantity'];
+                    }
                 }
             }
         }
+
+        $itemTotal = $quantity > 0 ? number_format($cartItem ? $cartItem->price * $quantity : $cart[$productId][$modelId][$colorId]['price'] * $quantity, 0, ',', '.') : '0';
+
+        return response()->json([
+            'success' => true,
+            'itemTotal' => $itemTotal,
+            'totalPrice' => number_format($totalPrice, 0, ',', '.')
+        ]);
     }
-
-    // Tính tổng giá trị của item hiện tại
-    $itemTotal = $quantity > 0 ? number_format($cartItem ? $cartItem->price * $quantity : $cart[$productId][$modelId][$colorId]['price'] * $quantity, 0, ',', '.') : '0';
-
-    return response()->json([
-        'success' => true,
-        'itemTotal' => $itemTotal,
-        'totalPrice' => number_format($totalPrice, 0, ',', '.')
-    ]);
-}
-
     
     public function remove($productId)
     {
@@ -401,21 +337,24 @@ class CartController extends Controller
     }
 
 
-
     public function checkout(Request $request)
     {
         $cart = session()->get('cart', []); 
         $outOfStockItems = [];  
+        $cartItems = [];
         $totalPrice = 0;
         $totalQuantity = 0;
 
         // Kiểm tra khách hàng đã đăng nhập hay chưa
         if (auth('customer')->check()) {
             $customerId = auth('customer')->id();
-            $cartItems = Cart::where('customer_id', $customerId)->with(['product', 'variant.capacity', 'variant.color'])->get();
+            $cartItems = Cart::where('customer_id', $customerId)
+                ->with(['product', 'variant.capacity', 'variant.color'])
+                ->get();
 
             foreach ($cartItems as $cartItem) {
                 $variant = $cartItem->variant;
+
                 if (!$variant) {
                     $outOfStockItems[] = 'Sản phẩm không hợp lệ hoặc không tồn tại.';
                     continue;
@@ -425,6 +364,7 @@ class CartController extends Controller
                     $outOfStockItems[] = 'Số lượng của sản phẩm "' . $cartItem->product->name . '" vượt quá số lượng tồn kho. Tồn kho hiện tại: ' . $variant->stock . ' sản phẩm.';
                 }
 
+                $cartItem->image_url = $cartItem->product->image_url ?? 'default_image.jpg'; // Gán ảnh sản phẩm
                 $totalPrice += $cartItem->quantity * $cartItem->price;
                 $totalQuantity += $cartItem->quantity;
             }
@@ -455,18 +395,16 @@ class CartController extends Controller
             }
         }
 
-        // Kiểm tra các sản phẩm vượt quá số lượng tồn kho
         if (!empty($outOfStockItems)) {
             return back()->withErrors(['quantity' => $outOfStockItems]);
         }
 
-        // Kiểm tra voucher và loại bỏ nếu không đủ điều kiện
+        // Kiểm tra voucher
         $voucher = session('voucher', null);
         if ($voucher) {
             $voucherDetails = Voucher::where('code', $voucher['code'])->first();
 
             if ($totalPrice < $voucherDetails->min_order_value) {
-                // Nếu tổng giá trị giỏ hàng không đủ điều kiện, loại bỏ voucher
                 session()->forget('voucher');
                 return back()->with('error', 'Giỏ hàng không đủ điều kiện để áp dụng mã giảm giá.');
             }
@@ -484,10 +422,9 @@ class CartController extends Controller
         $defaultAddress = $customer ? $addresses->firstWhere('is_default', 1) : null;
 
         return view('client.page.checkout.index', compact(
-            'cart', 'totalPrice', 'totalQuantity', 'estimatedTotal', 'defaultAddress', 'addresses', 'vouchers'
+            'cart', 'cartItems', 'totalPrice', 'totalQuantity', 'estimatedTotal', 'defaultAddress', 'addresses', 'vouchers'
         ));
     }
-
 
 
 

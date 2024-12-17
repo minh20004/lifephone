@@ -877,38 +877,6 @@
                                 </button>
                             </div>
                         </div>
-                        {{-- Biến thể thông tin chi tiết --}}
-                        {{-- <div
-                            class="product-card-details position-absolute top-100 start-0 w-100 bg-body rounded-bottom shadow mt-n2 p-3 pt-1">
-                            <span class="position-absolute top-0 start-0 w-100 bg-body mt-n2 py-2"></span>
-                            <ul class="list-unstyled d-flex flex-column gap-2 m-0">
-                                <li class="d-flex align-items-center">
-                                    <span class="fs-xs">Display:</span>
-                                    <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
-                                    <span class="text-dark-emphasis fs-xs fw-medium text-end">6.1" XDR</span>
-                                </li>
-                                <li class="d-flex align-items-center">
-                                    <span class="fs-xs">Capacity:</span>
-                                    <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
-                                    <span class="text-dark-emphasis fs-xs fw-medium text-end">128 GB</span>
-                                </li>
-                                <li class="d-flex align-items-center">
-                                    <span class="fs-xs">Chip:</span>
-                                    <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
-                                    <span class="text-dark-emphasis fs-xs fw-medium text-end">A15 Bionic</span>
-                                </li>
-                                <li class="d-flex align-items-center">
-                                    <span class="fs-xs">Camera:</span>
-                                    <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
-                                    <span class="text-dark-emphasis fs-xs fw-medium text-end">12 + 12 MP</span>
-                                </li>
-                                <li class="d-flex align-items-center">
-                                    <span class="fs-xs">Weight:</span>
-                                    <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
-                                    <span class="text-dark-emphasis fs-xs fw-medium text-end">172 grams</span>
-                                </li>
-                            </ul>
-                        </div> --}}
                     </div>
                 </div>
             @endforeach

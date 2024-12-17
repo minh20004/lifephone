@@ -132,7 +132,7 @@
             <h2 class="h6 mb-0">Email</h2>
           </div>
           <!-- Button trigger modal -->
-          <a class="nav-link text-decoration-underline p-0" href="#" data-bs-toggle="modal" data-bs-target="#emailChangeModal">Thay đổi</a>
+          {{-- <a class="nav-link text-decoration-underline p-0" href="#" data-bs-toggle="modal" data-bs-target="#emailChangeModal">Thay đổi</a> --}}
         </div>
       
         <!-- Contact Info Preview -->
@@ -259,26 +259,23 @@
 
 
       <!-- Password Section -->
-      <div class="border-bottom py-4">
-        <!-- Header -->
+      {{-- <div class="border-bottom py-4">
         <div class="nav flex-nowrap align-items-center justify-content-between pb-1 mb-3">
           <div class="d-flex align-items-center gap-3 me-4">
             <h2 class="h6 mb-0">Password</h2>
           </div>
-          <!-- Trigger Modal -->
           <a class="nav-link text-decoration-underline p-0" href="#" data-bs-toggle="modal" data-bs-target="#passwordModal">Thay đổi</a>
         </div>
 
-        <!-- Password Preview -->
         <div class="password-preview">
           <ul class="list-unstyled fs-sm m-0">
             <li>**************</li>
           </ul>
         </div>
-      </div>
+      </div> --}}
 
       <!-- Modal for Password Change -->
-      <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
+      {{-- <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
@@ -292,7 +289,7 @@
 
                 <!-- Current Password -->
                 <div class="col-sm-6">
-                  <label for="current-password" class="form-label">Current Password</label>
+                  <label for="current-password" class="form-label">Mật khẩu hiện tại</label>
                   <div class="password-toggle">
                     <input type="password" class="form-control @error('current_password') is-invalid @enderror" id="current-password" name="current_password" placeholder="Enter your current password" required>
                     <label class="password-toggle-button" aria-label="Show/hide password">
@@ -306,9 +303,9 @@
 
                 <!-- New Password -->
                 <div class="col-sm-6">
-                  <label for="new-password" class="form-label">New Password</label>
+                  <label for="new-password" class="form-label">Mật khẩu mới</label>
                   <div class="password-toggle">
-                    <input type="password" class="form-control @error('new_password') is-invalid @enderror" id="new-password" name="new_password" placeholder="Create new password" required>
+                    <input type="password" class="form-control @error('new_password') is-invalid @enderror" id="new-password" name="password" placeholder="Create new password" required>
                     <label class="password-toggle-button" aria-label="Show/hide password">
                       <input type="checkbox" class="btn-check">
                     </label>
@@ -320,7 +317,7 @@
 
                 <!-- Confirm New Password -->
                 <div class="col-sm-6">
-                  <label for="new-password-confirmation" class="form-label">Confirm New Password</label>
+                  <label for="new-password-confirmation" class="form-label">Xác nhận mật khẩu mới</label>
                   <div class="password-toggle">
                     <input type="password" class="form-control @error('new_password_confirmation') is-invalid @enderror" id="new-password-confirmation" name="new_password_confirmation" placeholder="Confirm new password" required>
                     <label class="password-toggle-button" aria-label="Show/hide password">
@@ -343,7 +340,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> --}}
 
 
 

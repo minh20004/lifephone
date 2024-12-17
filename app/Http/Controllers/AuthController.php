@@ -20,6 +20,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\RateLimiter;
 use App\Models\Conversation;
 use App\Models\Message;
+use App\Models\News;
 
 class AuthController extends Controller
 {
@@ -154,6 +155,7 @@ class AuthController extends Controller
         }
         
         $totalProducts = Product::count();
+        $totalNews = News::count();
         // Tạo mảng các ngày trong khoảng thời gian đã chọn
         $dates = [];
         $currentDate = $startDate->copy();
@@ -213,7 +215,8 @@ class AuthController extends Controller
             'currentDate',
             'dailyIncome',
             'totalIncome',
-            'employees'
+            'employees',
+            'totalNews'
 
         ));
     }
@@ -335,7 +338,8 @@ class AuthController extends Controller
                 ->orderBy('date', 'desc')
                 ->pluck('income');
 
-
+        $totalProducts = Product::count();
+        $totalNews = News::count();
         // Truyền dữ liệu vào view
         return view('admin.staff', compact(
             'currentOrdersByStatus',
@@ -349,50 +353,52 @@ class AuthController extends Controller
             'formattedStartDate',
             'formattedEndDate',
             'dates',
-            'incomeData'
+            'incomeData',
+            'totalProducts',
+            'totalNews'
         ));
     }
 
     public function showEmployeeOrders($employeeId, Request $request)
-{
-    // Khởi tạo mảng $orders rỗng để tránh lỗi khi không có đơn hàng
-    $orders = collect();
+    {
+        // Khởi tạo mảng $orders rỗng để tránh lỗi khi không có đơn hàng
+        $orders = collect();
 
-    // Lấy thông tin nhân viên
-    $employee = User::findOrFail($employeeId);
+        // Lấy thông tin nhân viên
+        $employee = User::findOrFail($employeeId);
 
-    // Kiểm tra quyền của admin và nhân viên
-    if (Auth::guard('admin')->check()) {
-        // Admin có thể xem tất cả đơn hàng của nhân viên
-        $orders = Order::where('user_id', $employeeId)
-            ->where('status', 'Đã hoàn thành') // Lọc theo trạng thái "Đã hoàn thành"
-            ->whereBetween('updated_at', [
-                $request->input('start_date', now()->startOfMonth()),
-                $request->input('end_date', now()->endOfMonth())
-            ]) // Lọc theo thời gian
-            ->get();
-    } elseif (Auth::guard('employee')->check()) {
-        // Nhân viên chỉ có thể xem đơn hàng của chính mình
-        $orders = Order::where('user_id', Auth::guard('employee')->user()->id)
-            ->where('status', 'Đã hoàn thành')
-            ->whereBetween('updated_at', [
-                $request->input('start_date', now()->startOfMonth()),
-                $request->input('end_date', now()->endOfMonth())
-            ])
-            ->get();
-    } else {
-        // Nếu không phải admin hay nhân viên, chuyển hướng về login
-        return redirect()->route('login')->withErrors('Bạn không có quyền truy cập.');
+        // Kiểm tra quyền của admin và nhân viên
+        if (Auth::guard('admin')->check()) {
+            // Admin có thể xem tất cả đơn hàng của nhân viên
+            $orders = Order::where('user_id', $employeeId)
+                ->where('status', 'Đã hoàn thành') // Lọc theo trạng thái "Đã hoàn thành"
+                ->whereBetween('updated_at', [
+                    $request->input('start_date', now()->startOfMonth()),
+                    $request->input('end_date', now()->endOfMonth())
+                ]) // Lọc theo thời gian
+                ->get();
+        } elseif (Auth::guard('employee')->check()) {
+            // Nhân viên chỉ có thể xem đơn hàng của chính mình
+            $orders = Order::where('user_id', Auth::guard('employee')->user()->id)
+                ->where('status', 'Đã hoàn thành')
+                ->whereBetween('updated_at', [
+                    $request->input('start_date', now()->startOfMonth()),
+                    $request->input('end_date', now()->endOfMonth())
+                ])
+                ->get();
+        } else {
+            // Nếu không phải admin hay nhân viên, chuyển hướng về login
+            return redirect()->route('login')->withErrors('Bạn không có quyền truy cập.');
+        }
+
+        // Kiểm tra nếu không có đơn hàng
+        if ($orders->isEmpty()) {
+            return redirect()->back()->with('message', 'Không có đơn hàng nào trong khoảng thời gian này.');
+        }
+
+        // Truyền danh sách đơn hàng và thông tin nhân viên vào view
+        return view('admin.page.order.employee_orders', compact('orders', 'employee'));
     }
-
-    // Kiểm tra nếu không có đơn hàng
-    if ($orders->isEmpty()) {
-        return redirect()->back()->with('message', 'Không có đơn hàng nào trong khoảng thời gian này.');
-    }
-
-    // Truyền danh sách đơn hàng và thông tin nhân viên vào view
-    return view('admin.page.order.employee_orders', compact('orders', 'employee'));
-}
 
 
     
@@ -407,18 +413,6 @@ class AuthController extends Controller
         // Truyền thông tin đơn hàng vào view
         return view('admin.page.order.employee_order_show', compact('order'));
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -488,30 +482,57 @@ class AuthController extends Controller
         return view('admin.page.member.edit', compact('user'));
     }
     // Update an existing user
-    public function update(Request $request, $id)
+    // public function update(Request $request, $id)
+    // {
+    //     $request->validate([
+    //         'email' => 'required|string|email|max:255|unique:users,email,'.$id,
+    //         'name' => 'required|string|max:255',
+    //         'role' => 'required|in:admin,staff,customer',
+    //         'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    //     ]);
+
+    //     $user = User::findOrFail($id);
+    //     $data = $request->except('avatar');
+
+    //     if ($request->hasFile('avatar')) {
+    //         // Xóa ảnh cũ nếu cần
+    //         if ($user->avatar) {
+    //             Storage::delete($user->avatar);
+    //         }
+    //         // Lưu ảnh mới
+    //         $data['avatar'] = Storage::put('avatars', $request->file('avatar'));
+    //     }
+
+    //     $user->update($data);
+
+    //     return redirect()->route('admins.index')->with('success', 'Cập nhật thông tin thành công');
+    // }
+
+    public function update(Request $request)
     {
         $request->validate([
-            'email' => 'required|string|email|max:255|unique:users,email,'.$id,
             'name' => 'required|string|max:255',
-            'role' => 'required|in:admin,staff,customer',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'email' => 'required|email|max:255|unique:users,email,' . Auth::id(),
+            'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $user = User::findOrFail($id);
-        $data = $request->except('avatar');
+        $user = Auth::user();
+        $user->name = $request->name;
+        $user->email = $request->email;
 
         if ($request->hasFile('avatar')) {
-            // Xóa ảnh cũ nếu cần
-            if ($user->avatar) {
-                Storage::delete($user->avatar);
+            // Xóa ảnh cũ nếu có
+            if ($user->avatar && Storage::exists('public/' . $user->avatar)) {
+                Storage::delete('public/' . $user->avatar);
             }
             // Lưu ảnh mới
-            $data['avatar'] = Storage::put('avatars', $request->file('avatar'));
+            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar = $avatarPath;
         }
 
-        $user->update($data);
+        $user->save();
 
-        return redirect()->route('admins.index')->with('success', 'Cập nhật thông tin thành công');
+        return redirect()->back()->with('success', 'Cập nhật hồ sơ thành công!');
     }
 
     public function destroy($id)
@@ -637,7 +658,7 @@ class AuthController extends Controller
     {
         $customerId = auth('customer')->id();
     
-    // Xóa voucher trong session khi người dùng đăng xuất
+        // Xóa voucher trong session khi người dùng đăng xuất
         session()->forget('voucher');
 
         Auth::guard('customer')->logout();
@@ -870,14 +891,14 @@ class AuthController extends Controller
     public function updateContact(Request $request, $id)
     {
         $request->validate([
-            'email' => 'required|email|max:255',
-            'phone' => 'required|regex:/^\+?\d{10,15}$/',  // Kiểm tra số điện thoại hợp lệ
+            // 'email' => 'required|email|max:255',
+            'phone' => 'required|regex:/^\+?\d{10}$/', 
         ]);
 
         try {
             $user = Customer::findOrFail($id);
             $user->update([
-                'email' => $request->email,
+                // 'email' => $request->email,
                 'phone' => $request->phone,
             ]);
 
@@ -923,7 +944,7 @@ class AuthController extends Controller
         // Xác thực dữ liệu
         $request->validate([
             'current_password' => 'required',
-            'new_password' => 'required|min:8|confirmed', // Xác nhận mật khẩu mới
+            'password' => 'required|min:8|confirmed', // Xác nhận mật khẩu mới
         ]);
 
         // Lấy người dùng hiện tại
@@ -1004,7 +1025,7 @@ class AuthController extends Controller
                                 ->get();
 
         $ordersCompleted = Order::where('customer_id', $customerId)
-                                ->where('status', 'Hoàn Thành')
+                                ->where('status', 'Đã hoàn thành')
                                 ->orderBy('created_at', 'desc')
                                 ->get();
 
@@ -1108,8 +1129,12 @@ class AuthController extends Controller
 
         // Nếu không tìm thấy đơn hàng
         if (!$order) {
-            return redirect()->route('order.history')->with('error', 'Đơn hàng không tồn tại hoặc bạn không có quyền xem.');
+            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Đơn hàng không tồn tại hoặc bạn không có quyền xem.
+                  </div>';
+            exit;
         }
+        
 
         return view('client.page.auth.page.order-history.public-order.public_order_detail', compact('order'));
     }

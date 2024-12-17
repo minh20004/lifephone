@@ -190,10 +190,18 @@ class ProductController extends Controller
         // Lấy giá nhỏ nhất từ các biến thể còn hàng
         $minPrice = $availableVariants->min('price_difference');
 
-        // Trả về view với dữ liệu sản phẩm và giá nhỏ nhất
+        // Lấy các sản phẩm tương tự trong cùng danh mục
+        $relatedProducts = Product::where('category_id', $product->category_id)
+                                    ->where('id', '!=', $product->id)
+                                    ->inRandomOrder()
+                                    ->take(4) // Lấy tối đa 4 sản phẩm tương tự
+                                    ->get();
+
+        // Trả về view với dữ liệu sản phẩm, giá nhỏ nhất và sản phẩm tương tự
         return view('client.page.detail-product.general', compact(
             'product',
-            'minPrice'
+            'minPrice',
+            'relatedProducts'
         ));
     }
 

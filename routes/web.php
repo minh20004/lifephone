@@ -52,7 +52,8 @@ Route::get('/', [FrontendControlle::class, 'index'])->name('home');
 // Route cho người dùng bình thường - chỉ cần xác thực người dùng
 Route::middleware('auth:customer')->group(function () {
     Route::resource('product', ProductController::class)->only([
-        'index', 'show'
+        'index',
+        'show'
     ]);
 });
 
@@ -97,7 +98,7 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
 
     Route::get('/admin', [AuthController::class, 'Dashboards'])->name('admin.home');
     Route::get('/admin/staff', [AuthController::class, 'staff'])->name('admin.staff');
-
+    Route::put('/profile/update', [AuthController::class, 'update'])->name('profile.update');
 
 
     // Route hiển thị danh sách đơn hàng của nhân viên
@@ -121,7 +122,6 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
         Route::get('/trashed', [ProductController::class, 'trashed'])->name('product.trashed');
         Route::post('/restore/{id}', [ProductController::class, 'restore'])->name('product.restore');
         Route::get('trashed/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
-
     });
     // order
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
@@ -146,7 +146,7 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
     Route::get('/subscriptions/list', [SubscriptionController::class, 'index'])->name('subscriptions.list');
     // routes/web.php
     Route::post('/subscriptions/send', [SubscriptionController::class, 'sendBulkEmails'])->name('subscriptions.send');
-    
+
     Route::get('/subscriptions/{id}', [SubscriptionController::class, 'detailsub'])->name('subscriptions.detailsub');
 
     Route::get('/get-statistics', [DashboardController::class, 'getStatistics'])->name('admin.getStatistics');
@@ -156,7 +156,6 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
     Route::prefix('categories')->group(function () {
         Route::get('/trashed', [CategoryController::class, 'trashed'])->name('category.trashed');
         Route::post('/restore/{id}', [CategoryController::class, 'restore'])->name('category.restore');
-
     });
     // Route dung lượng bị xóa
     Route::prefix('capacities')->group(function () {
@@ -171,14 +170,18 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
     // chuyển trang biến thể
     Route::get('/product/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
     //router review và news
-    Route::resource('admin/review',ReviewController::class);
+    Route::resource('admin/review', ReviewController::class);
     // Route::resource('new_admin',  NewController::class);
 
     // thông báo khi đặt hàng thành công
     Route::get('/admin/notifications', [OrderNotificationController::class, 'index'])->name('admin.notifications');
     Route::post('/admin/notifications/{id}/read', [OrderNotificationController::class, 'markAsRead'])->name('admin.notifications.read');
     Route::get('/admin/chatBoard', [AuthController::class, 'indexChatBoard'])->name('admin.chatBoard');
-
+    //phục hồi tin tức ĐÃ XÓA 
+    Route::get('/admin/new_admin/trashed', [NewController::class, 'trashed'])->name('new_admin.trashed');
+    Route::put('/admin/new_admin/restore/{id}', [NewController::class, 'restore'])->name('new_admin.restore');
+    Route::get('/admin/category_news/trashed', [CategoryNewsController::class, 'trashed'])->name('category_news.trashed');
+    Route::put('/admin/category_news/restore/{id}', [CategoryNewsController::class, 'restore'])->name('category_news.restore');
 });
 // end auth admin ------------------------------------------------------------------------------------------------------------------
 
@@ -269,6 +272,8 @@ Route::get('/cart/offcanvas', [CartController::class, 'getCart'])->name('cart.of
 
 // thanh toán
 Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
+Route::post('/checkout/post', [CartController::class, 'checkout'])->name('checkout-post');
+
 Route::post('/order/store', [OrderController::class, 'storeOrder'])->name('order.store');
 Route::get('/order-success', function () {
     return view('client.page.checkout.order_success'); // Thông báo thành công
@@ -297,7 +302,7 @@ Route::get('/public-order-detail/{id}', [AuthController::class, 'publicDetail'])
 Route::get('/cart/item-count', [CartController::class, 'getCartItemCount'])->name('cart.item-count'); //cập nhật số lượng trong giỏ hàng
 
 // thanh toán vnpay
-Route::post('/vnpay-payment', [OrderController::class,'vnpay_payment'])->name('vnpay.payment');
+Route::post('/vnpay-payment', [OrderController::class, 'vnpay_payment'])->name('vnpay.payment');
 
 Route::post('/order', [OrderController::class, 'storeOrder'])->name('order.store');
 
