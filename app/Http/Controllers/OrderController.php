@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\Address;
 use App\Models\Voucher;
 use App\Models\OrderItem;
+use App\Models\VoucherUsage;
 use Illuminate\Http\Request;
 use App\Models\ProductVariant;
 use App\Models\UserNotification;
@@ -96,6 +97,11 @@ class OrderController extends Controller
             'address' => 'required|string|max:255',
             'payment_method' => 'required|string|in:COD,Online',
             'description' => 'nullable|string',
+        ],[
+            'name' => "Tên người nhận không được để trống",
+            'phone' => "Số điện thoại không được để trống",
+            'email' => "Email không được để trống",
+            'address' => "Địa chỉ không được để trống",
         ]);
 
         $customerId = auth('customer')->check() ? auth('customer')->id() : null;
@@ -595,7 +601,12 @@ class OrderController extends Controller
     
     public function applyVoucher(Request $request)
     {
-        // Xác định xem có sử dụng mã giảm giá nhập tay hay voucher đã chọn
+        // Kiểm tra xem khách hàng đã đăng nhập chưa
+        if (!auth('customer')->check()) {
+            return redirect()->route('customer.login')->with('error', 'Bạn phải đăng nhập để sử dụng voucher.');
+        }
+
+        // Kiểm tra xem có sử dụng mã giảm giá nhập tay hay voucher đã chọn
         if ($request->has('selected_voucher')) {
             $voucher = $this->getVoucherByCode($request->selected_voucher);
         } elseif ($request->has('voucher_code')) {
@@ -615,8 +626,14 @@ class OrderController extends Controller
             return redirect()->back()->with('error', 'Đơn hàng không đủ điều kiện áp dụng mã giảm giá.');
         }
 
-        if ($voucher->usage_limit <= 0) {
-            return redirect()->back()->with('error', 'Mã giảm giá này đã hết lượt sử dụng.');
+        // Kiểm tra xem khách hàng đã sử dụng voucher này chưa
+        $customer = auth('customer')->user();
+        $existingVoucherUsage = VoucherUsage::where('customer_id', $customer->id)
+            ->where('voucher_id', $voucher->id)
+            ->exists();
+
+        if ($existingVoucherUsage) {
+            return redirect()->back()->with('error', 'Bạn đã sử dụng mã giảm giá này rồi.');
         }
 
         // Tính toán số tiền giảm giá
@@ -624,11 +641,18 @@ class OrderController extends Controller
 
         // Giảm số lượt sử dụng của voucher
         $voucher->decrement('usage_limit');
+        $voucher->save();  // Lưu lại thay đổi vào cơ sở dữ liệu
 
         // Lưu thông tin voucher vào session
         session()->put('voucher', [
             'code' => $voucher->code,
             'discount' => $discount,
+        ]);
+
+        // Lưu thông tin voucher đã sử dụng vào bảng voucher_usages
+        VoucherUsage::create([
+            'customer_id' => $customer->id,
+            'voucher_id' => $voucher->id,
         ]);
 
         // Tính toán tổng giá trị sau khi áp dụng mã giảm giá
@@ -642,6 +666,8 @@ class OrderController extends Controller
             'estimatedTotal' => number_format($estimatedTotal, 0, ',', '.')
         ]);
     }
+
+
 
 
 
