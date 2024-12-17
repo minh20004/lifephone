@@ -200,69 +200,6 @@
                         </div>
                       </div>
                       <div class="accordion bg-body-tertiary rounded-5 p-4">
-                        {{-- <div class="accordion-item border-0">
-                            <h3 class="accordion-header" id="promoCodeHeading">
-                                <button type="button" class="accordion-button animate-underline collapsed py-0 ps-sm-2 ps-lg-0 ps-xl-2" data-bs-toggle="collapse" data-bs-target="#promoCode" aria-expanded="false" aria-controls="promoCode">
-                                    <i class="ci-percent fs-xl me-2"></i>
-                                    <span class="animate-target me-2">Áp dụng mã khuyến mãi</span>
-                                </button>
-                            </h3>
-                            <div class="accordion-collapse collapse" id="promoCode" aria-labelledby="promoCodeHeading">
-                                <div class="accordion-body pt-3 pb-2 ps-sm-2 px-lg-0 px-xl-2">
-                                    <form action="{{ route('order.applyVoucher') }}" method="POST" class="needs-validation d-flex gap-2" novalidate>
-                                        @csrf
-                                        <div class="d-flex">
-                                            <div class="position-relative w-100 mb-3">
-                                                <input type="text" name="voucher_code" id="voucher_code" class="form-control" placeholder="Nhập mã khuyến mãi" required>
-                                                <div class="invalid-tooltip bg-transparent py-0">Nhập mã khuyến mãi hợp lệ!</div>
-                                            </div>
-                                            <div>
-                                                <button type="submit" class="btn btn-danger">Áp dụng</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                    
-                                    <div class="mt-4">
-                                        <p class="text-danger">Chọn một mã khuyến mãi:</p>
-                                        <form id="voucher-selection-form" action="{{ route('order.applyVoucher') }}" method="POST" >
-                                            @csrf
-                                           <div>
-                                            @foreach($vouchers as $voucher)
-                                            <div class="voucher-option d-flex align-items-center border mb-3">
-                                                
-                                                <label for="voucher_{{ $voucher->id }}">
-                                                    <div class="d-flex align-items-center">
-                                                        <div>
-                                                            @if($voucher->image)
-                                                                <img src="{{ asset('storage/' . $voucher->image) }}" alt="Voucher Image" class="voucher-image" width="100" height="100">
-                                                            @endif
-                                                        </div>
-                                                        <div class="ms-3">
-                                                            <strong>{{ $voucher->title }}</strong><br>
-                                                            <p class="text-dark">Giảm {{ $voucher->discount_percentage }}% giảm tối đa {{ number_format($voucher->max_discount_amount, 0, ',', '.') }} VNĐ</p>
-                                                            @if($voucher->min_order_value)
-                                                                <small><strong>Đơn tối thiểu:</strong> {{ number_format($voucher->min_order_value, 0, ',', '.') }} VNĐ</small><br>
-                                                            @endif
-                                                            <div>
-                                                                HSD: {{ $voucher->end_date }}
-                                                            </div>
-                                                        </div>
-                                                    </div>  
-                                                </label>
-                                                <input type="radio" name="selected_voucher" id="voucher_{{ $voucher->id }}" value="{{ $voucher->code }}" class="me-2 " 
-                                                       {{ session('voucher.code') == $voucher->code ? 'checked' : '' }}>
-                                            </div>
-                                        @endforeach
-                                           </div>
-                                            <div class="d-flex justify-content-end ">
-                                                <button type="submit" class="btn btn-danger">OK</button>
-                                            </div>
-                                        </form>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </div> --}}
                             <div class="accordion-item border-0">
                                 <h3 class="accordion-header" id="promoCodeHeading">
                                     <button type="button" class="accordion-button animate-underline collapsed py-0 ps-sm-2 ps-lg-0 ps-xl-2" data-bs-toggle="collapse" data-bs-target="#promoCode" aria-expanded="false" aria-controls="promoCode">
@@ -272,19 +209,6 @@
                                 </h3>
                                 <div class="accordion-collapse collapse" id="promoCode" aria-labelledby="promoCodeHeading">
                                     <div class="accordion-body pt-3 pb-2 ps-sm-2 px-lg-0 px-xl-2">
-                                        <form action="{{ route('order.applyVoucher') }}" method="POST" class="needs-validation d-flex gap-2" novalidate>
-                                            @csrf
-                                            <div class="d-flex">
-                                                <div class="position-relative w-100 mb-3">
-                                                    <input type="text" name="voucher_code" id="voucher_code" class="form-control" placeholder="Nhập mã khuyến mãi" required>
-                                                    <div class="invalid-tooltip bg-transparent py-0">Nhập mã khuyến mãi hợp lệ!</div>
-                                                </div>
-                                                <div>
-                                                    <button type="submit" class="btn btn-danger">Áp dụng</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                        
                                         <div class="mt-4">
                                             <p class="text-danger">Chọn một mã khuyến mãi:</p>
                                             <form id="voucher-selection-form" action="{{ route('order.applyVoucher') }}" method="POST">
