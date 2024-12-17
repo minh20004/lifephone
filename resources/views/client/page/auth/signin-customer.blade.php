@@ -178,6 +178,13 @@
                 {{ session('success') }}
             </div>
             @endif
+            {{-- báo lỗi voucher --}}
+            @if(session('error')) 
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+
         <div class="nav fs-sm mb-4">
           Bạn chưa có tài khoản ?
           <a class="nav-link text-decoration-underline p-0 ms-2" href="{{ route('customer.add') }}">Đăng kí tài khoản</a>
