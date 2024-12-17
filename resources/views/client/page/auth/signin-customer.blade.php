@@ -178,6 +178,13 @@
                 {{ session('success') }}
             </div>
             @endif
+            {{-- báo lỗi voucher --}}
+            @if(session('error')) 
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+
         <div class="nav fs-sm mb-4">
           Bạn chưa có tài khoản ?
           <a class="nav-link text-decoration-underline p-0 ms-2" href="{{ route('customer.add') }}">Đăng kí tài khoản</a>
@@ -237,6 +244,9 @@
         </form>
         @endif --}}
         <!-- Divider -->
+         <div class="nav mb-4 mt-4">
+         <a class="nav-link text-decoration-underline p-0 ms-2" href="{{ route('password.request') }}">Quên mật khẩu</a>
+         </div>
         <div class="d-flex align-items-center my-4">
           <hr class="w-100 m-0">
           <span class="text-body-emphasis fw-medium text-nowrap mx-4">hoặc tiếp tục với</span>

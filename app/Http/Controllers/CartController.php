@@ -337,6 +337,7 @@ class CartController extends Controller
     }
 
 
+
     public function checkout(Request $request)
     {
         $cart = session()->get('cart', []); 

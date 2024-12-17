@@ -17,7 +17,7 @@ class   CategoryController extends Controller
     {
         // Lấy các tham số lọc
         $minPrice = $request->get('min_price', 1); // Mặc định 0 nếu không có giá trị
-        $maxPrice = $request->get('max_price', 1000); // Mặc định giá tối đa
+        $maxPrice = $request->get('max_price', 100); // Mặc định giá tối đa
 
         // Lấy danh mục và số lượng sản phẩm trong mỗi danh mục
         $categories = Category::withCount('products')->get();
@@ -27,7 +27,7 @@ class   CategoryController extends Controller
             ->whereHas('variants', function ($query) use ($minPrice, $maxPrice) {
                 $query->whereBetween('price_difference', [$minPrice, $maxPrice]);
             })
-            ->paginate(6); // Phân trang, mỗi trang 9 sản phẩm
+            ->paginate(9); // Phân trang, mỗi trang 9 sản phẩm
 
         // Lấy sản phẩm mới nhất
         $newestProducts = Product::latest('created_at')->paginate(9);

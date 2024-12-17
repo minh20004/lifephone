@@ -658,7 +658,7 @@ class AuthController extends Controller
     {
         $customerId = auth('customer')->id();
     
-    // Xóa voucher trong session khi người dùng đăng xuất
+        // Xóa voucher trong session khi người dùng đăng xuất
         session()->forget('voucher');
 
         Auth::guard('customer')->logout();
@@ -891,14 +891,14 @@ class AuthController extends Controller
     public function updateContact(Request $request, $id)
     {
         $request->validate([
-            'email' => 'required|email|max:255',
-            'phone' => 'required|regex:/^\+?\d{10,15}$/',  // Kiểm tra số điện thoại hợp lệ
+            // 'email' => 'required|email|max:255',
+            'phone' => 'required|regex:/^\+?\d{10}$/', 
         ]);
 
         try {
             $user = Customer::findOrFail($id);
             $user->update([
-                'email' => $request->email,
+                // 'email' => $request->email,
                 'phone' => $request->phone,
             ]);
 
@@ -944,7 +944,7 @@ class AuthController extends Controller
         // Xác thực dữ liệu
         $request->validate([
             'current_password' => 'required',
-            'new_password' => 'required|min:8|confirmed', // Xác nhận mật khẩu mới
+            'password' => 'required|min:8|confirmed', // Xác nhận mật khẩu mới
         ]);
 
         // Lấy người dùng hiện tại
