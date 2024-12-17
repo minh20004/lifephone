@@ -63,15 +63,14 @@
 
             <!-- Categories -->
             <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
-              <h4 class="h6 mb-2">Danh mục</h4>
+              <h4 class="h6 mb-2">Danh mục sản phẩm</h4>
               <ul class="list-unstyled d-block m-0">
                 @foreach ($categories as $item)
                 <li class="nav d-block pt-2 mt-1">
-                  <button type="button" class="nav-link w-auto category-filter" data-category-id="{{ $item->id }}">
+                  <a href="{{ route('client.category.products', $item->id) }}" class="nav-link w-auto">
                     <span class="animate-target text-truncate me-3">{{ $item->name }}</span>
-                    <!-- Hiển thị số lượng sản phẩm hoặc biến thể -->
-                    <span class="text-body-secondary fs-xs ms-auto">{{ $item->product_variants_count ?? $item->products_count }}</span>
-                    </a>
+                    <span class="text-body-secondary fs-xs ms-auto">{{ $item->products_count }}</span>
+                  </a>
                 </li>
                 @endforeach
               </ul>
