@@ -461,4 +461,40 @@ class ProductController extends Controller
 
         return response()->json(['html' => $html]);
     }
+    public function loadReviews($id)
+    {
+        $product = Product::with('variants.color', 'variants.capacity')->findOrFail($id);
+
+        $reviews = Review::with(['user', 'loadAllCustomer']) // Nạp quan hệ user và customer nếu cần
+            ->where('product_id', operator: $id)
+            ->get();
+
+        // Tính toán số lượng đánh giá
+        $reviewCount = $reviews ? $reviews->count() : 0;
+
+        // Tính điểm đánh giá trung bình
+        $averageRating = $reviews->avg('rating') ?? 0;
+        $ratingCounts = [
+            5 => $reviews->where('rating', 5)->count(),
+            4 => $reviews->where('rating', 4)->count(),
+            3 => $reviews->where('rating', 3)->count(),
+            2 => $reviews->where('rating', 2)->count(),
+            1 => $reviews->where('rating', 1)->count(),
+        ];
+
+        // Tính toán tỷ lệ phần trăm của mỗi mức sao
+        $ratingPercentages = [];
+        foreach ($ratingCounts as $rating => $count) {
+            $ratingPercentages[$rating] = $reviewCount > 0 ? ($count / $reviewCount) * 100 : 0;
+        }
+        return view('client.page.detail-product.allReviews', compact(
+            'reviews',
+            'reviewCount',
+            'averageRating',
+            'ratingPercentages',
+            'ratingCounts',
+            'product'
+
+        ));
+    }
 }

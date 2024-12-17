@@ -29,18 +29,20 @@
           <a class="nav-link" href="#detail">Chi tiết sản phẩm</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="shop-product-reviews-electronics.html">Đánh giá (68)</a>
+          <a class="nav-link" href="{{ route('products.reviews', $product->id) }}">Đánh giá ({{ $reviewCount}})</a>
         </li>
       </ul>
       <a class="d-none d-md-flex align-items-center gap-2 text-decoration-none ms-auto mb-1" href="#reviews">
-        <div class="d-flex gap-1 fs-sm">
-          <i class="ci-star-filled text-warning"></i>
-          <i class="ci-star-filled text-warning"></i>
-          <i class="ci-star-filled text-warning"></i>
-          <i class="ci-star-filled text-warning"></i>
-          <i class="ci-star-half text-warning"></i>
-        </div>
-        <span class="text-body-tertiary fs-xs">68 reviews</span>
+      @for ($i = 1; $i <= 5; $i++)
+          @if ($i <=floor($averageRating))
+          <i class="ci-star-filled text-warning"></i> <!-- Sao đầy -->
+          @elseif ($i == ceil($averageRating) && $averageRating - floor($averageRating) > 0)
+          <i class="ci-star-half text-warning"></i> <!-- Sao nửa -->
+          @else
+          <i class="ci-star text-body-tertiary opacity-60"></i> <!-- Sao rỗng -->
+          @endif
+          @endfor
+        <span class="text-body-tertiary fs-xs">{{ $reviewCount}} reviews</span>
       </a>
     </div>
   </section>
