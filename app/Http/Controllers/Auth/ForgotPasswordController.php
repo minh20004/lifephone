@@ -33,6 +33,6 @@ class ForgotPasswordController extends Controller
 
         Mail::to($user->email)->send(new PasswordResetEmail($token));
 
-        return response()->json(['message' => 'Yêu cầu quên mật khẩu đã được gửi']);
+        return view('client.page.auth.signin-customer');
     }
 }

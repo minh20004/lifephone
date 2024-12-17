@@ -30,6 +30,6 @@ class ResetPasswordController extends Controller
         $user->verification_token = null;
         $user->save();
 
-        return response()->json(['message' => 'Mật khẩu đã được reset']);
+        return view('client.page.auth.signin-customer');
     }
 }
