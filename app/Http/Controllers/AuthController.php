@@ -1025,7 +1025,7 @@ class AuthController extends Controller
                                 ->get();
 
         $ordersCompleted = Order::where('customer_id', $customerId)
-                                ->where('status', 'Hoàn Thành')
+                                ->where('status', 'Đã hoàn thành')
                                 ->orderBy('created_at', 'desc')
                                 ->get();
 
@@ -1129,8 +1129,12 @@ class AuthController extends Controller
 
         // Nếu không tìm thấy đơn hàng
         if (!$order) {
-            return redirect()->route('order.history')->with('error', 'Đơn hàng không tồn tại hoặc bạn không có quyền xem.');
+            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Đơn hàng không tồn tại hoặc bạn không có quyền xem.
+                  </div>';
+            exit;
         }
+        
 
         return view('client.page.auth.page.order-history.public-order.public_order_detail', compact('order'));
     }

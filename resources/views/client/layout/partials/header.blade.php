@@ -43,11 +43,11 @@
       <!-- Search visible on screens > 991px wide (lg breakpoint) -->
       <div class="position-relative flex-fill d-none d-lg-block pe-4 pe-xl-5">
         <i class="ci-search position-absolute top-50 translate-middle-y d-flex fs-lg text-white ms-3"></i>
-        <input type="search" class="form-control form-control-lg form-icon-start border-white rounded-pill search-header" data-fire-url="{{ asset('storage/images/fire.png') }}" placeholder="Search the products">
+        <input type="search" class="form-control form-control-lg form-icon-start border-white rounded-pill search-header" data-fire-url="{{ asset('storage/images/fire.png') }}" placeholder="Tìm kiếm sản phẩm...">
       </div>
 
       <!-- Sale link visible on screens > 1200px wide (xl breakpoint) -->
-      <a class="d-none d-xl-flex align-items-center text-decoration-none animate-shake navbar-stuck-hide me-3 me-xl-4 me-xxl-5" href="shop-catalog-electronics.html">
+      {{-- <a class="d-none d-xl-flex align-items-center text-decoration-none animate-shake navbar-stuck-hide me-3 me-xl-4 me-xxl-5" href="#">
         <div class="btn btn-icon btn-lg fs-lg text-primary bg-body-secondary bg-opacity-75 pe-none rounded-circle">
           <i class="ci-percent animate-target"></i>
         </div>
@@ -55,7 +55,7 @@
           <div class="fs-xs text-body">Chỉ trong tháng này</div>
           <div class="fw-medium text-white">siêu giảm giá 20%</div>
         </div>
-      </a>
+      </a> --}}
 
       <!-- Button group -->
       <div class="d-flex align-items-center">
@@ -107,34 +107,36 @@
           <i class="ci-search animate-target"></i>
         </button>
 
-         <!-- Account button visible on screens > 768px wide (md breakpoint) -->
-         @if (Auth::guard('customer')->check())
-         <!-- If the user is logged in, show their initials -->
-         <a class="auth btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-shake d-none d-md-inline-flex"
-           href="{{ route('customer.file') }}" >
-             <span class="fw-medium">{{ strtoupper(substr(Auth::guard('customer')->user()->email, 0, 1)) }}</span>
-         </a>
-        @else
-            <!-- If the user is not logged in, show the login icon -->
-            <a class="btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-shake d-none d-md-inline-flex"
-              href="{{ route('customer.login') }}">
-                <i class="ci-user animate-target"></i>
-                <span class="visually-hidden">Account</span>
-            </a>
-        @endif
-        <!-- Wishlist button visible on screens > 768px wide (md breakpoint) -->
-        <a class="btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-pulse d-none d-md-inline-flex" href="{{route('customer.wishList')}}">
-          <i class="ci-heart animate-target"></i>
-          <span class="visually-hidden">Wishlist</span>
+        <!-- Account button visible on screens > 768px wide (md breakpoint) -->
+        @if (Auth::guard('customer')->check())
+        <!-- If the user is logged in, show their initials -->
+        <a class="auth btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-shake d-none d-md-inline-flex"
+          href="{{ route('customer.file') }}">
+            <span class="fw-medium">{{ strtoupper(substr(Auth::guard('customer')->user()->email, 0, 1)) }}</span>
         </a>
 
+        <!-- Wishlist button visible only when logged in -->
+        <a class="btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-pulse d-none d-md-inline-flex"
+          href="{{ route('customer.wishList') }}">
+            <i class="ci-heart animate-target"></i>
+            <span class="visually-hidden">Wishlist</span>
+        </a>
+        @else
+        <!-- If the user is not logged in, show the login icon -->
+        <a class="btn btn-icon btn-lg fs-lg btn-outline-secondary border-0 rounded-circle animate-shake d-none d-md-inline-flex"
+          href="{{ route('customer.login') }}">
+            <i class="ci-user animate-target"></i>
+            <span class="visually-hidden">Account</span>
+        </a>
+        @endif
+
         <!-- giỏ hàng button -->
-        <button type="button" class="btn btn-icon btn-lg btn-secondary position-relative rounded-circle ms-2" data-bs-toggle="offcanvas" data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Shopping cart">
+        <a href="{{route('cart.index')}}"  class="btn btn-icon btn-lg btn-secondary position-relative rounded-circle ms-2" data-bs-toggle="" data-bs-target="#shoppingCart" aria-controls="shoppingCart" aria-label="Shopping cart">
           <span class="position-absolute top-0 start-100 mt-n1 ms-n3 badge text-bg-success border border-3 border-dark rounded-pill" style="--cz-badge-padding-y: .25em; --cz-badge-padding-x: .42em" id="cartCount">0</span>
           <span class="position-absolute top-0 start-0 d-flex align-items-center justify-content-center w-100 h-100 rounded-circle animate-slide-end fs-lg">
               <i class="ci-shopping-cart animate-target ms-n1"></i>
           </span>
-      </button>
+        </a>
       
       </div>
     </div>

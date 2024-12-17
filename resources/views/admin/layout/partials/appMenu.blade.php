@@ -1,3 +1,13 @@
+<style>
+  .limit-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis; 
+}
+
+</style>
 <!-- LOGO -->
 <div class="navbar-brand-box">
     <!-- Dark Logo-->
@@ -252,10 +262,10 @@
                 <a href="#!" class="d-flex justify-content-between">
                   <div class="d-flex flex-row">
                     <img src="/storage/${conversation.customerAvatar}" alt="avatar"
-                      class="rounded-circle d-flex align-self-center me-3 shadow-1-strong" width="60">
+                      class=" d-flex align-self-center me-3 shadow-1-strong" width="50" width="50">
                     <div class="pt-1">
                       <p class="fw-bold mb-0">${conversation.customerEmail}</p>
-                      <p class="small text-muted">${conversation.lastMessageContent}</p>
+                      <p class="small text-muted limit-text">${conversation.lastMessageContent}</p>
                     </div>
                   </div>
                   <div class="pt-1">
@@ -287,7 +297,7 @@
           messageHtml += `
             <li class="d-flex justify-content-start mb-4">
               <img src="/storage/${customer_info.customerAvatar}" alt="avatar"
-                class="rounded-circle d-flex align-self-start me-3 shadow-1-strong" width="60">
+                class="d-flex align-self-start me-3 shadow-1-strong" width="50">
               <div class="card">
                 <div class="card-header d-flex justify-content-between p-3">
                   <p class="fw-bold mb-0 mx-3">${customer_info.customerEmail}</p>
