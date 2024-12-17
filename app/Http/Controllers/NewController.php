@@ -284,6 +284,25 @@ class NewController extends Controller
         $latestNews = News::latest()->take(5)->get();
         return view('client.page.news.categoryNewsBlog', compact('category', 'posts','categories','latestNews'));
     }
+    public function trashed()
+    {
+        $trashedNews = News::onlyTrashed()->paginate(10);
+
+        return view('admin.page.new.trashed', compact('trashedNews'));
+    }
+
+ public function restore($id)
+    {
+        $news = News::withTrashed()->findOrFail($id);
+
+        if ($news->trashed()) {
+            $news->restore();
+            return redirect()->route('new_admin.trashed')->with('success', 'Tin tức đã được khôi phục.');
+        }
+
+        return redirect()->route('new_admin.trashed')->with('error', 'Tin tức không nằm trong thùng rác.');
+    }
+
 }
 
 

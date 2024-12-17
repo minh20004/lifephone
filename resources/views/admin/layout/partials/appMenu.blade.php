@@ -131,6 +131,9 @@
                         <li class="nav-item">
                             <a href="{{route('new_admin.create')}}" class="nav-link" data-key="t-team"> Thêm mới </a>
                         </li>
+                        <li class="nav-item">
+                        <a href="{{ route('new_admin.trashed') }}" class="nav-link" data-key="t-timeline"> tin tức đã bị xóa  </a>
+                        </li>
                     </ul>
                 </div>
             </li>

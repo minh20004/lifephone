@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
 
 class News extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
     protected $fillable = [
         'title',
         'content',
