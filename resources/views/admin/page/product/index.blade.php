@@ -79,11 +79,18 @@
                                             <form action="{{ route('product-admin.destroy', $item->id) }}" method="POST">
                                                 @method('DELETE')
                                                 @csrf
-                                                <button class="btn btn-danger"
-                                                    onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không')">
-                                                    <i class="bi bi-trash-fill"></i></button>
+                                                @if(auth()->user()->role === 'admin')
+                                                    <button class="btn btn-danger"
+                                                        onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không')">
+                                                        <i class="bi bi-trash-fill"></i>
+                                                    </button>
+                                                @else
+                                                    <button class="btn btn-danger disabled" style="opacity: 0.5; cursor: not-allowed;" disabled>
+                                                        <i class="bi bi-trash-fill"></i>
+                                                    </button>
+                                                @endif
                                             </form>
-                                        </div>
+                                        </div>                                        
                                     </td>
                                 </tr>
                             @endforeach

@@ -393,6 +393,11 @@ class ProductController extends Controller
 
     public function destroy(string $id)
     {
+         // Kiểm tra quyền người dùng
+        // if (auth()->user()->role !== 'admin') {
+        //     return redirect()->back()->with('error', 'Bạn không có quyền xóa sản phẩm này.');
+        // }
+
         $product = Product::FindorFail($id);
 
         $product->delete();
