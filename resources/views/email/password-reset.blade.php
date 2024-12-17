@@ -2,7 +2,7 @@
 
 <h1>Quên mật khẩu</h1>
 
-<p>Xin chào {{ $name }},</p>
+<p>Xin chào quý khách,</p>
 
 <p>Bạn đã yêu cầu quên mật khẩu. Vui lòng nhấp vào liên kết dưới đây để đặt lại mật khẩu:</p>
 

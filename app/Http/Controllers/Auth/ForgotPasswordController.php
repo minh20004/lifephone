@@ -33,6 +33,7 @@ class ForgotPasswordController extends Controller
 
         Mail::to($user->email)->send(new PasswordResetEmail($token));
 
-        return view('client.page.auth.signin-customer');
+        // return view('client.page.auth.signin-customer');
+        return redirect()->route('customer.login');
     }
 }

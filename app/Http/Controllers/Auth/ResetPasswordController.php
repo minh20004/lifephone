@@ -30,6 +30,7 @@ class ResetPasswordController extends Controller
         $user->verification_token = null;
         $user->save();
 
-        return view('client.page.auth.signin-customer');
+        // return view('client.page.auth.signin-customer');
+        return redirect()->route('customer.login');
     }
 }
