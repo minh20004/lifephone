@@ -141,11 +141,11 @@
     @endforeach
   </div>
   @endif
-</div>
-
 @endforeach
 @else
+
 <p>Chưa có đánh giá nào hãy là người đánh giá sản phẩm đầu tiên của chúng tôi.</p>
+</div>
 @endif
 
 <div class="nav">
@@ -154,9 +154,4 @@
     <i class="ci-chevron-right fs-base ms-1"></i>
   </a>
 </div>
-
-</div>
-
-<script>
-
-</script>
+</div></div>
