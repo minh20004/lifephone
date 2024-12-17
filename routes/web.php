@@ -257,6 +257,8 @@ Route::get('/cart/offcanvas', [CartController::class, 'getCart'])->name('cart.of
 
 // thanh toán
 Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
+Route::post('/checkout/post', [CartController::class, 'checkout'])->name('checkout-post');
+
 Route::post('/order/store', [OrderController::class, 'storeOrder'])->name('order.store');
 Route::get('/order-success', function () {
     return view('client.page.checkout.order_success'); // Thông báo thành công

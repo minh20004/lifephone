@@ -18,14 +18,16 @@
                 <div class="h5 d-flex justify-content-center align-items-center flex-shrink-0 text-primary bg-primary-subtle lh-1 rounded-circle mb-0" style="width: 3rem; height: 3rem">
                   {{-- {{ strtoupper(substr(Auth::guard('customer')->user()->email, 0, 1)) }} --}}
                   <!-- Hiển thị ảnh đại diện -->
-                @if(Auth::user()->avatar)
-                <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Avatar của {{ Auth::user()->name }}"  style="height: 100%;" class="img-thumbnail hover-effect-target" id="current-avatar">
-                @else
-                    <img src="{{ asset('client/img/avtt.jpg') }}" alt="avtt" class="img-thumbnail hover-effect-target"  style="height: 100%;" id="current-avatar">
-                @endif
-                @error('avatar')
+                  @if(Auth::guard('customer')->check() && Auth::guard('customer')->user()->avatar)
+                  <img src="{{ asset('storage/' . Auth::guard('customer')->user()->avatar) }}" alt="Avatar của {{ Auth::guard('customer')->user()->name }}" style="height: 100%;" class="img-thumbnail hover-effect-target" id="current-avatar">
+              @else
+                  <img src="{{ asset('client/img/avtt.jpg') }}" alt="avtt" class="img-thumbnail hover-effect-target" style="height: 100%;" id="current-avatar">
+              @endif
+              
+              @error('avatar')
                   <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+              @enderror
+              
                 
                 </div>
                 <div class="min-w-0 ps-3">

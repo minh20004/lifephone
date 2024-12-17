@@ -6,13 +6,13 @@
     <div class="row pt-md-2 pt-lg-3 pb-sm-2 pb-md-3 pb-lg-4 pb-xl-5">
         <aside class="col-lg-3">
             <div class="d-flex flex-column align-items-center justify-content-end h-100 text-center overflow-hidden rounded-5 px-4 px-lg-3 pt-4 pb-5"
-            style="background: #1d2c41 url('client/img/home/electronics/banner/background.jpg') center/cover no-repeat">
+            style="background: #1d2c41 url('client/img/home/electronics/banner/background.jpg') center/cover no-repeat;">
             <div class="ratio animate-up-down position-relative z-2 me-lg-4"
                 style="max-width: 320px; margin-bottom: -19%; --cz-aspect-ratio: calc(690 / 640 * 100%)">
                 <img src="../client/img/home/electronics/timkiem.png" alt="Laptop">
             </div>
-            <h3 class="display-2 mb-2">Iphone 15 VNA</h3>
-            <p class="text-body fw-medium mb-4"> Trở nên chuyên nghiệp ở mọi nơi</p>
+            <h6 class="display-2 mb-2 text-light">Iphone 15 VNA</h6>
+            <p class="text-body fw-medium mb-4 text-light"> Trở nên chuyên nghiệp ở mọi nơi</p>
             <a class="btn btn-sm btn-primary" href="#!">
                 Giá: 19.690.000đ
                 <i class="ci-arrow-up-right fs-base ms-1 me-n1"></i>
@@ -109,11 +109,7 @@
                                 <div class="d-flex align-items-center justify-content-end pe-3 text-end border-bottom">
                                     <div class="pe-3"><span>Giảm giá</span></div>
                                     <div class="w-25 border-start p-3">
-<<<<<<< HEAD
                                         <div >{{ $order->voucher->discount_percentage ?? '0' }} %</div>
-=======
-                                        <div >{{ $order->voucher->discount_percentage  ?? '0' }} %</div>
->>>>>>> cf4edc3d8cf05caaf91961b21ed302221dcbceb1
                                         
                                     </div>
                                 </div>

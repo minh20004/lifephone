@@ -22,6 +22,13 @@
             </aside>
             <div class="col-lg-9">
                 
+                @if(session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+                        <strong>Lỗi!</strong> {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
                     <div class=" d-flex justify-content-between align-items-center border rounded">
                         <p class="m-3 fs-6 fw-bold text-danger">Tìm kiếm đơn hàng của bạn</p>
                         <form action="{{ route('order.publicHistory') }}" method="GET" class=" m-3">
