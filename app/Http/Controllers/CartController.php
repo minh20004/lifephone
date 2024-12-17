@@ -98,8 +98,9 @@ class CartController extends Controller
             'model-options' => 'required|integer|exists:capacities,id',
             'color-options' => 'required|integer|exists:colors,id',
             'quantity' => 'required|integer|min:1',
+        ],[
+            'color-options' => 'Vui lòng chọn màu sắc sản phẩm'
         ]);
-
         $productId = $request->input('product_id');
         $modelId = $request->input('model-options');
         $colorId = $request->input('color-options');
@@ -177,7 +178,7 @@ class CartController extends Controller
         return redirect()->route('cart.index')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
     }
 
-    // public function updateQuantity(Request $request)
+    // public function updateQuantity(Request $request) //lỗi
     // {
     //     $productId = $request->input('productId');
     //     $modelId = $request->input('modelId');
@@ -294,7 +295,7 @@ class CartController extends Controller
             'totalPrice' => number_format($totalPrice, 0, ',', '.')
         ]);
     }
-    // public function updateQuantity(Request $request)
+    // public function updateQuantity(Request $request) //lỗi
     // {
     //     $productId = $request->input('productId');
     //     $modelId = $request->input('modelId');
