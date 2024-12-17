@@ -12,8 +12,8 @@
                     style="max-width: 320px; margin-bottom: -19%; --cz-aspect-ratio: calc(690 / 640 * 100%)">
                     <img src="client/img/home/electronics/timkiem.png" alt="Laptop">
                 </div>
-                <h3 class="display-2 mb-2">Iphone 15 VNA</h3>
-                <p class="text-body fw-medium mb-4"> Trở nên chuyên nghiệp ở mọi nơi</p>
+                <h4 class="display-2 mb-2 text-light">Iphone 15 VNA</h4>
+                <p class="text-body fw-medium mb-4 text-light"> Trở nên chuyên nghiệp ở mọi nơi</p>
                 <a class="btn btn-sm btn-primary" href="#!">
                     Giá: 19.690.000đ
                     <i class="ci-arrow-up-right fs-base ms-1 me-n1"></i>

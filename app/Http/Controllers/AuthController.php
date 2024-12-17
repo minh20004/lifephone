@@ -20,6 +20,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\RateLimiter;
 use App\Models\Conversation;
 use App\Models\Message;
+use App\Models\News;
 
 class AuthController extends Controller
 {
@@ -154,6 +155,7 @@ class AuthController extends Controller
         }
         
         $totalProducts = Product::count();
+        $totalNews = News::count();
         // Tạo mảng các ngày trong khoảng thời gian đã chọn
         $dates = [];
         $currentDate = $startDate->copy();
@@ -213,7 +215,8 @@ class AuthController extends Controller
             'currentDate',
             'dailyIncome',
             'totalIncome',
-            'employees'
+            'employees',
+            'totalNews'
 
         ));
     }
@@ -335,7 +338,8 @@ class AuthController extends Controller
                 ->orderBy('date', 'desc')
                 ->pluck('income');
 
-
+        $totalProducts = Product::count();
+        $totalNews = News::count();
         // Truyền dữ liệu vào view
         return view('admin.staff', compact(
             'currentOrdersByStatus',
@@ -349,7 +353,9 @@ class AuthController extends Controller
             'formattedStartDate',
             'formattedEndDate',
             'dates',
-            'incomeData'
+            'incomeData',
+            'totalProducts',
+            'totalNews'
         ));
     }
 
@@ -476,30 +482,57 @@ class AuthController extends Controller
         return view('admin.page.member.edit', compact('user'));
     }
     // Update an existing user
-    public function update(Request $request, $id)
+    // public function update(Request $request, $id)
+    // {
+    //     $request->validate([
+    //         'email' => 'required|string|email|max:255|unique:users,email,'.$id,
+    //         'name' => 'required|string|max:255',
+    //         'role' => 'required|in:admin,staff,customer',
+    //         'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    //     ]);
+
+    //     $user = User::findOrFail($id);
+    //     $data = $request->except('avatar');
+
+    //     if ($request->hasFile('avatar')) {
+    //         // Xóa ảnh cũ nếu cần
+    //         if ($user->avatar) {
+    //             Storage::delete($user->avatar);
+    //         }
+    //         // Lưu ảnh mới
+    //         $data['avatar'] = Storage::put('avatars', $request->file('avatar'));
+    //     }
+
+    //     $user->update($data);
+
+    //     return redirect()->route('admins.index')->with('success', 'Cập nhật thông tin thành công');
+    // }
+
+    public function update(Request $request)
     {
         $request->validate([
-            'email' => 'required|string|email|max:255|unique:users,email,'.$id,
             'name' => 'required|string|max:255',
-            'role' => 'required|in:admin,staff,customer',
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'email' => 'required|email|max:255|unique:users,email,' . Auth::id(),
+            'avatar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $user = User::findOrFail($id);
-        $data = $request->except('avatar');
+        $user = Auth::user();
+        $user->name = $request->name;
+        $user->email = $request->email;
 
         if ($request->hasFile('avatar')) {
-            // Xóa ảnh cũ nếu cần
-            if ($user->avatar) {
-                Storage::delete($user->avatar);
+            // Xóa ảnh cũ nếu có
+            if ($user->avatar && Storage::exists('public/' . $user->avatar)) {
+                Storage::delete('public/' . $user->avatar);
             }
             // Lưu ảnh mới
-            $data['avatar'] = Storage::put('avatars', $request->file('avatar'));
+            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar = $avatarPath;
         }
 
-        $user->update($data);
+        $user->save();
 
-        return redirect()->route('admins.index')->with('success', 'Cập nhật thông tin thành công');
+        return redirect()->back()->with('success', 'Cập nhật hồ sơ thành công!');
     }
 
     public function destroy($id)

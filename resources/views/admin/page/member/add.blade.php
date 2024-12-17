@@ -44,8 +44,8 @@
                     <div class="mb-3">
                         <label for="role" class="form-label">Vai trò người dùng <span class="text-danger">*</span></label>
                         <select name="role" class="form-control" id="role" required>
-                            <option value="">Chọn vai trò</option>
-                            <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Quản trị</option>
+                            {{-- <option value="">Chọn vai trò</option> --}}
+                            {{-- <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Quản trị</option> --}}
                             <option value="staff" {{ old('role') == 'staff' ? 'selected' : '' }}>Nhân viên</option>
                             {{-- <option value="customer" {{ old('role') == 'customer' ? 'selected' : '' }}>Khách hàng</option> --}}
                         </select>

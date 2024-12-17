@@ -72,7 +72,7 @@ $('.search-header').on('click', function() {
   }
   if($('.trend-product').length ==0){
     let fire_url = $('.search-header').data('fire-url');
-    let text_trend = $(`<div class="py-2 ps-3 pe-5 trend-product" style="line-height:1.5;font-weight:700;display:flex;align-items:center;"> Xu hướng tìm kiếm <img src="${fire_url}" style="width: 25px; height: 25px; vertical-align: middle; margin-left: 5px;" /></div>`);
+    let text_trend = $(`<div class="py-2 ps-3 pe-5 trend-product" style="line-height:1.5;font-weight:700;display:flex;align-items:center;"> Xu hướng tìm kiếm  <i class="fa-solid fa-arrow-trend-up text-danger"></i></div>`);
     dropdown.append(text_trend);
     $.ajax({
       url: '/api/search-trend',  // URL của API

@@ -31,33 +31,8 @@ profile
                 <div class="col">
                     <div class="p-2">
                         <h3 class="text-white mb-1">{{ Auth::user()->name ?? 'Tên chưa được cập nhật' }}</h3>
-                        <p class="text-white text-opacity-75">Owner & Founder</p>
-                        <div class="hstack text-white-50 gap-1">
-                            <div class="me-2"><i class="ri-map-pin-user-line me-1 text-white text-opacity-75 fs-16 align-middle"></i>California, United States</div>
-                            <div>
-                                <i class="ri-building-line me-1 text-white text-opacity-75 fs-16 align-middle"></i>Themesbrand
-                            </div>
-                        </div>
                     </div>
                 </div>
-                <!--end col-->
-                <div class="col-12 col-lg-auto order-last order-lg-0">
-                    <div class="row text text-white-50 text-center">
-                        <div class="col-lg-6 col-4">
-                            <div class="p-2">
-                                <h4 class="text-white mb-1">24.3K</h4>
-                                <p class="fs-14 mb-0">Followers</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-4">
-                            <div class="p-2">
-                                <h4 class="text-white mb-1">1.3K</h4>
-                                <p class="fs-14 mb-0">Following</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--end col-->
 
             </div>
             <!--end row-->
@@ -76,8 +51,52 @@ profile
                             </li>
                         </ul>
                         <div class="flex-shrink-0">
-                            <a href="pages-profile-settings.html" class="btn btn-success"><i class="ri-edit-box-line align-bottom"></i> Chỉnh sửa hồ sơ</a>
+                            <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                                <i class="ri-edit-box-line align-bottom"></i> Chỉnh sửa hồ sơ
+                            </a>
                         </div>
+
+                        <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editProfileModalLabel">Chỉnh sửa hồ sơ</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="editProfileForm" method="POST" enctype="multipart/form-data" action="{{ route('profile.update') }}">
+                                            @csrf
+                                            @method('PUT')
+                        
+                                            <!-- Tên -->
+                                            <div class="mb-3">
+                                                <label for="name" class="form-label">Họ và Tên</label>
+                                                <input type="text" class="form-control" id="name" name="name" value="{{ Auth::user()->name }}" required>
+                                            </div>
+                        
+                                            <!-- Email -->
+                                            <div class="mb-3">
+                                                <label for="email" class="form-label">Email</label>
+                                                <input type="email" class="form-control" id="email" name="email" value="{{ Auth::user()->email }}" required>
+                                            </div>
+                        
+                                            <!-- Avatar -->
+                                            <div class="mb-3">
+                                                <label for="avatar" class="form-label">Ảnh đại diện</label>
+                                                <input type="file" class="form-control" id="avatar" name="avatar">
+                                            </div>
+                        
+                                            <!-- Nút Lưu -->
+                                            <div class="text-end">
+                                                <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        
                     </div>
                     <!-- Tab panes -->
                     <div class="tab-content pt-4 text-muted">
@@ -86,10 +105,10 @@ profile
                                 <div class="col-xxl-3">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h5 class="card-title mb-5">Complete Your Profile</h5>
+                                            <h5 class="card-title mb-5">Hoàn thiện hồ sơ của bạn</h5>
                                             <div class="progress animated-progress custom-progress progress-label">
-                                                <div class="progress-bar bg-danger" role="progressbar" style="width: 30%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
-                                                    <div class="label">30%</div>
+                                                <div class="progress-bar bg-danger" role="progressbar" style="width: 100%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">
+                                                    <div class="label">100%</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -97,30 +116,34 @@ profile
 
                                     <div class="card">
                                         <div class="card-body">
-                                            <h5 class="card-title mb-3">Info</h5>
+                                            <h5 class="card-title mb-3">Thông tin của bạn</h5>
                                             <div class="table-responsive">
                                                 <table class="table table-borderless mb-0">
                                                     <tbody>
                                                         <tr>
-                                                            <th class="ps-0" scope="row">Full Name :</th>
-                                                            <td class="text-muted">Anna Adame</td>
+                                                            <th class="ps-0" scope="row">Họ và tên :</th>
+                                                            <td class="text-muted">{{ Auth::user()->name ?? 'Tên chưa được cập nhật' }}</td>
                                                         </tr>
                                                         <tr>
-                                                            <th class="ps-0" scope="row">Mobile :</th>
-                                                            <td class="text-muted">+(1) 987 6543</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th class="ps-0" scope="row">E-mail :</th>
-                                                            <td class="text-muted">daveadame@velzon.com</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th class="ps-0" scope="row">Location :</th>
-                                                            <td class="text-muted">California, United States
+                                                            <th class="ps-0" scope="row">ảnh :</th>
+                                                            <td class="text-muted">
+                                                                @if(Auth::user()->avatar)
+                                                                <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Avatar của {{ Auth::user()->name }}" class="img-thumbnail" id="current-avatar" style="width: 60px;">
+                                                                @else
+                                                                    <img src="{{ asset('client/img/avtt.jpg') }}" alt="avtt" class="img-thumbnail" id="current-avatar" style="width: 60px;">
+                                                                @endif
+                                                                @error('avatar')
+                                                                <div class="invalid-feedback">{{ $message }}</div>
+                                                                @enderror
                                                             </td>
                                                         </tr>
                                                         <tr>
-                                                            <th class="ps-0" scope="row">Joining Date</th>
-                                                            <td class="text-muted">24 Nov 2021</td>
+                                                            <th class="ps-0" scope="row">E-mail :</th>
+                                                            <td class="text-muted">{{ Auth::user()->email ?? 'Tên chưa được cập nhật' }}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th class="ps-0" scope="row">Ngày tạo</th>
+                                                            <td class="text-muted">{{ Auth::user()->created_at ?? 'Tên chưa được cập nhật' }}</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -160,7 +183,7 @@ profile
                                                         </div>
                                                         <div class="flex-grow-1 overflow-hidden">
                                                             <p class="mb-1">Website :</p>
-                                                            <a href="#" class="fw-semibold">www.velzon.com</a>
+                                                            <a href="#" class="fw-semibold">www.Lifephone.com</a>
                                                         </div>
                                                     </div>
                                                 </div>
