@@ -132,7 +132,7 @@
             <h2 class="h6 mb-0">Email</h2>
           </div>
           <!-- Button trigger modal -->
-          <a class="nav-link text-decoration-underline p-0" href="#" data-bs-toggle="modal" data-bs-target="#emailChangeModal">Thay đổi</a>
+          {{-- <a class="nav-link text-decoration-underline p-0" href="#" data-bs-toggle="modal" data-bs-target="#emailChangeModal">Thay đổi</a> --}}
         </div>
       
         <!-- Contact Info Preview -->
