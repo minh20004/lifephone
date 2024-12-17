@@ -32,4 +32,8 @@ class Review extends Model
     {
         return $this->belongsTo(Customer::class, 'customer_id');
     }
+    public function comments()
+{
+    return $this->hasMany(Comment::class, 'review_id');
+}
 }

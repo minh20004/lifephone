@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewController;
 use Illuminate\Support\Facades\Request;
@@ -26,6 +27,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\UserNotificationController;
 use App\Http\Controllers\OrderNotificationController;
 use App\Http\Controllers\Client\CategoryController as ClientCategoryController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -177,6 +179,8 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
     Route::put('/admin/new_admin/restore/{id}', [NewController::class, 'restore'])->name('new_admin.restore');
     Route::get('/admin/category_news/trashed', [CategoryNewsController::class, 'trashed'])->name('category_news.trashed');
     Route::put('/admin/category_news/restore/{id}', [CategoryNewsController::class, 'restore'])->name('category_news.restore');
+    //phsan hoi 
+    Route::patch('/admin/reviews/{id}/replyAsAdmin', [CommentController::class, 'replyAsAdmin'])->name('reviews.replyAsAdmin');
 });
 // end auth admin ------------------------------------------------------------------------------------------------------------------
 
