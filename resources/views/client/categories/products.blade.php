@@ -4,7 +4,7 @@
   <!-- Breadcrumb -->
   <nav class="container pt-3 my-3 my-md-4" aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/">Home</a></li>
+      <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
       <li class="breadcrumb-item active" aria-current="page">{{ $currentCategory->name }}</li>
     </ol>
   </nav>

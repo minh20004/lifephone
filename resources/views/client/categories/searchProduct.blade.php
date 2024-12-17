@@ -63,7 +63,7 @@
 
             <!-- Categories -->
             <div class="w-100 border rounded p-3 p-xl-4 mb-3 mb-xl-4">
-              <h4 class="h6 mb-2">Categories</h4>
+              <h4 class="h6 mb-2">Danh mục</h4>
               <ul class="list-unstyled d-block m-0">
                 @foreach ($categories as $item)
                 <li class="nav d-block pt-2 mt-1">
@@ -128,7 +128,7 @@
                 </a>
               </div>
               <div class="w-100 min-w-0 px-1 pb-2 px-sm-3 pb-sm-3">
-                <div class="d-flex align-items-center gap-2 mb-2">
+                {{-- <div class="d-flex align-items-center gap-2 mb-2">
                   <div class="d-flex gap-1 fs-xs">
                     <i class="ci-star-filled text-warning"></i>
                     <i class="ci-star-filled text-warning"></i>
@@ -137,7 +137,7 @@
                     <i class="ci-star text-body-tertiary opacity-75"></i>
                   </div>
                   <!-- <span class="text-body-tertiary fs-xs">(123)</span> -->
-                </div>
+                </div> --}}
                 <h3 class="pb-1 mb-2">
                   <a class="d-block fs-sm fw-medium text-truncate" href="shop-product-general-electronics.html">
                     <span class="animate-target">{{$item->name}}</span>
@@ -150,7 +150,7 @@
                   </button>
                 </div>
               </div>
-              <div class="product-card-details position-absolute top-100 start-0 w-100 bg-body rounded-bottom shadow mt-n2 p-3 pt-1">
+              {{-- <div class="product-card-details position-absolute top-100 start-0 w-100 bg-body rounded-bottom shadow mt-n2 p-3 pt-1">
                 <span class="position-absolute top-0 start-0 w-100 bg-body mt-n2 py-2"></span>
                 <ul class="list-unstyled d-flex flex-column gap-2 m-0">
                   @foreach ($item->variants as $variant)
@@ -166,58 +166,11 @@
                     <span class="text-dark-emphasis fs-xs fw-medium text-end">{{ $variant->capacity->name }}</span>
                   </li>
                   @endforeach
-                  <!-- <li class="d-flex align-items-center">
-                    <span class="fs-xs">Sound:</span>
-                    <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
-                    <span class="text-dark-emphasis fs-xs fw-medium text-end">2x3.5mm jack</span>
-                  </li>
-                  <li class="d-flex align-items-center">
-                    <span class="fs-xs">Input:</span>
-                    <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
-                    <span class="text-dark-emphasis fs-xs fw-medium text-end">4 built-in cameras</span>
-                  </li> -->
                 </ul>
-              </div>
+              </div> --}}
             </div>
           </div>
           @endforeach
-
-
-
-
-          <!-- Pagination -->
-          <!-- <nav class="border-top mt-4 pt-3" aria-label="Catalog pagination">
-              <ul class="pagination pagination-lg pt-2 pt-md-3">
-                <li class="page-item disabled me-auto">
-                  <a class="page-link d-flex align-items-center h-100 fs-lg px-2" href="#!" aria-label="Previous page">
-                    <i class="ci-chevron-left mx-1"></i>
-                  </a>
-                </li>
-                <li class="page-item active" aria-current="page">
-                  <span class="page-link">
-                    1
-                    <span class="visually-hidden">(current)</span>
-                  </span>
-                </li>
-                <li class="page-item">
-                  <a class="page-link" href="#!">2</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link" href="#!">3</a>
-                </li>
-                <li class="page-item">
-                  <span class="page-link pe-none">...</span>
-                </li>
-                <li class="page-item">
-                  <a class="page-link" href="#!">16</a>
-                </li>
-                <li class="page-item ms-auto">
-                  <a class="page-link d-flex align-items-center h-100 fs-lg px-2" href="#!" aria-label="Next page">
-                    <i class="ci-chevron-right mx-1"></i>
-                  </a>
-                </li>
-              </ul>
-            </nav> -->
           </div>
         </div>
 
