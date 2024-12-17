@@ -47,7 +47,7 @@
 
     <!-- Overall rating card -->
     <div class="d-flex flex-column align-items-center justify-content-center h-100 bg-body-tertiary rounded p-4">
-      <div class="h1 pb-2 mb-1">{{ number_format($averageRating, 2) }}</div> <!-- Giới hạn 2 số thập phân -->
+      <div class="h1 pb-2 mb-1">{{ number_format($averageRating, 1) }}</div> <!-- Giới hạn 2 số thập phân -->
       <div class="hstack justify-content-center gap-1 fs-sm mb-2">
         @for ($i = 1; $i <= 5; $i++)
           @if ($i <=floor($averageRating))
@@ -136,23 +136,17 @@
         </strong>
       </div>
 
-    <p>{{ $comment->comment }}</p>
+      <p>{{ $comment->comment }}</p>
+    </div>
+    @endforeach
   </div>
-  @endforeach
-</div>
-@endif
-</div>
-</div>
-<!-- Like button -->
-
-</div>
-</div>
-</div>
+  @endif
 @endforeach
 @else
-<p>Chưa có đánh giá nào hãy là người đánh giá sản phẩm đầu tiên của chúng tôi.</p>
-@endif
 
+<p>Chưa có đánh giá nào hãy là người đánh giá sản phẩm đầu tiên của chúng tôi.</p>
+</div>
+@endif
 
 <div class="nav">
   <a class="nav-link text-primary animate-underline px-0" href="{{ route('products.reviews', $product->id) }}">
@@ -160,8 +154,4 @@
     <i class="ci-chevron-right fs-base ms-1"></i>
   </a>
 </div>
-</div>
-
-<script>
-
-</script>
+</div></div>
