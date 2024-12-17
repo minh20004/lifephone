@@ -158,5 +158,16 @@ public function respond(Request $request, $id)
 
     return redirect()->route('review_admin.index')->with('success', 'Phản hồi đã được gửi!');
 }
+public function showCustomerReviews($customerId)
+{
+    // Lấy tất cả các đánh giá của người dùng với ID cụ thể
+    $customerReviews = Review::with('product')
+        ->where('customer_id', $customerId)
+        ->paginate(5); 
 
+    // Trả về view và truyền dữ liệu đánh giá
+    return view('client.page.auth.page.review', [
+        'customerReviews' => $customerReviews
+    ]);
+}
 }

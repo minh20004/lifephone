@@ -232,7 +232,8 @@ Route::middleware(['auth:customer', 'isCustomer'])->group(function () {
     Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
     Route::get('/customer/wishList', [AuthController::class, 'wish_list'])->name('customer.wishList');
     //review 
-    Route::get('/customer/review', [AuthController::class, 'review_custommer'])->name('customer.review');
+    Route::get('/customer/reviews/{customerId}', [ReviewController::class, 'showCustomerReviews'])->name('customer.review');
+
 
     Route::get('/order-history', [AuthController::class, 'history'])->name('order.history');
     // Route thêm địa chỉ
