@@ -21,12 +21,19 @@
 
 <!-- Vendor styles -->
 <link rel="stylesheet" href="{{ asset('client/vendor/swiper/swiper-bundle.min.css') }}">
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap JavaScript -->
 
 <!-- Bootstrap + Theme styles -->
 <link rel="preload" href="{{ asset('client/css/theme.min.css') }}" as="style">
 <link rel="preload" href="{{ asset('client/css/theme.rtl.min.css') }}" as="style">
 <link rel="stylesheet" href="{{ asset('client/css/theme.min.css') }}" id="theme-styles">
+<link rel="stylesheet" href="{{ asset('client/css/header.css') }}" id="theme-styles">
 
+<link rel="stylesheet" href="{{ asset('client/css/header.css') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <!-- Customizer -->
 <script src="{{ asset('client/js/customizer.min.js') }}"></script>
 
@@ -39,19 +46,19 @@
     }
 
     .product-description img {
-        max-width: 100%; 
+        max-width: 100%;
         height: auto;
         display: block;
-        margin: 10px 0; 
+        margin: 10px 0;
     }
 
     .product-description p {
-        margin-bottom: 10px; 
+        margin-bottom: 10px;
     }
 </style>
 {{-- chọn màu của sản phẩm --}}
 <style>
-              
+
     .btn-color {
         width: 30px;
         height: 30px;
@@ -60,18 +67,18 @@
         align-items: center;
         justify-content: center;
         padding: 1;
-        border: 2px solid #ddd; 
-        transition: border-color 0.3s; 
+        border: 2px solid #ddd;
+        transition: border-color 0.3s;
     }
 
-    
+
     .btn-color:hover {
         border-color: #333;
     }
 
-    
+
     .btn-check:checked + .btn-color {
-        border-color: #000; 
+        border-color: #000;
     }
 </style>
 {{-- /* Nút Chat */ --}}

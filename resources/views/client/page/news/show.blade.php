@@ -122,7 +122,9 @@ Lifephone
                     <h4 class="h6 mb-4">Danh mục tin tức</h4>
                     <div class="d-flex flex-wrap gap-3">
                         @foreach($categories as $category)
-                        {{-- <a class="btn btn-outline-secondary px-3" href="{{ route('categoryNewsBlog', ['slug' => $category->slug]) }}">{{ $category->title }}</a> --}}
+                        {{-- {{ route('categoryNewsBlog', ['slug' => $category->slug]) }} --}}
+                        <a class="btn btn-outline-secondary px-3" href="{{ route('categoryNewsBlog', ['slug' => $category->slug]) }}">{{ $category->title }}</a>
+
                         @endforeach
                     </div>
                     <h4 class="h6 pt-5 mb-0">Bài viết mới nhất</h4>
@@ -139,7 +141,8 @@ Lifephone
                             <div class="text-body-tertiary fs-xs pb-2 mb-1">{{ $latest->created_at}}</div>
                         </div>
                         <div class="ratio w-100" style="max-width: 86px; --cz-aspect-ratio: calc(64 / 86 * 100%)">
-                            <img src="{{ Storage::url($latest->thumbnail) }}" class="rounded-2" alt="{{ $latest->title }}">
+                            <img src="{{ asset('storage/' .  $latest->thumbnail) }}" alt="{{ $latest->title }}" class="rounded-2">
+                            {{-- <img src="{{ Storage::url($latest->thumbnail) }}" class="rounded-2" alt="{{ $latest->title }}"> --}}
                         </div>
                     </article>
                     @endforeach

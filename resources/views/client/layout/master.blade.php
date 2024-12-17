@@ -9,6 +9,7 @@
     <!-- SEO Meta Tags -->
     <title>@yield('title')</title>
     @include('client.layout.partials.css')
+    @include('client.layout.partials.js')
   </head>
   <!-- Body -->
   <body>

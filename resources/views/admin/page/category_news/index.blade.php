@@ -1,7 +1,7 @@
 @extends('admin.layout.master')
 @section('title')
 
-News
+Danh mục tin tức
 
 @endsection
 @section('content')
@@ -10,7 +10,7 @@ News
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
-                <h4 class="mb-sm-0">News</h4>
+                <h4 class="mb-sm-0">Danh mục tin tức</h4>
             </div>
         </div>
     </div>
@@ -33,7 +33,19 @@ News
                         <!-- end card header -->
 
                         <div><button class="btn btn-primary "><a style="color: yellow;" href="{{route('category_news.create')}}">thêm</a></button></div>
+                        @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        @endif
 
+                        @if(session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        @endif
                         <div class="card-body">
                             <div class="tab-content text-muted">
                                 <div class="tab-pane active" id="productnav-all" role="tabpanel">
@@ -72,12 +84,12 @@ News
                                                             <td data-column-id="orders" class="gridjs-td">{{$cate->title}}</td>
                                                             <td data-column-id="action" class="gridjs-td">
                                                                 <div>
-                                                                    <a href="{{ route('category_news.edit', $cate->id) }}" class="btn btn-warning me-2">Edit</a>
+                                                                    <a href="{{ route('category_news.edit', $cate->id) }}" class="btn btn-warning me-2">Sửa</a>
                                                                     <form action="{{route('category_news.destroy',$cate->id)}}" method="post">
 
                                                                         @method('DELETE')
                                                                         @csrf
-                                                                        <button class="btn btn-danger" onclick="return confirm('xoa')">Delete
+                                                                        <button class="btn btn-danger" onclick="return confirm('Bạn có muốn xóa không')">Xóa
                                                                         </button>
                                                                     </form>
                                                                 </div>

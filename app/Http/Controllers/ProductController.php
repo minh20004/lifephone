@@ -6,8 +6,13 @@ use App\Models\Color;
 use App\Models\Product;
 use App\Models\Capacity;
 use App\Models\Category;
+use App\Models\Order;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use App\Models\ProductVariant;
+use App\Models\Review;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -39,7 +44,7 @@ class ProductController extends Controller
         return view('admin.page.product.index', ['products' => $listProduct, 'search' => $search]);
     }
 
-    // show biến thể sản phẩm 
+    // show biến thể sản phẩm
     public function showVariants($id)
     {
         // $product = Product::with('variants.color', 'variants.capacity')->findOrFail($id);
@@ -48,9 +53,6 @@ class ProductController extends Controller
         $variants = $product->variants;
         return view('admin.page.product.variants', compact('product', 'variants'));
     }
-
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -70,7 +72,7 @@ class ProductController extends Controller
         $validateData = $request->validate([
             'product_code' => 'required',
             'name' => 'required',
-            'image_url' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048',
+            'image_url' => 'nullable|file|mimes:png,jpg,jpeg,gif,webp|max:2048',
             'description' => 'required',
             'category_id' => 'required',
             'variants' => 'required|array',
@@ -163,22 +165,78 @@ class ProductController extends Controller
 
 
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        // Lấy thông tin sản phẩm
-        $product = Product::with('variants.color', 'variants.capacity')->findOrFail($id);
+        // Lấy thông tin sản phẩm và các biến thể
+        $product = Product::with('variants.color', 'variants.capacity')->findOrFail(id: $id);
 
-        // Tăng lượt xem lên 1
+        // Tăng lượt xem
         $product->increment('views');
-        // hiển thị giá nhỏ nhat
-        $minPrice = $product->variants->min('price_difference');
 
-        // Trả về view với dữ liệu sản phẩm
-        return view('client.page.detail-product.general', compact('product','minPrice')); // Chú ý đường dẫn view
+        // Lọc các biến thể còn hàng
+        $availableVariants = $product->variants->filter(function ($variant) {
+            return $variant->stock > 0; // Chỉ lấy biến thể có số lượng tồn lớn hơn 0
+        });
+
+        // Lấy giá nhỏ nhất từ các biến thể còn hàng
+        $minPrice = $availableVariants->min('price_difference');
+
+        // Lấy danh sách đánh giá của sản phẩm cùng với thông tin khách hàng và người dùng
+        $reviews = Review::with('user', 'loadAllCustomer') // Nạp quan hệ user và customer nếu cần
+            ->where('product_id', $id)
+            ->get();
+
+
+        // Tính toán số lượng đánh giá
+        $reviewCount = $reviews ? $reviews->count() : 0;
+
+        // Tính điểm đánh giá trung bình
+        $averageRating = $reviews->avg('rating') ?? 0;
+        $ratingCounts = [
+            5 => $reviews->where('rating', 5)->count(),
+            4 => $reviews->where('rating', 4)->count(),
+            3 => $reviews->where('rating', 3)->count(),
+            2 => $reviews->where('rating', 2)->count(),
+            1 => $reviews->where('rating', 1)->count(),
+        ];
+
+        // Tính toán tỷ lệ phần trăm của mỗi mức sao
+        $ratingPercentages = [];
+        foreach ($ratingCounts as $rating => $count) {
+            $ratingPercentages[$rating] = $reviewCount > 0 ? ($count / $reviewCount) * 100 : 0;
+        }
+        $customer_id  = Auth::id(); // Lấy ID người dùng hiện tại
+        $hasPurchased = Order::where('customer_id', $customer_id)
+            ->whereHas('orderItems', function ($query) use ($id) {
+                $query->where('product_id', $id); // Kiểm tra sản phẩm trong đơn hàng
+            })
+            ->exists();
+        // Lấy danh sách OrderItems của đơn hàng
+
+        // Kiểm tra kết quả
+
+        // Lấy danh sách các màu sắc từ OrderItem
+        if (!$hasPurchased) {
+            // Truyền thông báo lỗi vào view thay vì redirect
+            $canReview = false;
+        } else {
+            $canReview = true;
+        }
+        // Trả về view với dữ liệu sản phẩm và giá nhỏ nhất
+        return view('client.page.detail-product.general', compact(
+            'product',
+            'minPrice',
+            'reviews',
+            'reviewCount',
+            'averageRating',
+            'ratingPercentages',
+            'ratingCounts',
+            'canReview'
+
+        ));
     }
+
+
 
     public function edit(string $id)
     {
@@ -247,7 +305,7 @@ class ProductController extends Controller
         if (!empty($errors)) {
             return back()->withErrors($errors)->withInput();
         }
-        
+
 
         $product = Product::findOrFail($id);
 
@@ -304,7 +362,7 @@ class ProductController extends Controller
 
         return redirect()->route('product.index')->with('success', 'Sản phẩm đã được cập nhật thành công!');
     }
-    
+
 
 
 
@@ -349,5 +407,99 @@ class ProductController extends Controller
         $product->restore();
 
         return redirect()->route('product.trashed')->with('success', 'Sản phẩm đã được khôi phục thành công');
+    }
+
+    public function getProductsByCategory($categoryId)
+    {
+        $products = Product::where('category_id', $categoryId)->get();
+
+        return view('products.by-category', compact('products'));
+    }
+    public function filterProducts(Request $request)
+    {
+        // Xử lý các tham số lọc từ yêu cầu
+        $query = Product::query();
+
+        // Lọc theo category
+        if ($request->has('category_id') && $request->category_id) {
+            $query->where('category_id', $request->category_id);
+        }
+
+        // Lọc theo giá
+        if ($request->has('min_price') && $request->min_price) {
+            $query->where('price', '>=', $request->min_price);
+        }
+        if ($request->has('max_price') && $request->max_price) {
+            $query->where('price', '<=', $request->max_price);
+        }
+
+        // Lọc theo dung lượng
+        if ($request->has('capacities') && !empty($request->capacities)) {
+            $query->whereIn('capacity_id', $request->capacities);
+        }
+
+        // Lọc theo màu sắc
+        if ($request->has('colors') && !empty($request->colors)) {
+            $query->whereIn('color_id', $request->colors);
+        }
+
+        // Lấy sản phẩm đã lọc
+        $products = $query->get();
+
+        // Trả về danh sách sản phẩm dưới dạng HTML (có thể thay đổi tùy theo nhu cầu)
+        $html = view('partials.product-list', compact('products'))->render();
+
+        return response()->json(['html' => $html]);
+    }
+    public function loadReviews($id)
+    {
+        $product = Product::with('variants.color', 'variants.capacity')->findOrFail($id);
+
+        $reviews = Review::with(['user', 'loadAllCustomer']) // Nạp quan hệ user và customer nếu cần
+            ->where('product_id', $id)
+            ->get();
+
+        // Tính toán số lượng đánh giá
+        $reviewCount = $reviews ? $reviews->count() : 0;
+
+        // Tính điểm đánh giá trung bình
+        $averageRating = $reviews->avg('rating') ?? 0;
+        $ratingCounts = [
+            5 => $reviews->where('rating', 5)->count(),
+            4 => $reviews->where('rating', 4)->count(),
+            3 => $reviews->where('rating', 3)->count(),
+            2 => $reviews->where('rating', 2)->count(),
+            1 => $reviews->where('rating', 1)->count(),
+        ];
+
+        // Tính toán tỷ lệ phần trăm của mỗi mức sao
+        $ratingPercentages = [];
+        foreach ($ratingCounts as $rating => $count) {
+            $ratingPercentages[$rating] = $reviewCount > 0 ? ($count / $reviewCount) * 100 : 0;
+        }
+        $customer_id  = Auth::id(); // Lấy ID người dùng hiện tại
+        $hasPurchased = Order::where('customer_id', $customer_id)
+            ->whereHas('orderItems', function ($query) use ($id) {
+                $query->where('product_id', $id); // Kiểm tra sản phẩm trong đơn hàng
+            })
+            ->exists();
+        // Lấy danh sách OrderItems của đơn hàng
+
+        // Kiểm tra kết quả
+
+        // Lấy danh sách các màu sắc từ OrderItem
+        if (!$hasPurchased) {
+            return redirect()->back()->with('error', 'Bạn cần mua sản phẩm trước khi đánh giá.');
+        }
+        // Trả về view với dữ liệu sản phẩm và giá nhỏ nhất
+        return view('client.page.detail-product.allReviews', compact(
+            'reviews',
+            'reviewCount',
+            'averageRating',
+            'ratingPercentages',
+            'ratingCounts',
+            'product'
+
+        ));
     }
 }

@@ -1,5 +1,4 @@
- 
- @extends('client.layout.master')
+@extends('client.layout.master')
  @section('title')
      Lifephone
  @endsection
@@ -29,18 +28,20 @@
           <a class="nav-link" href="#detail">Chi tiết sản phẩm</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="shop-product-reviews-electronics.html">Đánh giá (68)</a>
+          <a class="nav-link" href="{{ route('products.reviews', $product->id) }}">Đánh giá ({{$reviewCount }})</a>
         </li>
       </ul>
       <a class="d-none d-md-flex align-items-center gap-2 text-decoration-none ms-auto mb-1" href="#reviews">
-        <div class="d-flex gap-1 fs-sm">
-          <i class="ci-star-filled text-warning"></i>
-          <i class="ci-star-filled text-warning"></i>
-          <i class="ci-star-filled text-warning"></i>
-          <i class="ci-star-filled text-warning"></i>
-          <i class="ci-star-half text-warning"></i>
-        </div>
-        <span class="text-body-tertiary fs-xs">68 reviews</span>
+      @for ($i = 1; $i <= 5; $i++)
+          @if ($i <=floor($averageRating))
+          <i class="ci-star-filled text-warning"></i> <!-- Sao đầy -->
+          @elseif ($i == ceil($averageRating) && $averageRating - floor($averageRating) > 0)
+          <i class="ci-star-half text-warning"></i> <!-- Sao nửa -->
+          @else
+          <i class="ci-star text-body-tertiary opacity-60"></i> <!-- Sao rỗng -->
+          @endif
+          @endfor
+        <span class="text-body-tertiary fs-xs">({{$reviewCount }})</span>
       </a>
     </div>
   </section>
@@ -187,6 +188,11 @@
                         </label>
                     @endforeach
                 </div>
+                @if ($errors->has('color-options'))
+                    <div class="text-danger mt-2">
+                        {{ $errors->first('color-options') }}
+                    </div>
+                @endif
                 
                 <!-- Hiển thị giá -->
                 <div class="d-flex flex-wrap align-items-center mb-2">
@@ -221,6 +227,8 @@
                       <i class="ci-plus"></i>
                     </button>
                   </div>
+                  
+
                   <button type="button" class="btn btn-icon btn-lg btn-secondary animate-pulse order-sm-3 order-md-2 order-lg-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Add to Wishlist" aria-label="Add to Wishlist">
                     <i class="ci-heart fs-lg animate-target"></i>
                   </button>
@@ -232,6 +240,11 @@
                     Thêm vào giỏ hàng
                   </button>
                 </div>
+                @if ($errors->has('quantity'))
+                      <div class="text-danger mt-2">
+                          {{ $errors->first('quantity') }}
+                      </div>
+                  @endif
             </form>
 
             <!-- Features -->
@@ -350,6 +363,296 @@
 
   @include('client.page.detail-product.detail')
 
+<<<<<<< HEAD
+        <!-- Product details -->
+        <h2 class="h3 pb-2 pb-md-3">Chi tiết sản phẩm</h2>
+        <h3 class="h6">Thông số kỹ thuật chung</h3>
+        <div class="product-description">
+          {!! $product->description !!}
+      </div>
+
+
+
+        <ul class="list-unstyled d-flex flex-column gap-3 fs-sm pb-3 m-0 mb-2 mb-sm-3">
+          <li class="d-flex align-items-center position-relative pe-4">
+            <span>Model:</span>
+            <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
+            <span class="text-dark-emphasis fw-medium text-end">iPhone 14 Plus</span>
+          </li>
+          <li class="d-flex align-items-center position-relative pe-4">
+            <span>Manufacturer:</span>
+            <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
+            <span class="text-dark-emphasis fw-medium text-end">Apple Inc.</span>
+          </li>
+          <li class="d-flex align-items-center position-relative pe-4">
+            <span>Finish:</span>
+            <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
+            <span class="text-dark-emphasis fw-medium text-end">Ceramic, Glass, Aluminium</span>
+            <i class="ci-info fs-base text-body-tertiary position-absolute top-50 end-0 translate-middle-y" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-custom-class="popover-sm" data-bs-content="Ceramic shield front, Glass back and Aluminium design"></i>
+          </li>
+          <li class="d-flex align-items-center position-relative pe-4">
+            <span>Capacity:</span>
+            <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
+            <span class="text-dark-emphasis fw-medium text-end">128GB</span>
+          </li>
+          <li class="d-flex align-items-center position-relative pe-4">
+            <span>Chip:</span>
+            <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
+            <span class="text-dark-emphasis fw-medium text-end">A15 Bionic chip</span>
+          </li>
+        </ul>
+        <h3 class="h6">Display</h3>
+        <ul class="list-unstyled d-flex flex-column gap-3 fs-sm pb-1 m-0 mb-2 mb-sm-3">
+          <li class="d-flex align-items-center position-relative pe-4">
+            <span>Diagonal:</span>
+            <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
+            <span class="text-dark-emphasis fw-medium text-end">6.1"</span>
+          </li>
+          <li class="d-flex align-items-center position-relative pe-4">
+            <span>Screen type:</span>
+            <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
+            <span class="text-dark-emphasis fw-medium text-end">Super Retina XDR</span>
+            <i class="ci-info fs-base text-body-tertiary position-absolute top-50 end-0 translate-middle-y" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-custom-class="popover-sm" data-bs-content="HDR display, True Tone, Wide color (P3), Haptic Touch, 800 nits brightness"></i>
+          </li>
+          <li class="d-flex align-items-center position-relative pe-4">
+            <span>Resolution:</span>
+            <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
+            <span class="text-dark-emphasis fw-medium text-end">2778x1284px at 458ppi</span>
+          </li>
+          <li class="d-flex align-items-center position-relative pe-4">
+            <span>Refresh rate:</span>
+            <span class="d-block flex-grow-1 border-bottom border-dashed px-1 mt-2 mx-2"></span>
+            <span class="text-dark-emphasis fw-medium text-end">120 Hz</span>
+          </li>
+        </ul>
+        <div class="nav">
+          <a class="nav-link text-primary animate-underline px-0" href="shop-product-details-electronics.html">
+            <span class="animate-target">See all product details</span>
+            <i class="ci-chevron-right fs-base ms-1"></i>
+          </a>
+        </div>
+
+        <div class="modal fade" id="reviewForm" data-bs-backdrop="static" tabindex="-1" aria-labelledby="reviewFormLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <form class="modal-content needs-validation" id="submitReviewForm" method="POST" action="{{ route('reviews.store', ['id' => $product->id]) }}">
+      @csrf
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="reviewFormLabel">Đánh giá của bạn về sản phẩm</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pb-3 pt-0">
+        <input type="hidden" name="product_id" value="{{ $product->id }}">
+        <div class="mb-3">
+          <label class="form-label">Đánh giá <span class="text-danger">*</span></label>
+          <select class="form-select" name="rating" required>
+            <option value="" disabled selected>Chọn số sao</option>
+            @for ($i = 1; $i <= 5; $i++)
+              <option value="{{ $i }}">{{ $i }} sao</option>
+            @endfor
+          </select>
+          <div class="invalid-feedback">Hãy chọn số sao cho sản phẩm!</div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="review-text">Bình luận <span class="text-danger">*</span></label>
+          <textarea class="form-control" rows="4" id="review-text" name="comment" minlength="20" required></textarea>
+          <div class="invalid-feedback">Bình luận cần có ít nhất 20 ký tự!</div>
+        </div>
+      </div>
+      <div class="modal-footer flex-nowrap gap-3 border-0 px-4">
+        <button type="reset" class="btn btn-secondary w-100 m-0" data-bs-dismiss="modal">Quay lại</button>
+        <button type="submit" class="btn btn-primary w-100 m-0">Gửi đánh giá</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Reviews -->
+<div class="d-flex align-items-center pt-5 mb-4 mt-2 mt-md-3 mt-lg-4" id="reviews" style="scroll-margin-top: 80px">
+    <h2 class="h3 mb-0">Đánh giá</h2>
+    <button type="button" class="btn btn-secondary ms-auto" data-bs-toggle="modal" data-bs-target="#reviewForm">
+      <i class="ci-edit-3 fs-base ms-n1 me-2"></i>
+      Để lại đánh giá
+    </button>
+  </div>
+
+  <!-- Reviews stats -->
+  <div class="row g-4 pb-3">
+    <div class="col-sm-4">
+
+      <!-- Overall rating card -->
+      <div class="d-flex flex-column align-items-center justify-content-center h-100 bg-body-tertiary rounded p-4">
+        <div class="h1 pb-2 mb-1">4.1</div>
+        <div class="hstack justify-content-center gap-1 fs-sm mb-2">
+          <i class="ci-star-filled text-warning"></i>
+          <i class="ci-star-filled text-warning"></i>
+          <i class="ci-star-filled text-warning"></i>
+          <i class="ci-star-filled text-warning"></i>
+          <i class="ci-star text-body-tertiary opacity-60"></i>
+        </div>
+        <p><strong>Số lượng đánh giá:</strong> {{ $reviewCount }}</p>
+      </div>
+    </div>
+    <div class="col-sm-8">
+
+      <!-- Rating breakdown by quantity -->
+      <div class="vstack gap-3">
+
+        <!-- 5 stars -->
+        <div class="hstack gap-2">
+          <div class="hstack fs-sm gap-1">
+            5<i class="ci-star-filled text-warning"></i>
+          </div>
+          <div class="progress w-100" role="progressbar" aria-label="Five stars" aria-valuenow="54" aria-valuemin="0" aria-valuemax="100" style="height: 4px">
+            <div class="progress-bar bg-warning rounded-pill" style="width: 54%"></div>
+          </div>
+          <div class="fs-sm text-nowrap text-end" style="width: 40px;">37</div>
+        </div>
+
+        <!-- 4 stars -->
+        <div class="hstack gap-2">
+          <div class="hstack fs-sm gap-1">
+            4<i class="ci-star-filled text-warning"></i>
+          </div>
+          <div class="progress w-100" role="progressbar" aria-label="Four stars" aria-valuenow="23.5" aria-valuemin="0" aria-valuemax="100" style="height: 4px">
+            <div class="progress-bar bg-warning rounded-pill" style="width: 23.5%"></div>
+          </div>
+          <div class="fs-sm text-nowrap text-end" style="width: 40px;">16</div>
+        </div>
+
+        <!-- 3 stars -->
+        <div class="hstack gap-2">
+          <div class="hstack fs-sm gap-1">
+            3<i class="ci-star-filled text-warning"></i>
+          </div>
+          <div class="progress w-100" role="progressbar" aria-label="Three stars" aria-valuenow="13" aria-valuemin="0" aria-valuemax="100" style="height: 4px">
+            <div class="progress-bar bg-warning rounded-pill" style="width: 13%"></div>
+          </div>
+          <div class="fs-sm text-nowrap text-end" style="width: 40px;">9</div>
+        </div>
+
+        <!-- 2 stars -->
+        <div class="hstack gap-2">
+          <div class="hstack fs-sm gap-1">
+            2<i class="ci-star-filled text-warning"></i>
+          </div>
+          <div class="progress w-100" role="progressbar" aria-label="Two stars" aria-valuenow="6" aria-valuemin="0" aria-valuemax="100" style="height: 4px">
+            <div class="progress-bar bg-warning rounded-pill" style="width: 6%"></div>
+          </div>
+          <div class="fs-sm text-nowrap text-end" style="width: 40px;">4</div>
+        </div>
+
+        <!-- 1 star -->
+        <div class="hstack gap-2">
+          <div class="hstack fs-sm gap-1">
+            1<i class="ci-star-filled text-warning"></i>
+          </div>
+          <div class="progress w-100" role="progressbar" aria-label="One star" aria-valuenow="3.5" aria-valuemin="0" aria-valuemax="100" style="height: 4px">
+            <div class="progress-bar bg-warning rounded-pill" style="width: 3.5%"></div>
+          </div>
+          <div class="fs-sm text-nowrap text-end" style="width: 40px;">3</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Review -->
+  @if(isset($reviews))
+  @foreach ($reviews as $review)
+  
+  <div class="border-bottom py-3 mb-3">
+    <div class="d-flex align-items-center mb-3">
+      <div class="text-nowrap me-3">
+        <span class="h6 mb-0">{{ $review->customer_id  }}</span> <!-- Tên người dùng -->
+        <i class="ci-check-circle text-success align-middle ms-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Verified customer"></i>
+      </div>
+      <span class="text-body-secondary fs-sm ms-auto">{{ $review->created_at }}</span> <!-- Ngày đánh giá -->
+    </div>
+    <div class="d-flex gap-1 fs-sm pb-2 mb-1">
+      @for ($i = 1; $i <= 5; $i++)
+        @if ($i <= $review->rating)
+          <i class="ci-star-filled text-warning"></i>
+        @else
+          <i class="ci-star text-body-tertiary opacity-60"></i>
+        @endif
+      @endfor
+    </div>
+    <ul class="list-inline gap-2 pb-2 mb-1">
+      <li class="fs-sm me-4"><span class="text-dark-emphasis fw-medium">Color:</span> {{ $review->color }}</li>
+      <li class="fs-sm"><span class="text-dark-emphasis fw-medium">Model:</span> {{ $review->model }}</li>
+    </ul>
+    <p class="fs-sm">{{ $review->comment }}</p>
+    <div class="nav align-items-center">
+      <button type="button" class="nav-link animate-underline px-0">
+        <i class="ci-corner-down-right fs-base ms-1 me-1"></i>
+        <span class="animate-target">Reply</span>
+      </button>
+      <button type="button" class="nav-link text-body-secondary animate-scale px-0 ms-auto me-n1">
+        <i class="ci-thumbs-up fs-base animate-target me-1"></i>
+        0
+      </button>
+      <hr class="vr my-2 mx-3">
+      <button type="button" class="nav-link text-body-secondary animate-scale px-0 ms-n1">
+        <i class="ci-thumbs-down fs-base animate-target me-1"></i>
+        0
+      </button>
+    </div>
+  </div>
+@endforeach
+@else
+    <p>Chưa có đánh giá nào hãy là người đánh giá sản phẩm đầu tiên của chúng tôi.</p>
+@endif
+
+
+  <div class="nav">
+    <a class="nav-link text-primary animate-underline px-0" href="shop-product-reviews-electronics.html">
+      <span class="animate-target">Xem tất cả đánh giá</span>
+      <i class="ci-chevron-right fs-base ms-1"></i>
+    </a>
+  </div>
+</div>
+
+      <!-- Sticky product preview visible on screens > 991px wide (lg breakpoint) -->
+      <aside class="col-md-5 col-xl-4 offset-xl-1 d-none d-md-block" style="margin-top: -100px">
+        <div class="position-sticky top-0 ps-3 ps-lg-4 ps-xl-0" style="padding-top: 100px">
+          <div class="border rounded p-3 p-lg-4">
+            <div class="d-flex align-items-center mb-3">
+              <div class="ratio ratio-1x1 flex-shrink-0" style="width: 110px">
+                <img src="{{ asset('storage/' . $product->image_url) }}" width="110" alt="iPhone 14">
+              </div>
+              <div class="w-100 min-w-0 ps-2 ps-sm-3">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                  <div class="d-flex gap-1 fs-xs">
+                    <i class="ci-star-filled text-warning"></i>
+                    <i class="ci-star-filled text-warning"></i>
+                    <i class="ci-star-filled text-warning"></i>
+                    <i class="ci-star-filled text-warning"></i>
+                    <i class="ci-star text-body-tertiary opacity-75"></i>
+                  </div>
+                  <span class="text-body-tertiary fs-xs">68</span>
+                </div>
+                <h4 class="fs-sm fw-medium mb-2">{{$product->name}}</h4>
+                <div class="h5 mb-0 text-danger">{{ number_format($minPrice, 0, ',', '.') }} đ</div>
+              </div>
+            </div>
+            <div class="d-flex gap-2 gap-lg-3">
+              <button type="button" class="btn btn-primary w-100 animate-slide-end">
+                <i class="ci-shopping-cart fs-base animate-target ms-n1 me-2"></i>
+                Thêm vào giỏ hàng
+              </button>
+              <button type="button" class="btn btn-icon btn-secondary animate-pulse" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Add to Wishlist" aria-label="Add to Wishlist" data-id="{{$product->id}}">
+                <i class="ci-heart fs-base animate-target"></i>
+              </button>
+              <button type="button" class="btn btn-icon btn-secondary animate-rotate" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Compare" aria-label="Compare">
+                <i class="ci-refresh-cw fs-base animate-target"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+=======
+>>>>>>> a40953f3b946df31f18da4530e8bc40e6a37027d
 
   <!-- Viewed products (Carousel) -->
   <section class="container pb-4 pb-md-5 mb-2 mb-sm-0 mb-lg-2 mb-xl-4">
