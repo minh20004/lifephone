@@ -19,8 +19,8 @@ use App\Http\Controllers\NewController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderNotificationController;
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\ProductController;
 
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserNotificationController;
@@ -28,6 +28,7 @@ use App\Http\Controllers\VoucherController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -217,7 +218,8 @@ Route::post('/customer/logout', [AuthController::class, 'customerLogout'])->name
 
 // quenmatkhau
 
-Route::get('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotPasswordForm'])->name('password.request');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [ResetPasswordController::class, 'reset'])->name('password.update');
 
