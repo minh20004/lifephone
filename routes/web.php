@@ -231,6 +231,8 @@ Route::middleware(['auth:customer', 'isCustomer'])->group(function () {
     Route::put('/customer/{id}/update-address', [AuthController::class, 'updateAddress'])->name('customer.updateAddress');
     Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
     Route::get('/customer/wishList', [AuthController::class, 'wish_list'])->name('customer.wishList');
+    //review 
+    Route::get('/customer/review', [AuthController::class, 'review_custommer'])->name('customer.review');
 
     Route::get('/order-history', [AuthController::class, 'history'])->name('order.history');
     // Route thêm địa chỉ
@@ -244,6 +246,7 @@ Route::middleware(['auth:customer', 'isCustomer'])->group(function () {
     Route::get('/order-detail/{id}', [AuthController::class, 'detail'])->name('order.detail');
     //binh luan 
     Route::post('product/{id}/review', [ReviewController::class, 'store'])->name('reviews.store');
+    
 
 });
 
