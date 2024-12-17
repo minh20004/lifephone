@@ -1,10 +1,8 @@
-
- @extends('client.layout.master')
+@extends('client.layout.master')
  @section('title')
      Lifephone
  @endsection
  @section('content')
-
  <!-- Breadcrumb -->
  <nav class="container pt-3 my-3 my-md-4" aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -30,18 +28,20 @@
           <a class="nav-link" href="#detail">Chi tiết sản phẩm</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="shop-product-reviews-electronics.html">Đánh giá (68)</a>
+          <a class="nav-link" href="{{ route('products.reviews', $product->id) }}">Đánh giá ({{$reviewCount }})</a>
         </li>
       </ul>
       <a class="d-none d-md-flex align-items-center gap-2 text-decoration-none ms-auto mb-1" href="#reviews">
-        <div class="d-flex gap-1 fs-sm">
-          <i class="ci-star-filled text-warning"></i>
-          <i class="ci-star-filled text-warning"></i>
-          <i class="ci-star-filled text-warning"></i>
-          <i class="ci-star-filled text-warning"></i>
-          <i class="ci-star-half text-warning"></i>
-        </div>
-        <span class="text-body-tertiary fs-xs">68 reviews</span>
+      @for ($i = 1; $i <= 5; $i++)
+          @if ($i <=floor($averageRating))
+          <i class="ci-star-filled text-warning"></i> <!-- Sao đầy -->
+          @elseif ($i == ceil($averageRating) && $averageRating - floor($averageRating) > 0)
+          <i class="ci-star-half text-warning"></i> <!-- Sao nửa -->
+          @else
+          <i class="ci-star text-body-tertiary opacity-60"></i> <!-- Sao rỗng -->
+          @endif
+          @endfor
+        <span class="text-body-tertiary fs-xs">({{$reviewCount }})</span>
       </a>
     </div>
   </section>
@@ -136,7 +136,7 @@
             <img src="{{ asset('storage/' . $product->image_url) }}" class="swiper-thumb-img" alt="Thumbnail">
           </div>
         </div>
-
+      
         <!-- ảnh gallery -->
         @foreach (json_decode($product->gallery_image, true) as $galleryImage)
           <div class="swiper-slide swiper-thumb">
@@ -146,7 +146,7 @@
           </div>
         @endforeach
       </div>
-
+            
         </div>
       </div>
 
@@ -166,7 +166,7 @@
                         $capacities = $product->variants->unique('capacity_id');
                     @endphp
                     @foreach ($capacities as $variant)
-                        <input type="radio" class="btn-check model-option" name="model-options" id="model-{{ $variant->capacity->id }}"
+                        <input type="radio" class="btn-check model-option" name="model-options" id="model-{{ $variant->capacity->id }}" 
                               value="{{ $variant->capacity->id }}" {{ $loop->first ? 'checked' : '' }}>
                         <label for="model-{{ $variant->capacity->id }}" class="btn btn-sm btn-outline-secondary">{{ $variant->capacity->name }} GB</label>
                     @endforeach
@@ -181,7 +181,7 @@
                         $colors = $product->variants->unique('color_id');
                     @endphp
                     @foreach ($colors as $variant)
-                        <input type="radio" class="btn-check color-option" name="color-options" id="color-{{ $variant->color->id }}"
+                        <input type="radio" class="btn-check color-option" name="color-options" id="color-{{ $variant->color->id }}" 
                               value="{{ $variant->color->id }}" data-color-name="{{ $variant->color->name }}">
                         <label for="color-{{ $variant->color->id }}" class="btn btn-color fs-xl" style="color: {{ $variant->color->code }};">
                             <span class="visually-hidden">{{ $variant->color->name }}</span>
@@ -193,7 +193,7 @@
                         {{ $errors->first('color-options') }}
                     </div>
                 @endif
-
+                
                 <!-- Hiển thị giá -->
                 <div class="d-flex flex-wrap align-items-center mb-2">
                     <div class="fs-3 mb-0 text-danger fw-bold" id="productPrice" data-base-price="{{ $minPrice }}">{{ number_format($minPrice, 0, ',', '.') }} đ</div>
@@ -214,8 +214,8 @@
                   <script>
                     const variants = @json($variants);
                   </script>
-
-
+              
+            
                 <!-- Count + Buttons -->
                 <div class="d-flex flex-wrap flex-sm-nowrap flex-md-wrap flex-lg-nowrap gap-3 gap-lg-2 gap-xl-3 mb-4">
                   <div class="count-input flex-shrink-0 order-sm-1">
@@ -227,9 +227,9 @@
                       <i class="ci-plus"></i>
                     </button>
                   </div>
+                  
 
-
-                  <button type="button" class="btn btn-icon btn-lg btn-secondary animate-pulse order-sm-3 order-md-2 order-lg-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Add to Wishlist" aria-label="Add to Wishlist" data-id="{{$product->id}}">
+                  <button type="button" class="btn btn-icon btn-lg btn-secondary animate-pulse order-sm-3 order-md-2 order-lg-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Add to Wishlist" aria-label="Add to Wishlist">
                     <i class="ci-heart fs-lg animate-target"></i>
                   </button>
                   <button type="button" class="btn btn-icon btn-lg btn-secondary animate-rotate order-sm-4 order-md-3 order-lg-4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Compare" aria-label="Compare">
@@ -318,7 +318,7 @@
                 </button>
               </h3>
               <div class="accordion-collapse collapse" id="payment" aria-labelledby="headingPayment" data-bs-parent="#infoAccordion">
-                <div class="accordion-body">Trải nghiệm giao dịch không rắc rối với <a class="fw-medium" href="#!"> các tùy chọn thanh toán linh hoạt</a> và các tiện ích tín dụng của chúng tôi. Tìm hiểu thêm về
+                <div class="accordion-body">Trải nghiệm giao dịch không rắc rối với <a class="fw-medium" href="#!"> các tùy chọn thanh toán linh hoạt</a> và các tiện ích tín dụng của chúng tôi. Tìm hiểu thêm về 
                   các phương thức thanh toán khác nhau được chấp nhận, các gói trả góp và bất kỳ ưu đãi tín dụng độc quyền nào có sẵn để giúp trải nghiệm mua sắm của bạn trở nên liền mạch.</div>
               </div>
             </div>
@@ -361,11 +361,9 @@
   </section>
 
 
- <!-- Product details and Reviews shared container -->
-<section class="container pb-5 mb-2 mb-md-3 mb-lg-4 mb-xl-5">
-    <div class="row">
-      <div class="col-md-7">
+  @include('client.page.detail-product.detail')
 
+<<<<<<< HEAD
         <!-- Product details -->
         <h2 class="h3 pb-2 pb-md-3">Chi tiết sản phẩm</h2>
         <h3 class="h6">Thông số kỹ thuật chung</h3>
@@ -653,6 +651,8 @@
       </aside>
     </div>
   </section>
+=======
+>>>>>>> a40953f3b946df31f18da4530e8bc40e6a37027d
 
   <!-- Viewed products (Carousel) -->
   <section class="container pb-4 pb-md-5 mb-2 mb-sm-0 mb-lg-2 mb-xl-4">
@@ -754,7 +754,7 @@
             </div>
           </div>
 
-
+          
         </div>
       </div>
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category_new;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class CategoryNewsController extends Controller
 {
@@ -59,9 +60,11 @@ if ($this->Category_new) {
 
             return redirect()->route('category_news.index')->with('error', 'Danh mục đã tồn tại!');
         }
+        $slug = Str::slug($validateData['title']);
 
         $this->Category_new->create([
             'title' => $validateData['title'],
+            'slug' => $slug,
         ]);
 
         // sử lý thêm danh mục bên add sản phẩm
@@ -117,20 +120,25 @@ if ($this->Category_new) {
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        $Category_new = Category_new::FindorFail($id);
+    public function destroy($id)
+{
+    $Category_new = Category_new::findOrFail($id);
 
-        if ($Category_new->News()->withTrashed()->count() > 0) {
-            return redirect()->route('Category_new.index')->with('error', 'Không thể xóa danh mục vì vẫn còn sản phẩm trong danh mục này.');
-        }
-
-        $Category_new->status = 0;
-        $Category_new->save();
-
-        $Category_new->delete();
-        return redirect()->route('Category_new.index')->with('success', 'Danh mục đã được xóa thành công.');
+    // Kiểm tra nếu có tin tức liên quan
+    if ($Category_new->News()->withTrashed()->count() > 0) {
+        return redirect()->route('category_news.index')->with('error', 'Không thể xóa danh mục vì vẫn còn sản phẩm trong danh mục này.');
     }
+
+    // Đánh dấu trạng thái là 0 trước khi xóa
+    $Category_new->status = 0;
+    $Category_new->save();
+
+    // Xóa mềm danh mục
+    $Category_new->delete();
+
+    return redirect()->route('category_news.index')->with('success', 'Danh mục đã được xóa thành công.');
+}
+
     public function categorynewsblog($slug)
     {
         // Tìm danh mục theo slug
@@ -141,5 +149,22 @@ if ($this->Category_new) {
 
         return view('client.page.category.show', compact('category', 'posts'));
     }
+    public function trashed()
+    {
+        $trashedNews = Category_new::onlyTrashed()->paginate(10);
 
+        return view('admin.page.category_news.trashed', compact('trashedNews'));
+    }
+
+    public function restore($id)
+    {
+        $news = Category_new::withTrashed()->findOrFail($id);
+
+        if ($news->trashed()) {
+            $news->restore();
+            return redirect()->route('category_news.trashed')->with('success', 'Danh mục tin tức đã được khôi phục.');
+        }
+
+        return redirect()->route('category_news.trashed')->with('error', 'Danh mục tin tức không nằm trong thùng rác.');
+    }
 }

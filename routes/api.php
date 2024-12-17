@@ -3,8 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiProductController;
+use App\Http\Controllers\chatController;
 use App\Http\Controllers\FavoriteController;
-
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +18,6 @@ use App\Http\Controllers\FavoriteController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -27,3 +28,4 @@ Route::post('favorites', [FavoriteController::class, 'addToFavorites']);
 Route::post('favorites/delete', [FavoriteController::class, 'removeFromFavorites']);
 Route::get('/favorites', [FavoriteController::class, 'getFavorites']);
 Route::post('favorites/addToCard', [FavoriteController::class, 'addToCart']);
+Route::post('getConversation', [chatController::class, 'chatBoard']);

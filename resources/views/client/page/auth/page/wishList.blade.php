@@ -85,8 +85,8 @@
 
 
     $(document).ready(function(){
-      const selectedProducts = [];
-      const unselectedProducts = [];
+      var selectedProducts = [];
+      var unselectedProducts = [];
 
 
       function getProduct()

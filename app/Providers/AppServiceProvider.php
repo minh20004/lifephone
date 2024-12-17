@@ -2,11 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\News;
 use App\Models\Category;
+use App\Models\OrderNotification;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
-use App\Models\News;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -41,6 +42,16 @@ class AppServiceProvider extends ServiceProvider
                 ->get();
 
             $view->with('latestNews', $latestNews);
+        });
+
+        View::composer('*', function ($view) {
+            $notifications = OrderNotification::with('order')
+                ->orderBy('created_at', 'desc')
+                ->get();
+    
+            $unreadCount = OrderNotification::where('is_read', false)->count();
+    
+            $view->with(compact('notifications', 'unreadCount'));
         });
     }
 }

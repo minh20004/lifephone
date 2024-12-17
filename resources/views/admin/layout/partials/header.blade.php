@@ -415,7 +415,7 @@
             <div class="dropdown topbar-head-dropdown ms-1 header-item" id="notificationDropdown">
                 <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
                     <i class='bx bx-bell fs-22'></i>
-                    <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">3<span class="visually-hidden">unread messages</span></span>
+                    <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">{{ $unreadCount }}<span class="visually-hidden">unread messages</span></span>
                 </button>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end p-0" aria-labelledby="page-header-notifications-dropdown">
 
@@ -423,10 +423,10 @@
                         <div class="p-3">
                             <div class="row align-items-center">
                                 <div class="col">
-                                    <h6 class="m-0 fs-16 fw-semibold text-white"> Notifications </h6>
+                                    <h6 class="m-0 fs-16 fw-semibold text-white"> Thông báo </h6>
                                 </div>
                                 <div class="col-auto dropdown-tabs">
-                                    <span class="badge bg-light-subtle text-body fs-13"> 4 New</span>
+                                    <span class="badge bg-light-subtle text-body fs-13"> {{ $unreadCount }}</span>
                                 </div>
                             </div>
                         </div>
@@ -435,17 +435,17 @@
                             <ul class="nav nav-tabs dropdown-tabs nav-tabs-custom" data-dropdown-tabs="true" id="notificationItemsTab" role="tablist">
                                 <li class="nav-item waves-effect waves-light">
                                     <a class="nav-link active" data-bs-toggle="tab" href="#all-noti-tab" role="tab" aria-selected="true">
-                                        All (4)
+                                        Tất cả (4)
                                     </a>
                                 </li>
                                 <li class="nav-item waves-effect waves-light">
                                     <a class="nav-link" data-bs-toggle="tab" href="#messages-tab" role="tab" aria-selected="false">
-                                        Messages
+                                        Tin nhắn
                                     </a>
                                 </li>
                                 <li class="nav-item waves-effect waves-light">
                                     <a class="nav-link" data-bs-toggle="tab" href="#alerts-tab" role="tab" aria-selected="false">
-                                        Alerts
+                                        Đơn hàng <span > ({{ $unreadCount }})</span>
                                     </a>
                                 </li>
                             </ul>
@@ -469,6 +469,7 @@
                                                     Optimization <span class="text-secondary">reward</span> is
                                                     ready!
                                                 </h6>
+
                                             </a>
                                             <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
                                                 <span><i class="mdi mdi-clock-outline"></i> Just 30 sec ago</span>
@@ -483,81 +484,8 @@
                                     </div>
                                 </div>
 
-                                <div class="text-reset notification-item d-block dropdown-item position-relative">
-                                    <div class="d-flex">
-                                        <img src="{{asset('assets/images/users/avatar-2.jpg')}}" class="me-3 rounded-circle avatar-xs flex-shrink-0" alt="user-pic">
-                                        <div class="flex-grow-1">
-                                            <a href="#!" class="stretched-link">
-                                                <h6 class="mt-0 mb-1 fs-13 fw-semibold">Angela Bernier</h6>
-                                            </a>
-                                            <div class="fs-13 text-muted">
-                                                <p class="mb-1">Answered to your comment on the cash flow forecast's
-                                                    graph 🔔.</p>
-                                            </div>
-                                            <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
-                                                <span><i class="mdi mdi-clock-outline"></i> 48 min ago</span>
-                                            </p>
-                                        </div>
-                                        <div class="px-2 fs-15">
-                                            <div class="form-check notification-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="all-notification-check02">
-                                                <label class="form-check-label" for="all-notification-check02"></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="text-reset notification-item d-block dropdown-item position-relative">
-                                    <div class="d-flex">
-                                        <div class="avatar-xs me-3 flex-shrink-0">
-                                            <span class="avatar-title bg-danger-subtle text-danger rounded-circle fs-16">
-                                                <i class='bx bx-message-square-dots'></i>
-                                            </span>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <a href="#!" class="stretched-link">
-                                                <h6 class="mt-0 mb-2 fs-13 lh-base">You have received <b class="text-success">20</b> new messages in the conversation
-                                                </h6>
-                                            </a>
-                                            <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
-                                                <span><i class="mdi mdi-clock-outline"></i> 2 hrs ago</span>
-                                            </p>
-                                        </div>
-                                        <div class="px-2 fs-15">
-                                            <div class="form-check notification-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="all-notification-check03">
-                                                <label class="form-check-label" for="all-notification-check03"></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="text-reset notification-item d-block dropdown-item position-relative">
-                                    <div class="d-flex">
-                                        <img src="{{asset('assets/images/users/avatar-8.jpg')}}" class="me-3 rounded-circle avatar-xs flex-shrink-0" alt="user-pic">
-                                        <div class="flex-grow-1">
-                                            <a href="#!" class="stretched-link">
-                                                <h6 class="mt-0 mb-1 fs-13 fw-semibold">Maureen Gibson</h6>
-                                            </a>
-                                            <div class="fs-13 text-muted">
-                                                <p class="mb-1">We talked about a project on linkedin.</p>
-                                            </div>
-                                            <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
-                                                <span><i class="mdi mdi-clock-outline"></i> 4 hrs ago</span>
-                                            </p>
-                                        </div>
-                                        <div class="px-2 fs-15">
-                                            <div class="form-check notification-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="all-notification-check04">
-                                                <label class="form-check-label" for="all-notification-check04"></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div class="my-3 text-center view-all">
-                                    <button type="button" class="btn btn-soft-success waves-effect waves-light">View
-                                        All Notifications <i class="ri-arrow-right-line align-middle"></i></button>
+                                    <button type="button" class="btn btn-soft-success waves-effect waves-light">Xem tất cả Thông báo <i class="ri-arrow-right-line align-middle"></i></button>
                                 </div>
                             </div>
 
@@ -587,85 +515,43 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="text-reset notification-item d-block dropdown-item">
-                                    <div class="d-flex">
-                                        <img src="{{asset('assets/images/users/avatar-2.jpg')}}" class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                        <div class="flex-grow-1">
-                                            <a href="#!" class="stretched-link">
-                                                <h6 class="mt-0 mb-1 fs-13 fw-semibold">Angela Bernier</h6>
-                                            </a>
-                                            <div class="fs-13 text-muted">
-                                                <p class="mb-1">Answered to your comment on the cash flow forecast's
-                                                    graph 🔔.</p>
-                                            </div>
-                                            <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
-                                                <span><i class="mdi mdi-clock-outline"></i> 2 hrs ago</span>
-                                            </p>
-                                        </div>
-                                        <div class="px-2 fs-15">
-                                            <div class="form-check notification-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="messages-notification-check02">
-                                                <label class="form-check-label" for="messages-notification-check02"></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="text-reset notification-item d-block dropdown-item">
-                                    <div class="d-flex">
-                                        <img src="{{asset('assets/images/users/avatar-6.jpg')}}" class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                        <div class="flex-grow-1">
-                                            <a href="#!" class="stretched-link">
-                                                <h6 class="mt-0 mb-1 fs-13 fw-semibold">Kenneth Brown</h6>
-                                            </a>
-                                            <div class="fs-13 text-muted">
-                                                <p class="mb-1">Mentionned you in his comment on 📃 invoice #12501.
-                                                </p>
-                                            </div>
-                                            <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
-                                                <span><i class="mdi mdi-clock-outline"></i> 10 hrs ago</span>
-                                            </p>
-                                        </div>
-                                        <div class="px-2 fs-15">
-                                            <div class="form-check notification-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="messages-notification-check03">
-                                                <label class="form-check-label" for="messages-notification-check03"></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="text-reset notification-item d-block dropdown-item">
-                                    <div class="d-flex">
-                                        <img src="{{asset('assets/images/users/avatar-8.jpg')}}" class="me-3 rounded-circle avatar-xs" alt="user-pic">
-                                        <div class="flex-grow-1">
-                                            <a href="#!" class="stretched-link">
-                                                <h6 class="mt-0 mb-1 fs-13 fw-semibold">Maureen Gibson</h6>
-                                            </a>
-                                            <div class="fs-13 text-muted">
-                                                <p class="mb-1">We talked about a project on linkedin.</p>
-                                            </div>
-                                            <p class="mb-0 fs-11 fw-medium text-uppercase text-muted">
-                                                <span><i class="mdi mdi-clock-outline"></i> 3 days ago</span>
-                                            </p>
-                                        </div>
-                                        <div class="px-2 fs-15">
-                                            <div class="form-check notification-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="messages-notification-check04">
-                                                <label class="form-check-label" for="messages-notification-check04"></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <div class="my-3 text-center view-all">
                                     <button type="button" class="btn btn-soft-success waves-effect waves-light">View
                                         All Messages <i class="ri-arrow-right-line align-middle"></i></button>
                                 </div>
                             </div>
                         </div>
-                        <div class="tab-pane fade p-4" id="alerts-tab" role="tabpanel" aria-labelledby="alerts-tab"></div>
+                        <div class="tab-pane fade py-2 ps-2" id="alerts-tab" role="tabpanel" aria-labelledby="alerts-tab">
+                            <div data-simplebar style="max-height: 300px;" class="pe-2">
+                            <div class="text-reset notification-item d-block ">
+                            <div>
+                                @php
+                                    use App\Models\OrderNotification;
+                                    $notifications = OrderNotification::with('order')
+                                        ->orderBy('created_at', 'desc')
+                                        ->limit(10)
+                                        ->get();
+                                @endphp
+
+                                @forelse ($notifications as $notification)
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div class="border-bottom mb-2" >
+                                            <strong>Đơn hàng: {{ $notification->order->order_code }}</strong><br>
+                                            <span>{{ $notification->order->name }} đã đặt hàng.</span>
+                                            <small class="text-muted">{{ $notification->created_at->diffForHumans() }}</small>
+                                        </div>
+                                    </li>
+                                @empty
+                                    <li class="list-group-item">Không có thông báo nào.</li>
+                                @endforelse
+                            </div>
+                            <div class="my-3 text-center view-all">
+                                <a href="{{route('admin.notifications')}}" class="btn btn-soft-success waves-effect waves-light">Xem tất cả Thông báo <i class="ri-arrow-right-line align-middle"></i></a>
+                            </div>
+                            </div>
+                            </div>
+
+                        </div>
 
                         <div class="notification-actions" id="notification-actions">
                             <div class="d-flex text-muted justify-content-center">
@@ -690,8 +576,14 @@
                     @if (Auth::user()->role === 'admin')
                         <span class="d-flex align-items-center">
                             <!-- Hiển thị ảnh avatar -->
-                            {{-- <img src="{{ asset('storage/' . $user->avatar) }}" alt=""  width="70px" height="70px" class="header-profile-user"> --}}
-                            <img class="header-profile-user" src="{{ asset(Auth::user()->avatar ?? 'assets/images/users/default-avatar.jpg') }}" alt="Header Avatar">
+                            @if(Auth::user()->avatar)
+                            <img src="{{ asset('storage/' . Auth::user()->avatar) }}" alt="Avatar của {{ Auth::user()->name }}" class="header-profile-user" id="current-avatar">
+                            @else
+                                <img src="{{ asset('client/img/avtt.jpg') }}" alt="avtt" class="header-profile-user" id="current-avatar">
+                            @endif
+                            @error('avatar')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                             <span class="text-start ms-xl-2">
                                 <!-- Hiển thị tên người dùng -->
                                 <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ Auth::user()->name }}</span>
@@ -705,16 +597,27 @@
                 </button>~
                 <div class="dropdown-menu dropdown-menu-end">
                     <!-- item-->
-                    <h6 class="dropdown-header">Welcome Anna!</h6>
-                    <a class="dropdown-item" href="pages-profile.html"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Profile</span></a>
-                    <a class="dropdown-item" href="apps-chat.html"><i class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Messages</span></a>
-                    <a class="dropdown-item" href="apps-tasks-kanban.html"><i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Taskboard</span></a>
-                    <a class="dropdown-item" href="pages-faqs.html"><i class="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Help</span></a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="pages-profile.html"><i class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Balance : <b>$5971.67</b></span></a>
-                    <a class="dropdown-item" href="pages-profile-settings.html"><span class="badge bg-success-subtle text-success mt-1 float-end">New</span><i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Settings</span></a>
-                    <a class="dropdown-item" href="auth-lockscreen-basic.html"><i class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Lock screen</span></a>
+                    <h6 class="dropdown-header">Xin chào {{ Auth::user()->name }} !</h6>
+                    <a class="dropdown-item" href="{{ route('admin.profile') }}"><i class="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Hồ sơ</span></a>
+                    <a class="dropdown-item" href="{{ route('admin.chatBoard') }}"><i class="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Tin nhắn</span></a>
+                    {{-- <a class="dropdown-item" href="{{ route('admin.home') }}"><i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Thống kê</span></a> --}}
+                    @if(auth()->user()->role === 'admin')
+                        <a class="dropdown-item" href="{{ route('admin.home') }}">
+                            <i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
+                            <span class="align-middle">Thống kê</span>
+                        </a>
+                    @else
+                        <a class="dropdown-item" href="{{ route('admin.staff') }}">
+                            <i class="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>
+                            <span class="align-middle">Thống kê</span>
+                        </a>
+                    @endif
                     
+                    <div class="dropdown-divider"></div>
+                    {{-- <a class="dropdown-item" href="pages-profile.html"><i class="mdi mdi-wallet text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Balance : <b>$5971.67</b></span></a> --}}
+                    {{-- <a class="dropdown-item" href="pages-profile-settings.html"><span class="badge bg-success-subtle text-success mt-1 float-end">New</span><i class="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Settings</span></a> --}}
+                    {{-- <a class="dropdown-item" href="auth-lockscreen-basic.html"><i class="mdi mdi-lock text-muted fs-16 align-middle me-1"></i> <span class="align-middle">Lock screen</span></a> --}}
+
                     <form id="logout-form" class="dropdown-item" action="{{ route('admin.logout') }}" method="POST" style="display: inline;">
                         @csrf
                         <span class="align-middle" data-key="t-logout" style="cursor: pointer;" onclick="document.getElementById('logout-form').submit();">
@@ -722,7 +625,7 @@
                         </span>
                         <i class="mdi mdi-logout text-muted fs-16 align-middle me-1"></i>
                     </form>
-                    
+
                 </div>
             </div>
         </div>

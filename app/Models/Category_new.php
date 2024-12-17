@@ -10,11 +10,12 @@ class Category_new extends Model
 {
     use HasFactory,SoftDeletes;
     public $table = "Category_news";
-    protected $fillable = ['title'];
+    protected $fillable = ['title','slug'];
     protected $dates=['delete_at'];
     
-    public function news()
+    public function News()
     {
-        return $this->hasMany(News::class);
+        return $this->hasMany(News::class, 'category_news_id', 'id');
     }
+    
 }

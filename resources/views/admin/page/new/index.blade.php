@@ -7,7 +7,7 @@ News
 @section('content')
 
 <div class="page-content">
-    
+
     <div class="row">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between bg-galaxy-transparent">
@@ -33,9 +33,35 @@ News
                         </div>
                         <!-- end card header -->
                         @if ($listNews->isEmpty())
-                <p class="text-center text-muted">Không có tin tức nào để hiển thị.</p>
-            @else
-                        <div><button class="btn btn-primary " ><a style="color: yellow;" href="{{route('new_admin.create')}}">thêm</a></button></div>
+                        <p class="text-center text-muted">Không có tin tức nào để hiển thị.</p>
+                        @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        @endif
+
+                        @if(session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        @endif
+                        @else
+                        <div><button class="btn btn-primary "><a style="color: yellow;" href="{{route('new_admin.create')}}">thêm</a></button></div>
+                        @if(session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        @endif
+
+                        @if(session('error'))
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            {{ session('error') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        @endif
                         <div class="card-body">
                             <div class="tab-content text-muted">
                                 <div class="tab-pane active" id="productnav-all" role="tabpanel">
@@ -97,13 +123,13 @@ News
                                                             </td>
                                                             <td data-column-id="action" class="gridjs-td">
                                                                 <div>
-                                                                <a href="{{ route('new_admin.show', $News->id) }}" class="btn btn-success me-2">Xem chi tiết</a>
+                                                                    <a href="{{ route('new_admin.show', $News->id) }}" class="btn btn-success me-2">Xem chi tiết</a>
                                                                     <a href="{{ route('new_admin.edit', $News->id) }}" class="btn btn-warning me-2">Sửa</a>
                                                                     <form action="{{route('new_admin.destroy',$News->id)}}" method="post">
 
                                                                         @method('DELETE')
                                                                         @csrf
-                                                                        <button class="btn btn-danger" onclick="return confirm('xoa')">Delete
+                                                                        <button class="btn btn-danger" onclick="return confirm('Bạn có muốn xóa không')">Xóa
                                                                         </button>
                                                                     </form>
                                                                 </div>
@@ -111,7 +137,7 @@ News
                                                         </tr>
                                                         @endforeach
                                                     </tbody>
-
+                                                    @endif
                                                 </table>
                                             </div>
                                             <div>
