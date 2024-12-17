@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -28,6 +29,7 @@ use App\Http\Controllers\VoucherController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -170,7 +172,7 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
     // chuyển trang biến thể
     Route::get('/product/{id}/variants', [ProductController::class, 'showVariants'])->name('product.variants');
     //router review và news
-    Route::resource('admin/review', ReviewController::class);
+    Route::resource('reviews_admin', ReviewController::class);
     // Route::resource('new_admin',  NewController::class);
 
     // thông báo khi đặt hàng thành công
@@ -182,6 +184,8 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
     Route::put('/admin/new_admin/restore/{id}', [NewController::class, 'restore'])->name('new_admin.restore');
     Route::get('/admin/category_news/trashed', [CategoryNewsController::class, 'trashed'])->name('category_news.trashed');
     Route::put('/admin/category_news/restore/{id}', [CategoryNewsController::class, 'restore'])->name('category_news.restore');
+    //phsan hoi 
+    Route::patch('/admin/reviews/{id}/replyAsAdmin', [CommentController::class, 'replyAsAdmin'])->name('reviews.replyAsAdmin');
 });
 // end auth admin ------------------------------------------------------------------------------------------------------------------
 
@@ -216,7 +220,7 @@ Route::get('/verify/{token}', [AuthController::class, 'verifyCustomer'])->name('
 Route::post('/customer/resend-verification', [AuthController::class, 'resendVerificationEmail'])->name('customer.resend.verification');
 
 Route::get('/customer/login', [AuthController::class, 'showLogin_customer'])->name('customer.login');
-Route::post('/customer/login', [AuthController::class, 'customerLogin'])->name('customer.login.submit');
+Route::post('/customer/login', action: [AuthController::class, 'customerLogin'])->name('customer.login.submit');
 Route::post('/customer/logout', [AuthController::class, 'customerLogout'])->name('customer.logout');
 
 // quenmatkhau
@@ -250,6 +254,9 @@ Route::middleware(['auth:customer', 'isCustomer'])->group(function () {
     // Route cập nhật địa chỉ
     Route::put('/customer/address/{addressId}', [AddressController::class, 'updateAddress'])->name('customer.updateAddress');
     Route::get('/order-detail/{id}', [AuthController::class, 'detail'])->name('order.detail');
+    //binh luan 
+    Route::post('product/{id}/review', [ReviewController::class, 'store'])->name('reviews.store');
+
 });
 
 // Route::get('/order-detail/{id}', [AuthController::class, 'detail'])->name('order.detail');
@@ -354,3 +361,4 @@ Route::get('/new/category/{slug}', [NewController::class, 'categoryNewsBlog'])->
 Route::get('/search', [ClientCategoryController::class, 'search'])->name('product.search');
 // categoy product
 Route::get('/danh-muc-san-pham', [FrontendControlle::class, 'index_cate_all'])->name('danh-muc-san-pham');
+Route::get('/products/{id}/reviews', [ProductController::class, 'loadReviews'])->name('products.reviews');
