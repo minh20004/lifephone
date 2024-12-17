@@ -28,7 +28,7 @@
           <div class="border rounded p-3 p-lg-4">
             <div class="d-flex align-items-center mb-3">
               <div class="ratio ratio-1x1 flex-shrink-0" style="width: 110px">
-                <img src="{{ asset('storage/' . $product->image_url) }}" width="110" alt="iPhone 14">
+                <img src="{{ asset('storage/' . $product->image_url) }}" width="110" alt="iPhone 14"> 
               </div>
               <div class="w-100 min-w-0 ps-2 ps-sm-3">
                 {{-- <div class="d-flex align-items-center gap-2 mb-2">

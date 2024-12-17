@@ -102,6 +102,7 @@
                         <button type="submit" class="btn-close fs-sm" data-bs-toggle="tooltip" data-bs-custom-class="tooltip-sm" data-bs-title="Remove" aria-label="Remove from cart"
                         onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không ?')"></button>
                       </form>
+
                     </td>
                   </tr>
                 @endforeach
@@ -150,9 +151,6 @@
       </div>
     </div>
   </aside>
-
-
-
     </section>
     <!-- Trending products (Carousel) -->
     <section class="container pb-4 pb-md-5 mb-2 mb-sm-0 mb-lg-2 mb-xl-4">

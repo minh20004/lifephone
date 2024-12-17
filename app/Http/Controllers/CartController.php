@@ -178,63 +178,6 @@ class CartController extends Controller
         return redirect()->route('cart.index')->with('success', 'Sản phẩm đã được thêm vào giỏ hàng!');
     }
 
-    // public function updateQuantity(Request $request) //lỗi
-    // {
-    //     $productId = $request->input('productId');
-    //     $modelId = $request->input('modelId');
-    //     $colorId = $request->input('colorId');
-    //     $quantity = (int) $request->input('quantity');
-    //     $totalPrice = 0;
-
-    //     if (auth('customer')->check()) {
-    //         $customerId = auth('customer')->id();
-    //         $cartItem = Cart::where('customer_id', $customerId)
-    //             ->where('product_id', $productId)
-    //             ->where('variant_id', "{$modelId}-{$colorId}")
-    //             ->first();
-
-    //         if ($cartItem) {
-    //             if ($quantity > 0) {
-    //                 $cartItem->quantity = $quantity;
-    //                 $cartItem->save();
-    //             } else {
-    //                 $cartItem->delete();
-    //             }
-    //         }
-
-    //         $cartItems = Cart::where('customer_id', $customerId)->get();
-    //         foreach ($cartItems as $item) {
-    //             $totalPrice += $item->price * $item->quantity;
-    //         }
-    //     } else {
-    //         $cart = session()->get('cart', []);
-    //         if (isset($cart[$productId][$modelId][$colorId])) {
-    //             if ($quantity > 0) {
-    //                 $cart[$productId][$modelId][$colorId]['quantity'] = $quantity;
-    //             } else {
-    //                 unset($cart[$productId][$modelId][$colorId]);
-    //                 if (empty($cart[$productId][$modelId])) unset($cart[$productId][$modelId]);
-    //                 if (empty($cart[$productId])) unset($cart[$productId]);
-    //             }
-    //         }
-    //         session()->put('cart', $cart);
-
-    //         foreach ($cart as $product) {
-    //             foreach ($product as $model) {
-    //                 foreach ($model as $color) {
-    //                     $totalPrice += $color['price'] * $color['quantity'];
-    //                 }
-    //             }
-    //         }
-    //     }
-
-    //     return response()->json([
-    //         'success' => true,
-    //         'itemTotal' => number_format($cartItem ? $cartItem->price * $quantity : $color['price'] * $quantity),
-    //         'totalPrice' => number_format($totalPrice)
-    //     ]);
-    // }
-
     public function updateQuantity(Request $request)
     {
         $productId = $request->input('productId');
@@ -427,10 +370,6 @@ class CartController extends Controller
         ));
     }
 
-
-
-
-
     public function saveAddress(Request $request)
     {
         $address = $request->only(['name', 'phone', 'address']);
@@ -464,7 +403,62 @@ class CartController extends Controller
     }
 
     
-    
+    // public function updateQuantity(Request $request) //lỗi
+    // {
+    //     $productId = $request->input('productId');
+    //     $modelId = $request->input('modelId');
+    //     $colorId = $request->input('colorId');
+    //     $quantity = (int) $request->input('quantity');
+    //     $totalPrice = 0;
+
+    //     if (auth('customer')->check()) {
+    //         $customerId = auth('customer')->id();
+    //         $cartItem = Cart::where('customer_id', $customerId)
+    //             ->where('product_id', $productId)
+    //             ->where('variant_id', "{$modelId}-{$colorId}")
+    //             ->first();
+
+    //         if ($cartItem) {
+    //             if ($quantity > 0) {
+    //                 $cartItem->quantity = $quantity;
+    //                 $cartItem->save();
+    //             } else {
+    //                 $cartItem->delete();
+    //             }
+    //         }
+
+    //         $cartItems = Cart::where('customer_id', $customerId)->get();
+    //         foreach ($cartItems as $item) {
+    //             $totalPrice += $item->price * $item->quantity;
+    //         }
+    //     } else {
+    //         $cart = session()->get('cart', []);
+    //         if (isset($cart[$productId][$modelId][$colorId])) {
+    //             if ($quantity > 0) {
+    //                 $cart[$productId][$modelId][$colorId]['quantity'] = $quantity;
+    //             } else {
+    //                 unset($cart[$productId][$modelId][$colorId]);
+    //                 if (empty($cart[$productId][$modelId])) unset($cart[$productId][$modelId]);
+    //                 if (empty($cart[$productId])) unset($cart[$productId]);
+    //             }
+    //         }
+    //         session()->put('cart', $cart);
+
+    //         foreach ($cart as $product) {
+    //             foreach ($product as $model) {
+    //                 foreach ($model as $color) {
+    //                     $totalPrice += $color['price'] * $color['quantity'];
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'itemTotal' => number_format($cartItem ? $cartItem->price * $quantity : $color['price'] * $quantity),
+    //         'totalPrice' => number_format($totalPrice)
+    //     ]);
+    // }
 
     /**
      * Show the form for creating a new resource.
