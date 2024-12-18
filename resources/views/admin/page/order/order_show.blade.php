@@ -60,14 +60,14 @@
                         @foreach ($order->orderItems as $item)
                         <div class="d-flex align-items-center border-bottom pt-2 pb-2">
                             <div class="col-md-1">
-                                @if ($item->product->image_url)
-                                    <img src="{{ asset('storage/' . $item->product->image_url) }}" width="100px" alt="Product" class="img-fluid rounded">
-                                @else
-                                    Không có ảnh
-                                @endif
+                            @if (!empty($item->product->image_url))  <!-- Kiểm tra nếu image_url không rỗng hoặc null -->
+                                <img src="{{ asset('storage/' . $item->product->image_url) }}" width="100px" alt="Product" class="img-fluid rounded">
+                            @else
+                                Không có ảnh
+                            @endif
                             </div>
                             <div class="col-md-5">
-                                <p class="mb-1 ms-3 fw-bold">{{ $item->product->name }}</p>
+                                <p class="mb-1 ms-3 fw-bold">{{!empty($item->product->name) }}</p>
                                 <p class="mb-1 ms-3 text-muted">Phân loại hàng: {{ $item->variant->color->name ?? 'Không có màu' }}, {{ $item->variant->capacity->name ?? 'Không có dung lượng' }}</p>
                                 <p class="mb-1 ms-3 text-dark">x{{ $item->quantity }}</p>
                             </div>

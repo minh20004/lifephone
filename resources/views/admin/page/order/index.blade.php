@@ -1,5 +1,11 @@
 @extends('admin.layout.master')
 @section('content')
+@if ($errors->any())
+    
+    <script>
+        alert('da co nguoi xac nhan don hang!')
+    </script>
+@endif
 <div class="page-content">
     <div class="container-fluid">
         <div class="card">
@@ -64,15 +70,15 @@
                                             
                                             <div class="card-body">
                                                 <div class="d-flex align-items-center border-bottom">
-                                                    @foreach ($order->orderItems as $item)
-                                                        <div class="col-md">
-                                                            @if ($item->product->image_url)
-                                                                <img src="{{ asset('storage/' . $item->product->image_url) }}" width="40px" height="40px" alt="Product" class="img-fluid rounded">
-                                                            @else
-                                                                Không có ảnh
-                                                            @endif
-                                                        </div>
-                                                    @endforeach
+                                                @foreach ($order->orderItems as $item)
+                                                    <div class="col-md">
+                                                        @if (!empty($item->product->image_url))  <!-- Kiểm tra nếu image_url không rỗng hoặc null -->
+                                                            <img src="{{ asset('storage/' . $item->product->image_url) }}" width="40px" height="40px" alt="Product" class="img-fluid rounded">
+                                                        @else
+                                                            Không có ảnh
+                                                        @endif
+                                                    </div>
+                                                @endforeach
                                                     <div class="col-md-9">
                                                         <p class="mb-1 ms-3 fw-bold">Mã đơn hàng: {{ $order->order_code }}</p>
                                                         <p class="mb-1 ms-3 text-muted">Tên người nhận: {{ $order->name }}</p>

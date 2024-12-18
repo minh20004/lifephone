@@ -200,7 +200,6 @@
                         </div>
                       </div>
                       <div class="accordion bg-body-tertiary rounded-5 p-4">
-                        
                             <div class="accordion-item border-0">
                                 <h3 class="accordion-header" id="promoCodeHeading">
                                     <button type="button" class="accordion-button animate-underline collapsed py-0 ps-sm-2 ps-lg-0 ps-xl-2" data-bs-toggle="collapse" data-bs-target="#promoCode" aria-expanded="false" aria-controls="promoCode">
@@ -210,7 +209,18 @@
                                 </h3>
                                 <div class="accordion-collapse collapse" id="promoCode" aria-labelledby="promoCodeHeading">
                                     <div class="accordion-body pt-3 pb-2 ps-sm-2 px-lg-0 px-xl-2">
-                                     
+                                        <form action="{{ route('order.applyVoucher') }}" method="POST" class="needs-validation d-flex gap-2" novalidate>
+                                            @csrf
+                                            <div class="d-flex">
+                                                <div class="position-relative w-100 mb-3">
+                                                    <input type="text" name="voucher_code" id="voucher_code" class="form-control" placeholder="Nhập mã khuyến mãi" required>
+                                                    <div class="invalid-tooltip bg-transparent py-0">Nhập mã khuyến mãi hợp lệ!</div>
+                                                </div>
+                                                <div>
+                                                    <button type="submit" class="btn btn-danger">Áp dụng</button>
+                                                </div>
+                                            </div>
+                                        </form>
                         
                                         <div class="mt-4">
                                             <p class="text-danger">Chọn một mã khuyến mãi:</p>
