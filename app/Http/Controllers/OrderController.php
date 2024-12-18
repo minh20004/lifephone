@@ -32,16 +32,17 @@ class OrderController extends Controller
         }
 
         $orders = $orders->get();
-
+        $id_staff = Auth::guard('admin')->user()->id;
+        dump($id_staff);
         // Nhóm đơn hàng theo trạng thái
         $groupedOrders = [
             'Tất cả' => $orders,
             'Chờ xác nhận' => $orders->where('status', 'Chờ xác nhận'),
-            'Đã xác nhận' => $orders->where('status', 'Đã xác nhận'),
-            'Đang giao hàng' => $orders->where('status', 'Đang giao hàng'),
-            'Đã hoàn thành' => $orders->where('status', 'Đã hoàn thành'),
-            'Đã hủy' => $orders->where('status', 'Đã hủy'),
-            'Thanh toán thất bại' => $orders->where('status', 'Thanh toán thất bại'),
+            'Đã xác nhận' => $orders->where('status', 'Đã xác nhận')->where('user_id',$id_staff),
+            'Đang giao hàng' => $orders->where('status', 'Đang giao hàng')->where('user_id',$id_staff),
+            'Đã hoàn thành' => $orders->where('status', 'Đã hoàn thành')->where('user_id',$id_staff),
+            'Đã hủy' => $orders->where('status', 'Đã hủy')->where('user_id',$id_staff),
+            'Thanh toán thất bại' => $orders->where('status', 'Thanh toán thất bại')->where('user_id',$id_staff),
         ];
 
         // Tính số lượng đơn hàng cho từng trạng thái
@@ -58,6 +59,10 @@ class OrderController extends Controller
 
         // Lấy đơn hàng theo id
         $order = Order::findOrFail($id);
+
+        if ($order->status === $request->status) {
+            return back()->withErrors(['status' => 'Trạng thái đơn hàng hiện tại đã trùng với trạng thái mới.']);
+        }
 
         // Nếu trạng thái được cập nhật là 'Đã hủy', hoàn trả số lượng sản phẩm vào kho
         if ($request->status === 'Đã hủy' && $order->status !== 'Đã hủy') {
