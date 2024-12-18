@@ -96,6 +96,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title text-center">Tổng quan đơn hàng</h5>
+                            <a href="{{ route('orders.index') }}" class="text-decoration-underline">Xem đơn hàng của bạn</a>
                             <table class="table table-striped table-bordered">
                                 <thead>
                                     <tr>
@@ -126,11 +127,11 @@
                 <div class="col-md-6">
                     <div class="card" style="height: 190px">
                         <div class="card-body">
-                            <h5 class="card-title text-center">Thu nhập</h5>
+                            <h5 class="card-title text-center">Doanh thu</h5>
                             <table class="table table-striped table-bordered">
                                 <tbody>
                                     <tr>
-                                        <th>Tổng thu nhập theo thống kê</th>
+                                        <th>Tổng doanh thu</th>
                                         <td>{{ number_format($currentIncome, 0) }} VND</td>
                                     </tr>
                                     {{-- <tr>

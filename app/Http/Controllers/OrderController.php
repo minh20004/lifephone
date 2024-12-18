@@ -33,7 +33,6 @@ class OrderController extends Controller
 
         $orders = $orders->get();
         $id_staff = Auth::guard('admin')->user()->id;
-        dump($id_staff);
         // Nhóm đơn hàng theo trạng thái
         $groupedOrders = [
             'Tất cả' => $orders,
