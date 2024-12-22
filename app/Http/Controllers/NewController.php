@@ -304,5 +304,4 @@ class NewController extends Controller
     }
 
 }
-
-
+// Giang nhe
