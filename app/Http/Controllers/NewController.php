@@ -117,7 +117,8 @@ class NewController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $news = News::where('id', $id)->firstOrFail();
+        return view('admin.page.new.show', compact('news'));
     }
 
     /**
