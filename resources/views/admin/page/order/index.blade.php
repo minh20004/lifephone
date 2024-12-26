@@ -35,7 +35,7 @@
         @endif
 
         <div class="card d-flex ">
-            <ul class="nav nav-pills  m-3" id="pills-tab" role="tablist">
+            <ul class="nav nav-pills m-3" id="pills-tab" role="tablist">
                 @foreach($groupedOrders as $status => $orders)
                     <li class="nav-item" role="presentation">
                         <button style="background:#9df99d;" 
@@ -59,97 +59,106 @@
         <div class="tab-content" id="pills-tabContent">
             @foreach($groupedOrders as $status => $orders)
                 <div class="tab-pane fade {{ $loop->first ? 'show active' : '' }}" 
-                     id="pills-{{ Str::slug($status) }}" 
-                     role="tabpanel" 
-                     aria-labelledby="pills-{{ Str::slug($status) }}-tab">
+                    id="pills-{{ Str::slug($status) }}" 
+                    role="tabpanel" 
+                    aria-labelledby="pills-{{ Str::slug($status) }}-tab">
                     @if($orders->count() > 0)
                         <div class="card-body">
                             <table class="table table-bordered table-hover">
-                                    @forelse ($orders as $order)
-                                        <div class=" card shadow-sm mb-4">
-                                            
-                                            <div class="card-body">
-                                                <div class="d-flex align-items-center border-bottom">
-                                                @foreach ($order->orderItems as $item)
-                                                    <div class="col-md">
-                                                        @if (!empty($item->product->image_url))  <!-- Kiểm tra nếu image_url không rỗng hoặc null -->
-                                                            <img src="{{ asset('storage/' . $item->product->image_url) }}" width="40px" height="40px" alt="Product" class="img-fluid rounded">
-                                                        @else
-                                                            Không có ảnh
-                                                        @endif
-                                                    </div>
-                                                @endforeach
-                                                    <div class="col-md-9">
-                                                        <p class="mb-1 ms-3 fw-bold">Mã đơn hàng: {{ $order->order_code }}</p>
-                                                        <p class="mb-1 ms-3 text-muted">Tên người nhận: {{ $order->name }}</p>
-                                                        <p class="mb-1 ms-3 text-danger fw-600">Tổng tiền: {{ number_format($order->total_price, 0, ',', '.') }} đ</p>
+                                @forelse ($orders as $order)
+                                    <div class="card shadow-sm mb-4">
+                                        <div class="card-body">
+                                            <div class="d-flex align-items-center border-bottom">
+                                            @foreach ($order->orderItems as $item)
+                                                <div class="col-md">
+                                                    @if (!empty($item->image_url))  
+                                                        <img src="{{ asset('storage/' . $item->image_url) }}" width="40px" height="40px" alt="Product" class="img-fluid rounded">
+                                                    @else
+                                                        Không có ảnh
+                                                    @endif
+                                                </div>
+                                            @endforeach
+                                                <div class="col-md-9">
+                                                    <p class="mb-1 ms-3 fw-bold">Mã đơn hàng: {{ $order->order_code }}</p>
+                                                    <p class="mb-1 ms-3 text-muted">Tên người nhận: {{ $order->name }}</p>
+                                                    <p class="mb-1 ms-3 text-danger fw-600">Tổng tiền: {{ number_format($order->total_price, 0, ',', '.') }} đ</p>
 
-                                                    </div>
-                                                    <div class="col-md-2 text-end">
-                                                        <form action="{{ route('order.updateStatus', $order->id) }}" method="POST">
-                                                            @csrf
-                                                            @if ($order->status === 'Thanh toán thất bại')
-                                                                <select name="status" class="form-control border-danger fw-bold text-danger" disabled>
-                                                                    <option value="Thanh toán thất bại" selected>Thanh toán thất bại</option>
-                                                                </select>
-                                                            @else
-                                                                <!-- Trạng thái cho các đơn hàng khác -->
-                                                                <select name="status" class="form-control
-                                                                    @if($order->status === 'Chờ xác nhận') border-danger fw-bold text-danger 
-                                                                    @elseif($order->status === 'Đã xác nhận') border-success fw-bold text-success
-                                                                    @elseif($order->status === 'Đang giao hàng') border-warning fw-bold text-warning
-                                                                    @elseif($order->status === 'Đã hoàn thành') border-primary fw-bold text-primary
-                                                                    @elseif($order->status === 'Đã hủy') border-danger fw-bold text-danger
-                                                                    @endif" onchange="this.form.submit()">
-                                                                    
-                                                                    <option value="Chờ xác nhận" 
-                                                                        {{ $order->status === 'Chờ xác nhận' ? 'selected' : 'disabled' }}>Chờ xác nhận</option>
+                                                </div>
+                                                <div class="col-md-2 text-end">
+                                                    @if ($status === 'Tất cả')
+                                                        <!-- Trạng thái chỉ hiển thị văn bản, không có dropdown -->
+                                                        <span class="fw-bold btn btn-light border border-danger 
+                                                            @if($order->status === 'Chờ xác nhận') text-danger
+                                                            @elseif($order->status === 'Đã xác nhận') text-success
+                                                            @elseif($order->status === 'Đang giao hàng') text-warning
+                                                            @elseif($order->status === 'Đã hoàn thành') text-primary
+                                                            @elseif($order->status === 'Đã hủy') text-danger
+                                                            @endif">
+                                                            {{ $order->status }}
+                                                        </span>
+                                                    @else
+                                                    <form action="{{ route('order.updateStatus', $order->id) }}" method="POST">
+                                                        @csrf
+                                                        @if ($order->status === 'Thanh toán thất bại')
+                                                            <select name="status" class="form-control border-danger fw-bold text-danger" disabled>
+                                                                <option value="Thanh toán thất bại" selected>Thanh toán thất bại</option>
+                                                            </select>
+                                                        @else
+                                                            <!-- Trạng thái cho các đơn hàng khác -->
+                                                            <select name="status" class="form-control
+                                                                @if($order->status === 'Chờ xác nhận') border-danger fw-bold text-danger 
+                                                                @elseif($order->status === 'Đã xác nhận') border-success fw-bold text-success
+                                                                @elseif($order->status === 'Đang giao hàng') border-warning fw-bold text-warning
+                                                                @elseif($order->status === 'Đã hoàn thành') border-primary fw-bold text-primary
+                                                                @elseif($order->status === 'Đã hủy') border-danger fw-bold text-danger
+                                                                @endif" onchange="this.form.submit()">
                                                                 
-                                                                    <option value="Đã xác nhận" 
-                                                                        {{ $order->status === 'Đã xác nhận' ? 'selected' : ($order->status !== 'Chờ xác nhận' ? 'disabled' : '') }}>Đã xác nhận</option>
-                                                                
-                                                                    <option value="Đang giao hàng" 
-                                                                        {{ $order->status === 'Đang giao hàng' ? 'selected' : ($order->status !== 'Đã xác nhận' ? 'disabled' : '') }}>Đang giao hàng</option>
-                                                                
-                                                                    <option value="Đã hoàn thành" 
-                                                                        {{ $order->status === 'Đã hoàn thành' ? 'selected' : ($order->status !== 'Đang giao hàng' ? 'disabled' : '') }}>Đã hoàn thành</option>
-                                                                
-                                                                    <option value="Đã hủy" 
-                                                                        {{ $order->status === 'Đã hủy' ? 'selected' : ($order->status !== 'Chờ xác nhận' && $order->status !== 'Đã xác nhận' && $order->status !== 'Đang giao hàng' ? 'disabled' : '') }}>Đã hủy</option>
-                                                                </select>
-                                                            @endif
-                                                        </form>
-                                                    </div>
-                                                    
+                                                                <option value="Chờ xác nhận" 
+                                                                    {{ $order->status === 'Chờ xác nhận' ? 'selected' : 'disabled' }}>Chờ xác nhận</option>
+                                                            
+                                                                <option value="Đã xác nhận" 
+                                                                    {{ $order->status === 'Đã xác nhận' ? 'selected' : ($order->status !== 'Chờ xác nhận' ? 'disabled' : '') }}>Đã xác nhận</option>
+                                                            
+                                                                <option value="Đang giao hàng" 
+                                                                    {{ $order->status === 'Đang giao hàng' ? 'selected' : ($order->status !== 'Đã xác nhận' ? 'disabled' : '') }}>Đang giao hàng</option>
+                                                            
+                                                                <option value="Đã hoàn thành" 
+                                                                    {{ $order->status === 'Đã hoàn thành' ? 'selected' : ($order->status !== 'Đang giao hàng' ? 'disabled' : '') }}>Đã hoàn thành</option>
+                                                            
+                                                                <option value="Đã hủy" 
+                                                                    {{ $order->status === 'Đã hủy' ? 'selected' : ($order->status !== 'Chờ xác nhận' && $order->status !== 'Đã xác nhận' && $order->status !== 'Đang giao hàng' ? 'disabled' : '') }}>Đã hủy</option>
+                                                            </select>
+                                                        @endif
+                                                    </form>
+                                                    @endif
                                                     
                                                 </div>
-                                                <div class="mt-3">
-                                                    
-                                                    <div class="text-end mt-3 d-flex justify-content-between gap-2">
-                                                        <p style="font-size:13px;">Ngày đặt hàng: {{ $order->created_at->format('d/m/Y ') }}</p>
-                                                        <div class="d-flex gap-2">
-                                                            <div>
-                                                                
-                                                            </div>
-                                                            <div><a href="{{ route('order.show', $order->id) }}" class="btn border border-danger btn-sm text-dark">Xem Chi Tiết Đơn Hàng</a></div>
+                                                
+                                                
+                                            </div>
+                                            <div class="mt-3">
+                                                
+                                                <div class="text-end mt-3 d-flex justify-content-between gap-2">
+                                                    <p style="font-size:13px;">Ngày đặt hàng: {{ $order->created_at->format('d/m/Y ') }}</p>
+                                                    <div class="d-flex gap-2">
+                                                        <div>
                                                             
                                                         </div>
+                                                        <div><a href="{{ route('order.show', $order->id) }}" class="btn border border-danger btn-sm text-dark">Xem Chi Tiết Đơn Hàng</a></div>
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    @empty
-                                    <p class="text-center">
-                                        @if($tabId === 'home' && isset($searchCode) && $searchCode)
-                                            Không tìm thấy đơn hàng nào với mã: "{{ $searchCode }}".
-                                        @else
-                                            Không có đơn hàng nào.
-                                        @endif
-                                    </p>
-                                    @endforelse
-                                    
-                                </tbody>
+                                    </div>
+                                @empty
+                                    <p class="text-center">Không có đơn hàng nào.</p>
+                                @endforelse
                             </table>
+                        </div>
+                        <!-- tab -->
+                        <div class="d-flex justify-content-end me-3">
+                            {{ $orders->appends(['status' => $status])->links() }}
                         </div>
                     @else
                         <p class="text-center">Không có đơn hàng trong trạng thái này.</p>
