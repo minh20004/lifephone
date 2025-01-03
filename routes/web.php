@@ -105,6 +105,7 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
 
     // Route hiển thị danh sách đơn hàng của nhân viên
     Route::get('/admin/employees/{employeeId}/orders', [AuthController::class, 'showEmployeeOrders'])->name('employee.orders');
+    Route::patch('/admin/users/{user}/toggle-active-status', [AuthController::class, 'toggleActiveStatus'])->name('admin.toggle-active-status');
 
 
     Route::get('/them-thanh-vien', [AuthController::class, 'create'])->name('admin.them-thanh-vien');

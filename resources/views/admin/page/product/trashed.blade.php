@@ -45,7 +45,9 @@
                             <th>Mô tả</th>
                             <th>Danh mục</th>
                             <th>Biến Thể</th>
+                            @if(auth()->user()->role === 'admin')
                             <th>Hành động </th>
+                            @endif
 
                         </thead>
                         <tbody>
@@ -72,9 +74,7 @@
                                     <td>{!! Str::limit($item->description, 40) !!}</td>
                                     <td>{{ $item->Category->name }}</td>
                                     <td><a href="{{ route('product.variants', ['id' => $item->id]) }}" class="btn btn-dark"><i class="bi bi-eye-fill"></i></a></td>
-
-
-
+                                    @if(auth()->user()->role === 'admin')
                                     <td>
                                         <form action="{{ route('product.restore', $item->id) }}" method="POST">
                                             @csrf
@@ -83,6 +83,7 @@
                                                 phục</button>
                                         </form>
                                     </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         

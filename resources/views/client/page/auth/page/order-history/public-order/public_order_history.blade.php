@@ -63,14 +63,14 @@
                                             <div class="col-12 mb-3 border-bottom pb-3">
                                                 <div class="d-flex align-items-center">
                                                     <div class="me-3">
-                                                        @if ($item->product->image_url)
-                                                            <img src="{{ asset('storage/' . $item->product->image_url) }}" alt="Product" class="img-fluid rounded" style="max-width: 80px; height: auto;">
+                                                        @if ($item->image_url)
+                                                            <img src="{{ asset('storage/' . $item->image_url) }}" alt="Product" class="img-fluid rounded" style="max-width: 80px; height: auto;">
                                                         @else
                                                             Không có ảnh
                                                         @endif
                                                     </div>
                                                     <div class="flex-grow-1">
-                                                        <p class="mb-1 fw-bold">{{ $item->product->name }}</p>
+                                                        <p class="mb-1 fw-bold">{{ $item->name }}</p>
                                                         <p class="mb-1 text-muted">Phân loại hàng: {{ $item->variant->color->name ?? 'Không có màu' }}, {{ $item->variant->capacity->name ?? 'Không có dung lượng' }}</p>
                                                         <p class="mb-1 text-dark">x{{ $item->quantity }}</p>
                                                     </div>
@@ -82,14 +82,17 @@
                                         @endforeach
                                     </div>
                                     <div class="mt-3">
-                                        <div class="d-flex align-items-center justify-content-end">
-                                            <p>Thành tiền: </p>
-                                            <p class="fs-5 ms-2 fw-bold text-danger">{{ number_format($order->total_price, 0, ',', '.') }} đ</p>
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                <p style="font-size:13px;">Ngày đặt hàng: {{ $order->created_at->format('d/m/Y ') }}</p>
+                                            </div>
+                                            <div class="d-flex gap-2">
+                                                <p>Thành tiền: </p>
+                                                <p class="fs-5 ms-2 fw-bold text-danger">{{ number_format($order->total_price, 0, ',', '.') }} đ</p>
+                                            </div>
                                         </div>
                                         <div class="text-end mt-3 d-flex justify-content-between gap-2">
-                                            <p style="font-size:13px;">Ngày đặt hàng: {{ $order->created_at->format('d/m/Y ') }}</p>
                                             <div class="d-flex gap-2">
-                                                <div><a href="{{ route('order.publicDetail', $order->id) }}" class="btn border border-danger btn-sm text-dark">Xem Chi Tiết Đơn Hàng</a></div>
                                                 <div>
                                                     @if($order->status == 'Chờ xác nhận')
                                                         <form action="{{ route('order.cancel', $order->id) }}" method="POST">

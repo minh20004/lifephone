@@ -54,7 +54,7 @@
                                 <th scope="col">Tên người dùng</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Vai trò</th>
-                                {{-- <th scope="col">Bài viết</th> --}}
+                                <th scope="col">Trạng thái</th>
                                 {{-- <th scope="col">Trạng thái 2FA</th> --}}
                                 <th scope="col"></th>
                             </tr>
@@ -83,17 +83,26 @@
                                         </span>
                                     </td> --}}
                                     <td class="gridjs-td">
+                                        <span class="badge {{ $user->is_active ? 'bg-success' : 'bg-danger' }}">
+                                            {{ $user->is_active ? 'Hoạt động' : 'Đã khóa' }}
+                                        </span>
+                                    </td>
+
+                                    <td class="gridjs-td">
                                         <div class="d-flex justify-content-center">
                                             {{-- Chỉ hiển thị nút xóa nếu role không phải là admin --}}
                                             @if($user->role !== 'admin')
-                                            <form action="{{route('admins.destroy', $user)}}" method="POST">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" onclick="return confirm('xác nhận xóa!')" class="btn btn-dark btn-sm me-2"> 
-                                                    <i class="fa-solid fa-delete-left"></i>
-                                                </button>
-                                            </form>
+                                                <form action="{{ route('admin.toggle-active-status', $user) }}" method="POST">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    <button type="submit" onclick="return confirm('{{ $user->is_active ? 'Xác nhận khóa tài khoản việc khóa tài khoản có thể ảnh hưởng tới đơn hàng mà nhân viên đó đang thực hiện cân nhắc trước khi xóa nhé!' : 'Xác nhận mở khóa tài khoản?' }}')" 
+                                                            class="btn {{ $user->is_active ? 'btn-danger' : 'btn-success' }} btn-sm me-2">
+                                                        <i class="fa-solid {{ $user->is_active ? 'fa-lock' : 'fa-unlock' }}"></i>
+                                                        {{ $user->is_active ? 'Khóa' : 'Mở khóa' }}
+                                                    </button>
+                                                </form>
                                             @endif
+
                                         </div>
                                     </td>
                                 </tr>

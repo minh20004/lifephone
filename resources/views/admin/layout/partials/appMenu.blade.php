@@ -68,9 +68,11 @@
             <li class="nav-item">
               <a href="{{ route('vouchers.index') }}" class="nav-link" data-key="t-chat"> Danh sách voucher </a>
             </li>
+            @if(auth()->user()->role === 'admin')
             <li class="nav-item">
               <a href="{{ route('vouchers.create') }}" class="nav-link" data-key="t-chat"> Thêm mới </a>
             </li>
+            @endif
           </ul>
         </div>
       </li>
