@@ -38,8 +38,8 @@
                             <th>Mã sản phẩm</th>
                             <th>Tên sản phẩm</th>
                             <th>Hình ảnh</th>
-                            <th>Hình ảnh phụ</th>
-                            <th>Mô tả</th>
+                            <!-- <th>Hình ảnh phụ</th> -->
+                            <!-- <th>Mô tả</th> -->
                             <th>Danh mục</th>
                             <th>Biến thể</th>
                             @if(auth()->user()->role === 'admin')
@@ -57,7 +57,7 @@
                                         {{-- <img src="{{ Storage::url($item->image_url) }}" width="70px" height="70px" alt=""> --}}
                                         <img src="{{ asset('storage/' . $item->image_url) }}" alt=""  width="70px" height="70px">
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         @if ($item->gallery_image)
                                             @php
                                                 $galleryImages = json_decode($item->gallery_image);
@@ -68,9 +68,9 @@
                                         @else
                                             Không có ảnh phụ
                                         @endif
-                                    </td>
+                                    </td> -->
                                     
-                                    <td>{!! Str::limit($item->description, 40) !!}</td>
+                                    <!-- <td>{!! Str::limit($item->description, 40) !!}</td> -->
                                     <td>{{ $item->category->name }}</td>
                                     <td><a href="{{ route('product.variants', $item->id) }}" class="btn btn-dark"><i class="bi bi-eye-fill"></i></a></td>
                                     <td class="d-flex">

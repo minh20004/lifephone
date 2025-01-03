@@ -91,7 +91,7 @@
                                                 <p class="fs-5 ms-2 fw-bold text-danger">{{ number_format($order->total_price, 0, ',', '.') }} đ</p>
                                             </div>
                                         </div>
-                                        <div class="text-end mt-3 d-flex justify-content-between gap-2">
+                                        <!-- <div class="text-end mt-3 d-flex justify-content-between gap-2">
                                             <div class="d-flex gap-2">
                                                 <div>
                                                     @if($order->status == 'Chờ xác nhận')
@@ -104,7 +104,7 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
                             </div>
