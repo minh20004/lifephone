@@ -120,7 +120,6 @@ class ProductController extends Controller
 
         foreach ($request->variants as $index => $variant) {
             $key = $variant['color_id'] . '-' . $variant['capacity_id'];
-
             if (isset($seenVariants[$key])) {
                 // Nếu đã tồn tại biến thể với id màu sắc và id dung lượng này thông báo lỗi
                 $errors["variants.$index.capacity_id"] = "Dung lượng và màu sắc của biến thể đã bị trùng.";
