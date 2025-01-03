@@ -104,14 +104,14 @@
                             <div class="col-12 mb-3 border-bottom pb-3">
                                 <div class="d-flex align-items-center">
                                     <div class="me-3">
-                                        @if ($item->product->image_url)
-                                            <img src="{{ asset('storage/' . $item->product->image_url) }}" alt="Product" class="img-fluid rounded" style="max-width: 80px; height: auto;">
+                                        @if ($item->image_url)
+                                            <img src="{{ asset('storage/' . $item->image_url) }}" alt="Product" class="img-fluid rounded" style="max-width: 80px; height: auto;">
                                         @else
                                             Không có ảnh
                                         @endif
                                     </div>
                                     <div class="flex-grow-1">
-                                        <p class="mb-1 fw-bold">{{ $item->product->name }}</p>
+                                        <p class="mb-1 fw-bold">{{ $item->name }}</p>
                                         <p class="mb-1 text-muted">Phân loại hàng: {{ $item->variant->color->name ?? 'Không có màu' }}, {{ $item->variant->capacity->name ?? 'Không có dung lượng' }}</p>
                                         <p class="mb-1 text-dark">x{{ $item->quantity }}</p>
                                     </div>

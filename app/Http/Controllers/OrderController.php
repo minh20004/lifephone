@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Address;
+use App\Models\Product;
 use App\Models\Voucher;
 use App\Models\OrderItem;
 use App\Models\VoucherUsage;
@@ -21,34 +22,66 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $searchTerm = $request->input('search');
+        $perPage = 10; 
+        $id_staff = Auth::guard('admin')->user()->id;
 
-        $orders = Order::orderBy('created_at', 'desc');
-
+        // Query cơ bản
+        $baseQuery = Order::orderBy('created_at', 'desc');
         if ($searchTerm) {
-            $orders->where(function($query) use ($searchTerm) {
+            $baseQuery->where(function($query) use ($searchTerm) {
                 $query->where('order_code', 'like', '%' . $searchTerm . '%')
                     ->orWhere('name', 'like', '%' . $searchTerm . '%');
             });
         }
 
-        $orders = $orders->get();
-        $id_staff = Auth::guard('admin')->user()->id;
-        // Nhóm đơn hàng theo trạng thái
+        // Nhóm đơn hàng theo trạng thái với phân trang riêng biệt
         $groupedOrders = [
-            'Tất cả' => $orders,
-            'Chờ xác nhận' => $orders->where('status', 'Chờ xác nhận'),
-            'Đã xác nhận' => $orders->where('status', 'Đã xác nhận')->where('user_id',$id_staff),
-            'Đang giao hàng' => $orders->where('status', 'Đang giao hàng')->where('user_id',$id_staff),
-            'Đã hoàn thành' => $orders->where('status', 'Đã hoàn thành')->where('user_id',$id_staff),
-            'Đã hủy' => $orders->where('status', 'Đã hủy')->where('user_id',$id_staff),
-            'Thanh toán thất bại' => $orders->where('status', 'Thanh toán thất bại')->where('user_id',$id_staff),
+            'Tất cả' => $baseQuery->paginate($perPage)->appends($request->query()),
+            'Chờ xác nhận' => Order::where('status', 'Chờ xác nhận')
+                ->orderBy('created_at', 'desc')
+                ->paginate($perPage)
+                ->appends($request->query()),
+            'Đã xác nhận' => Order::where('status', 'Đã xác nhận')
+                ->where('user_id', $id_staff)
+                ->orderBy('created_at', 'desc')
+                ->paginate($perPage)
+                ->appends($request->query()),
+            'Đang giao hàng' => Order::where('status', 'Đang giao hàng')
+                ->where('user_id', $id_staff)
+                ->orderBy('created_at', 'desc')
+                ->paginate($perPage)
+                ->appends($request->query()),
+            'Đã hoàn thành' => Order::where('status', 'Đã hoàn thành')
+                ->where('user_id', $id_staff)
+                ->orderBy('created_at', 'desc')
+                ->paginate($perPage)
+                ->appends($request->query()),
+            'Đã hủy' => Order::where('status', 'Đã hủy')
+                ->where('user_id', $id_staff)
+                ->orderBy('created_at', 'desc')
+                ->paginate($perPage)
+                ->appends($request->query()),
+            'Thanh toán thất bại' => Order::where('status', 'Thanh toán thất bại')
+                ->where('user_id', $id_staff)
+                ->orderBy('created_at', 'desc')
+                ->paginate($perPage)
+                ->appends($request->query()),
         ];
 
         // Tính số lượng đơn hàng cho từng trạng thái
-        $orderCounts = array_map(fn($orders) => $orders->count(), $groupedOrders);
+        $orderCounts = [
+            'Tất cả' => Order::count(),
+            'Chờ xác nhận' => Order::where('status', 'Chờ xác nhận')->count(),
+            'Đã xác nhận' => Order::where('status', 'Đã xác nhận')->where('user_id', $id_staff)->count(),
+            'Đang giao hàng' => Order::where('status', 'Đang giao hàng')->where('user_id', $id_staff)->count(),
+            'Đã hoàn thành' => Order::where('status', 'Đã hoàn thành')->where('user_id', $id_staff)->count(),
+            'Đã hủy' => Order::where('status', 'Đã hủy')->where('user_id', $id_staff)->count(),
+            'Thanh toán thất bại' => Order::where('status', 'Thanh toán thất bại')->where('user_id', $id_staff)->count(),
+        ];
 
         return view('admin.page.order.index', compact('groupedOrders', 'orderCounts'));
     }
+
     public function updateStatus(Request $request, $id)
     {
         // Validate trạng thái đơn hàng
@@ -202,10 +235,13 @@ class OrderController extends Controller
         if ($customerId) {
             // Lưu từ database
             foreach ($cartItems as $item) {
+                $product = Product::find($item->product_id);
                 OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $item->product_id,
                     'variant_id' => $item->variant_id,
+                    'name' => $product ? $product->name : 'Sản phẩm không xác định', 
+                    'image_url' => $product ? $product->image_url : null,
                     'quantity' => $item->quantity,
                     'price' => $item->price,
                     'total_price' => $item->price * $item->quantity,
@@ -229,21 +265,25 @@ class OrderController extends Controller
                     foreach ($models as $modelId => $colors) {
                         if (is_array($colors)) {
                             foreach ($colors as $colorId => $cartItem) {
+                                $product = Product::find($productId); // Lấy sản phẩm từ cơ sở dữ liệu
+            
                                 OrderItem::create([
                                     'order_id' => $order->id,
                                     'product_id' => $productId,
                                     'variant_id' => $cartItem['variant_id'],
+                                    'name' => $product ? $product->name : 'Sản phẩm không xác định', 
+                                    'image_url' => $cartItem['image_url'],
                                     'quantity' => $cartItem['quantity'],
                                     'price' => $cartItem['price'],
                                     'total_price' => $cartItem['price'] * $cartItem['quantity'],
                                 ]);
-
+            
                                 // Kiểm tra và giảm tồn kho
                                 $variant = ProductVariant::find($cartItem['variant_id']);
                                 if ($variant && $variant->stock < $cartItem['quantity']) {
                                     return redirect()->back()->with('error', 'Số lượng sản phẩm trong kho không đủ.');
                                 }
-
+            
                                 if ($variant) {
                                     $variant->stock -= $cartItem['quantity'];
                                     $variant->save();
@@ -253,6 +293,7 @@ class OrderController extends Controller
                     }
                 }
             }
+            
         }
         OrderNotification::create([
             'order_id' => $order->id,
@@ -271,6 +312,8 @@ class OrderController extends Controller
 
         return redirect()->route('order.success')->with('success', 'Đặt hàng thành công!');
     }
+    
+
 
 
     public function vnpay_payment(Request $request)
@@ -339,10 +382,14 @@ class OrderController extends Controller
             foreach ($cart as $productId => $variants) {
                 foreach ($variants as $variantId => $items) {
                     foreach ($items as $item) {
+                        $product = Product::find($item->product_id);
+
                         OrderItem::create([
                             'order_id' => $order->id,
                             'product_id' => $productId,
                             'variant_id' => $variantId,
+                            'name' => $product ? $product->name : 'Sản phẩm không xác định', 
+                            'image_url' => $product ? $product->image_url : null,
                             'quantity' => $item->quantity,
                             'price' => $item->price,
                             'total_price' => $item->price * $item->quantity,
@@ -355,10 +402,14 @@ class OrderController extends Controller
             foreach ($cart as $productId => $models) {
                 foreach ($models as $modelId => $colors) {
                     foreach ($colors as $colorId => $item) {
+                        $product = Product::find($productId); // Lấy sản phẩm từ cơ sở dữ liệu
+
                         OrderItem::create([
                             'order_id' => $order->id,
                             'product_id' => $productId,
                             'variant_id' => $item['variant_id'],
+                            'name' => $product ? $product->name : 'Sản phẩm không xác định', 
+                            'image_url' => $item['image_url'],
                             'quantity' => $item['quantity'],
                             'price' => $item['price'],
                             'total_price' => $item['price'] * $item['quantity'],

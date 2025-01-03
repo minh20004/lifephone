@@ -23,9 +23,11 @@
                 @endif
                 <div class="card-body">
                     <div class="mb-3" style=" border-bottom: 1px solid #ddd; padding-bottom: 10px;margin-bottom: 10px;">
+                        @if(auth()->user()->role === 'admin')
                         <a href="{{ route('capacity.create') }}" class="btn mb-3 fs-6 fw-bold text-dark"
                             style="background:#9df99d ">Thêm dung lượng</a>
                         <a href="{{ route('capacity.trashed') }}" class="btn btn-danger mb-3">Xem dung lượng đã bị xóa</a>
+                        @endif
                     </div>
                     
 
@@ -33,7 +35,9 @@
                         <thead class="thead-light">
                             <th>STT</th>
                             <th>Tên dung lượng</th>
+                            @if(auth()->user()->role === 'admin')
                             <th>Hành động </th>
+                            @endif
 
                         </thead>
                         <tbody>
@@ -41,6 +45,7 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $item->name }}</td>
+                                    @if(auth()->user()->role === 'admin')
                                     <td class="d-flex">
                                         <div class="me-2">
                                             <a href="{{ route('capacity.edit', $item->id) }}">
@@ -58,6 +63,7 @@
                                             </form>
                                         </div>
                                     </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>

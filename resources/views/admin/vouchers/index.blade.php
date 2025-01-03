@@ -10,9 +10,11 @@
 
             <!-- Nút thêm voucher -->
             <div class="mb-4">
+                @if(auth()->user()->role === 'admin')
                 <a href="{{ route('vouchers.create') }}" class="btn btn-info btn-sm rounded-3 shadow-sm">
                     <i class="bi bi-plus-circle me-2"></i> Thêm mới voucher
                 </a>
+                @endif
             </div>
 
             <!-- Bảng danh sách vouchers -->
@@ -28,7 +30,9 @@
                             <th>Ngày bắt đầu</th>
                             <th>Ngày kết thúc</th>
                             <th>Giới hạn sử dụng</th>
+                            @if(auth()->user()->role === 'admin')
                             <th>Hành Động</th>
+                            @endif
                         </tr>
                     </thead>
                     <tbody>
@@ -51,6 +55,7 @@
                             <td>{{ \Carbon\Carbon::parse($voucher->start_date)->format('d-m-Y') }}</td>
                             <td>{{ \Carbon\Carbon::parse($voucher->end_date)->format('d-m-Y') }}</td>
                             <td>{{ $voucher->usage_limit }}</td>
+                            @if(auth()->user()->role === 'admin')
                             <td class="d-flex">
                                 <!-- Nút sửa -->
                                 <a href="{{ route('vouchers.edit', $voucher->id) }}" class="btn btn-sm btn-primary rounded-3 shadow-sm me-2 transition-all duration-300 hover:bg-primary-light">
@@ -66,6 +71,7 @@
                                     </button>
                                 </form>
                             </td>
+                            @endif
                         </tr>
                         @endforeach
                     </tbody>

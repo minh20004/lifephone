@@ -121,7 +121,7 @@
                                             <th>STT</th>
                                             <th>Tên nhân viên</th>
                                             <th>Số lượng đơn hàng hoàn thành</th>
-                                            <th>Tổng thu nhập</th>
+                                            <th>Tổng doanh thu</th>
                                             <th>Chi tiết</th>
                                         </tr>
                                     </thead>
@@ -350,7 +350,7 @@
                                             <th>STT</th>
                                             <th>Tên nhân viên</th>
                                             <th>Số lượng đơn hàng hoàn thành</th>
-                                            <th>Tổng thu nhập</th>
+                                            <th>Tổng doanh thu</th>
                                             <th>Chi tiết</th>
                                         </tr>
                                     </thead>
