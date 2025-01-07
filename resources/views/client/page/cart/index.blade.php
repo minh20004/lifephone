@@ -40,19 +40,22 @@
                 </div>
               </div>
             </div>
-            
-                
+
+
       @if(count($cartItems) > 0)
             <table class="table position-relative z-2 mb-4">
               <thead>
                 <tr>
+                  <th scope="col" class="fs-sm fw-normal py-3 ps-0">
+                    <input type="checkbox" id="select-all" />
+                  </th>
                   <th scope="col" class="fs-sm fw-normal py-3 ps-0"><span class="text-body">Sản phẩm</span></th>
                   <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-xl-table-cell"><span class="text-body">Giá</span></th>
                   <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-md-table-cell"><span class="text-body">Số lượng</span></th>
                   <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-md-table-cell"><span class="text-body">Tổng cộng</span></th>
                   <th scope="col" class="py-0 px-0">
                     <div class="nav justify-content-end">
-                      <button type="button" class="nav-link d-inline-block text-decoration-underline text-nowrap py-3 px-0">Xóa giỏ hàng</button>
+                      <button type="button" class="nav-link d-inline-block text-decoration-underline py-3 px-0">Xóa</button>
                     </div>
                   </th>
                 </tr>
@@ -62,6 +65,9 @@
                 <!-- Item -->
                 @foreach ($cartItems as $item)
                   <tr data-product-id="{{ $item['product']->id }}" data-model-id="{{ $item['capacity']->id }}" data-color-id="{{ $item['color']->id }}">
+                    <td class="py-3 ps-0">
+                      <input type="checkbox" class="item-select-cart" data-id="{{ $item['product']->id }}-{{ $item['capacity']->id }}-{{ $item['color']->id }}" data-prices="{{ $item['price'] }}" />
+                    </td>
                     <td class="py-3 ps-0">
                       <div class="d-flex align-items-center">
                         <a class="flex-shrink-0" href="shop-product-general-electronics.html">
@@ -87,13 +93,13 @@
                     </td>
                     <td class="h6 py-3 d-none d-xl-table-cell">{{ number_format($item['price'], 0, ',', '.') }} đ</td>
                     <td class="py-3 d-none d-md-table-cell">
-                      
+
                       <div class="count-input" style="display: flex; align-items: center; border: 1px solid #d1d5db; border-radius: 8px; width: 120px; justify-content: space-between; padding: 5px;">
                           <button type="button" class="btn-decrement" style="background: none; border: none; font-size: 20px; cursor: pointer;">−</button>
-                          <input type="number" class="quantity-input" value="{{ $item['quantity'] }}" readonly style="width: 60px; text-align: center; border: none; outline: none; font-size: 16px;">
+                          <input type="number" class="quantity-input" data-id="{{ $item['product']->id }}-{{ $item['capacity']->id }}-{{ $item['color']->id }}" value="{{ $item['quantity'] }}" readonly style="width: 60px; text-align: center; border: none; outline: none; font-size: 16px;">
                           <button type="button" class="btn-increment" style="background: none; border: none; font-size: 20px; cursor: pointer;">+</button>
                       </div>
-                    
+
                     </td>
                     <td class="h6 py-3 d-none d-md-table-cell" id="itemTotal-{{ $item['product']->id }}-{{ $item['capacity']->id }}-{{ $item['color']->id }}">{{ number_format($item['itemTotal'], 0, ',', '.') }} đ</td>
                     <td class="text-end py-3 px-0">
@@ -105,7 +111,7 @@
                     </td>
                   </tr>
                 @endforeach
-                
+
               </tbody>
             </table>
       @else
@@ -119,7 +125,7 @@
       </div>
     </div>
   </div>
-  
+
   <!-- Tóm tắt đơn hàng (sticky sidebar) -->
   <aside class="col-lg-4" style="margin-top: -100px">
     <div class="position-sticky top-0" style="padding-top: 100px">
@@ -128,7 +134,7 @@
           <h5 class="border-bottom pb-4 mb-4">Tóm tắt đơn hàng</h5>
           <ul class="list-unstyled fs-sm gap-3 mb-0">
             <li class="d-flex justify-content-between">
-              <span id="totalQuantity">(Tổng cộng <b>{{ $totalQuantity }}</b> sản phẩm):</span> 
+              <span id="totalQuantity">(Tổng cộng <b>{{ $totalQuantity }}</b> sản phẩm):</span>
               <span class="text-dark-emphasis fw-medium"><span id="totalPrice">{{ number_format($totalPrice, 0, ',', '.') }} đ</span>
             </li>
             <li class="d-flex justify-content-between">
@@ -255,9 +261,9 @@
               </div>
             </div>
 
-            
 
-            
+
+
           </div>
         </div>
 
@@ -288,6 +294,193 @@
     </a>
   </div>
 @endsection
+<script>
+
+  var customer_id = @if(Auth::guard('customer')->check())
+                        {{ Auth::guard('customer')->user()->id }};
+                      @else
+                        null;  // Hoặc giá trị mặc định khác nếu muốn
+                      @endif
+  window.onload = function() {
+    if(customer_id == null){
+      var checkboxes = document.querySelectorAll('.item-select-cart');
+      var checkAll = document.getElementById('select-all');
+
+      checkboxes.forEach(function(checkbox) {
+          // Lấy thẻ cha trực tiếp của checkbox
+          var wrapper = checkbox.parentNode;
+          var checkAllWrapper = checkAll.parentNode;
+          // Nếu người dùng chưa đăng nhập, disable và ẩn thẻ cha
+          checkbox.disabled = true;
+          wrapper.style.display = 'none';
+
+          checkAll.disabled = true;// Ẩn thẻ cha
+          checkAllWrapper.style.display = 'none';
+      });
+    }
+  };
+  // Hàm để lấy danh sách sản phẩm được chọn từ localStorage
+  function getSelectedProducts() {
+      let selectedProducts = localStorage.getItem('selectedProducts');
+      if (selectedProducts) {
+          return JSON.parse(selectedProducts);
+      }
+      return [];
+  }
+
+  // Hàm để lưu danh sách sản phẩm được chọn vào localStorage
+  function saveSelectedProducts(selectedProducts) {
+      localStorage.setItem('selectedProducts', JSON.stringify(selectedProducts));
+  }
+
+  // Hàm để cập nhật trạng thái của checkbox khi tải lại trang
+  function updateCheckboxes() {
+      const selectedProducts = getSelectedProducts();
+      console.log('Danh sách sản phẩm được chọn', selectedProducts);
+      const checkboxes = document.querySelectorAll('.item-select-cart');
+      checkboxes.forEach(checkbox => {
+        const productId = checkbox.dataset.id; // Lấy id sản phẩm từ data-id
+
+        if (!selectedProducts.includes(productId)) {
+          selectedProducts.push(productId);
+        }
+        checkbox.checked = true;
+      });
+      localStorage.setItem('selectedProducts', JSON.stringify(selectedProducts));
+      console.log('Cập nhật trạng thái của checkbox thành công',checkboxes);
+
+      $.ajax({
+          url: '/api/update-cart-check-status',
+          method: 'POST',
+          data: {
+            selected_items: selectedProducts,
+            customer_id: customer_id
+          },
+          xhrFields: {
+              withCredentials: true // Đảm bảo cookie được gửi kèm trong yêu cầu
+          },
+          success: function(response) {
+            console.log('Cập nhật giỏ hàng thành công', response);
+          },
+          error: function(error) {
+              console.error('Có lỗi xảy ra', error);
+          }
+      });
+  }
+
+  // Hàm để xử lý khi checkbox thay đổi trạng thái
+  function handleCheckboxChange(event) {
+      const checkbox = event.target;
+      const productId = checkbox.dataset.id; // Lấy id sản phẩm từ data-id
+      let selectedProducts = getSelectedProducts();
+
+      if (checkbox.checked) {
+          if (!selectedProducts.includes(productId)) {
+              selectedProducts.push(productId);
+          }
+      } else {
+          selectedProducts = selectedProducts.filter(id => id !== productId);
+      }
+
+      console.log('Danh sách sản phẩm được chọn', selectedProducts);
+
+      $.ajax({
+          url: '/api/update-cart-check-status',
+          method: 'POST',
+          data: {
+            selected_items: selectedProducts,
+            customer_id: customer_id
+          },
+          success: function(response) {
+              console.log('Cập nhật giỏ hàng thành công', response);
+              // alert('Cập nhật giỏ hàng thành công');
+          },
+          error: function(error) {
+              console.error('Có lỗi xảy ra', error);
+          }
+      });
+
+      // Lưu lại mảng mới vào localStorage
+      saveSelectedProducts(selectedProducts);
+  }
+
+  // Hàm để xử lý checkbox "Chọn tất cả"
+  function handleSelectAllChange(event) {
+      const checkboxes = document.querySelectorAll('.item-select-cart');
+      const selectAllCheckbox = event.target;
+      let selectedProducts = [];
+
+      checkboxes.forEach(checkbox => {
+          checkbox.checked = selectAllCheckbox.checked;
+          const productId = checkbox.dataset.id;
+          if (checkbox.checked && !selectedProducts.includes(productId)) {
+              selectedProducts.push(productId);
+          }
+      });
+
+      // Lưu lại mảng mới vào localStorage
+      saveSelectedProducts(selectedProducts);
+  }
+
+  // Gắn sự kiện cho checkbox "Chọn tất cả"
+  setTimeout(() => {
+      document.getElementById('select-all').addEventListener('change', handleSelectAllChange);
+      document.querySelectorAll('.item-select-cart').forEach(checkbox => {
+          checkbox.addEventListener('change', handleCheckboxChange);
+      });
+      document.querySelectorAll('.item-select-cart').forEach(checkbox => {
+          checkbox.addEventListener('change', updateCartSummary);
+      });
+      updateCartSummary(false);
+
+      console.log('Gắn sự kiện cho các checkbox thành công');
+  }, 500);
+
+  // Gắn sự kiện cho các checkbox của từng sản phẩm
+
+  // Cập nhật trạng thái checkbox khi trang được tải lại
+  window.addEventListener('load', updateCheckboxes);
+
+  // Hàm để cập nhật tổng số lượng và tổng giá
+function updateCartSummary(isChange = true) {
+    // Lấy tất cả các checkbox sản phẩm đã chọn
+    let selectedCheckboxes;
+    console.log('isChange', isChange);
+    if (!isChange) {
+      selectedCheckboxes = document.querySelectorAll('.item-select-cart');
+    } else {
+      selectedCheckboxes = document.querySelectorAll('.item-select-cart:checked');
+    }
+    // Tính tổng số lượng và tổng giá trị của các sản phẩm được chọn
+    let totalQuantity = 0;
+    let totalPrice = 0;
+
+    selectedCheckboxes.forEach(checkbox => {
+        const productId = checkbox.dataset.id; // Lấy ID sản phẩm từ data-id
+        const productPrice = parseFloat(checkbox.dataset.prices); // Lấy giá sản phẩm từ data-price
+        const productQuantity = parseFloat(document.querySelector('.quantity-input[data-id="' + productId + '"]').value); // Lấy số lượng sản phẩm từ data-quantity
+        console.log('Giá sản phẩm', productPrice, productId, productQuantity);
+        totalQuantity += productQuantity; // Cộng tổng số lượng
+        totalPrice += productPrice * productQuantity; // Cộng tổng giá trị
+    });
+
+    // Cập nhật hiển thị tổng số lượng và tổng giá trị
+    document.getElementById('totalQuantity').textContent = `Tổng cộng ${totalQuantity} sản phẩm:`;
+    document.getElementById('totalPrice').textContent = `${numberWithCommas(totalPrice)} đ`;
+
+    // Cập nhật tổng giá sau giảm giá (giả sử không có giảm giá trong trường hợp này)
+    document.getElementById('totalAfterDiscount').textContent = `${numberWithCommas(totalPrice)} đ`;
+  }
+
+  // Hàm chuyển đổi giá trị số thành định dạng có dấu phân cách ngàn
+  function numberWithCommas(x) {
+      return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  // Gắn sự kiện thay đổi cho các checkbox
 
 
+  // Gọi hàm để cập nhật khi trang được tải
 
+
+</script>

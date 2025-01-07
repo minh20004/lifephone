@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ApiProductController;
 use App\Http\Controllers\chatController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\CartController;
 
 
 /*
@@ -29,3 +30,4 @@ Route::post('favorites/delete', [FavoriteController::class, 'removeFromFavorites
 Route::get('/favorites', [FavoriteController::class, 'getFavorites']);
 Route::post('favorites/addToCard', [FavoriteController::class, 'addToCart']);
 Route::post('getConversation', [chatController::class, 'chatBoard']);
+Route::post('update-cart-check-status', [CartController::class, 'updateCheckedStatus']);

@@ -22,7 +22,7 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $searchTerm = $request->input('search');
-        $perPage = 10; 
+        $perPage = 10;
         $id_staff = Auth::guard('admin')->user()->id;
 
         // Query cơ bản
@@ -122,8 +122,8 @@ class OrderController extends Controller
         $order = Order::with(['orderItems.product', 'orderItems.variant'])->findOrFail($id);
         return view('admin.page.order.order_show', compact('order'));
     }
-    
-    
+
+
     public function storeOrder(Request $request)
     {
         // Validate dữ liệu yêu cầu
@@ -147,13 +147,27 @@ class OrderController extends Controller
         $cartItems = [];
         if ($customerId) {
             // Người dùng đã đăng nhập, lấy giỏ hàng từ cơ sở dữ liệu
-            $cartItems = Cart::where('customer_id', $customerId)->get();
+            $cartItems = Cart::where('customer_id', $customerId)->where('is_checked', true)->get();
             if ($cartItems->isEmpty()) {
                 return redirect()->back()->with('error', 'Giỏ hàng của bạn đang trống.');
             }
         } else {
             // Người dùng chưa đăng nhập, lấy giỏ hàng từ session
             $cartItems = session()->get('cart', []);
+            $checkedItems = [];
+
+            // Duyệt qua giỏ hàng để lọc các sản phẩm có is_checked = true
+            foreach ($cartItems as $productId => $models) {
+                foreach ($models as $modelId => $colors) {
+                    foreach ($colors as $colorId => $item) {
+                        if ($item['is_checked'] === true) {  // Kiểm tra điều kiện is_checked
+                            $checkedItems[] = $item;  // Thêm sản phẩm vào mảng checkedItems
+                        }
+                    }
+                }
+            }
+
+            $cartItems = $checkedItems;  // Gán lại giỏ hàng với các sản phẩm đã chọn
             if (empty($cartItems)) {
                 return redirect()->back()->with('error', 'Giỏ hàng của bạn đang trống.');
             }
@@ -202,7 +216,7 @@ class OrderController extends Controller
         $voucherId = isset($voucher['code']) ? Voucher::where('code', $voucher['code'])->first()->id : null;
 
         // Lấy địa chỉ của người dùng đăng nhập hoặc từ form
-        $address = $customerId 
+        $address = $customerId
             ? Address::where('customer_id', $customerId)->where('is_default', 1)->first()
             : null;
 
@@ -240,7 +254,7 @@ class OrderController extends Controller
                     'order_id' => $order->id,
                     'product_id' => $item->product_id,
                     'variant_id' => $item->variant_id,
-                    'name' => $product ? $product->name : 'Sản phẩm không xác định', 
+                    'name' => $product ? $product->name : 'Sản phẩm không xác định',
                     'image_url' => $product ? $product->image_url : null,
                     'quantity' => $item->quantity,
                     'price' => $item->price,
@@ -266,24 +280,24 @@ class OrderController extends Controller
                         if (is_array($colors)) {
                             foreach ($colors as $colorId => $cartItem) {
                                 $product = Product::find($productId); // Lấy sản phẩm từ cơ sở dữ liệu
-            
+
                                 OrderItem::create([
                                     'order_id' => $order->id,
                                     'product_id' => $productId,
                                     'variant_id' => $cartItem['variant_id'],
-                                    'name' => $product ? $product->name : 'Sản phẩm không xác định', 
+                                    'name' => $product ? $product->name : 'Sản phẩm không xác định',
                                     'image_url' => $cartItem['image_url'],
                                     'quantity' => $cartItem['quantity'],
                                     'price' => $cartItem['price'],
                                     'total_price' => $cartItem['price'] * $cartItem['quantity'],
                                 ]);
-            
+
                                 // Kiểm tra và giảm tồn kho
                                 $variant = ProductVariant::find($cartItem['variant_id']);
                                 if ($variant && $variant->stock < $cartItem['quantity']) {
                                     return redirect()->back()->with('error', 'Số lượng sản phẩm trong kho không đủ.');
                                 }
-            
+
                                 if ($variant) {
                                     $variant->stock -= $cartItem['quantity'];
                                     $variant->save();
@@ -293,7 +307,7 @@ class OrderController extends Controller
                     }
                 }
             }
-            
+
         }
         OrderNotification::create([
             'order_id' => $order->id,
@@ -304,7 +318,7 @@ class OrderController extends Controller
 
         // Xóa giỏ hàng và voucher trong session
         if ($customerId) {
-            Cart::where('customer_id', $customerId)->delete();
+            Cart::where('customer_id', $customerId)->where('is_checked', true)->delete();
         } else {
             session()->forget('cart');
         }
@@ -312,7 +326,7 @@ class OrderController extends Controller
 
         return redirect()->route('order.success')->with('success', 'Đặt hàng thành công!');
     }
-    
+
 
 
 
@@ -388,7 +402,7 @@ class OrderController extends Controller
                             'order_id' => $order->id,
                             'product_id' => $productId,
                             'variant_id' => $variantId,
-                            'name' => $product ? $product->name : 'Sản phẩm không xác định', 
+                            'name' => $product ? $product->name : 'Sản phẩm không xác định',
                             'image_url' => $product ? $product->image_url : null,
                             'quantity' => $item->quantity,
                             'price' => $item->price,
@@ -408,7 +422,7 @@ class OrderController extends Controller
                             'order_id' => $order->id,
                             'product_id' => $productId,
                             'variant_id' => $item['variant_id'],
-                            'name' => $product ? $product->name : 'Sản phẩm không xác định', 
+                            'name' => $product ? $product->name : 'Sản phẩm không xác định',
                             'image_url' => $item['image_url'],
                             'quantity' => $item['quantity'],
                             'price' => $item['price'],
@@ -627,16 +641,16 @@ class OrderController extends Controller
     }
 
 
-    
+
 
 
     public function showCheckoutPage()
     {
-        $vouchers = Voucher::where('start_date', '<=', now())  
-            ->where('usage_limit', '>', 0)  
+        $vouchers = Voucher::where('start_date', '<=', now())
+            ->where('usage_limit', '>', 0)
             ->get();
 
-        return view('client.page.checkout.index', compact('vouchers')); 
+        return view('client.page.checkout.index', compact('vouchers'));
     }
 
 
@@ -653,7 +667,7 @@ class OrderController extends Controller
                     ->first();  // Chỉ lấy voucher đầu tiên (hoặc duy nhất)
     }
 
-    
+
     public function applyVoucher(Request $request)
     {
         // Kiểm tra xem khách hàng đã đăng nhập chưa
@@ -761,5 +775,5 @@ class OrderController extends Controller
 
 
 
-    
+
 }
