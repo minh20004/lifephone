@@ -57,22 +57,9 @@
                                         {{-- <img src="{{ Storage::url($item->image_url) }}" width="70px" height="70px" alt=""> --}}
                                         <img src="{{ asset('storage/' . $item->image_url) }}" alt=""  width="70px" height="70px">
                                     </td>
-                                    <!-- <td>
-                                        @if ($item->gallery_image)
-                                            @php
-                                                $galleryImages = json_decode($item->gallery_image);
-                                            @endphp
-                                            @foreach ($galleryImages as $galleryImage)
-                                                <img src="{{ Storage::url($galleryImage) }}" width="70px" alt="">
-                                            @endforeach
-                                        @else
-                                            Không có ảnh phụ
-                                        @endif
-                                    </td> -->
-                                    
-                                    <!-- <td>{!! Str::limit($item->description, 40) !!}</td> -->
                                     <td>{{ $item->category->name }}</td>
                                     <td><a href="{{ route('product.variants', $item->id) }}" class="btn btn-dark"><i class="bi bi-eye-fill"></i></a></td>
+                                    @if(auth()->user()->role === 'admin')
                                     <td class="d-flex">
                                         <div class="me-2">
                                             @if(auth()->user()->role === 'admin')
@@ -98,6 +85,7 @@
                                             </form>
                                         </div>                                      
                                     </td>
+                                    @endif
                                 </tr>
                             @endforeach
 

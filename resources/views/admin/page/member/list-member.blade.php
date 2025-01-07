@@ -90,7 +90,6 @@
 
                                     <td class="gridjs-td">
                                         <div class="d-flex justify-content-center">
-                                            {{-- Chỉ hiển thị nút xóa nếu role không phải là admin --}}
                                             @if($user->role !== 'admin')
                                                 <form action="{{ route('admin.toggle-active-status', $user) }}" method="POST">
                                                     @csrf

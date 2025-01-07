@@ -106,7 +106,7 @@
                             <div class="col-6 col-xl-6 col-md-6">
                                 <div class="card card-animate">
                                     <div class="card-body">
-                                        <h5 class="card-title">Thu nhập theo ngày</h5>
+                                        <h5 class="card-title">Doanh thu theo ngày</h5>
                                         <canvas id="incomeChart"></canvas>
                                     </div>
                                 </div>
@@ -114,7 +114,7 @@
                         </div>
                         <h3>Thống kê nhân viên</h3>
                         <div class="row mb-8 mt-4">
-                            <div  class="col-6 col-xl-6 col-md-6 pt-3 card">
+                            <div  class="col-12 col-xl-9 col-md-9 pt-3 card">
                                 <table class="table" border="1" cellpadding="5" cellspacing="0">
                                     <thead>
                                         <tr>
@@ -167,14 +167,9 @@
                                         <div class="mt-3">
                                             <h4 class="mb-4"><span class="" style="color: red">{{ $totalProducts }} Sản phẩm</span></h4>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            {{-- tổng tin tức --}}
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card card-animate" style="height: 424px">
-                                    <div class="card-body">
+                                        {{-- tổng tin tức --}}
+                                        <hr>
                                         <div class="d-flex align-items-center">
                                             <div class="flex-grow-1 overflow-hidden">
                                                 <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Tổng tin tức</p>
@@ -292,7 +287,7 @@
                                         <div class="d-flex align-items-end justify-content-between">
                                             <div>
                                                 <p class="fs-22 fw-semibold ff-secondary mb-4">
-                                                    Tổng thu nhập từ <span>{{ $formattedStartDate }}</span> đến 
+                                                    Tổng doanh thu từ <span>{{ $formattedStartDate }}</span> đến 
                                                     <span>{{ $formattedEndDate }}: </span><br>
                                                     <span class="text-danger">{{ number_format($totalIncome ?? 0, 0, ',', '.') }} VNĐ</span>
                                                 </p>
@@ -343,7 +338,7 @@
                         
                         <h3>Thống kê nhân viên</h3>
                         <div class="row mb-8 mt-4">
-                            <div  class="col-6 col-xl-6 col-md-6 pt-3 card">
+                            <div  class="col-12 col-xl-9 col-md-9 pt-3 card">
                                 <table class="table" border="1" cellpadding="5" cellspacing="0">
                                     <thead>
                                         <tr>
@@ -396,14 +391,9 @@
                                         <div class="mt-3">
                                             <h4 class="mb-4"><span class="" style="color: red">{{ $totalProducts }} Sản phẩm</span></h4>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            {{-- tổng tin tức --}}
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card card-animate" style="height: 424px">
-                                    <div class="card-body">
+                                        {{-- tổng tin tức --}}
+                                        <hr>
                                         <div class="d-flex align-items-center">
                                             <div class="flex-grow-1 overflow-hidden">
                                                 <p class="text-uppercase fw-medium text-muted text-truncate mb-0">Tổng tin tức</p>
@@ -432,7 +422,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>                  
+                        </div>               
                         
                     </div>
                     

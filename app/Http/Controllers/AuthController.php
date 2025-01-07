@@ -21,6 +21,9 @@ use Illuminate\Support\Facades\RateLimiter;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\News;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+use Laravel\Passport\PersonalAccessTokenResult;
 
 class AuthController extends Controller
 {
@@ -405,9 +408,16 @@ class AuthController extends Controller
         $status = $user->is_active ? 'mở khóa' : 'khóa';
         return redirect()->back()->with('success', "Tài khoản đã được $status.");
     }
+
+    // Phương thức để thu hồi tất cả token của nhân viên bị khóa
+    private function logoutStaffSessions(User $user)
+    {
+        // Thu hồi tất cả các token của người dùng (Passport)
+        $user->tokens->each(function ($token) {
+            $token->delete();
+        });
+    }
     
-
-
     
     public function showOrderDetails($orderId)
     {
@@ -415,8 +425,6 @@ class AuthController extends Controller
             ->findOrFail($orderId);
         return view('admin.page.order.employee_order_show', compact('order'));
     }
-
-
 
     // hiển thị trang thống kê nhân viên
     public function index()
@@ -512,40 +520,7 @@ class AuthController extends Controller
     {
         return view('admin.auth.login');
     }
-    
 
-
-
-    // hàm xử lý đăng nhập admin
-    // public function adminLogin(Request $request)
-    // {
-    //     $request->validate([
-    //         'email' => 'required|string|email',
-    //         'password' => 'required|string',
-    //     ]);
-    
-    //     $credentials = $request->only('email', 'password');
-    
-    //     if (Auth::guard('admin')->attempt($credentials)) {
-
-    //         $user = Auth::guard('admin')->user();
-    
-    //         if ($user->role === 'admin') {
-
-    //             return redirect()->route('admin.home')->with('success', 'Đăng nhập thành công!');
-    //         } elseif ($user->role === 'staff') {
-
-    //             return redirect()->route('admin.staff')->with('success', 'Đăng nhập thành công!');
-    //         } else {
-
-    //             Auth::guard('admin')->logout();
-    //             return redirect()->route('login')->withErrors(['email' => 'Bạn không có quyền truy cập.']);
-    //         }
-    //     }
-    
-    //     return redirect()->back()->withErrors(['email' => 'Thông tin đăng nhập không đúng.']);
-    // }
-    // Hàm xử lý đăng nhập admin
     public function adminLogin(Request $request)
     {
         $request->validate([
@@ -560,7 +535,13 @@ class AuthController extends Controller
 
             // Kiểm tra trạng thái kích hoạt tài khoản
             if (!$user->is_active) {
+                // Đăng xuất tất cả các phiên login hiện tại
                 Auth::guard('admin')->logout();
+
+                // Xóa session
+                session()->flush();
+
+                // Quay lại trang đăng nhập và thông báo
                 return redirect()->route('login')->withErrors(['email' => 'Tài khoản của bạn đã bị khóa.']);
             }
 
@@ -570,6 +551,7 @@ class AuthController extends Controller
             } elseif ($user->role === 'staff') {
                 return redirect()->route('admin.staff')->with('success', 'Đăng nhập thành công!');
             } else {
+                // Nếu vai trò không hợp lệ, đăng xuất người dùng và chuyển hướng về trang đăng nhập
                 Auth::guard('admin')->logout();
                 return redirect()->route('login')->withErrors(['email' => 'Bạn không có quyền truy cập.']);
             }
@@ -594,8 +576,6 @@ class AuthController extends Controller
 
         return redirect()->route('login')->with('success', 'Tài khoản của bạn đã được xác minh thành công. Vui lòng đăng nhập.');
     }
-
-
 
     public function adminLogout()
     {
@@ -771,32 +751,6 @@ class AuthController extends Controller
         return back()->with('success', 'Vui lòng kiểm tra email mới để xác nhận thay đổi.');
     }
 
-    // Gửi lại email để thay đổi
-    // public function verifyEmailChange($token)
-    // {
-    //     $customer = Auth::guard('customer')->user();
-    //     $storedToken = session('verification_token');
-    //     $newEmail = session('email');
-
-    //     if (!$customer || $token !== $storedToken) {
-    //         return redirect()->route('customer.profile')->withErrors(['email' => 'Token xác nhận không hợp lệ hoặc đã hết hạn.']);
-    //     }
-
-    //     // Cập nhật email mới vào cơ sở dữ liệu
-    //     $customer->update([
-    //         'email' => $newEmail,
-    //     ]);
-
-    //     // Xóa token và email mới khỏi session
-    //     session()->forget(['verification_token', 'email']);
-
-    //     return redirect()->route('customer.profile')->with('success', 'Email của bạn đã được thay đổi thành công.');
-    // }
-    
-
-
-
-
     public function editCustomer($id)
     {
         $customer = Customer::findOrFail($id);
@@ -970,9 +924,6 @@ class AuthController extends Controller
     }
 // Đơn hàng bên khách hàng---------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
-
     public function history(Request $request)
     {
         // Kiểm tra khách đăng nhập hay không
@@ -1048,9 +999,6 @@ class AuthController extends Controller
             'searchCode', 'countOrders', 'totalOrders'
         ));
     }
-
-
-
 
     public function detail($id)
     {
@@ -1131,10 +1079,6 @@ class AuthController extends Controller
 
         return view('client.page.auth.page.order-history.public-order.public_order_detail', compact('order'));
     }
-
-
-
-
 
     public function wish_list(){
         return view('client.page.auth.page.wishList');
