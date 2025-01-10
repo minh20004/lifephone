@@ -956,7 +956,7 @@
             </div>
             @endforeach
             <div class="col">
-            <a class="btn btn-outline-secondary w-100 h-100 rounded-4 p-3" href="{{route('danh-muc-san-pham')}}">
+            <a class="btn btn-outline-secondary w-100 h-100 rounded-4 p-3" href="{{route('shop')}}">
                 Xem tất cả
                 <i class="ci-plus-circle fs-base ms-2"></i>
             </a>
