@@ -264,8 +264,7 @@ class AuthController extends Controller
 
         // Thống kê số lượng đơn hàng theo trạng thái cho nhân viên trong khoảng thời gian hiện tại
         $currentOrdersByStatus = [
-            'Chờ xác nhận' => Order::where('user_id', $userId)
-                                    ->where('status', 'Chờ xác nhận')
+            'Chờ xác nhận' => Order::where('status', 'Chờ xác nhận')
                                     ->whereBetween('updated_at', [$startDate, $endDate])
                                     ->count(),
             'Đã xác nhận' => Order::where('user_id', $userId)

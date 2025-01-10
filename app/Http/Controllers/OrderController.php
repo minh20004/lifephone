@@ -19,22 +19,120 @@ use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
+    // public function index(Request $request)
+    // {
+    //     $searchTerm = $request->input('search');
+    //     $perPage = 10;
+    //     $id_staff = Auth::guard('admin')->user()->id;
+
+    //     // Query cơ bản
+    //     $baseQuery = Order::orderBy('created_at', 'desc');
+    //     if ($searchTerm) {
+    //         $baseQuery->where(function($query) use ($searchTerm) {
+    //             $query->where('order_code', 'like', '%' . $searchTerm . '%')
+    //                 ->orWhere('name', 'like', '%' . $searchTerm . '%');
+    //         });
+    //     }
+
+    //     // Nhóm đơn hàng theo trạng thái với phân trang riêng biệt
+    //     $groupedOrders = [
+    //         'Tất cả' => $baseQuery->paginate($perPage)->appends($request->query()),
+    //         'Chờ xác nhận' => Order::where('status', 'Chờ xác nhận')
+    //             ->orderBy('created_at', 'desc')
+    //             ->paginate($perPage)
+    //             ->appends($request->query()),
+    //         'Đã xác nhận' => Order::where('status', 'Đã xác nhận')
+    //             ->where('user_id', $id_staff)
+    //             ->orderBy('created_at', 'desc')
+    //             ->paginate($perPage)
+    //             ->appends($request->query()),
+    //         'Đang giao hàng' => Order::where('status', 'Đang giao hàng')
+    //             ->where('user_id', $id_staff)
+    //             ->orderBy('created_at', 'desc')
+    //             ->paginate($perPage)
+    //             ->appends($request->query()),
+    //         'Đã hoàn thành' => Order::where('status', 'Đã hoàn thành')
+    //             ->where('user_id', $id_staff)
+    //             ->orderBy('created_at', 'desc')
+    //             ->paginate($perPage)
+    //             ->appends($request->query()),
+    //         'Đã hủy' => Order::where('status', 'Đã hủy')
+    //             ->where('user_id', $id_staff)
+    //             ->orderBy('created_at', 'desc')
+    //             ->paginate($perPage)
+    //             ->appends($request->query()),
+    //         'Thanh toán thất bại' => Order::where('status', 'Thanh toán thất bại')
+    //             ->where('user_id', $id_staff)
+    //             ->orderBy('created_at', 'desc')
+    //             ->paginate($perPage)
+    //             ->appends($request->query()),
+    //     ];
+
+    //     // Tính số lượng đơn hàng cho từng trạng thái
+    //     $orderCounts = [
+    //         'Tất cả' => Order::count(),
+    //         'Chờ xác nhận' => Order::where('status', 'Chờ xác nhận')->count(),
+    //         'Đã xác nhận' => Order::where('status', 'Đã xác nhận')->where('user_id', $id_staff)->count(),
+    //         'Đang giao hàng' => Order::where('status', 'Đang giao hàng')->where('user_id', $id_staff)->count(),
+    //         'Đã hoàn thành' => Order::where('status', 'Đã hoàn thành')->where('user_id', $id_staff)->count(),
+    //         'Đã hủy' => Order::where('status', 'Đã hủy')->where('user_id', $id_staff)->count(),
+    //         'Thanh toán thất bại' => Order::where('status', 'Thanh toán thất bại')->where('user_id', $id_staff)->count(),
+    //     ];
+
+    //     return view('admin.page.order.index', compact('groupedOrders', 'orderCounts'));
+    // }
+
+    // public function updateStatus(Request $request, $id)
+    // {
+    //     // Validate trạng thái đơn hàng
+    //     $validated = $request->validate([
+    //         'status' => 'required|in:Chờ xác nhận,Đã xác nhận,Đang giao hàng,Đã hoàn thành,Đã hủy',
+    //     ]);
+
+    //     // Lấy đơn hàng theo id
+    //     $order = Order::findOrFail($id);
+
+    //     if ($order->status === $request->status) {
+    //         return back()->withErrors(['status' => 'Trạng thái đơn hàng hiện tại đã trùng với trạng thái mới.']);
+    //     }
+
+    //     // Nếu trạng thái được cập nhật là 'Đã hủy', hoàn trả số lượng sản phẩm vào kho
+    //     if ($request->status === 'Đã hủy' && $order->status !== 'Đã hủy') {
+    //         foreach ($order->orderItems as $orderItem) {
+    //             $variant = ProductVariant::find($orderItem->variant_id);
+    //             if ($variant) {
+    //                 $variant->stock += $orderItem->quantity;
+    //                 $variant->save();
+    //             }
+    //         }
+    //     }
+
+    //     // Cập nhật trạng thái và người cập nhật (user_id)
+    //     $order->status = $request->status;
+    //     $order->user_id = Auth::id(); // Lấy ID của người đăng nhập hiện tại
+    //     $order->save();
+
+    //     // Chuyển hướng về trang danh sách đơn hàng với thông báo thành công
+    //     return redirect()->route('orders.index')->with('success', 'Cập nhật trạng thái đơn hàng thành công.');
+    // }
     public function index(Request $request)
     {
         $searchTerm = $request->input('search');
         $perPage = 10;
-        $id_staff = Auth::guard('admin')->user()->id;
+        $currentUser = Auth::guard('admin')->user();
 
         // Query cơ bản
         $baseQuery = Order::orderBy('created_at', 'desc');
         if ($searchTerm) {
-            $baseQuery->where(function($query) use ($searchTerm) {
+            $baseQuery->where(function ($query) use ($searchTerm) {
                 $query->where('order_code', 'like', '%' . $searchTerm . '%')
                     ->orWhere('name', 'like', '%' . $searchTerm . '%');
             });
         }
 
-        // Nhóm đơn hàng theo trạng thái với phân trang riêng biệt
+        // Xây dựng điều kiện truy vấn dựa trên vai trò
+        $isAdmin = $currentUser->role === 'admin';
+
         $groupedOrders = [
             'Tất cả' => $baseQuery->paginate($perPage)->appends($request->query()),
             'Chờ xác nhận' => Order::where('status', 'Chờ xác nhận')
@@ -42,41 +140,40 @@ class OrderController extends Controller
                 ->paginate($perPage)
                 ->appends($request->query()),
             'Đã xác nhận' => Order::where('status', 'Đã xác nhận')
-                ->where('user_id', $id_staff)
+                ->when(!$isAdmin, fn ($query) => $query->where('user_id', $currentUser->id))
                 ->orderBy('created_at', 'desc')
                 ->paginate($perPage)
                 ->appends($request->query()),
             'Đang giao hàng' => Order::where('status', 'Đang giao hàng')
-                ->where('user_id', $id_staff)
+                ->when(!$isAdmin, fn ($query) => $query->where('user_id', $currentUser->id))
                 ->orderBy('created_at', 'desc')
                 ->paginate($perPage)
                 ->appends($request->query()),
             'Đã hoàn thành' => Order::where('status', 'Đã hoàn thành')
-                ->where('user_id', $id_staff)
+                ->when(!$isAdmin, fn ($query) => $query->where('user_id', $currentUser->id))
                 ->orderBy('created_at', 'desc')
                 ->paginate($perPage)
                 ->appends($request->query()),
             'Đã hủy' => Order::where('status', 'Đã hủy')
-                ->where('user_id', $id_staff)
+                ->when(!$isAdmin, fn ($query) => $query->where('user_id', $currentUser->id))
                 ->orderBy('created_at', 'desc')
                 ->paginate($perPage)
                 ->appends($request->query()),
             'Thanh toán thất bại' => Order::where('status', 'Thanh toán thất bại')
-                ->where('user_id', $id_staff)
+                ->when(!$isAdmin, fn ($query) => $query->where('user_id', $currentUser->id))
                 ->orderBy('created_at', 'desc')
                 ->paginate($perPage)
                 ->appends($request->query()),
         ];
 
-        // Tính số lượng đơn hàng cho từng trạng thái
         $orderCounts = [
             'Tất cả' => Order::count(),
             'Chờ xác nhận' => Order::where('status', 'Chờ xác nhận')->count(),
-            'Đã xác nhận' => Order::where('status', 'Đã xác nhận')->where('user_id', $id_staff)->count(),
-            'Đang giao hàng' => Order::where('status', 'Đang giao hàng')->where('user_id', $id_staff)->count(),
-            'Đã hoàn thành' => Order::where('status', 'Đã hoàn thành')->where('user_id', $id_staff)->count(),
-            'Đã hủy' => Order::where('status', 'Đã hủy')->where('user_id', $id_staff)->count(),
-            'Thanh toán thất bại' => Order::where('status', 'Thanh toán thất bại')->where('user_id', $id_staff)->count(),
+            'Đã xác nhận' => Order::where('status', 'Đã xác nhận')->when(!$isAdmin, fn ($query) => $query->where('user_id', $currentUser->id))->count(),
+            'Đang giao hàng' => Order::where('status', 'Đang giao hàng')->when(!$isAdmin, fn ($query) => $query->where('user_id', $currentUser->id))->count(),
+            'Đã hoàn thành' => Order::where('status', 'Đã hoàn thành')->when(!$isAdmin, fn ($query) => $query->where('user_id', $currentUser->id))->count(),
+            'Đã hủy' => Order::where('status', 'Đã hủy')->when(!$isAdmin, fn ($query) => $query->where('user_id', $currentUser->id))->count(),
+            'Thanh toán thất bại' => Order::where('status', 'Thanh toán thất bại')->when(!$isAdmin, fn ($query) => $query->where('user_id', $currentUser->id))->count(),
         ];
 
         return view('admin.page.order.index', compact('groupedOrders', 'orderCounts'));
@@ -88,14 +185,14 @@ class OrderController extends Controller
         $validated = $request->validate([
             'status' => 'required|in:Chờ xác nhận,Đã xác nhận,Đang giao hàng,Đã hoàn thành,Đã hủy',
         ]);
-
+    
         // Lấy đơn hàng theo id
         $order = Order::findOrFail($id);
-
+    
         if ($order->status === $request->status) {
             return back()->withErrors(['status' => 'Trạng thái đơn hàng hiện tại đã trùng với trạng thái mới.']);
         }
-
+    
         // Nếu trạng thái được cập nhật là 'Đã hủy', hoàn trả số lượng sản phẩm vào kho
         if ($request->status === 'Đã hủy' && $order->status !== 'Đã hủy') {
             foreach ($order->orderItems as $orderItem) {
@@ -106,15 +203,17 @@ class OrderController extends Controller
                 }
             }
         }
-
+    
         // Cập nhật trạng thái và người cập nhật (user_id)
         $order->status = $request->status;
         $order->user_id = Auth::id(); // Lấy ID của người đăng nhập hiện tại
         $order->save();
-
+    
         // Chuyển hướng về trang danh sách đơn hàng với thông báo thành công
         return redirect()->route('orders.index')->with('success', 'Cập nhật trạng thái đơn hàng thành công.');
     }
+    
+
 
 
     public function show(string $id)

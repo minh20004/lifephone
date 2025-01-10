@@ -79,6 +79,7 @@
                                                 </div>
                                             @endforeach
                                                 <div class="col-md-9">
+                                                    <p class="mb-1 ms-3">Người xác nhận: <span class="text-danger fw-bold">{{ $order->user ? $order->user->name : 'Chưa xác nhận' }}</span></p>
                                                     <p class="mb-1 ms-3 fw-bold">Mã đơn hàng: {{ $order->order_code }}</p>
                                                     <p class="mb-1 ms-3 text-muted">Tên người nhận: {{ $order->name }}</p>
                                                     <p class="mb-1 ms-3 text-danger fw-600">Tổng tiền: {{ number_format($order->total_price, 0, ',', '.') }} đ</p>
