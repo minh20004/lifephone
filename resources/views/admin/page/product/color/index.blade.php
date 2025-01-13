@@ -23,16 +23,20 @@
                 @endif
                 <div class="card-body">
                     <div class="mb-3" style=" border-bottom: 1px solid #ddd; padding-bottom: 10px;margin-bottom: 10px;">
+                        @if(auth()->user()->role === 'admin')    
                         <a href="{{ route('color.create') }}" class="btn mb-3 fs-6 fw-bold text-dark"
                             style="background:#9df99d ">Thêm màu sắc</a>
                         <a href="{{ route('color.trashed') }}" class="btn btn-danger mb-3">Xem màu sắc đã bị xóa</a>
+                        @endif
                     </div>                  
                     <table class="table table-bordered">
                         <thead class="thead-light">
                             <th>STT</th>
                             <th>Tên Màu</th>
                             <th>Mã màu sắc</th>
+                            @if(auth()->user()->role === 'admin')
                             <th>Hành động </th>
+                            @endif
 
                         </thead>
                         <tbody>
@@ -44,6 +48,7 @@
                                     <td>
                                         <div style="width: 50px; height: 30px; background-color: {{ $item->code }}; border: 1px solid #000;"></div>
                                     </td>
+                                    @if(auth()->user()->role === 'admin')
                                     <td class="d-flex">
                                         <div class="me-2">
                                             <a href="{{ route('color.edit', $item->id) }}">
@@ -61,6 +66,7 @@
                                             </form>
                                         </div>
                                     </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>

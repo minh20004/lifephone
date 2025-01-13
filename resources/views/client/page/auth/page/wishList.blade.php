@@ -79,7 +79,7 @@
       function getProduct()
       {
         $.ajax({
-          url: '/api/favorites',  // Địa chỉ API GET
+          url: '/api/favorites',
           type: 'GET',
           data: {
             customer_id: customerId,

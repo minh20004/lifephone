@@ -70,15 +70,15 @@ News
                                                             </td>
                                                             <td data-column-id="STT" class="gridjs-td">{{$key+1}}</td>
                                                             <td data-column-id="orders" class="gridjs-td">{{$cate->title}}</td>
-                                                            <td data-column-id="action" class="gridjs-td">
+                                                            <td data-column-id="action" class="gridjs-td d-flex">
+                                                                <div class="me-1">
+                                                                    <a href="{{ route('category_news.edit', $cate->id) }}" class="btn btn-warning me-2">sửa</a>
+                                                                </div>
                                                                 <div>
-                                                                    <a href="{{ route('category_news.edit', $cate->id) }}" class="btn btn-warning me-2">Edit</a>
                                                                     <form action="{{route('category_news.destroy',$cate->id)}}" method="post">
-
-                                                                        @method('DELETE')
-                                                                        @csrf
-                                                                        <button class="btn btn-danger" onclick="return confirm('xoa')">Delete
-                                                                        </button>
+                                                                    @method('DELETE')
+                                                                    @csrf
+                                                                    <button class="btn btn-danger" onclick="return confirm('xoa')">Xóa</button>
                                                                     </form>
                                                                 </div>
                                                             </td>

@@ -21,11 +21,14 @@ use Illuminate\Support\Facades\RateLimiter;
 use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\News;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
+use Laravel\Passport\PersonalAccessTokenResult;
 
 class AuthController extends Controller
 {
 //  admin ------------------------------------------------------------------------------------------------------------------------------  
-    // Thống kê của admin
+   // Thống kê của admin
     public function Dashboards(Request $request)
     {
         // Lấy ngày bắt đầu và kết thúc từ request
@@ -261,8 +264,7 @@ class AuthController extends Controller
 
         // Thống kê số lượng đơn hàng theo trạng thái cho nhân viên trong khoảng thời gian hiện tại
         $currentOrdersByStatus = [
-            'Chờ xác nhận' => Order::where('user_id', $userId)
-                                    ->where('status', 'Chờ xác nhận')
+            'Chờ xác nhận' => Order::where('status', 'Chờ xác nhận')
                                     ->whereBetween('updated_at', [$startDate, $endDate])
                                     ->count(),
             'Đã xác nhận' => Order::where('user_id', $userId)
@@ -308,13 +310,13 @@ class AuthController extends Controller
         ];
 
         // Thu nhập của nhân viên trong khoảng thời gian hiện tại (dựa trên các đơn hàng đã hoàn thành)
-        $currentIncome = Order::where('user_id', $userId) // Thay 'assigned_to' bằng 'user_id'
+        $currentIncome = Order::where('user_id', $userId)
             ->where('status', 'Đã hoàn thành')
             ->whereBetween('updated_at', [$startDate, $endDate])
             ->sum('total_price');
 
         // Thu nhập của nhân viên trong khoảng thời gian trước đó
-        $previousIncome = Order::where('user_id', $userId) // Thay 'assigned_to' bằng 'user_id'
+        $previousIncome = Order::where('user_id', $userId)
             ->where('status', 'Đã hoàn thành')
             ->whereBetween('updated_at', [$previousStartDate, $previousEndDate])
             ->sum('total_price');
@@ -343,7 +345,7 @@ class AuthController extends Controller
         // Truyền dữ liệu vào view
         return view('admin.staff', compact(
             'currentOrdersByStatus',
-            'previousOrdersByStatus',  // Đảm bảo biến này đã được khai báo và gán giá trị
+            'previousOrdersByStatus',
             'previousIncome',
             'currentIncome',
             'incomeChangePercentage',
@@ -366,19 +368,15 @@ class AuthController extends Controller
 
         // Lấy thông tin nhân viên
         $employee = User::findOrFail($employeeId);
-
-        // Kiểm tra quyền của admin và nhân viên
         if (Auth::guard('admin')->check()) {
-            // Admin có thể xem tất cả đơn hàng của nhân viên
             $orders = Order::where('user_id', $employeeId)
-                ->where('status', 'Đã hoàn thành') // Lọc theo trạng thái "Đã hoàn thành"
+                ->where('status', 'Đã hoàn thành')
                 ->whereBetween('updated_at', [
                     $request->input('start_date', now()->startOfMonth()),
                     $request->input('end_date', now()->endOfMonth())
-                ]) // Lọc theo thời gian
+                ])
                 ->get();
         } elseif (Auth::guard('employee')->check()) {
-            // Nhân viên chỉ có thể xem đơn hàng của chính mình
             $orders = Order::where('user_id', Auth::guard('employee')->user()->id)
                 ->where('status', 'Đã hoàn thành')
                 ->whereBetween('updated_at', [
@@ -387,39 +385,49 @@ class AuthController extends Controller
                 ])
                 ->get();
         } else {
-            // Nếu không phải admin hay nhân viên, chuyển hướng về login
             return redirect()->route('login')->withErrors('Bạn không có quyền truy cập.');
         }
-
-        // Kiểm tra nếu không có đơn hàng
-        if ($orders->isEmpty()) {
-            return redirect()->back()->with('message', 'Không có đơn hàng nào trong khoảng thời gian này.');
-        }
-
-        // Truyền danh sách đơn hàng và thông tin nhân viên vào view
+        // if ($orders->isEmpty()) {
+        //     return redirect()->back()->with('message', 'Không có đơn hàng nào trong khoảng thời gian này.');
+        // }
         return view('admin.page.order.employee_orders', compact('orders', 'employee'));
     }
 
+    // khóa tài khoản nhân viên
+    public function toggleActiveStatus(User $user)
+    {
+        // Chỉ cho phép khóa tài khoản không phải admin
+        if ($user->role === 'admin') {
+            return redirect()->back()->with('error', 'Không thể khóa tài khoản admin!');
+        }
 
+        $user->is_active = !$user->is_active;
+        $user->save();
+
+        $status = $user->is_active ? 'mở khóa' : 'khóa';
+        return redirect()->back()->with('success', "Tài khoản đã được $status.");
+    }
+
+    // Phương thức để thu hồi tất cả token của nhân viên bị khóa
+    private function logoutStaffSessions(User $user)
+    {
+        // Thu hồi tất cả các token của người dùng (Passport)
+        $user->tokens->each(function ($token) {
+            $token->delete();
+        });
+    }
     
-
     
     public function showOrderDetails($orderId)
     {
-        // Lấy thông tin chi tiết của đơn hàng
         $order = Order::with(['orderItems.product', 'orderItems.variant'])
             ->findOrFail($orderId);
-
-        // Truyền thông tin đơn hàng vào view
         return view('admin.page.order.employee_order_show', compact('order'));
     }
-
-
 
     // hiển thị trang thống kê nhân viên
     public function index()
     {
-        // Kiểm tra role của người dùng
         if (Auth::user()->role !== 'admin') {
             return back()->withErrors('Bạn không có quyền truy cập vào trang này.');
         } 
@@ -429,14 +437,12 @@ class AuthController extends Controller
 
     public function hoso()
     {
-        // $user = User::findOrFail($id);
         return view('admin.page.member.profile.index');
     }
 
     // Show form to create a new user
     public function create()
     {
-        // Kiểm tra role của người dùng
         if (Auth::user()->role !== 'admin') {
             return back()->withErrors('Bạn không có quyền truy cập vào trang này.');
         }   
@@ -446,7 +452,6 @@ class AuthController extends Controller
     // Thêm nhân viên
     public function store(Request $request)
     {
-        // Xác thực dữ liệu yêu cầu đầu vào
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
@@ -455,7 +460,6 @@ class AuthController extends Controller
             'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
     
-        // Lấy dữ liệu cần thiết từ request
         $data = $request->only(['name', 'email', 'role']); 
         $data['password'] = bcrypt($request->password);
     
@@ -469,10 +473,6 @@ class AuthController extends Controller
     
         // Tạo người dùng mới với thông tin đã xác thực
         $user = User::create($data);
-    
-        // Gửi email thông báo
-        // Mail::to($user->email)->send(new NewStaffNotification($user));
-    
         return redirect()->route('admins.index')->with('success', 'Thêm người dùng thành công');
     }
 
@@ -481,32 +481,6 @@ class AuthController extends Controller
         $user = User::findOrFail($id);
         return view('admin.page.member.edit', compact('user'));
     }
-    // Update an existing user
-    // public function update(Request $request, $id)
-    // {
-    //     $request->validate([
-    //         'email' => 'required|string|email|max:255|unique:users,email,'.$id,
-    //         'name' => 'required|string|max:255',
-    //         'role' => 'required|in:admin,staff,customer',
-    //         'avatar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-    //     ]);
-
-    //     $user = User::findOrFail($id);
-    //     $data = $request->except('avatar');
-
-    //     if ($request->hasFile('avatar')) {
-    //         // Xóa ảnh cũ nếu cần
-    //         if ($user->avatar) {
-    //             Storage::delete($user->avatar);
-    //         }
-    //         // Lưu ảnh mới
-    //         $data['avatar'] = Storage::put('avatars', $request->file('avatar'));
-    //     }
-
-    //     $user->update($data);
-
-    //     return redirect()->route('admins.index')->with('success', 'Cập nhật thông tin thành công');
-    // }
 
     public function update(Request $request)
     {
@@ -521,11 +495,9 @@ class AuthController extends Controller
         $user->email = $request->email;
 
         if ($request->hasFile('avatar')) {
-            // Xóa ảnh cũ nếu có
             if ($user->avatar && Storage::exists('public/' . $user->avatar)) {
                 Storage::delete('public/' . $user->avatar);
             }
-            // Lưu ảnh mới
             $avatarPath = $request->file('avatar')->store('avatars', 'public');
             $user->avatar = $avatarPath;
         }
@@ -547,62 +519,62 @@ class AuthController extends Controller
     {
         return view('admin.auth.login');
     }
-    
 
-
-
-    // hàm xử lý đăng nhập admin
     public function adminLogin(Request $request)
     {
-        // Xác thực dữ liệu đầu vào
         $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string',
         ]);
-    
+
         $credentials = $request->only('email', 'password');
-    
+
         if (Auth::guard('admin')->attempt($credentials)) {
-
             $user = Auth::guard('admin')->user();
-    
-            if ($user->role === 'admin') {
 
+            // Kiểm tra trạng thái kích hoạt tài khoản
+            if (!$user->is_active) {
+                // Đăng xuất tất cả các phiên login hiện tại
+                Auth::guard('admin')->logout();
+
+                // Xóa session
+                session()->flush();
+
+                // Quay lại trang đăng nhập và thông báo
+                return redirect()->route('login')->withErrors(['email' => 'Tài khoản của bạn đã bị khóa.']);
+            }
+
+            // Phân quyền truy cập theo vai trò
+            if ($user->role === 'admin') {
                 return redirect()->route('admin.home')->with('success', 'Đăng nhập thành công!');
             } elseif ($user->role === 'staff') {
-
                 return redirect()->route('admin.staff')->with('success', 'Đăng nhập thành công!');
             } else {
-
+                // Nếu vai trò không hợp lệ, đăng xuất người dùng và chuyển hướng về trang đăng nhập
                 Auth::guard('admin')->logout();
                 return redirect()->route('login')->withErrors(['email' => 'Bạn không có quyền truy cập.']);
             }
         }
-    
+
         return redirect()->back()->withErrors(['email' => 'Thông tin đăng nhập không đúng.']);
     }
 
     public function verify($token)
     {
-        // Tìm người dùng với remember_token
         $user = User::where('remember_token', $token)->first();
 
-        // Kiểm tra xem người dùng có tồn tại không
         if (!$user) {
             return redirect()->route('login')->withErrors(['email' => 'Liên kết xác minh không hợp lệ.']);
         }
 
-        // Cập nhật thời gian xác minh email
         if (!$user->hasVerifiedEmail()) {
             $user->email_verified_at = now();
-            $user->remember_token = null;  // Xóa token sau khi xác minh thành công
+            $user->remember_token = null;
             $user->save();
         }
 
         return redirect()->route('login')->with('success', 'Tài khoản của bạn đã được xác minh thành công. Vui lòng đăng nhập.');
     }
-
-
 
     public function adminLogout()
     {
@@ -778,32 +750,6 @@ class AuthController extends Controller
         return back()->with('success', 'Vui lòng kiểm tra email mới để xác nhận thay đổi.');
     }
 
-    // Gửi lại email để thay đổi
-    // public function verifyEmailChange($token)
-    // {
-    //     $customer = Auth::guard('customer')->user();
-    //     $storedToken = session('verification_token');
-    //     $newEmail = session('email');
-
-    //     if (!$customer || $token !== $storedToken) {
-    //         return redirect()->route('customer.profile')->withErrors(['email' => 'Token xác nhận không hợp lệ hoặc đã hết hạn.']);
-    //     }
-
-    //     // Cập nhật email mới vào cơ sở dữ liệu
-    //     $customer->update([
-    //         'email' => $newEmail,
-    //     ]);
-
-    //     // Xóa token và email mới khỏi session
-    //     session()->forget(['verification_token', 'email']);
-
-    //     return redirect()->route('customer.profile')->with('success', 'Email của bạn đã được thay đổi thành công.');
-    // }
-    
-
-
-
-
     public function editCustomer($id)
     {
         $customer = Customer::findOrFail($id);
@@ -970,16 +916,14 @@ class AuthController extends Controller
 
         return redirect()->route('admin.customer.index')->with('success', 'Khách hàng đã được xóa!');
     }
+
 // quản lý hồ sơ khách hàng ------------------------------------------------------------------------------------------------------------------------------
     public function address()
     {
         return view('client.page.auth.page.address');
     }
+
 // Đơn hàng bên khách hàng---------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
-
     public function history(Request $request)
     {
         // Kiểm tra khách đăng nhập hay không
@@ -1055,9 +999,6 @@ class AuthController extends Controller
             'searchCode', 'countOrders', 'totalOrders'
         ));
     }
-
-
-
 
     public function detail($id)
     {
@@ -1138,10 +1079,6 @@ class AuthController extends Controller
 
     //     return view('client.page.auth.page.order-history.public-order.public_order_detail', compact('order'));
     // }
-
-
-
-
 
     public function wish_list(){
         return view('client.page.auth.page.wishList');

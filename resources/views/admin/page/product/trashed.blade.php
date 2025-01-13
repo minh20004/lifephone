@@ -40,12 +40,14 @@
                             <th>STT</th>
                             <th>Mã sản phẩm</th>
                             <th>Tên sản phẩm </th>
-                            <th>Hình ảnh</th>
-                            <th>Ảnh phụ</th>
-                            <th>Mô tả</th>
+                            <!-- <th>Hình ảnh</th>
+                            <th>Ảnh phụ</th> -->
+                            <!-- <th>Mô tả</th> -->
                             <th>Danh mục</th>
                             <th>Biến Thể</th>
+                            @if(auth()->user()->role === 'admin')
                             <th>Hành động </th>
+                            @endif
 
                         </thead>
                         <tbody>
@@ -54,7 +56,7 @@
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $item->product_code }}</td>
                                     <td>{{ $item->name }}</td>
-                                    <td>
+                                    <!-- <td>
                                         <img src="{{ Storage::url($item->image_url) }}" width="80px" height="80px" alt="">
                                     </td>
                                     <td>
@@ -68,13 +70,11 @@
                                         @else
                                             Không có ảnh phụ
                                         @endif
-                                    </td>
-                                    <td>{!! Str::limit($item->description, 40) !!}</td>
+                                    </td> -->
+                                    <!-- <td>{!! Str::limit($item->description, 40) !!}</td> -->
                                     <td>{{ $item->Category->name }}</td>
                                     <td><a href="{{ route('product.variants', ['id' => $item->id]) }}" class="btn btn-dark"><i class="bi bi-eye-fill"></i></a></td>
-
-
-
+                                    @if(auth()->user()->role === 'admin')
                                     <td>
                                         <form action="{{ route('product.restore', $item->id) }}" method="POST">
                                             @csrf
@@ -83,6 +83,7 @@
                                                 phục</button>
                                         </form>
                                     </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         

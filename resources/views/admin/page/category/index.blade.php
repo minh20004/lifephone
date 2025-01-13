@@ -23,9 +23,11 @@
                 @endif
                 <div class="card-body">
                     <div class="mb-3" style=" border-bottom: 1px solid #ddd; padding-bottom: 10px;margin-bottom: 10px;">
+                        @if(auth()->user()->role === 'admin')
                         <a href="{{ route('category.create') }}" class="btn mb-3 fs-6 fw-bold text-dark"
                             style="background:#9df99d ">Thêm danh mục </a>
                         <a href="{{ route('category.trashed') }}" class="btn btn-danger mb-3">Xem danh mục đã bị xóa</a>
+                        @endif
                     </div>
                     <div class="d-flex justify-content-end">
                         <div class="btn btn-light mb-4 border ">
@@ -44,7 +46,9 @@
                             <th>STT</th>
                             <th>Ảnh</th>
                             <th>Tên danh mục </th>
+                            @if(auth()->user()->role === 'admin')
                             <th>Hành động </th>
+                            @endif
 
                         </thead>
                         <tbody>
@@ -55,6 +59,7 @@
                                         <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}" width="100px" height="30px">
                                     </td>
                                     <td>{{ $item->name }}</td>
+                                    @if(auth()->user()->role === 'admin')
                                     <td class="d-flex">
                                         <div class="me-2">
                                             <a href="{{ route('category.edit', $item->id) }}">
@@ -72,6 +77,7 @@
                                             </form>
                                         </div>
                                     </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>

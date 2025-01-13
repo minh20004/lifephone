@@ -19,13 +19,16 @@
                         <thead class="thead-light">
                             <th>STT</th>
                             <th>Tên danh mục</th>
+                            @if(auth()->user()->role === 'admin')
                             <th>Hành động</th>
+                            @endif
                         </thead>
                         <tbody>
                             @foreach ($categories as $index => $item)
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $item->name }}</td>
+                                    @if(auth()->user()->role === 'admin')
                                     <td>
                                         <form action="{{ route('category.restore', $item->id) }}" method="POST">
                                             @csrf
@@ -33,6 +36,7 @@
                                                 onclick="return confirm('Bạn có chắc chắn muốn khôi phục danh mục này không?')">Khôi phục</button>
                                         </form>
                                     </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>

@@ -33,7 +33,7 @@ class VoucherController extends Controller
         // Xác thực dữ liệu đầu vào (nếu cần)
         $request->validate([
             'code' => 'required|unique:vouchers,code|max:255',
-            'discount_percentage' => 'required|numeric',
+            'discount_percentage' => 'required|numeric|min:0|max:100',
             'max_discount_amount' => 'required|numeric',
             'min_order_value' => 'required|numeric',
             'start_date' => 'required|date',
@@ -89,7 +89,7 @@ class VoucherController extends Controller
         // Xác thực dữ liệu đầu vào
         $request->validate([
             'code' => 'required|max:255|unique:vouchers,code,' . $id,
-            'discount_percentage' => 'required|numeric',
+            'discount_percentage' => 'required|numeric|min:0|max:100',
             'max_discount_amount' => 'required|numeric',
             'min_order_value' => 'required|numeric',
             'start_date' => 'required|date',

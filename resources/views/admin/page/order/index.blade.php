@@ -79,7 +79,18 @@
                                                 </div>
                                             @endforeach
                                                 <div class="col-md-9">
-                                                    <p class="mb-1 ms-3 fw-bold">Mã đơn hàng: {{ $order->order_code }}</p>
+                                                    <p class="mb-1 ms-3">Người xác nhận: <span class="text-danger fw-bold">{{ $order->user ? $order->user->name : 'Chưa xác nhận' }}</span></p>
+                                                    <p class="mb-1 ms-3">
+                                                        Ngày xác nhận: 
+                                                        <span class="text-primary fw-bold">
+                                                            @if($order->status === 'Đã xác nhận' || $order->status === 'Đang giao hàng' || $order->status === 'Đã hoàn thành' || $order->status === 'Đã hủy' || $order->status === 'Thanh toán thất bại')
+                                                                {{ $order->updated_at ? $order->updated_at->format('d/m/Y H:i') : 'Chưa xác nhận' }}
+                                                            @else
+                                                                Chưa xác nhận
+                                                            @endif
+                                                        </span>
+                                                    </p>
+                                                    <p class="mb-1 ms-3">Mã đơn hàng: <span class="fw-bold">{{ $order->order_code }}</span></p>
                                                     <p class="mb-1 ms-3 text-muted">Tên người nhận: {{ $order->name }}</p>
                                                     <p class="mb-1 ms-3 text-danger fw-600">Tổng tiền: {{ number_format($order->total_price, 0, ',', '.') }} đ</p>
 

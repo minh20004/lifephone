@@ -13,6 +13,8 @@ use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use App\Models\ProductVariant;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
@@ -138,6 +140,7 @@ class CartController extends Controller
                     'variant_id' => $variant->id,
                     'quantity' => $quantity,
                     'price' => $variant->product->price + $variant->price_difference,
+                    'is_checked' => true,
                 ]);
             }
         } else {
@@ -164,6 +167,7 @@ class CartController extends Controller
                 'quantity' => $quantity,
                 'price' => $price,
                 'image_url' => $variant->product->image_url,
+                'is_checked' => true,
             ];
 
             if (isset($cart[$productId][$modelId][$colorId])) {
@@ -295,13 +299,13 @@ class CartController extends Controller
             'totalPrice' => number_format($totalPrice, 0, ',', '.')
         ]);
     }
-    
+
     public function remove($productId)
     {
         if (auth('customer')->check()) {
             // Lấy thông tin của khách hàng đã đăng nhập
             $customerId = auth('customer')->id();
-            
+
             // Tìm sản phẩm trong giỏ hàng của người dùng
             $cartItem = Cart::where('customer_id', $customerId)
                             ->where('product_id', $productId)
@@ -340,8 +344,27 @@ class CartController extends Controller
 
     public function checkout(Request $request)
     {
-        $cart = session()->get('cart', []); 
-        $outOfStockItems = [];  
+        $cart = session()->get('cart', []);
+        foreach ($cart as $productId => $models) {
+            foreach ($models as $modelId => $colors) {
+                foreach ($colors as $colorId => $item) {
+                    // Kiểm tra nếu sản phẩm có is_checked là true
+                    if ($item['is_checked'] !== true) {
+                        // Nếu không, xóa sản phẩm khỏi cấu trúc giỏ hàng
+                        unset($cart[$productId][$modelId][$colorId]);
+                    }
+                }
+
+                if (empty($cart[$productId][$modelId])) {
+                    unset($cart[$productId][$modelId]);
+                }
+            }
+
+            if (empty($cart[$productId])) {
+                unset($cart[$productId]);
+            }
+        }
+        $outOfStockItems = [];
         $cartItems = [];
         $totalPrice = 0;
         $totalQuantity = 0;
@@ -350,6 +373,7 @@ class CartController extends Controller
         if (auth('customer')->check()) {
             $customerId = auth('customer')->id();
             $cartItems = Cart::where('customer_id', $customerId)
+                ->where('is_checked',true)
                 ->with(['product', 'variant.capacity', 'variant.color'])
                 ->get();
 
@@ -373,6 +397,9 @@ class CartController extends Controller
         } else {
             foreach ($cart as $productId => $models) {
                 foreach ($models as $modelId => $colors) {
+                    if(!is_array($colors)){
+                        dd($colors);
+                    }
                     foreach ($colors as $colorId => $item) {
                         $variant = ProductVariant::where('product_id', $productId)
                             ->where('capacity_id', $modelId)
@@ -441,7 +468,7 @@ class CartController extends Controller
 
 
 
-    // hiển thị và tính toán số lượng trong giỏ hàng 
+    // hiển thị và tính toán số lượng trong giỏ hàng
     public function getCartItemCount()
     {
         $totalQuantity = 0;
@@ -463,8 +490,8 @@ class CartController extends Controller
         return response()->json(['count' => $totalQuantity]);
     }
 
-    
-    
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -512,5 +539,97 @@ class CartController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function updateCheckedStatus(Request $request)
+{
+
+    $selectedItems = $request->input('selected_items', []);
+    $customerId = $request->input('customer_id');
+
+    if (empty($selectedItems)) {
+        return response()->json(['success' => false, 'message' => 'Không có sản phẩm nào được chọn']);
+    }
+
+    if ($customerId) {
+        $cartItems = Cart::where('customer_id', $customerId)->get();
+
+        $selectedVariants = [];
+
+        foreach ($selectedItems as $item) {
+            list($productId, $capacityId, $colorId) = explode('-', $item);
+
+            $variant = ProductVariant::where('product_id', $productId)
+                ->where('capacity_id', $capacityId)  // Tương đương với modelId
+                ->where('color_id', $colorId)
+                ->first();
+
+            if ($variant) {
+                $selectedVariants[] = $variant->id;  // Lưu các variant_id được chọn
+            } else {
+                return response()->json(['success' => false, 'message' => "Sản phẩm với thông tin $productId-$capacityId-$colorId không tồn tại"]);
+            }
+        }
+
+        foreach ($cartItems as $cartItem) {
+            if (in_array($cartItem->variant_id, $selectedVariants)) {
+                // Cập nhật các sản phẩm được chọn thành true
+                $cartItem->is_checked = true;
+            } else {
+                // Cập nhật các sản phẩm không được chọn thành false
+                $cartItem->is_checked = false;
+            }
+            $cartItem->save();
+        }
+        return response()->json(['success' => true, 'message' => 'Cập nhật trạng thái giỏ hàng thành công']);
+    } else {
+        // Trường hợp người dùng chưa đăng nhập (dữ liệu trong session)
+
+        $cart = session()->get('cart', []);
+
+        $cart = session()->get('cart', []);
+        if (empty($cart)) {
+            return response()->json(['success' => false, 'message' => "Giỏ hàng của bạn hiện tại không có sản phẩm "]);
+        }
+
+        // Bước 1: Lấy các sản phẩm được chọn
+        $selectedVariants = [];
+
+        foreach ($selectedItems as $item) {
+            // Tách chuỗi item thành các phần tử productId, capacityId, và colorId
+            list($productId, $capacityId, $colorId) = explode('-', $item);
+
+            // Lấy variant_id từ bảng product_variant dựa trên productId, capacityId, và colorId
+            $variant = ProductVariant::where('product_id', $productId)
+                ->where('capacity_id', $capacityId)  // Tương đương với modelId
+                ->where('color_id', $colorId)
+                ->first();
+
+            if ($variant) {
+                $selectedVariants[] = $variant->id;  // Lưu các variant_id được chọn
+            } else {
+                // Nếu không tìm thấy variant, trả về lỗi
+                return response()->json(['success' => false, 'message' => "Sản phẩm với thông tin $productId-$capacityId-$colorId không tồn tại"]);
+            }
+        }
+
+        // Bước 2: Cập nhật trạng thái is_checked trong session
+        foreach ($cart as $productId => $models) {
+            foreach ($models as $capacityId => $colors) {
+                foreach ($colors as $colorId => $cartItem) {
+                    if (in_array($cartItem['variant_id'], $selectedVariants)) {
+                        // Cập nhật các sản phẩm được chọn thành true
+                        $cart[$productId][$capacityId][$colorId]['is_checked'] = true;
+                    } else {
+                        // Cập nhật các sản phẩm không được chọn thành false
+                        $cart[$productId][$capacityId][$colorId]['is_checked'] = false;
+                    }
+                }
+            }
+        }
+
+        session()->put('cart', $cart);
+        return response()->json(['success' => true, 'message' => 'Cập nhật trạng thái giỏ hàng thành công']);
+    }
     }
 }

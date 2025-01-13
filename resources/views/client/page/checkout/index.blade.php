@@ -5,14 +5,14 @@
 @section('content')
 <main class="content-wrapper">
     <div class="container py-5">
-        
+
         <form id="checkout-form" action="{{ route('order.store') }}" method="POST" class="needs-validation" novalidate>
             @csrf
             <div class="row pt-1 pt-sm-3 pt-lg-4 pb-2 pb-md-3 pb-lg-4 pb-xl-5">
-              
+
                 <!-- Delivery info (Step 1) -->
                 <div class="col-lg-8 col-xl-7 mb-5 mb-lg-0">
-                
+
                   <div class="d-flex flex-column gap-5 pe-lg-4 pe-xl-0">
                       <!-- Shipping address -->
                       <div class="d-flex align-items-start">
@@ -29,8 +29,8 @@
                             <div class="row row-cols-1 row-cols-sm-2 g-3 g-sm-4 mb-4">
                                 <div class="col">
                                     <label for="shipping-name" class="form-label">Họ và tên <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control form-control-lg @error('name') is-invalid @enderror" id="shipping-name" name="name" 
-                                        value="{{ old('name', auth('customer')->check() && $defaultAddress ? $defaultAddress->name : '') }}" 
+                                    <input type="text" class="form-control form-control-lg @error('name') is-invalid @enderror" id="shipping-name" name="name"
+                                        value="{{ old('name', auth('customer')->check() && $defaultAddress ? $defaultAddress->name : '') }}"
                                         {{ auth('customer')->check() ? 'readonly' : '' }} required>
                                     @error('name')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -38,35 +38,35 @@
                                 </div>
                                 <div class="col">
                                     <label for="shipping-phone" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control form-control-lg @error('phone') is-invalid @enderror" id="shipping-phone" name="phone" 
-                                        value="{{ old('phone', auth('customer')->check() && $defaultAddress ? $defaultAddress->phone_number : '') }}" 
+                                    <input type="text" class="form-control form-control-lg @error('phone') is-invalid @enderror" id="shipping-phone" name="phone"
+                                        value="{{ old('phone', auth('customer')->check() && $defaultAddress ? $defaultAddress->phone_number : '') }}"
                                         {{ auth('customer')->check() ? 'readonly' : '' }} required>
                                     @error('phone')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
-                            
+
                             <div class="mb-3">
                                 <label for="shipping-email" class="form-label">Email <span class="text-danger">*</span></label>
-                                <input type="email" class="form-control form-control-lg @error('email') is-invalid @enderror" id="shipping-email" name="email" 
-                                    value="{{ old('email', auth('customer')->check() ? auth('customer')->user()->email : '') }}" 
+                                <input type="email" class="form-control form-control-lg @error('email') is-invalid @enderror" id="shipping-email" name="email"
+                                    value="{{ old('email', auth('customer')->check() ? auth('customer')->user()->email : '') }}"
                                     {{ auth('customer')->check() ? 'readonly' : '' }} required>
                                 @error('email')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            
+
                             <div class="mb-3">
                                 <label for="shipping-address" class="form-label">Địa chỉ chi tiết <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control form-control-lg @error('address') is-invalid @enderror" id="shipping-address" name="address" 
-                                    value="{{ old('address', auth('customer')->check() && $defaultAddress ? $defaultAddress->address : '') }}" 
+                                <input type="text" class="form-control form-control-lg @error('address') is-invalid @enderror" id="shipping-address" name="address"
+                                    value="{{ old('address', auth('customer')->check() && $defaultAddress ? $defaultAddress->address : '') }}"
                                     {{ auth('customer')->check() ? 'readonly' : '' }} required>
                                 @error('address')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            
+
                             <!-- Modal -->
                             @if(auth('customer')->check() && $addresses->isNotEmpty())
                             <div class="modal fade" id="staticBackdrop" data-bs-backdrop="true" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -80,12 +80,12 @@
                                             <ul class="d-flex list-group ">
                                                 @foreach ($addresses as $address)
                                                     <li class="d-flex gap-3 list-group-item border-bottom border-danger">
-                                                        <input type="radio" class="btn btn-primary btn-sm mt-2 change-address-btn" 
+                                                        <input type="radio" class="btn btn-primary btn-sm mt-2 change-address-btn"
                                                             name="selected_address"
-                                                            data-name="{{ $address->name }}" 
-                                                            data-phone="{{ $address->phone_number }}" 
-                                                            data-address="{{ $address->address }}" 
-                                                            style="width: 20px; height: 20px; accent-color: red; font-size: 26px;"> 
+                                                            data-name="{{ $address->name }}"
+                                                            data-phone="{{ $address->phone_number }}"
+                                                            data-address="{{ $address->address }}"
+                                                            style="width: 20px; height: 20px; accent-color: red; font-size: 26px;">
                                                         <div>
                                                             <strong>{{ $address->name }}</strong> | {{ $address->phone_number }}<br>
                                                             {{ $address->address }}
@@ -104,8 +104,8 @@
                             @endif
                         </div>
                     </div>
-                    
-                  
+
+
                       <!-- Payment -->
                       <div class="d-flex align-items-start">
                         <div class="d-flex align-items-center justify-content-center bg-primary text-white rounded-circle fs-sm fw-semibold lh-1 flex-shrink-0" style="width: 2rem; height: 2rem; margin-top: -.125rem">2</div>
@@ -122,10 +122,10 @@
                                     <label class="form-check-label" for="payment_method_vnpay">Thanh toán trực tuyến (VNPay)</label>
                                 </div>
                             </div>
-      
-                            
+
+
                           </div>
-      
+
                           <!-- Add promo code button -->
                           <div class="nav pb-3 mb-2 mb-sm-3">
                             <a class="nav-link animate-underline p-0" href="#!">
@@ -133,17 +133,17 @@
                               <span class="animate-target">Thêm mã khuyến mại hoặc thẻ quà tặng</span>
                             </a>
                           </div>
-      
+
                           <!-- Nội dung -->
                           <textarea class="form-control form-control-lg mb-4" rows="3" name="description" placeholder="Nội dung"></textarea>
-      
+
                           <button type="button" class="btn btn-primary w-100" id="place-order-btn">Đặt hàng</button>
                         </div>
                       </div>
                   </div>
                 </div>
-      
-      
+
+
                   <!-- Order summary (sticky sidebar) -->
                   <aside class="col-lg-4 offset-xl-1" style="margin-top: -100px">
                     <div class="position-sticky top-0" style="padding-top: 100px">
@@ -177,7 +177,7 @@
                                     <i class="ci-chevron-right text-body fs-xl p-0 ms-auto"></i>
                                   </a>
                                 </div>
-                                
+
                             <ul class="list-unstyled fs-sm gap-3 mb-0">
                               <li class="d-flex justify-content-between">
                                 Tổng cộng ({{ $totalQuantity }} sản phẩm):
@@ -196,7 +196,7 @@
                                 <span class="h5 mb-0" id="estimatedTotal">{{ session('estimatedTotal', number_format($estimatedTotal, 0, ',', '.')) }} đ</span>
                               </div>
                             </div>
-                                
+
                         </div>
                       </div>
                       <div class="accordion bg-body-tertiary rounded-5 p-4">
@@ -221,7 +221,7 @@
                                                 </div>
                                             </div>
                                         </form>
-                        
+
                                         <div class="mt-4">
                                             <p class="text-danger">Chọn một mã khuyến mãi:</p>
                                             <form id="voucher-selection-form" action="{{ route('order.applyVoucher') }}" method="POST">
@@ -234,7 +234,7 @@
                                                                 ->where('voucher_id', $voucher->id)
                                                                 ->exists();
                                                         @endphp
-                                                        <div class="voucher-option d-flex align-items-center border mb-3 
+                                                        <div class="voucher-option d-flex align-items-center border mb-3
                                                             @if($isUsed) opacity-50 pointer-events-none @endif">
                                                             <label for="voucher_{{ $voucher->id }}">
                                                                 <div class="d-flex align-items-center">
@@ -253,9 +253,9 @@
                                                                             HSD: {{ $voucher->end_date }}
                                                                         </div>
                                                                     </div>
-                                                                </div>  
+                                                                </div>
                                                             </label>
-                                                            <input type="radio" name="selected_voucher" id="voucher_{{ $voucher->id }}" value="{{ $voucher->code }}" class="me-2 " 
+                                                            <input type="radio" name="selected_voucher" id="voucher_{{ $voucher->id }}" value="{{ $voucher->code }}" class="me-2 "
                                                                 {{ session('voucher.code') == $voucher->code ? 'checked' : '' }}
                                                                 @if($isUsed) disabled @endif>
                                                         </div>
@@ -269,19 +269,19 @@
                                     </div>
                                 </div>
                         </div>
-                        
+
                     </div>
                     </div>
                   </aside>
-                  
-            
+
+
             </div>
         </form>
-        
-       
-        
-        
-        
+
+
+
+
+
     </div>
 </main>
 <script>
