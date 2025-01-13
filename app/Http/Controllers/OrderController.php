@@ -134,11 +134,11 @@ class OrderController extends Controller
         $isAdmin = $currentUser->role === 'admin';
 
         $groupedOrders = [
-            // 'Tất cả' => $baseQuery->paginate($perPage)->appends($request->query()),
             'Tất cả' => Order::when(!$isAdmin, fn($query) => $query->where('user_id', $currentUser->id))
-            ->orderBy('created_at', 'desc')
-            ->paginate($perPage)
-            ->appends($request->query()),
+                ->whereNotIn('status', ['Chờ thanh toán', 'Thanh toán thất bại'])
+                ->orderBy('created_at', 'desc')
+                ->paginate($perPage)
+                ->appends($request->query()),
             'Chờ xác nhận' => Order::where('status', 'Chờ xác nhận')
                 ->orderBy('created_at', 'desc')
                 ->paginate($perPage)
@@ -163,22 +163,25 @@ class OrderController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->paginate($perPage)
                 ->appends($request->query()),
-            'Thanh toán thất bại' => Order::where('status', 'Thanh toán thất bại')
-                ->when(!$isAdmin, fn ($query) => $query->where('user_id', $currentUser->id))
-                ->orderBy('created_at', 'desc')
-                ->paginate($perPage)
-                ->appends($request->query()),
         ];
 
         $orderCounts = [
-            // 'Tất cả' => Order::count(),
-            'Tất cả' => Order::when(!$isAdmin, fn($query) => $query->where('user_id', $currentUser->id))->count(),
+            'Tất cả' => Order::when(!$isAdmin, fn($query) => $query->where('user_id', $currentUser->id))
+                ->whereNotIn('status', ['Chờ thanh toán', 'Thanh toán thất bại'])
+                ->count(),
             'Chờ xác nhận' => Order::where('status', 'Chờ xác nhận')->count(),
-            'Đã xác nhận' => Order::where('status', 'Đã xác nhận')->when(!$isAdmin, fn ($query) => $query->where('user_id', $currentUser->id))->count(),
-            'Đang giao hàng' => Order::where('status', 'Đang giao hàng')->when(!$isAdmin, fn ($query) => $query->where('user_id', $currentUser->id))->count(),
-            'Đã hoàn thành' => Order::where('status', 'Đã hoàn thành')->when(!$isAdmin, fn ($query) => $query->where('user_id', $currentUser->id))->count(),
-            'Đã hủy' => Order::where('status', 'Đã hủy')->when(!$isAdmin, fn ($query) => $query->where('user_id', $currentUser->id))->count(),
-            'Thanh toán thất bại' => Order::where('status', 'Thanh toán thất bại')->when(!$isAdmin, fn ($query) => $query->where('user_id', $currentUser->id))->count(),
+            'Đã xác nhận' => Order::where('status', 'Đã xác nhận')
+                ->when(!$isAdmin, fn ($query) => $query->where('user_id', $currentUser->id))
+                ->count(),
+            'Đang giao hàng' => Order::where('status', 'Đang giao hàng')
+                ->when(!$isAdmin, fn ($query) => $query->where('user_id', $currentUser->id))
+                ->count(),
+            'Đã hoàn thành' => Order::where('status', 'Đã hoàn thành')
+                ->when(!$isAdmin, fn ($query) => $query->where('user_id', $currentUser->id))
+                ->count(),
+            'Đã hủy' => Order::where('status', 'Đã hủy')
+                ->when(!$isAdmin, fn ($query) => $query->where('user_id', $currentUser->id))
+                ->count(),
         ];
 
         return view('admin.page.order.index', compact('groupedOrders', 'orderCounts'));
@@ -642,14 +645,10 @@ class OrderController extends Controller
                     }
                 }
             } else {
-                // Thanh toán thất bại
+                // Thanh toán thất bại - xóa đơn hàng
                 $order = Order::where('order_code', $inputData['vnp_TxnRef'])->first();
                 if ($order) {
-                    // Cập nhật trạng thái đơn hàng là "Thanh toán thất bại"
-                    $order->status = 'Thanh toán thất bại';
-                    $order->payment_method = 'Thanh toán trực tuyến (VNPay)';
-                    $order->payment_date = null; // Không có ngày thanh toán
-                    $order->save();
+                    $order->delete();
                 }
 
                 // Chuyển hướng về trang checkout với thông báo thất bại

@@ -82,7 +82,7 @@
                         <div class="d-flex align-items-center justify-content-end pe-3 text-end border-bottom">
                             <div class="pe-3"><span>Tổng tiền hàng</span></div>
                             <div class="w-25 border-start p-3">
-                                <div>{{ number_format($item->total_price, 0, ',', '.') }} đ</div>
+                                <div>{{ number_format($order->orderItems->sum('total_price'), 0, ',', '.') }} đ</div>
                             </div>
                         </div>
                             <div class="d-flex align-items-center justify-content-end pe-3 text-end border-bottom">
