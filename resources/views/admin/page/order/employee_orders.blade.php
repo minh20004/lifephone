@@ -5,7 +5,7 @@
 @section('content')
 <div class="page-content">
     <div class="container-fluid">
-        <h3>Danh sách đơn hàng của: <span class="text-danger">{{ $employee->name }}</span></h3>
+        <h3>Danh sách đơn hàng đã hoàn thành của: <span class="text-danger">{{ $employee->name }}</span></h3>
 
         <!-- Hiển thị thông báo nếu có -->
         @if(session('message'))

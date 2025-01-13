@@ -264,8 +264,7 @@ class AuthController extends Controller
 
         // Thống kê số lượng đơn hàng theo trạng thái cho nhân viên trong khoảng thời gian hiện tại
         $currentOrdersByStatus = [
-            'Chờ xác nhận' => Order::where('user_id', $userId)
-                                    ->where('status', 'Chờ xác nhận')
+            'Chờ xác nhận' => Order::where('status', 'Chờ xác nhận')
                                     ->whereBetween('updated_at', [$startDate, $endDate])
                                     ->count(),
             'Đã xác nhận' => Order::where('user_id', $userId)
@@ -311,13 +310,13 @@ class AuthController extends Controller
         ];
 
         // Thu nhập của nhân viên trong khoảng thời gian hiện tại (dựa trên các đơn hàng đã hoàn thành)
-        $currentIncome = Order::where('user_id', $userId) // Thay 'assigned_to' bằng 'user_id'
+        $currentIncome = Order::where('user_id', $userId)
             ->where('status', 'Đã hoàn thành')
             ->whereBetween('updated_at', [$startDate, $endDate])
             ->sum('total_price');
 
         // Thu nhập của nhân viên trong khoảng thời gian trước đó
-        $previousIncome = Order::where('user_id', $userId) // Thay 'assigned_to' bằng 'user_id'
+        $previousIncome = Order::where('user_id', $userId)
             ->where('status', 'Đã hoàn thành')
             ->whereBetween('updated_at', [$previousStartDate, $previousEndDate])
             ->sum('total_price');
@@ -346,7 +345,7 @@ class AuthController extends Controller
         // Truyền dữ liệu vào view
         return view('admin.staff', compact(
             'currentOrdersByStatus',
-            'previousOrdersByStatus',  // Đảm bảo biến này đã được khai báo và gán giá trị
+            'previousOrdersByStatus',
             'previousIncome',
             'currentIncome',
             'incomeChangePercentage',
@@ -388,9 +387,9 @@ class AuthController extends Controller
         } else {
             return redirect()->route('login')->withErrors('Bạn không có quyền truy cập.');
         }
-        if ($orders->isEmpty()) {
-            return redirect()->back()->with('message', 'Không có đơn hàng nào trong khoảng thời gian này.');
-        }
+        // if ($orders->isEmpty()) {
+        //     return redirect()->back()->with('message', 'Không có đơn hàng nào trong khoảng thời gian này.');
+        // }
         return view('admin.page.order.employee_orders', compact('orders', 'employee'));
     }
 
@@ -917,13 +916,14 @@ class AuthController extends Controller
 
         return redirect()->route('admin.customer.index')->with('success', 'Khách hàng đã được xóa!');
     }
+
 // quản lý hồ sơ khách hàng ------------------------------------------------------------------------------------------------------------------------------
     public function address()
     {
         return view('client.page.auth.page.address');
     }
-// Đơn hàng bên khách hàng---------------------------------------------------------------------------------------------------------------------------------------------
 
+// Đơn hàng bên khách hàng---------------------------------------------------------------------------------------------------------------------------------------------
     public function history(Request $request)
     {
         // Kiểm tra khách đăng nhập hay không
