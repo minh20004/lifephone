@@ -134,7 +134,11 @@ class OrderController extends Controller
         $isAdmin = $currentUser->role === 'admin';
 
         $groupedOrders = [
-            'Tất cả' => $baseQuery->paginate($perPage)->appends($request->query()),
+            // 'Tất cả' => $baseQuery->paginate($perPage)->appends($request->query()),
+            'Tất cả' => Order::when(!$isAdmin, fn($query) => $query->where('user_id', $currentUser->id))
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage)
+            ->appends($request->query()),
             'Chờ xác nhận' => Order::where('status', 'Chờ xác nhận')
                 ->orderBy('created_at', 'desc')
                 ->paginate($perPage)
@@ -167,7 +171,8 @@ class OrderController extends Controller
         ];
 
         $orderCounts = [
-            'Tất cả' => Order::count(),
+            // 'Tất cả' => Order::count(),
+            'Tất cả' => Order::when(!$isAdmin, fn($query) => $query->where('user_id', $currentUser->id))->count(),
             'Chờ xác nhận' => Order::where('status', 'Chờ xác nhận')->count(),
             'Đã xác nhận' => Order::where('status', 'Đã xác nhận')->when(!$isAdmin, fn ($query) => $query->where('user_id', $currentUser->id))->count(),
             'Đang giao hàng' => Order::where('status', 'Đang giao hàng')->when(!$isAdmin, fn ($query) => $query->where('user_id', $currentUser->id))->count(),
