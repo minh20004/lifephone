@@ -47,77 +47,77 @@
                 @if ($orders->isEmpty() && request('order_code'))
                     <div class="alert alert-danger">Không tìm thấy đơn hàng nào với mã "{{ request('order_code') }}".</div>
                 @elseif ($orders->isNotEmpty())
-                    <div class="mt-3">
-                        @forelse ($orders as $order)
-                            <div class="card shadow-sm mb-4">
-                                <div class="card-header d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <i class="fa-solid fa-shop"></i>
-                                        <b>LifePhone</b>
-                                    </div>
-                                    <span class="text-danger"><span class="text-dark">Mã đơn hàng: {{ $order->order_code }}</span> | {{ $order->status }}</span>
+                    
+                
+
+                <div class="mt-3">
+                    @forelse ($orders as $order)
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="fa-solid fa-shop"></i>
+                                    <b>LifePhone</b>
                                 </div>
-                                <div class="card-body">
-                                    <div class=" align-items-center">
-                                        @foreach ($order->orderItems as $item)
-                                            <div class="col-12 mb-3 border-bottom pb-3">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="me-3">
-                                                        @if ($item->image_url)
-                                                            <img src="{{ asset('storage/' . $item->image_url) }}" alt="Product" class="img-fluid rounded" style="max-width: 80px; height: auto;">
-                                                        @else
-                                                            Không có ảnh
-                                                        @endif
-                                                    </div>
-                                                    <div class="flex-grow-1">
-                                                        <p class="mb-1 fw-bold">{{ $item->name }}</p>
-                                                        <p class="mb-1 text-muted">Phân loại hàng: {{ $item->variant->color->name ?? 'Không có màu' }}, {{ $item->variant->capacity->name ?? 'Không có dung lượng' }}</p>
-                                                        <p class="mb-1 text-dark">x{{ $item->quantity }}</p>
-                                                    </div>
-                                                    <div class="text-end">
-                                                        <p class="mb-1 text-danger fw-600">{{ number_format($item->price, 0, ',', '.') }} đ</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                    <div class="mt-3">
-                                        <div class="d-flex align-items-center justify-content-between">
-                                            <div>
-                                                <p style="font-size:13px;">Ngày đặt hàng: {{ $order->created_at->format('d/m/Y ') }}</p>
-                                            </div>
-                                            <div class="d-flex gap-2">
-                                                <p>Thành tiền: </p>
-                                                <p class="fs-5 ms-2 fw-bold text-danger">{{ number_format($order->total_price, 0, ',', '.') }} đ</p>
-                                            </div>
+                                <span class="text-danger"><span class="text-dark">Mã đơn hàng: {{ $order->order_code }}</span> | {{ $order->status }}</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="progress-container">
+                                    <div class="progress-step">
+                                        <div class="icon {{ in_array($order->status, ['Chờ xác nhận', 'Đã xác nhận', 'Đang giao hàng', 'Đã hoàn thành']) ? 'completed' : ($order->status === 'Đã hủy' ? 'cancelled' : '') }}">
+                                            <i class="bi bi-receipt"></i>
                                         </div>
-                                        <div class="text-end mt-3 d-flex justify-content-between gap-2">
-                                            <div class="d-flex gap-2">
-                                                <div>
-                                                    @if($order->status == 'Chờ xác nhận')
-                                                        <form action="{{ route('order.cancel', $order->id) }}" method="POST">
-                                                            @csrf
-                                                            <button class="btn btn-outline-danger btn-sm">Hủy Đơn Hàng</button>
-                                                        </form>
-                                                    @else
-                                                        <td></td>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <p class="mt-2 mb-0">Chờ xác nhận</p>
                                     </div>
+                                    <div class="progress-line {{ in_array($order->status, ['Đã xác nhận', 'Đang giao hàng', 'Đã hoàn thành']) ? 'completed' : ($order->status === 'Đã hủy' ? 'cancelled' : '') }}"></div>
+                                    <div class="progress-step">
+                                        <div class="icon {{ in_array($order->status, ['Đã xác nhận', 'Đang giao hàng', 'Đã hoàn thành']) ? 'completed' : ($order->status === 'Đã hủy' ? 'cancelled' : '') }}">
+                                            <i class="bi bi-currency-dollar"></i>
+                                        </div>
+                                        <p class="mt-2 mb-0">Đã xác nhận</p>
+                                    </div>
+                                    <div class="progress-line {{ in_array($order->status, ['Đang giao hàng', 'Đã hoàn thành']) ? 'completed' : ($order->status === 'Đã hủy' ? 'cancelled' : '') }}"></div>
+                                    <div class="progress-step">
+                                        <div class="icon {{ in_array($order->status, ['Đang giao hàng', 'Đã hoàn thành']) ? 'completed' : ($order->status === 'Đã hủy' ? 'cancelled' : '') }}">
+                                            <i class="bi bi-truck"></i>
+                                        </div>
+                                        <p class="mt-2 mb-0">Đang giao hàng</p>
+                                    </div>
+                                    <div class="progress-line {{ $order->status === 'Đã hoàn thành' ? 'completed' : ($order->status === 'Đã hủy' ? 'cancelled' : '') }}"></div>
+                                    <div class="progress-step">
+                                        <div class="icon {{ $order->status === 'Đã hoàn thành' ? 'completed-filled' : ($order->status === 'Đã hủy' ? 'cancelled' : '') }}">
+                                            <i class="bi bi-box"></i>
+                                        </div>
+                                        <p class="mt-2 mb-0">Đã hoàn thành</p>
+                                    </div>
+                                    <div class="progress-line {{ $order->status === 'Đã hủy' ? 'cancelled' : ($order->status === 'Đã hoàn thành' ? 'completed' : '') }}"></div>
+                                    <div class="progress-step">
+                                        <div class="icon {{ $order->status === 'Đã hoàn thành' ? 'completed-filled' : ($order->status === 'Đã hủy' ? 'cancelled' : '') }}">
+                                            <i class="bi bi-star"></i>
+                                        </div>
+                                        <p class="mt-2 mb-0">{{ $order->status === 'Đã hoàn thành' ? 'Đánh giá' : 'Đã hủy' }}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p style="font-size:13px;">Ngày đặt hàng: {{ $order->created_at->format('d/m/Y ') }}</p>
                                 </div>
                             </div>
-                        @empty
-                        <p class="text-center">
-                            @if($tabId === 'home' && isset($searchCode) && $searchCode)
-                                Không tìm thấy đơn hàng nào với mã: "{{ $searchCode }}".
-                            @else
-                                Không có đơn hàng nào.
-                            @endif
-                        </p>
-                        @endforelse
-                    </div>
+                            
+                        </div>
+                        
+                    @empty
+                    <p class="text-center">
+                        @if($tabId === 'home' && isset($searchCode) && $searchCode)
+                            Không tìm thấy đơn hàng nào với mã: "{{ $searchCode }}".
+                        @else
+                            Không có đơn hàng nào.
+                        @endif
+                    </p>
+                    @endforelse
+                </div>
+                
+                
+
+                
                     
                 @endif
             </div>

@@ -26,7 +26,10 @@ class OrderController extends Controller
         $id_staff = Auth::guard('admin')->user()->id;
 
         // Query cơ bản
-        $baseQuery = Order::orderBy('created_at', 'desc');
+        $baseQuery = Order::orderBy('created_at', 'desc')
+            ->where('status', '!=', 'Chờ thanh toán')
+            ->where('status', '!=', 'Thanh toán thất bại');
+            
         if ($searchTerm) {
             $baseQuery->where(function($query) use ($searchTerm) {
                 $query->where('order_code', 'like', '%' . $searchTerm . '%')
@@ -61,22 +64,18 @@ class OrderController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->paginate($perPage)
                 ->appends($request->query()),
-            'Thanh toán thất bại' => Order::where('status', 'Thanh toán thất bại')
-                ->where('user_id', $id_staff)
-                ->orderBy('created_at', 'desc')
-                ->paginate($perPage)
-                ->appends($request->query()),
         ];
 
         // Tính số lượng đơn hàng cho từng trạng thái
         $orderCounts = [
-            'Tất cả' => Order::count(),
+            'Tất cả' => Order::where('status', '!=', 'Chờ thanh toán')
+                ->where('status', '!=', 'Thanh toán thất bại')
+                ->count(),
             'Chờ xác nhận' => Order::where('status', 'Chờ xác nhận')->count(),
             'Đã xác nhận' => Order::where('status', 'Đã xác nhận')->where('user_id', $id_staff)->count(),
             'Đang giao hàng' => Order::where('status', 'Đang giao hàng')->where('user_id', $id_staff)->count(),
             'Đã hoàn thành' => Order::where('status', 'Đã hoàn thành')->where('user_id', $id_staff)->count(),
             'Đã hủy' => Order::where('status', 'Đã hủy')->where('user_id', $id_staff)->count(),
-            'Thanh toán thất bại' => Order::where('status', 'Thanh toán thất bại')->where('user_id', $id_staff)->count(),
         ];
 
         return view('admin.page.order.index', compact('groupedOrders', 'orderCounts'));
@@ -523,17 +522,7 @@ class OrderController extends Controller
                     }
                 }
             } else {
-                // Thanh toán thất bại
-                $order = Order::where('order_code', $inputData['vnp_TxnRef'])->first();
-                if ($order) {
-                    // Cập nhật trạng thái đơn hàng là "Thanh toán thất bại"
-                    $order->status = 'Thanh toán thất bại';
-                    $order->payment_method = 'Thanh toán trực tuyến (VNPay)';
-                    $order->payment_date = null; // Không có ngày thanh toán
-                    $order->save();
-                }
-
-                // Chuyển hướng về trang checkout với thông báo thất bại
+                // Thanh toán thất bại - không lưu vào database
                 return redirect()->route('order.failure')->with('error', 'Thanh toán thất bại: ' . ($inputData['vnp_Message'] ?? 'Lỗi không xác định'));
             }
         } else {

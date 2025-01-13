@@ -17,7 +17,7 @@
                                 <label for="product_code" class="form-label text-dark fw-bold fs-5">Mã sản phẩm</label>
                                 <input type="text" class="form-control" id="product_code" name="product_code"
                                     placeholder="Nhập mã sản phẩm" @error('product_code') is-invalid @enderror
-                                    value="{{ $product->product_code }}">
+                                    value="{{ $product->product_code }}" readonly>
                                 @error('product_code')
                                     <div class="invalid-feeback text-danger">
                                         {{ $message }}
