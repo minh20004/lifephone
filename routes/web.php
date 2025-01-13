@@ -180,12 +180,12 @@ Route::middleware(['auth:admin', 'isAdmin'])->group(function () {
     Route::get('/admin/notifications', [OrderNotificationController::class, 'index'])->name('admin.notifications');
     Route::post('/admin/notifications/{id}/read', [OrderNotificationController::class, 'markAsRead'])->name('admin.notifications.read');
     Route::get('/admin/chatBoard', [AuthController::class, 'indexChatBoard'])->name('admin.chatBoard');
-    //phục hồi tin tức ĐÃ XÓA 
+    //phục hồi tin tức ĐÃ XÓA
     Route::get('/admin/new_admin/trashed', [NewController::class, 'trashed'])->name('new_admin.trashed');
     Route::put('/admin/new_admin/restore/{id}', [NewController::class, 'restore'])->name('new_admin.restore');
     Route::get('/admin/category_news/trashed', [CategoryNewsController::class, 'trashed'])->name('category_news.trashed');
     Route::put('/admin/category_news/restore/{id}', [CategoryNewsController::class, 'restore'])->name('category_news.restore');
-    //phsan hoi 
+    //phsan hoi
     Route::patch('/admin/reviews/{id}/replyAsAdmin', [CommentController::class, 'replyAsAdmin'])->name('reviews.replyAsAdmin');
 });
 // end auth admin ------------------------------------------------------------------------------------------------------------------
@@ -244,7 +244,7 @@ Route::middleware(['auth:customer', 'isCustomer'])->group(function () {
     Route::put('/customer/{id}/update-address', [AuthController::class, 'updateAddress'])->name('customer.updateAddress');
     Route::get('/customer/file', [AuthController::class, 'file_customer'])->name('customer.file');
     Route::get('/customer/wishList', [AuthController::class, 'wish_list'])->name('customer.wishList');
-    //review 
+    //review
     Route::get('/customer/reviews/{customerId}', [ReviewController::class, 'showCustomerReviews'])->name('customer.review');
 
 
@@ -258,9 +258,9 @@ Route::middleware(['auth:customer', 'isCustomer'])->group(function () {
     // Route cập nhật địa chỉ
     Route::put('/customer/address/{addressId}', [AddressController::class, 'updateAddress'])->name('customer.updateAddress');
     Route::get('/order-detail/{id}', [AuthController::class, 'detail'])->name('order.detail');
-    //binh luan 
+    //binh luan
     Route::post('product/{id}/review', [ReviewController::class, 'store'])->name('reviews.store');
-    
+
 
 });
 

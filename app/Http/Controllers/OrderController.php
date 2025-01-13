@@ -445,6 +445,7 @@ class OrderController extends Controller
             // Người dùng đã đăng nhập, lấy giỏ hàng từ cơ sở dữ liệu
             $cart = Cart::where('customer_id', $customerId)
                 ->with(['product', 'variant'])
+                ->where('is_checked', true)
                 ->get()
                 ->groupBy(['product_id', 'variant_id']);
         } else {
@@ -623,7 +624,7 @@ class OrderController extends Controller
                             }
                         }
                         if (auth('customer')->check()) {
-                            Cart::where('customer_id', auth('customer')->id())->delete();
+                            Cart::where('customer_id', auth('customer')->id())->where('is_checked', true)->delete();
                         }
                         OrderNotification::create([
                             'order_id' => $order->id,
