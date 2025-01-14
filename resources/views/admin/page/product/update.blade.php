@@ -135,12 +135,29 @@
                                 </button>
                             </div>
 
+                            
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
                             @foreach ($variants as $index => $variant)
                                 <div class="variant form-group">
                                     <div class="row mb-3">
+                                        @php
+                                            $isOrdered = in_array($variant->color_id . '-' . $variant->capacity_id, $orderedVariantPairs);
+                                        @endphp
+                                        
                                         <div class="col-md-2">
                                             <label for="color_id_{{ $index }}" class="form-label text-dark fw-bold">Màu sắc</label>
-                                            <select name="variants[{{ $index }}][color_id]" id="color_id_{{ $index }}" class="form-select @error("variants.$index.color_id") is-invalid @enderror">
+                                            <select name="variants[{{ $index }}][color_id]" 
+                                                    id="color_id_{{ $index }}" 
+                                                    class="form-select @error("variants.$index.color_id") is-invalid @enderror"
+                                                    {{ $isOrdered ? 'disabled' : '' }}>
                                                 @foreach ($colors as $color)
                                                     <option value="{{ $color->id }}"
                                                         {{ $color->id == $variant->color_id ? 'selected' : '' }}>
@@ -148,16 +165,18 @@
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            @error("variants.$index.color_id")
-                                                <div class="invalid-feedback text-danger">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
+                                            @if ($isOrdered)
+                                                <input type="hidden" name="variants[{{ $index }}][color_id]" value="{{ $variant->color_id }}">
+                                                <small class="text-danger">Biến thể này đã được đặt hàng </small>
+                                            @endif
                                         </div>
 
                                         <div class="col-md-2">
                                             <label for="capacity_id_{{ $index }}" class="form-label text-dark fw-bold">Dung lượng</label>
-                                            <select name="variants[{{ $index }}][capacity_id]" id="capacity_id_{{ $index }}" class="form-select @error("variants.$index.capacity_id") is-invalid @enderror">
+                                            <select name="variants[{{ $index }}][capacity_id]" 
+                                                    id="capacity_id_{{ $index }}" 
+                                                    class="form-select @error("variants.$index.capacity_id") is-invalid @enderror"
+                                                    {{ $isOrdered ? 'disabled' : '' }}>
                                                 @foreach ($capacities as $capacity)
                                                     <option value="{{ $capacity->id }}"
                                                         {{ $capacity->id == $variant->capacity_id ? 'selected' : '' }}>
@@ -165,11 +184,9 @@
                                                     </option>
                                                 @endforeach
                                             </select>
-                                            @error("variants.$index.capacity_id")
-                                                <div class="invalid-feedback text-danger">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
+                                            @if ($isOrdered)
+                                                <input type="hidden" name="variants[{{ $index }}][capacity_id]" value="{{ $variant->capacity_id }}">
+                                            @endif
                                         </div>
 
                                         <div class="col-md-2">
@@ -179,11 +196,11 @@
                                                 value="{{ old('variants.' . $index . '.price_difference', $variant->price_difference) }}"
                                                 class="form-control @error("variants.$index.price_difference") is-invalid @enderror" 
                                                 placeholder="Nhập giá sản phẩm">
-                                            @error("variants.$index.price_difference")
-                                                <div class="invalid-feedback text-danger">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
+                                                @error("variants.$index.price_difference")
+                                                    <div class="invalid-feedback text-danger">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
                                         </div>
 
                                         <div class="col-md-2">
@@ -192,16 +209,18 @@
                                                 min="0"
                                                 value="{{ old('variants.' . $index . '.stock', $variant->stock) }}"
                                                 class="form-control @error("variants.$index.stock") is-invalid @enderror" 
-                                                placeholder="Nhập số lượng" required>
-                                            @error("variants.$index.stock")
-                                                <div class="invalid-feedback text-danger">
-                                                    {{ $message }}
-                                                </div>
-                                            @enderror
+                                                placeholder="Nhập số lượng">
+                                                @error("variants.$index.stock")
+                                                    <div class="invalid-feedback text-danger">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
                                         </div>
 
                                         <div class="col-md-2 d-flex align-items-end">
-                                            <button type="button" class="btn btn-danger" onclick="removeVariant(this)">
+                                            <button type="button" class="btn btn-danger" 
+                                                    onclick="removeVariant(this)"
+                                                    {{ $isOrdered ? 'disabled' : '' }}>
                                                 <i class="bi bi-trash-fill"></i>
                                             </button>
                                         </div>
