@@ -147,7 +147,7 @@
               <span class="fs-sm">Tổng ước tính:</span>
               <span class="h5 mb-0"><span id="totalAfterDiscount">{{ number_format($totalPrice, 0, ',', '.') }} đ</span>
             </div>
-            <a class="btn btn-lg btn-primary w-100" href="{{ route('checkout') }}">
+            <a id="checkout-btn" class=" btn btn-lg btn-primary w-100" href="{{ route('checkout') }}">
               Tiến hành thanh toán
               <i class="ci-chevron-right fs-lg ms-1 me-n1"></i>
             </a>
@@ -346,6 +346,9 @@
         }
         checkbox.checked = true;
       });
+
+      if(selectedProducts.length == 0)  document.getElementById('checkout-btn')?.disabled = true;
+      
       localStorage.setItem('selectedProducts', JSON.stringify(selectedProducts));
       console.log('Cập nhật trạng thái của checkbox thành công',checkboxes);
 
@@ -381,6 +384,8 @@
       } else {
           selectedProducts = selectedProducts.filter(id => id !== productId);
       }
+
+      if(selectedProducts.length == 0)  document.getElementById('checkout-btn')?.disabled = true;
 
       console.log('Danh sách sản phẩm được chọn', selectedProducts);
 
