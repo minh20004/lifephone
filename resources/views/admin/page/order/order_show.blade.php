@@ -32,10 +32,16 @@
                                 <div>{{ $order->address }}</div>
                             </div>
                         </div>
-                        <div class="d-flex align-items-center justify-content-start pe-3 ">
+                        <div class="d-flex align-items-center justify-content-start pe-3 border-bottom">
                             <div class="w-25 p-3"><span>Email</span></div>
                             <div class=" border-start p-3">
                                 <div class="fs-6">{{ $order->email ?? 'Không có' }}</div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-start pe-3 ">
+                            <div class="w-25 p-3"><span>Tài khoản đặt hàng</span></div>
+                            <div class=" border-start p-3">
+                                <div class="fs-6">{{ $order->customer ? $order->customer->email : 'Không có' }}</div>
                             </div>
                         </div>
                 </div>

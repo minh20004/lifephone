@@ -231,9 +231,215 @@ class OrderController extends Controller
     }
 
 
+    // public function storeOrder(Request $request) // lỗi voucher
+    // {
+    //     // Validate dữ liệu yêu cầu
+    //     $request->validate([
+    //         'name' => 'required|string|max:255',
+    //         'phone' => 'required|string|max:20',
+    //         'email' => 'required|email',
+    //         'address' => 'required|string|max:255',
+    //         'payment_method' => 'required|string|in:COD,Online',
+    //         'description' => 'nullable|string',
+    //     ],[
+    //         'name' => "Tên người nhận không được để trống",
+    //         'phone' => "Số điện thoại không được để trống",
+    //         'email' => "Email không được để trống",
+    //         'address' => "Địa chỉ không được để trống",
+    //     ]);
+
+    //     $customerId = auth('customer')->check() ? auth('customer')->id() : null;
+
+    //     // Lấy giỏ hàng từ session hoặc cơ sở dữ liệu tùy theo người dùng đã đăng nhập hay chưa
+    //     $cartItems = [];
+    //     if ($customerId) {
+    //         // Người dùng đã đăng nhập, lấy giỏ hàng từ cơ sở dữ liệu
+    //         $cartItems = Cart::where('customer_id', $customerId)->where('is_checked', true)->get();
+    //         if ($cartItems->isEmpty()) {
+    //             return redirect()->back()->with('error', 'Giỏ hàng của bạn đang trống.');
+    //         }
+    //     } else {
+    //         // Người dùng chưa đăng nhập, lấy giỏ hàng từ session
+    //         $cartItems = session()->get('cart', []);
+    //         $checkedItems = [];
+
+    //         // Duyệt qua giỏ hàng để lọc các sản phẩm có is_checked = true
+    //         foreach ($cartItems as $productId => $models) {
+    //             foreach ($models as $modelId => $colors) {
+    //                 foreach ($colors as $colorId => $item) {
+    //                     if ($item['is_checked'] === true) {  // Kiểm tra điều kiện is_checked
+    //                         $checkedItems[] = $item;  // Thêm sản phẩm vào mảng checkedItems
+    //                     }
+    //                 }
+    //             }
+    //         }
+
+    //         $cartItems = $checkedItems;  // Gán lại giỏ hàng với các sản phẩm đã chọn
+    //         if (empty($cartItems)) {
+    //             return redirect()->back()->with('error', 'Giỏ hàng của bạn đang trống.');
+    //         }
+    //     }
+
+    //     $voucher = session()->get('voucher', []);
+    //     $totalPrice = 0;
+    //     $totalQuantity = 0;
+
+    //     // Tính toán tổng giá trị và số lượng sản phẩm trong giỏ hàng
+    //     if ($customerId) {
+    //         // Dữ liệu từ database
+    //         foreach ($cartItems as $item) {
+    //             $totalPrice += $item->price * $item->quantity;
+    //             $totalQuantity += $item->quantity;
+    //         }
+    //     } else {
+    //         // Dữ liệu từ session
+    //         foreach ($cartItems as $productId => $models) {
+    //             if (is_array($models)) {
+    //                 foreach ($models as $modelId => $colors) {
+    //                     if (is_array($colors)) {
+    //                         foreach ($colors as $colorId => $cartItem) {
+    //                             // Kiểm tra nếu dữ liệu giỏ hàng hợp lệ
+    //                             if (isset($cartItem['price'], $cartItem['quantity'])) {
+    //                                 $totalPrice += $cartItem['price'] * $cartItem['quantity'];
+    //                                 $totalQuantity += $cartItem['quantity'];
+    //                             } else {
+    //                                 return redirect()->back()->with('error', 'Dữ liệu giỏ hàng không hợp lệ.');
+    //                             }
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+
+    //     // Áp dụng giảm giá từ voucher
+    //     $discount = $voucher['discount'] ?? 0;
+    //     $totalAfterDiscount = $totalPrice - $discount;
+
+    //     // Tạo mã đơn hàng
+    //     $orderCode = strtoupper(substr(uniqid(), -8));
+
+    //     // Lấy voucher_id nếu có voucher
+    //     $voucherId = isset($voucher['code']) ? Voucher::where('code', $voucher['code'])->first()->id : null;
+
+    //     // Lấy địa chỉ của người dùng đăng nhập hoặc từ form
+    //     $address = $customerId
+    //         ? Address::where('customer_id', $customerId)->where('is_default', 1)->first()
+    //         : null;
+
+    //     if (!$address && $customerId) {
+    //         $address = Address::create([
+    //             'customer_id' => $customerId,
+    //             'name' => $request->name,
+    //             'phone_number' => $request->phone,
+    //             'address' => $request->address,
+    //             'is_default' => 1,
+    //         ]);
+    //     }
+
+    //     // Tạo đơn hàng
+    //     $order = Order::create([
+    //         'customer_id' => $customerId,
+    //         'name' => $request->name,
+    //         'phone' => $request->phone,
+    //         'email' => $request->email,
+    //         'address' => $request->address,
+    //         'payment_method' => $request->payment_method,
+    //         'total_price' => $totalAfterDiscount,
+    //         'status' => $request->payment_method === 'COD' ? 'Chờ xác nhận' : 'Chờ thanh toán',
+    //         'voucher_id' => $voucherId,
+    //         'description' => $request->description,
+    //         'order_code' => $orderCode,
+    //     ]);
+
+    //     // Lưu các sản phẩm trong đơn hàng
+    //     if ($customerId) {
+    //         // Lưu từ database
+    //         foreach ($cartItems as $item) {
+    //             $product = Product::find($item->product_id);
+    //             $variant = ProductVariant::find($item->variant_id);
+                
+    //             OrderItem::create([
+    //                 'order_id' => $order->id,
+    //                 'product_id' => $item->product_id,
+    //                 'variant_id' => $item->variant_id,
+    //                 'name' => $product ? $product->name : 'Sản phẩm không xác định',
+    //                 'image_url' => $product ? $product->image_url : null,
+    //                 'quantity' => $item->quantity,
+    //                 'price' => $item->price,
+    //                 'total_price' => $item->price * $item->quantity,
+    //                 'color_name' => $variant ? $variant->color->name : null, // Lấy tên màu sắc
+    //                 'capacity_name' => $variant ? $variant->capacity->name : null, // Lấy tên dung lượng
+    //             ]);
+
+    //             // Kiểm tra và giảm tồn kho
+    //             if ($variant && $variant->stock < $item->quantity) {
+    //                 return redirect()->back()->with('error', 'Số lượng sản phẩm trong kho không đủ.');
+    //             }
+
+    //             if ($variant) {
+    //                 $variant->stock -= $item->quantity;
+    //                 $variant->save();
+    //             }
+    //         }
+    //     } else {
+    //         // Lưu từ session
+    //         foreach ($cartItems as $productId => $models) {
+    //             if (is_array($models)) {
+    //                 foreach ($models as $modelId => $colors) {
+    //                     if (is_array($colors)) {
+    //                         foreach ($colors as $colorId => $cartItem) {
+    //                             $product = Product::find($productId);
+    //                             $variant = ProductVariant::find($cartItem['variant_id']);
+
+    //                             OrderItem::create([
+    //                                 'order_id' => $order->id,
+    //                                 'product_id' => $productId,
+    //                                 'variant_id' => $cartItem['variant_id'],
+    //                                 'name' => $product ? $product->name : 'Sản phẩm không xác định',
+    //                                 'image_url' => $cartItem['image_url'],
+    //                                 'quantity' => $cartItem['quantity'],
+    //                                 'price' => $cartItem['price'],
+    //                                 'total_price' => $cartItem['price'] * $cartItem['quantity'],
+    //                                 'color_name' => $variant ? $variant->color->name : null, // Lấy tên màu sắc
+    //                                 'capacity_name' => $variant ? $variant->capacity->name : null, // Lấy tên dung lượng
+    //                             ]);
+
+    //                             // Kiểm tra và giảm tồn kho
+    //                             if ($variant && $variant->stock < $cartItem['quantity']) {
+    //                                 return redirect()->back()->with('error', 'Số lượng sản phẩm trong kho không đủ.');
+    //                             }
+
+    //                             if ($variant) {
+    //                                 $variant->stock -= $cartItem['quantity'];
+    //                                 $variant->save();
+    //                             }
+    //                         }
+    //                     }
+    //                 }
+    //             }
+    //         }
+
+    //     }
+    //     OrderNotification::create([
+    //         'order_id' => $order->id,
+    //         'is_read' => false,
+    //     ]);
+    //     // Gửi email xác nhận đơn hàng
+    //     Mail::to($request->email)->send(new OrderConfirmationMail($order));
+
+    //     // Xóa giỏ hàng và voucher trong session
+    //     if ($customerId) {
+    //         Cart::where('customer_id', $customerId)->where('is_checked', true)->delete();
+    //     } else {
+    //         session()->forget('cart');
+    //     }
+    //     session()->forget('voucher');
+
+    //     return redirect()->route('order.success')->with('success', 'Đặt hàng thành công!');
+    // }
     public function storeOrder(Request $request)
     {
-        // Validate dữ liệu yêu cầu
         $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
@@ -286,7 +492,6 @@ class OrderController extends Controller
 
         // Tính toán tổng giá trị và số lượng sản phẩm trong giỏ hàng
         if ($customerId) {
-            // Dữ liệu từ database
             foreach ($cartItems as $item) {
                 $totalPrice += $item->price * $item->quantity;
                 $totalQuantity += $item->quantity;
@@ -298,7 +503,6 @@ class OrderController extends Controller
                     foreach ($models as $modelId => $colors) {
                         if (is_array($colors)) {
                             foreach ($colors as $colorId => $cartItem) {
-                                // Kiểm tra nếu dữ liệu giỏ hàng hợp lệ
                                 if (isset($cartItem['price'], $cartItem['quantity'])) {
                                     $totalPrice += $cartItem['price'] * $cartItem['quantity'];
                                     $totalQuantity += $cartItem['quantity'];
@@ -320,7 +524,13 @@ class OrderController extends Controller
         $orderCode = strtoupper(substr(uniqid(), -8));
 
         // Lấy voucher_id nếu có voucher
-        $voucherId = isset($voucher['code']) ? Voucher::where('code', $voucher['code'])->first()->id : null;
+        $voucherId = null;
+        if (isset($voucher['code'])) {
+            $voucherModel = Voucher::where('code', $voucher['code'])->first();
+            if ($voucherModel) {
+                $voucherId = $voucherModel->id;
+            }
+        }
 
         // Lấy địa chỉ của người dùng đăng nhập hoặc từ form
         $address = $customerId
@@ -352,9 +562,7 @@ class OrderController extends Controller
             'order_code' => $orderCode,
         ]);
 
-        // Lưu các sản phẩm trong đơn hàng
         if ($customerId) {
-            // Lưu từ database
             foreach ($cartItems as $item) {
                 $product = Product::find($item->product_id);
                 $variant = ProductVariant::find($item->variant_id);
@@ -368,8 +576,8 @@ class OrderController extends Controller
                     'quantity' => $item->quantity,
                     'price' => $item->price,
                     'total_price' => $item->price * $item->quantity,
-                    'color_name' => $variant ? $variant->color->name : null, // Lấy tên màu sắc
-                    'capacity_name' => $variant ? $variant->capacity->name : null, // Lấy tên dung lượng
+                    'color_name' => $variant ? $variant->color->name : null, 
+                    'capacity_name' => $variant ? $variant->capacity->name : null, 
                 ]);
 
                 // Kiểm tra và giảm tồn kho
@@ -383,7 +591,6 @@ class OrderController extends Controller
                 }
             }
         } else {
-            // Lưu từ session
             foreach ($cartItems as $productId => $models) {
                 if (is_array($models)) {
                     foreach ($models as $modelId => $colors) {
@@ -401,8 +608,8 @@ class OrderController extends Controller
                                     'quantity' => $cartItem['quantity'],
                                     'price' => $cartItem['price'],
                                     'total_price' => $cartItem['price'] * $cartItem['quantity'],
-                                    'color_name' => $variant ? $variant->color->name : null, // Lấy tên màu sắc
-                                    'capacity_name' => $variant ? $variant->capacity->name : null, // Lấy tên dung lượng
+                                    'color_name' => $variant ? $variant->color->name : null, 
+                                    'capacity_name' => $variant ? $variant->capacity->name : null, 
                                 ]);
 
                                 // Kiểm tra và giảm tồn kho
@@ -421,14 +628,27 @@ class OrderController extends Controller
             }
 
         }
+
+        // Lưu thông tin sử dụng voucher và giảm số lượng sử dụng
+        if ($voucherId && $customerId) {
+            $voucher = Voucher::find($voucherId);
+            if ($voucher) {
+                VoucherUsage::create([
+                    'customer_id' => $customerId,
+                    'voucher_id' => $voucherId,
+                ]);
+                
+                $voucher->decrement('usage_limit');
+                $voucher->save();
+            }
+        }
+
         OrderNotification::create([
             'order_id' => $order->id,
             'is_read' => false,
         ]);
-        // Gửi email xác nhận đơn hàng
         Mail::to($request->email)->send(new OrderConfirmationMail($order));
 
-        // Xóa giỏ hàng và voucher trong session
         if ($customerId) {
             Cart::where('customer_id', $customerId)->where('is_checked', true)->delete();
         } else {
@@ -438,7 +658,6 @@ class OrderController extends Controller
 
         return redirect()->route('order.success')->with('success', 'Đặt hàng thành công!');
     }
-
 
 
 
@@ -757,7 +976,7 @@ class OrderController extends Controller
 
 
 
-
+    
 
     public function showCheckoutPage()
     {
@@ -776,10 +995,10 @@ class OrderController extends Controller
     {
         // Tìm voucher theo mã, có điều kiện voucher hợp lệ và còn lượt sử dụng
         return Voucher::where('code', $code)
-                    ->where('start_date', '<=', now())  // Voucher đã bắt đầu
-                    ->where('end_date', '>=', now())  // Voucher chưa hết hạn
-                    ->where('usage_limit', '>', 0)  // Voucher còn lượt sử dụng
-                    ->first();  // Chỉ lấy voucher đầu tiên (hoặc duy nhất)
+                    ->where('start_date', '<=', now())  
+                    ->where('end_date', '>=', now())  
+                    ->where('usage_limit', '>', 0)  
+                    ->first();  
     }
 
 
@@ -823,20 +1042,10 @@ class OrderController extends Controller
         // Tính toán số tiền giảm giá
         $discount = $cartTotal * ($voucher->discount_percentage / 100);
 
-        // Giảm số lượt sử dụng của voucher
-        $voucher->decrement('usage_limit');
-        $voucher->save();  // Lưu lại thay đổi vào cơ sở dữ liệu
-
         // Lưu thông tin voucher vào session
         session()->put('voucher', [
             'code' => $voucher->code,
             'discount' => $discount,
-        ]);
-
-        // Lưu thông tin voucher đã sử dụng vào bảng voucher_usages
-        VoucherUsage::create([
-            'customer_id' => $customer->id,
-            'voucher_id' => $voucher->id,
         ]);
 
         // Tính toán tổng giá trị sau khi áp dụng mã giảm giá
