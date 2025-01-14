@@ -71,7 +71,7 @@
                                         </div>
                                         <div class="flex-grow-1">
                                             <p class="mb-1 fw-bold">{{ $item->name }}</p>
-                                            <p class="mb-1 text-muted">Phân loại hàng: {{ $item->variant->color->name ?? 'Không có màu' }}, {{ $item->variant->capacity->name ?? 'Không có dung lượng' }}</p>
+                                            <p class="mb-1 ms-3 text-muted">Phân loại hàng: {{ $item->color_name ?? 'Không có màu' }}, {{ $item->capacity_name ?? 'Không có dung lượng' }}</p>
                                             <p class="mb-1 text-dark">x{{ $item->quantity }}</p>
                                         </div>
                                         <div class="text-end">

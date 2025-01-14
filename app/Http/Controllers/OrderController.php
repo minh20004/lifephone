@@ -357,6 +357,8 @@ class OrderController extends Controller
             // Lưu từ database
             foreach ($cartItems as $item) {
                 $product = Product::find($item->product_id);
+                $variant = ProductVariant::find($item->variant_id);
+                
                 OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $item->product_id,
@@ -366,10 +368,11 @@ class OrderController extends Controller
                     'quantity' => $item->quantity,
                     'price' => $item->price,
                     'total_price' => $item->price * $item->quantity,
+                    'color_name' => $variant ? $variant->color->name : null, // Lấy tên màu sắc
+                    'capacity_name' => $variant ? $variant->capacity->name : null, // Lấy tên dung lượng
                 ]);
 
                 // Kiểm tra và giảm tồn kho
-                $variant = ProductVariant::find($item->variant_id);
                 if ($variant && $variant->stock < $item->quantity) {
                     return redirect()->back()->with('error', 'Số lượng sản phẩm trong kho không đủ.');
                 }
@@ -386,7 +389,8 @@ class OrderController extends Controller
                     foreach ($models as $modelId => $colors) {
                         if (is_array($colors)) {
                             foreach ($colors as $colorId => $cartItem) {
-                                $product = Product::find($productId); // Lấy sản phẩm từ cơ sở dữ liệu
+                                $product = Product::find($productId);
+                                $variant = ProductVariant::find($cartItem['variant_id']);
 
                                 OrderItem::create([
                                     'order_id' => $order->id,
@@ -397,10 +401,11 @@ class OrderController extends Controller
                                     'quantity' => $cartItem['quantity'],
                                     'price' => $cartItem['price'],
                                     'total_price' => $cartItem['price'] * $cartItem['quantity'],
+                                    'color_name' => $variant ? $variant->color->name : null, // Lấy tên màu sắc
+                                    'capacity_name' => $variant ? $variant->capacity->name : null, // Lấy tên dung lượng
                                 ]);
 
                                 // Kiểm tra và giảm tồn kho
-                                $variant = ProductVariant::find($cartItem['variant_id']);
                                 if ($variant && $variant->stock < $cartItem['quantity']) {
                                     return redirect()->back()->with('error', 'Số lượng sản phẩm trong kho không đủ.');
                                 }
@@ -505,6 +510,7 @@ class OrderController extends Controller
                 foreach ($variants as $variantId => $items) {
                     foreach ($items as $item) {
                         $product = Product::find($item->product_id);
+                        $variant = ProductVariant::find($variantId);
 
                         OrderItem::create([
                             'order_id' => $order->id,
@@ -515,6 +521,8 @@ class OrderController extends Controller
                             'quantity' => $item->quantity,
                             'price' => $item->price,
                             'total_price' => $item->price * $item->quantity,
+                            'color_name' => $variant ? $variant->color->name : null,
+                            'capacity_name' => $variant ? $variant->capacity->name : null,
                         ]);
                     }
                 }
@@ -524,7 +532,8 @@ class OrderController extends Controller
             foreach ($cart as $productId => $models) {
                 foreach ($models as $modelId => $colors) {
                     foreach ($colors as $colorId => $item) {
-                        $product = Product::find($productId); // Lấy sản phẩm từ cơ sở dữ liệu
+                        $product = Product::find($productId);
+                        $variant = ProductVariant::find($item['variant_id']);
 
                         OrderItem::create([
                             'order_id' => $order->id,
@@ -535,6 +544,8 @@ class OrderController extends Controller
                             'quantity' => $item['quantity'],
                             'price' => $item['price'],
                             'total_price' => $item['price'] * $item['quantity'],
+                            'color_name' => $variant ? $variant->color->name : null,
+                            'capacity_name' => $variant ? $variant->capacity->name : null,
                         ]);
                     }
                 }

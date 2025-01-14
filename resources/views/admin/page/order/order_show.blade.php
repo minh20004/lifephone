@@ -68,9 +68,9 @@
                             </div>
                             <div class="col-md-5">
                                 <p class="mb-1 ms-3 fw-bold">{{ $item->name}}</p>
-                                <p class="mb-1 ms-3 text-muted">Phân loại hàng: {{ $item->variant->color->name ?? 'Không có màu' }}, {{ $item->variant->capacity->name ?? 'Không có dung lượng' }}</p>
+                                <p class="mb-1 ms-3 text-muted">Phân loại hàng: {{ $item->color_name ?? 'Không có màu' }}, {{ $item->capacity_name ?? 'Không có dung lượng' }}</p>
                                 <p class="mb-1 ms-3 text-dark">x{{ $item->quantity }}</p>
-                            </div>
+                            </div> 
                             <div class="col-md-6 text-end">
                                 <p class="mb-1 text-danger fw-600 ">{{ number_format($item->price, 0, ',', '.') }} đ</p>
                             </div>

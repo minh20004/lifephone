@@ -259,206 +259,130 @@ class ProductController extends Controller
     }
 
 
+    public function edit(string $id)
+    {
+        $product = Product::findOrFail($id);
+        $categories = DB::table('categories')->where('status', 1)->get();
+        $colors = DB::table('colors')->where('status', 1)->get();
+        $capacities = DB::table('capacities')->where('status', 1)->get();
 
+        // Lấy các biến thể của sản phẩm
+        $variants = ProductVariant::where('product_id', $id)->get();
 
-public function edit(string $id)
-{
-    $product = Product::findOrFail($id);
-    $categories = DB::table('categories')->where('status', 1)->get();
-    $colors = DB::table('colors')->where('status', 1)->get();
-    $capacities = DB::table('capacities')->where('status', 1)->get();
-
-    // Lấy các biến thể của sản phẩm
-    $variants = ProductVariant::where('product_id', $id)->get();
-
-    // Lấy danh sách biến thể đã được đặt hàng
-    $orderedVariants = DB::table('order_items')
-        ->join('product_variants', 'order_items.variant_id', '=', 'product_variants.id')
-        ->where('product_variants.product_id', $id)
-        ->select('product_variants.color_id', 'product_variants.capacity_id')
-        ->distinct()
-        ->get();
-
-    // Chuyển đổi thành mảng để dễ kiểm tra
-    $orderedVariantPairs = $orderedVariants->map(function($variant) {
-        return $variant->color_id . '-' . $variant->capacity_id;
-    })->toArray();
-
-    return view('admin.page.product.update', compact(
-        'product', 
-        'categories', 
-        'variants', 
-        'colors', 
-        'capacities',
-        'orderedVariantPairs'
-    ));
-}
-
-public function update(Request $request, $id)
-{
-    // Kiểm tra các biến thể đã được đặt hàng
-    $orderedVariants = DB::table('order_items')
-        ->join('product_variants', 'order_items.variant_id', '=', 'product_variants.id')
-        ->where('product_variants.product_id', $id)
-        ->select('product_variants.color_id', 'product_variants.capacity_id')
-        ->distinct()
-        ->get();
-
-    $orderedVariantPairs = $orderedVariants->map(function($variant) {
-        return $variant->color_id . '-' . $variant->capacity_id;
-    })->toArray();
-
-    // Kiểm tra trùng lặp biến thể
-    $seenVariants = [];
-    $errors = [];
-
-    foreach ($request->variants as $index => $variant) {
-        $key = $variant['color_id'] . '-' . $variant['capacity_id'];
-        if (isset($seenVariants[$key])) {
-            $errors["variants.$index.capacity_id"] = "Dung lượng và màu sắc của biến thể đã bị trùng.";
-        } else {
-            $seenVariants[$key] = true;
-        }
+        return view('admin.page.product.update', compact('product', 'categories', 'variants', 'colors', 'capacities'));
     }
 
-    // Nếu có lỗi thông báo lỗi
-    if (!empty($errors)) {
-        return back()->withErrors($errors)->withInput();
-    }
+    public function update(Request $request, $id)
+    {
+        $validateData = $request->validate([
+            'product_code' => 'required',
+            'name' => 'required',
+            'image_url' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048',
+            'description' => 'required',
+            'category_id' => 'required',
+            'variants' => 'required|array',
+            'variants.*.color_id' => 'required|exists:colors,id',
+            'variants.*.capacity_id' => 'required|exists:capacities,id',
+            'variants.*.price_difference' => 'required|nullable|numeric|min:0',
+            'variants.*.stock' => 'required|integer|min:0',
+        ], [
+            'product_code.required' => 'Mã sản phẩm không được để trống.',
+            'name.required' => 'Tên sản phẩm không được để trống.',
+            'image_url.file' => 'Ảnh sản phẩm phải là một file.',
+            'image_url.mimes' => 'Ảnh sản phẩm phải có định dạng: png, jpg, jpeg, hoặc gif.',
+            'image_url.max' => 'Ảnh sản phẩm không được vượt quá 2MB.',
+            'description.required' => 'Mô tả sản phẩm không được để trống.',
+            'category_id.required' => 'Danh mục sản phẩm không được để trống.',
+            'variants.required' => 'Biến thể sản phẩm không được để trống.',
+            'variants.array' => 'Biến thể sản phẩm phải là một mảng.',
+            'variants.*.color_id.required' => 'Màu sắc của biến thể không được để trống.',
+            'variants.*.color_id.exists' => 'Màu sắc không tồn tại trong cơ sở dữ liệu.',
+            'variants.*.capacity_id.required' => 'Dung lượng của biến thể không được để trống.',
+            'variants.*.capacity_id.exists' => 'Dung lượng không tồn tại trong cơ sở dữ liệu.',
+            'variants.*.price_difference.required' => 'Giá sản phẩm không được để trống.',
+            'variants.*.price_difference.numeric' => 'Giá sản phẩm phải là số.',
+            'variants.*.price_difference.min' => 'Giá sản phẩm không được nhỏ hơn 0.',
+            'variants.*.stock.required' => 'Số lượng không được để trống.',
+            'variants.*.stock.integer' => 'Số lượng phải là một số nguyên.',
+            'variants.*.stock.min' => 'Số lượng không được nhỏ hơn 0.',
+        ]);
 
-    // Kiểm tra xem có biến thể đã đặt hàng bị thay đổi không
-    $currentVariants = ProductVariant::where('product_id', $id)->get();
-    foreach ($currentVariants as $variant) {
-        $variantKey = $variant->color_id . '-' . $variant->capacity_id;
-        if (in_array($variantKey, $orderedVariantPairs)) {
-            // Kiểm tra xem biến thể này có trong request không
-            $found = false;
-            foreach ($request->variants as $requestVariant) {
-                if ($requestVariant['color_id'] == $variant->color_id && 
-                    $requestVariant['capacity_id'] == $variant->capacity_id) {
-                    $found = true;
-                    break;
-                }
-            }
-            if (!$found) {
-                return back()
-                    ->withInput()
-                    ->withErrors(['variants' => 'Không thể xóa biến thể đã được đặt hàng']);
+        // kiem tra vong lap bien the
+        $seenVariants = [];
+        $errors = [];
+
+        foreach ($request->variants as $index => $variant) {
+            $key = $variant['color_id'] . '-' . $variant['capacity_id'];
+
+            if (isset($seenVariants[$key])) {
+                // Nếu đã tồn tại biến thể với id màu sắc và id dung lượng này thông báo lỗi
+                $errors["variants.$index.capacity_id"] = "Dung lượng và màu sắc của biến thể đã bị trùng.";
+            } else {
+                $seenVariants[$key] = true;
             }
         }
-    }
 
-    $validateData = $request->validate([
-        'product_code' => 'required',
-        'name' => 'required',
-        'image_url' => 'nullable|file|mimes:png,jpg,jpeg,gif|max:2048',
-        'description' => 'required',
-        'category_id' => 'required',
-        'variants' => 'required|array',
-        'variants.*.color_id' => 'required|exists:colors,id',
-        'variants.*.capacity_id' => 'required|exists:capacities,id',
-        'variants.*.price_difference' => 'required|nullable|numeric|min:0',
-        'variants.*.stock' => 'required|integer|min:0',
-    ], [
-        'product_code.required' => 'Mã sản phẩm không được để trống.',
-        'name.required' => 'Tên sản phẩm không được để trống.',
-        'image_url.file' => 'Ảnh sản phẩm phải là một file.',
-        'image_url.mimes' => 'Ảnh sản phẩm phải có định dạng: png, jpg, jpeg, hoặc gif.',
-        'image_url.max' => 'Ảnh sản phẩm không được vượt quá 2MB.',
-        'description.required' => 'Mô tả sản phẩm không được để trống.',
-        'category_id.required' => 'Danh mục sản phẩm không được để trống.',
-        'variants.required' => 'Biến thể sản phẩm không được để trống.',
-        'variants.array' => 'Biến thể sản phẩm phải là một mảng.',
-        'variants.*.color_id.required' => 'Màu sắc của biến thể không được để trống.',
-        'variants.*.color_id.exists' => 'Màu sắc không tồn tại trong cơ sở dữ liệu.',
-        'variants.*.capacity_id.required' => 'Dung lượng của biến thể không được để trống.',
-        'variants.*.capacity_id.exists' => 'Dung lượng không tồn tại trong cơ sở dữ liệu.',
-        'variants.*.price_difference.required' => 'Giá sản phẩm không được để trống.',
-        'variants.*.price_difference.numeric' => 'Giá sản phẩm phải là số.',
-        'variants.*.price_difference.min' => 'Giá sản phẩm không được nhỏ hơn 0.',
-        'variants.*.stock.required' => 'Số lượng không được để trống.',
-        'variants.*.stock.integer' => 'Số lượng phải là một số nguyên.',
-        'variants.*.stock.min' => 'Số lượng không được nhỏ hơn 0.',
-    ]);
-
-    // kiem tra vong lap bien the
-    $seenVariants = [];
-    $errors = [];
-
-    foreach ($request->variants as $index => $variant) {
-        $key = $variant['color_id'] . '-' . $variant['capacity_id'];
-
-        if (isset($seenVariants[$key])) {
-            // Nếu đã tồn tại biến thể với id màu sắc và id dung lượng này thông báo lỗi
-            $errors["variants.$index.capacity_id"] = "Dung lượng và màu sắc của biến thể đã bị trùng.";
-        } else {
-            $seenVariants[$key] = true;
-        }
-    }
-
-    // Nếu có lỗi thông báo lỗi
-    if (!empty($errors)) {
-        return back()->withErrors($errors)->withInput();
-    }
-
-
-    $product = Product::findOrFail($id);
-
-    $coverImage = null;
-    if ($request->hasFile('image_url')) {
-        $coverImage = $request->file('image_url')->store('uploads/avtproduct', 'public');
-    }
-
-    $product->update([
-        'product_code' => $validateData['product_code'],
-        'name' => $validateData['name'],
-        'image_url' => $coverImage ?? $product->image_url,
-        'description' => $validateData['description'],
-        'category_id' => $validateData['category_id'],
-    ]);
-
-    if ($request->hasFile('gallery_image')) {
-        $existingGalleryImages = json_decode($product->gallery_image, true) ?? [];
-        $galleryImages = [];
-
-        foreach ($request->file('gallery_image') as $image) {
-            $imagePath = $image->store('uploads/product_gallery', 'public');
-            $galleryImages[] = $imagePath; // Lưu đường dẫn ảnh vào mảng
+        // Nếu có lỗi thông báo lỗi
+        if (!empty($errors)) {
+            return back()->withErrors($errors)->withInput();
         }
 
-        $allGalleryImages = array_merge($existingGalleryImages, $galleryImages);
 
-        // Cập nhật gallery_image
-        $product->update(['gallery_image' => json_encode($allGalleryImages)]);
+        $product = Product::findOrFail($id);
+
+        $coverImage = null;
+        if ($request->hasFile('image_url')) {
+            $coverImage = $request->file('image_url')->store('uploads/avtproduct', 'public');
+        }
+
+        $product->update([
+            'product_code' => $validateData['product_code'],
+            'name' => $validateData['name'],
+            'image_url' => $coverImage ?? $product->image_url,
+            'description' => $validateData['description'],
+            'category_id' => $validateData['category_id'],
+        ]);
+
+        if ($request->hasFile('gallery_image')) {
+            $existingGalleryImages = json_decode($product->gallery_image, true) ?? [];
+            $galleryImages = [];
+
+            foreach ($request->file('gallery_image') as $image) {
+                $imagePath = $image->store('uploads/product_gallery', 'public');
+                $galleryImages[] = $imagePath; // Lưu đường dẫn ảnh vào mảng
+            }
+
+            $allGalleryImages = array_merge($existingGalleryImages, $galleryImages);
+
+            // Cập nhật gallery_image
+            $product->update(['gallery_image' => json_encode($allGalleryImages)]);
+        }
+        $existingVariantIds = ProductVariant::where('product_id', $product->id)->pluck('id')->toArray();
+        $updatedVariantIds = [];
+        // Cập nhật các biến thể
+        foreach ($request->variants as $variantData) {
+            $variant = ProductVariant::updateOrCreate(
+                [
+                    'product_id' => $product->id,
+                    'color_id' => $variantData['color_id'],
+                    'capacity_id' => $variantData['capacity_id'],
+                ],
+                [
+                    'price_difference' => $variantData['price_difference'] ?? 0,
+                    'stock' => $variantData['stock'],
+                ]
+            );
+
+            $updatedVariantIds[] = $variant->id;
+        }
+        // xóa các biến thể kh có trong danh sách
+        $variantsToDelete = array_diff($existingVariantIds, $updatedVariantIds);
+        if (!empty($variantsToDelete)) {
+            ProductVariant::whereIn('id', $variantsToDelete)->delete();
+        }
+
+        return redirect()->route('product-admin.index')->with('success', 'Sản phẩm đã được cập nhật thành công!');
     }
-    $existingVariantIds = ProductVariant::where('product_id', $product->id)->pluck('id')->toArray();
-    $updatedVariantIds = [];
-    // Cập nhật các biến thể
-    foreach ($request->variants as $variantData) {
-        $variant = ProductVariant::updateOrCreate(
-            [
-                'product_id' => $product->id,
-                'color_id' => $variantData['color_id'],
-                'capacity_id' => $variantData['capacity_id'],
-            ],
-            [
-                'price_difference' => $variantData['price_difference'] ?? 0,
-                'stock' => $variantData['stock'],
-            ]
-        );
-
-        $updatedVariantIds[] = $variant->id;
-    }
-    // xóa các biến thể kh có trong danh sách
-    $variantsToDelete = array_diff($existingVariantIds, $updatedVariantIds);
-    if (!empty($variantsToDelete)) {
-        ProductVariant::whereIn('id', $variantsToDelete)->delete();
-    }
-
-    return redirect()->route('product-admin.index')->with('success', 'Sản phẩm đã được cập nhật thành công!');
-    
-}
-
 
 
 
