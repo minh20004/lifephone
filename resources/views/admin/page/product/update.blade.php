@@ -69,8 +69,9 @@
                             </div>
                             <div id="thumbbox" style="margin-top: 10px;">
                                 @if ($product->image_url)
-                                    <img height="100" width="100" alt="Hình ảnh sản phẩm cũ" id="thumbimage"
-                                        src="{{ Storage::url($product->image_url) }}" />
+                                    <!-- <img height="100" width="100" alt="Hình ảnh sản phẩm cũ" id="thumbimage"
+                                        src="{{ Storage::url($product->image_url) }}" /> -->
+                                    <img src="{{ asset('storage/' . $product->image_url) }}" alt=""  width="70px" height="70px">
                                 @else
                                     <img height="100" width="100" alt="Hình ảnh sản phẩm" id="thumbimage"
                                         style="display: none;" />
