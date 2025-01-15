@@ -990,111 +990,111 @@ class OrderController extends Controller
 
 
 
-    // voucher
-    public function getVoucherByCode($code)
-    {
-        // Tìm voucher theo mã, có điều kiện voucher hợp lệ và còn lượt sử dụng
-        return Voucher::where('code', $code)
-                    ->where('start_date', '<=', now())  
-                    ->where('end_date', '>=', now())  
-                    ->where('usage_limit', '>', 0)  
-                    ->first();  
-    }
+   // voucher
+   public function getVoucherByCode($code)
+   {
+       // Tìm voucher theo mã, có điều kiện voucher hợp lệ và còn lượt sử dụng
+       return Voucher::where('code', $code)
+                   ->where('start_date', '<=', now())  
+                   ->where('end_date', '>=', now())  
+                   ->where('usage_limit', '>', 0)  
+                   ->first();  
+   }
 
 
-    public function applyVoucher(Request $request)
-    {
-        // Kiểm tra xem khách hàng đã đăng nhập chưa
-        if (!auth('customer')->check()) {
-            return redirect()->route('customer.login')->with('error', 'Bạn phải đăng nhập để sử dụng voucher.');
-        }
+   public function applyVoucher(Request $request)
+   {
+       if (!auth('customer')->check()) {
+           return redirect()->route('customer.login')->with('error', 'Bạn phải đăng nhập để sử dụng voucher.');
+       }
 
-        // Kiểm tra xem có sử dụng mã giảm giá nhập tay hay voucher đã chọn
-        if ($request->has('selected_voucher')) {
-            $voucher = $this->getVoucherByCode($request->selected_voucher);
-        } elseif ($request->has('voucher_code')) {
-            $voucher = $this->getVoucherByCode($request->voucher_code);
-        } else {
-            return redirect()->back()->with('error', 'Không có mã giảm giá được chọn.');
-        }
+       if ($request->has('selected_voucher')) {
+           $voucher = $this->getVoucherByCode($request->selected_voucher);
+       } elseif ($request->has('voucher_code')) {
+           $voucher = $this->getVoucherByCode($request->voucher_code);
+       } else {
+           return redirect()->back()->with('error', 'Không có mã giảm giá được chọn.');
+       }
 
-        // Kiểm tra xem voucher có hợp lệ không
-        if (!$voucher) {
-            return redirect()->back()->with('error', 'Mã giảm giá không hợp lệ hoặc đã hết hạn.');
-        }
+       if (!$voucher) {
+           return redirect()->back()->with('error', 'Mã giảm giá không hợp lệ hoặc đã hết hạn.');
+       }
 
-        // Kiểm tra tổng giá trị giỏ hàng
-        $cartTotal = $this->calculateCartTotal();
-        if ($cartTotal < $voucher->min_order_value) {
-            return redirect()->back()->with('error', 'Đơn hàng không đủ điều kiện áp dụng mã giảm giá.');
-        }
+       // Tính tổng giá trị của các sản phẩm được chọn
+       $cartTotal = $this->calculateCartTotal();
+       
+       if ($cartTotal < $voucher->min_order_value) {
+           return redirect()->back()->with('error', 'Đơn hàng không đủ điều kiện áp dụng mã giảm giá.');
+       }
 
-        // Kiểm tra xem khách hàng đã sử dụng voucher này chưa
-        $customer = auth('customer')->user();
-        $existingVoucherUsage = VoucherUsage::where('customer_id', $customer->id)
-            ->where('voucher_id', $voucher->id)
-            ->exists();
+       $customer = auth('customer')->user();
+       $existingVoucherUsage = VoucherUsage::where('customer_id', $customer->id)
+           ->where('voucher_id', $voucher->id)
+           ->exists();
 
-        if ($existingVoucherUsage) {
-            return redirect()->back()->with('error', 'Bạn đã sử dụng mã giảm giá này rồi.');
-        }
+       if ($existingVoucherUsage) {
+           return redirect()->back()->with('error', 'Bạn đã sử dụng mã giảm giá này rồi.');
+       }
 
-        // Tính toán số tiền giảm giá
-        $discount = $cartTotal * ($voucher->discount_percentage / 100);
+       // Tính số tiền giảm giá dựa trên tổng giá trị sản phẩm được chọn
+       $discount = $cartTotal * ($voucher->discount_percentage / 100);
 
-        // Lưu thông tin voucher vào session
-        session()->put('voucher', [
-            'code' => $voucher->code,
-            'discount' => $discount,
-        ]);
+       // Kiểm tra và áp dụng giới hạn số tiền giảm tối đa
+       if ($voucher->max_discount_amount > 0 && $discount > $voucher->max_discount_amount) {
+           $discount = $voucher->max_discount_amount;
+       }
 
-        // Tính toán tổng giá trị sau khi áp dụng mã giảm giá
-        $estimatedTotal = $cartTotal - $discount;
+       session()->put('voucher', [
+           'code' => $voucher->code,
+           'discount' => $discount,
+       ]);
 
-        // Trả về view với thông tin cập nhật
-        return redirect()->route('checkout')->with([
-            'success' => 'Mã giảm giá đã được áp dụng.',
-            'discount' => number_format($discount, 0, ',', '.'),
-            'totalPrice' => number_format($cartTotal, 0, ',', '.'),
-            'estimatedTotal' => number_format($estimatedTotal, 0, ',', '.')
-        ]);
-    }
+       $estimatedTotal = $cartTotal - $discount;
 
-
+       return redirect()->route('checkout')->with([
+           'success' => 'Mã giảm giá đã được áp dụng.',
+           'discount' => number_format($discount, 0, ',', '.'),
+           'totalPrice' => number_format($cartTotal, 0, ',', '.'),
+           'estimatedTotal' => number_format($estimatedTotal, 0, ',', '.')
+       ]);
+   }
 
 
 
-    private function calculateCartTotal()
-    {
-        // Lấy tổng giá trị giỏ hàng của khách hàng
-        $customerId = auth('customer')->check() ? auth('customer')->id() : null;
 
-        if ($customerId) {
-            // Nếu khách hàng đã đăng nhập, lấy dữ liệu giỏ hàng từ cơ sở dữ liệu
-            $cartItems = Cart::where('customer_id', $customerId)->get();
-            return $cartItems->sum(function ($item) {
-                return $item->price * $item->quantity;
-            });
-        }
 
-        // Nếu khách hàng chưa đăng nhập, lấy dữ liệu giỏ hàng từ session
-        $cartItems = session()->get('cart', []);
-        $totalPrice = 0;
+   private function calculateCartTotal()
+   {
+       $customerId = auth('customer')->check() ? auth('customer')->id() : null;
+       $total = 0;
 
-        foreach ($cartItems as $productId => $models) {
-            if (is_array($models)) {
-                foreach ($models as $modelId => $colors) {
-                    if (is_array($colors)) {
-                        foreach ($colors as $colorId => $cartItem) {
-                            $totalPrice += $cartItem['price'] * $cartItem['quantity'];
-                        }
-                    }
-                }
-            }
-        }
+       if ($customerId) {
+           // Nếu khách hàng đã đăng nhập, lấy dữ liệu giỏ hàng từ cơ sở dữ liệu
+           $cartItems = Cart::where('customer_id', $customerId)
+               ->where('is_checked', true) // Chỉ tính tổng cho các sản phẩm được chọn
+               ->get();
+           
+           return $cartItems->sum(function ($item) {
+               return $item->price * $item->quantity;
+           });
+       }
 
-        return $totalPrice;
-    }
+       // Nếu khách hàng chưa đăng nhập, lấy dữ liệu giỏ hàng từ session
+       $cartItems = session()->get('cart', []);
+
+       foreach ($cartItems as $productId => $models) {
+           foreach ($models as $modelId => $colors) {
+               foreach ($colors as $colorId => $cartItem) {
+                   // Chỉ tính tổng cho các sản phẩm được chọn
+                   if (isset($cartItem['is_checked']) && $cartItem['is_checked'] === true) {
+                       $total += $cartItem['price'] * $cartItem['quantity'];
+                   }
+               }
+           }
+       }
+
+       return $total;
+   }
 
 
 
