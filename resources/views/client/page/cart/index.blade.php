@@ -46,11 +46,10 @@
             <table class="table position-relative z-2 mb-4">
               <thead>
                 <tr>
-                  <!-- <th scope="col" class="fs-sm fw-normal py-3 ps-0">
+                  <th scope="col" class="fs-sm fw-normal py-3 ps-0">
                     <input type="checkbox" id="select-all" />
-                  </th> -->
+                  </th>
                   <th scope="col" class="fs-sm fw-normal py-3 ps-0"><span class="text-body">Sản phẩm</span></th>
-                  <th></th>
                   <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-xl-table-cell"><span class="text-body">Giá</span></th>
                   <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-md-table-cell"><span class="text-body">Số lượng</span></th>
                   <th scope="col" class="text-body fs-sm fw-normal py-3 d-none d-md-table-cell"><span class="text-body">Tổng cộng</span></th>
