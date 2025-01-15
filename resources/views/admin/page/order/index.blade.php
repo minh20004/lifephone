@@ -110,11 +110,11 @@
                                                     @else
                                                     <form action="{{ route('order.updateStatus', $order->id) }}" method="POST">
                                                         @csrf
-                                                        @if ($order->status === 'Thanh toán thất bại')
+                                                        {{-- @if ($order->status === 'Thanh toán thất bại')
                                                             <select name="status" class="form-control border-danger fw-bold text-danger" disabled>
                                                                 <option value="Thanh toán thất bại" selected>Thanh toán thất bại</option>
                                                             </select>
-                                                        @else
+                                                        @else --}}
                                                             <!-- Trạng thái cho các đơn hàng khác -->
                                                             <select name="status" class="form-control
                                                                 @if($order->status === 'Chờ xác nhận') border-danger fw-bold text-danger 
@@ -139,7 +139,7 @@
                                                                 <option value="Đã hủy" 
                                                                     {{ $order->status === 'Đã hủy' ? 'selected' : ($order->status !== 'Chờ xác nhận' && $order->status !== 'Đã xác nhận' && $order->status !== 'Đang giao hàng' ? 'disabled' : '') }}>Đã hủy</option>
                                                             </select>
-                                                        @endif
+                                                        {{-- @endif --}}
                                                     </form>
                                                     @endif
                                                     

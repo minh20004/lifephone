@@ -259,7 +259,6 @@ class ProductController extends Controller
     }
 
 
-
     public function edit(string $id)
     {
         $product = Product::findOrFail($id);
@@ -384,8 +383,6 @@ class ProductController extends Controller
 
         return redirect()->route('product-admin.index')->with('success', 'Sản phẩm đã được cập nhật thành công!');
     }
-
-
 
 
 

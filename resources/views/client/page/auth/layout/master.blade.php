@@ -53,10 +53,10 @@
                   <i class="ci-heart fs-base opacity-75 me-2"></i>
                   Sản phẩm yêu thích
                 </a>
-                <a class="list-group-item list-group-item-action d-flex align-items-center" href="account-payment.html">
+                <!-- <a class="list-group-item list-group-item-action d-flex align-items-center" href="account-payment.html">
                   <i class="ci-credit-card fs-base opacity-75 me-2"></i>
                   Phương thức thanh toán
-                </a>
+                </a> -->
                 <a class="list-group-item list-group-item-action d-flex align-items-center" href="{{ route('customer.review', ['customerId' => auth()->id()]) }}">
                   <i class="ci-star fs-base opacity-75 me-2"></i>
                   Dánh giá của tôi

@@ -17,7 +17,7 @@
                                 <label for="product_code" class="form-label text-dark fw-bold fs-5">Mã sản phẩm</label>
                                 <input type="text" class="form-control" id="product_code" name="product_code"
                                     placeholder="Nhập mã sản phẩm" @error('product_code') is-invalid @enderror
-                                    value="{{ $product->product_code }}">
+                                    value="{{ $product->product_code }}" readonly>
                                 @error('product_code')
                                     <div class="invalid-feeback text-danger">
                                         {{ $message }}
@@ -69,8 +69,9 @@
                             </div>
                             <div id="thumbbox" style="margin-top: 10px;">
                                 @if ($product->image_url)
-                                    <img height="100" width="100" alt="Hình ảnh sản phẩm cũ" id="thumbimage"
-                                        src="{{ Storage::url($product->image_url) }}" />
+                                    <!-- <img height="100" width="100" alt="Hình ảnh sản phẩm cũ" id="thumbimage"
+                                        src="{{ Storage::url($product->image_url) }}" /> -->
+                                    <img src="{{ asset('storage/' . $product->image_url) }}" alt=""  width="70px" height="70px">
                                 @else
                                     <img height="100" width="100" alt="Hình ảnh sản phẩm" id="thumbimage"
                                         style="display: none;" />
@@ -135,6 +136,17 @@
                                 </button>
                             </div>
 
+                            
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+                            
                             @foreach ($variants as $index => $variant)
                                 <div class="variant form-group">
                                     <div class="row mb-3">

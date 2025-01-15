@@ -302,7 +302,7 @@
                                                                 <tr>
                                                                     <th>Ngày</th>
                                                                     {{-- <th>Ngày trước (VND)</th> --}}
-                                                                    <th>Thu nhập (VNĐ)</th>
+                                                                    <th>Doanh thu (VNĐ)</th>
                                                                     <th></th>
                                                                 </tr>
                                                             </thead>
@@ -478,7 +478,7 @@
     data: {
         labels: {!! json_encode($dates) !!}, // Các ngày trong khoảng thời gian
         datasets: [{
-            label: 'Thu nhập',
+            label: 'Doanh thu',
             data: {!! json_encode($incomeData) !!}, // Thu nhập cho từng ngày
             fill: false,
             borderColor: 'rgba(75, 192, 192, 1)', // Màu đường

@@ -1058,27 +1058,27 @@ class AuthController extends Controller
         return view('client.page.auth.page.order-history.public-order.public_order_history', compact('orders', 'searchCode'));
     }
 
-    public function publicDetail($id)
-    {
-        // Xác định khách hàng hiện tại (nếu cần)
-        $customerId = auth('customer')->check() ? auth('customer')->id() : null;
+    // public function publicDetail($id)
+    // {
+    //     // Xác định khách hàng hiện tại (nếu cần)
+    //     $customerId = auth('customer')->check() ? auth('customer')->id() : null;
 
-        // Tìm đơn hàng
-        $order = Order::with(['orderItems.product', 'orderItems.variant.color', 'orderItems.variant.capacity', 'voucher'])
-                    ->where('customer_id', $customerId) // Đảm bảo chỉ lấy đơn hàng của khách hiện tại
-                    ->find($id);
+    //     // Tìm đơn hàng
+    //     $order = Order::with(['orderItems.product', 'orderItems.variant.color', 'orderItems.variant.capacity', 'voucher'])
+    //                 ->where('customer_id', $customerId) // Đảm bảo chỉ lấy đơn hàng của khách hiện tại
+    //                 ->find($id);
 
-        // Nếu không tìm thấy đơn hàng
-        if (!$order) {
-            echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    Đơn hàng không tồn tại hoặc bạn không có quyền xem.
-                  </div>';
-            exit;
-        }
+    //     // Nếu không tìm thấy đơn hàng
+    //     if (!$order) {
+    //         echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    //                 Đơn hàng không tồn tại hoặc bạn không có quyền xem.
+    //               </div>';
+    //         exit;
+    //     }
         
 
-        return view('client.page.auth.page.order-history.public-order.public_order_detail', compact('order'));
-    }
+    //     return view('client.page.auth.page.order-history.public-order.public_order_detail', compact('order'));
+    // }
 
     public function wish_list(){
         return view('client.page.auth.page.wishList');
