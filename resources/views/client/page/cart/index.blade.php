@@ -212,10 +212,9 @@
       localStorage.setItem('selectedProducts', JSON.stringify(selectedProducts));
   }
 
-  // Hàm để cập nhật trạng thái của checkbox khi tải lại trang
+  // Hàm để cập nhật trạng thái của checkbox kgetSelectedProductshi tải lại trang
   function updateCheckboxes() {
-      const selectedProducts = getSelectedProducts();
-      console.log('Danh sách sản phẩm được chọn', selectedProducts);
+      const selectedProducts = [];
       const checkboxes = document.querySelectorAll('.item-select-cart');
       checkboxes.forEach(checkbox => {
         const productId = checkbox.dataset.id; // Lấy id sản phẩm từ data-id
@@ -223,10 +222,10 @@
         if (!selectedProducts.includes(productId)) {
           selectedProducts.push(productId);
         }
-        checkbox.checked = true;
+        checkbox.checked = true;getSelectedProducts
       });
 
-      if(selectedProducts.length == 0) {
+      if(selectedProducts.length == 0) {getSelectedProducts
         document.getElementById('checkout_btn').style.pointerEvents = 'none';
         document.getElementById('checkout_btn').href = '#';
 
@@ -271,6 +270,8 @@
           selectedProducts = selectedProducts.filter(id => id !== productId);
       }
 
+      saveSelectedProducts(selectedProducts);
+
       if(selectedProducts.length == 0) {
         document.getElementById('checkout_btn').style.pointerEvents = 'none';
         document.getElementById('checkout_btn').href = '#';
@@ -314,7 +315,7 @@
           if (checkbox.checked && !selectedProducts.includes(productId)) {
               selectedProducts.push(productId);
           } else if(!checkbox.checked) {
-            selectedProducts = [];
+            selectedProducts = selectedProducts.filter(id => id !== productId);
           }
       });
 
@@ -326,6 +327,8 @@
         document.getElementById('checkout_btn').style.pointerEvents = 'auto';
         document.getElementById('checkout_btn').href = '/checkout';
       }
+
+      saveSelectedProducts(selectedProducts);
 
       $.ajax({
           url: '/api/update-cart-check-status',
