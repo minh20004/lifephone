@@ -1004,12 +1004,10 @@ class OrderController extends Controller
 
     public function applyVoucher(Request $request)
     {
-        // Kiểm tra xem khách hàng đã đăng nhập chưa
         if (!auth('customer')->check()) {
             return redirect()->route('customer.login')->with('error', 'Bạn phải đăng nhập để sử dụng voucher.');
         }
 
-        // Kiểm tra xem có sử dụng mã giảm giá nhập tay hay voucher đã chọn
         if ($request->has('selected_voucher')) {
             $voucher = $this->getVoucherByCode($request->selected_voucher);
         } elseif ($request->has('voucher_code')) {
@@ -1018,18 +1016,17 @@ class OrderController extends Controller
             return redirect()->back()->with('error', 'Không có mã giảm giá được chọn.');
         }
 
-        // Kiểm tra xem voucher có hợp lệ không
         if (!$voucher) {
             return redirect()->back()->with('error', 'Mã giảm giá không hợp lệ hoặc đã hết hạn.');
         }
 
-        // Kiểm tra tổng giá trị giỏ hàng
+        // Tính tổng giá trị của các sản phẩm được chọn
         $cartTotal = $this->calculateCartTotal();
+        
         if ($cartTotal < $voucher->min_order_value) {
             return redirect()->back()->with('error', 'Đơn hàng không đủ điều kiện áp dụng mã giảm giá.');
         }
 
-        // Kiểm tra xem khách hàng đã sử dụng voucher này chưa
         $customer = auth('customer')->user();
         $existingVoucherUsage = VoucherUsage::where('customer_id', $customer->id)
             ->where('voucher_id', $voucher->id)
@@ -1039,19 +1036,21 @@ class OrderController extends Controller
             return redirect()->back()->with('error', 'Bạn đã sử dụng mã giảm giá này rồi.');
         }
 
-        // Tính toán số tiền giảm giá
+        // Tính số tiền giảm giá dựa trên tổng giá trị sản phẩm được chọn
         $discount = $cartTotal * ($voucher->discount_percentage / 100);
 
-        // Lưu thông tin voucher vào session
+        // Kiểm tra và áp dụng giới hạn số tiền giảm tối đa
+        if ($voucher->max_discount_amount > 0 && $discount > $voucher->max_discount_amount) {
+            $discount = $voucher->max_discount_amount;
+        }
+
         session()->put('voucher', [
             'code' => $voucher->code,
             'discount' => $discount,
         ]);
 
-        // Tính toán tổng giá trị sau khi áp dụng mã giảm giá
         $estimatedTotal = $cartTotal - $discount;
 
-        // Trả về view với thông tin cập nhật
         return redirect()->route('checkout')->with([
             'success' => 'Mã giảm giá đã được áp dụng.',
             'discount' => number_format($discount, 0, ',', '.'),
@@ -1066,12 +1065,15 @@ class OrderController extends Controller
 
     private function calculateCartTotal()
     {
-        // Lấy tổng giá trị giỏ hàng của khách hàng
         $customerId = auth('customer')->check() ? auth('customer')->id() : null;
+        $total = 0;
 
         if ($customerId) {
             // Nếu khách hàng đã đăng nhập, lấy dữ liệu giỏ hàng từ cơ sở dữ liệu
-            $cartItems = Cart::where('customer_id', $customerId)->get();
+            $cartItems = Cart::where('customer_id', $customerId)
+                ->where('is_checked', true) // Chỉ tính tổng cho các sản phẩm được chọn
+                ->get();
+            
             return $cartItems->sum(function ($item) {
                 return $item->price * $item->quantity;
             });
@@ -1079,21 +1081,19 @@ class OrderController extends Controller
 
         // Nếu khách hàng chưa đăng nhập, lấy dữ liệu giỏ hàng từ session
         $cartItems = session()->get('cart', []);
-        $totalPrice = 0;
 
         foreach ($cartItems as $productId => $models) {
-            if (is_array($models)) {
-                foreach ($models as $modelId => $colors) {
-                    if (is_array($colors)) {
-                        foreach ($colors as $colorId => $cartItem) {
-                            $totalPrice += $cartItem['price'] * $cartItem['quantity'];
-                        }
+            foreach ($models as $modelId => $colors) {
+                foreach ($colors as $colorId => $cartItem) {
+                    // Chỉ tính tổng cho các sản phẩm được chọn
+                    if (isset($cartItem['is_checked']) && $cartItem['is_checked'] === true) {
+                        $total += $cartItem['price'] * $cartItem['quantity'];
                     }
                 }
             }
         }
 
-        return $totalPrice;
+        return $total;
     }
 
 
