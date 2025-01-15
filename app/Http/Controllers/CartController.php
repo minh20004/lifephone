@@ -547,27 +547,28 @@ class CartController extends Controller
     $selectedItems = $request->input('selected_items', []);
     $customerId = $request->input('customer_id');
 
-    if (empty($selectedItems)) {
-        return response()->json(['success' => false, 'message' => 'Không có sản phẩm nào được chọn']);
-    }
+    // if (empty($selectedItems)) {
+    //     return response()->json(['success' => false, 'message' => 'Không có sản phẩm nào được chọn']);
+    // }
 
     if ($customerId) {
         $cartItems = Cart::where('customer_id', $customerId)->get();
 
         $selectedVariants = [];
+        if (!empty($selectedItems)) {
+            foreach ($selectedItems as $item) {
+                list($productId, $capacityId, $colorId) = explode('-', $item);
 
-        foreach ($selectedItems as $item) {
-            list($productId, $capacityId, $colorId) = explode('-', $item);
+                $variant = ProductVariant::where('product_id', $productId)
+                    ->where('capacity_id', $capacityId)  // Tương đương với modelId
+                    ->where('color_id', $colorId)
+                    ->first();
 
-            $variant = ProductVariant::where('product_id', $productId)
-                ->where('capacity_id', $capacityId)  // Tương đương với modelId
-                ->where('color_id', $colorId)
-                ->first();
-
-            if ($variant) {
-                $selectedVariants[] = $variant->id;  // Lưu các variant_id được chọn
-            } else {
-                return response()->json(['success' => false, 'message' => "Sản phẩm với thông tin $productId-$capacityId-$colorId không tồn tại"]);
+                if ($variant) {
+                    $selectedVariants[] = $variant->id;  // Lưu các variant_id được chọn
+                } else {
+                    return response()->json(['success' => false, 'message' => "Sản phẩm với thông tin $productId-$capacityId-$colorId không tồn tại"]);
+                }
             }
         }
 
