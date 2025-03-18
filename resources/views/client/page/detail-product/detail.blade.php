@@ -9,9 +9,9 @@
         <div class="product-description">
           {!! $product->description !!}
       </div>
-      
-      
-      
+
+
+
         <ul class="list-unstyled d-flex flex-column gap-3 fs-sm pb-3 m-0 mb-2 mb-sm-3">
           <li class="d-flex align-items-center position-relative pe-4">
             <span>Model:</span>
@@ -101,7 +101,7 @@
                 <i class="ci-shopping-cart fs-base animate-target ms-n1 me-2"></i>
                 Thêm vào giỏ hàng
               </button>
-              <button type="button" class="btn btn-icon btn-secondary animate-pulse" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Add to Wishlist" aria-label="Add to Wishlist">
+              <button type="button" class="btn btn-icon btn-secondary animate-pulse" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Add to Wishlist" aria-label="Add to Wishlist" data-id="{{$product->id}}">
                 <i class="ci-heart fs-base animate-target"></i>
               </button>
               <button type="button" class="btn btn-icon btn-secondary animate-rotate" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Compare" aria-label="Compare">

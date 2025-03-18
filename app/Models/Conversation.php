@@ -8,26 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class Conversation extends Model
 {
     use HasFactory;
+    protected $fillable = ['userId', 'customerId', 'status'];
 
-    protected $fillable = [
-        'customer_id',
-        'admin_id',
-    ];
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'userId');
+    }
 
-    // Quan hệ với model User (người dùng tham gia cuộc hội thoại)
     public function customer()
     {
-        return $this->belongsTo(User::class, 'customer_id');
+        return $this->belongsTo(Customer::class, 'customerId');
     }
 
-    public function admin()
-    {
-        return $this->belongsTo(User::class, 'admin_id');
-    }
-
-    // Quan hệ với model Message (các tin nhắn trong cuộc hội thoại)
     public function messages()
     {
-        return $this->hasMany(Message::class);
+        return $this->hasMany(Message::class, 'conversationId');
     }
 }

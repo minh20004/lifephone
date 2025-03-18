@@ -1,4 +1,4 @@
- 
+
  @extends('client.layout.master')
  @section('title')
      Lifephone
@@ -135,7 +135,7 @@
             <img src="{{ asset('storage/' . $product->image_url) }}" class="swiper-thumb-img" alt="Thumbnail">
           </div>
         </div>
-      
+
         <!-- ảnh gallery -->
         @foreach (json_decode($product->gallery_image, true) as $galleryImage)
           <div class="swiper-slide swiper-thumb">
@@ -145,7 +145,7 @@
           </div>
         @endforeach
       </div>
-            
+
         </div>
       </div>
 
@@ -165,7 +165,7 @@
                         $capacities = $product->variants->unique('capacity_id');
                     @endphp
                     @foreach ($capacities as $variant)
-                        <input type="radio" class="btn-check model-option" name="model-options" id="model-{{ $variant->capacity->id }}" 
+                        <input type="radio" class="btn-check model-option" name="model-options" id="model-{{ $variant->capacity->id }}"
                               value="{{ $variant->capacity->id }}" {{ $loop->first ? 'checked' : '' }}>
                         <label for="model-{{ $variant->capacity->id }}" class="btn btn-sm btn-outline-secondary">{{ $variant->capacity->name }} GB</label>
                     @endforeach
@@ -180,14 +180,19 @@
                         $colors = $product->variants->unique('color_id');
                     @endphp
                     @foreach ($colors as $variant)
-                        <input type="radio" class="btn-check color-option" name="color-options" id="color-{{ $variant->color->id }}" 
+                        <input type="radio" class="btn-check color-option" name="color-options" id="color-{{ $variant->color->id }}"
                               value="{{ $variant->color->id }}" data-color-name="{{ $variant->color->name }}">
                         <label for="color-{{ $variant->color->id }}" class="btn btn-color fs-xl" style="color: {{ $variant->color->code }};">
                             <span class="visually-hidden">{{ $variant->color->name }}</span>
                         </label>
                     @endforeach
                 </div>
-                
+                @if ($errors->has('color-options'))
+                    <div class="text-danger mt-2">
+                        {{ $errors->first('color-options') }}
+                    </div>
+                @endif
+
                 <!-- Hiển thị giá -->
                 <div class="d-flex flex-wrap align-items-center mb-2">
                     <div class="fs-3 mb-0 text-danger fw-bold" id="productPrice" data-base-price="{{ $minPrice }}">{{ number_format($minPrice, 0, ',', '.') }} đ</div>
@@ -208,8 +213,8 @@
                   <script>
                     const variants = @json($variants);
                   </script>
-              
-            
+
+
                 <!-- Count + Buttons -->
                 <div class="d-flex flex-wrap flex-sm-nowrap flex-md-wrap flex-lg-nowrap gap-3 gap-lg-2 gap-xl-3 mb-4">
                   <div class="count-input flex-shrink-0 order-sm-1">
@@ -221,7 +226,9 @@
                       <i class="ci-plus"></i>
                     </button>
                   </div>
-                  <button type="button" class="btn btn-icon btn-lg btn-secondary animate-pulse order-sm-3 order-md-2 order-lg-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Add to Wishlist" aria-label="Add to Wishlist">
+
+
+                  <button type="button" class="btn btn-icon btn-lg btn-secondary animate-pulse order-sm-3 order-md-2 order-lg-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Add to Wishlist" aria-label="Add to Wishlist" data-id="{{$product->id}}">
                     <i class="ci-heart fs-lg animate-target"></i>
                   </button>
                   <button type="button" class="btn btn-icon btn-lg btn-secondary animate-rotate order-sm-4 order-md-3 order-lg-4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Compare" aria-label="Compare">
@@ -232,6 +239,11 @@
                     Thêm vào giỏ hàng
                   </button>
                 </div>
+                @if ($errors->has('quantity'))
+                      <div class="text-danger mt-2">
+                          {{ $errors->first('quantity') }}
+                      </div>
+                  @endif
             </form>
 
             <!-- Features -->
@@ -305,7 +317,7 @@
                 </button>
               </h3>
               <div class="accordion-collapse collapse" id="payment" aria-labelledby="headingPayment" data-bs-parent="#infoAccordion">
-                <div class="accordion-body">Trải nghiệm giao dịch không rắc rối với <a class="fw-medium" href="#!"> các tùy chọn thanh toán linh hoạt</a> và các tiện ích tín dụng của chúng tôi. Tìm hiểu thêm về 
+                <div class="accordion-body">Trải nghiệm giao dịch không rắc rối với <a class="fw-medium" href="#!"> các tùy chọn thanh toán linh hoạt</a> và các tiện ích tín dụng của chúng tôi. Tìm hiểu thêm về
                   các phương thức thanh toán khác nhau được chấp nhận, các gói trả góp và bất kỳ ưu đãi tín dụng độc quyền nào có sẵn để giúp trải nghiệm mua sắm của bạn trở nên liền mạch.</div>
               </div>
             </div>
@@ -451,7 +463,7 @@
             </div>
           </div>
 
-          
+
         </div>
       </div>
 
