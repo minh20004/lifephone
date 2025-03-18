@@ -8,30 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class Message extends Model
 {
     use HasFactory;
+    protected $fillable = ['conversationId', 'senderId', 'senderType', 'content', 'iv', 'status'];
 
-    protected $fillable = [
-        'sender_id',
-        'receiver_id',
-        'conversation_id',
-        'message',
-        'is_read',
-    ];
-
-    // Quan hệ với người gửi
-    public function sender()
-    {
-        return $this->belongsTo(User::class, 'sender_id');
-    }
-
-    // Quan hệ với người nhận
-    public function receiver()
-    {
-        return $this->belongsTo(User::class, 'receiver_id');
-    }
-
-    // Quan hệ với cuộc hội thoại
     public function conversation()
     {
-        return $this->belongsTo(Conversation::class);
+        return $this->belongsTo(Conversation::class, 'conversationId');
+    }
+
+    public function senderUser()
+    {
+        return $this->belongsTo(User::class, 'senderId')->where('senderType', 'admin');
+    }
+
+    public function senderCustomer()
+    {
+        return $this->belongsTo(Customer::class, 'senderId')->where('senderType', 'customer');
     }
 }

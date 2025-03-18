@@ -12,7 +12,7 @@ class Category extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'categories';
 
-    protected $fillable = ['name','status'];
+    protected $fillable = ['name','status', 'image', 'image_page'];
 
     public function getAll(){
         return self::all(); // Sử dụng Eloquent

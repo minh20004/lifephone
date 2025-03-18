@@ -1,4 +1,4 @@
- 
+
  @extends('client.layout.master')
  @section('title')
      Lifephone
@@ -7,9 +7,9 @@
  <!-- Breadcrumb -->
  <nav class="container pt-3 my-3 my-md-4" aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="home-electronics.html">Home</a></li>
-      <li class="breadcrumb-item"><a href="shop-catalog-electronics.html">Shop</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Product page</li>
+      <li class="breadcrumb-item"><a href="home-electronics.html">Trang chủ</a></li>
+      <li class="breadcrumb-item"><a href="shop-catalog-electronics.html">Sản phẩm</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Chi tiết sản phẩm</li>
     </ol>
   </nav>
 
@@ -29,18 +29,20 @@
           <a class="nav-link" href="#detail">Chi tiết sản phẩm</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="shop-product-reviews-electronics.html">Đánh giá (68)</a>
+          <a class="nav-link" href="{{ route('products.reviews', $product->id) }}">Đánh giá ({{ $reviewCount}})</a>
         </li>
       </ul>
       <a class="d-none d-md-flex align-items-center gap-2 text-decoration-none ms-auto mb-1" href="#reviews">
-        <div class="d-flex gap-1 fs-sm">
-          <i class="ci-star-filled text-warning"></i>
-          <i class="ci-star-filled text-warning"></i>
-          <i class="ci-star-filled text-warning"></i>
-          <i class="ci-star-filled text-warning"></i>
-          <i class="ci-star-half text-warning"></i>
-        </div>
-        <span class="text-body-tertiary fs-xs">68 reviews</span>
+      @for ($i = 1; $i <= 5; $i++)
+          @if ($i <=floor($averageRating))
+          <i class="ci-star-filled text-warning"></i> <!-- Sao đầy -->
+          @elseif ($i == ceil($averageRating) && $averageRating - floor($averageRating) > 0)
+          <i class="ci-star-half text-warning"></i> <!-- Sao nửa -->
+          @else
+          <i class="ci-star text-body-tertiary opacity-60"></i> <!-- Sao rỗng -->
+          @endif
+          @endfor
+        <span class="text-body-tertiary fs-xs">{{ $reviewCount}} reviews</span>
       </a>
     </div>
   </section>
@@ -135,7 +137,7 @@
             <img src="{{ asset('storage/' . $product->image_url) }}" class="swiper-thumb-img" alt="Thumbnail">
           </div>
         </div>
-      
+
         <!-- ảnh gallery -->
         @foreach (json_decode($product->gallery_image, true) as $galleryImage)
           <div class="swiper-slide swiper-thumb">
@@ -145,7 +147,7 @@
           </div>
         @endforeach
       </div>
-            
+
         </div>
       </div>
 
@@ -159,35 +161,41 @@
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
                 <!-- Model dung lượng -->
                 <div class="pb-3 mb-2 mb-lg-3">
-                  <label class="form-label fw-semibold pb-1 mb-2">Model</label>
+                  <label class="form-label fw-semibold pb-1 mb-2">Dung lượng</label>
                   <div class="d-flex flex-wrap gap-2">
                     @php
                         $capacities = $product->variants->unique('capacity_id');
                     @endphp
                     @foreach ($capacities as $variant)
-                        <input type="radio" class="btn-check model-option" name="model-options" id="model-{{ $variant->capacity->id }}" 
+                        <input type="radio" class="btn-check model-option" name="model-options" id="model-{{ $variant->capacity->id }}"
                               value="{{ $variant->capacity->id }}" {{ $loop->first ? 'checked' : '' }}>
                         <label for="model-{{ $variant->capacity->id }}" class="btn btn-sm btn-outline-secondary">{{ $variant->capacity->name }} GB</label>
                     @endforeach
                   </div>
                 </div>
+                
 
                 <!-- Color màu sắc -->
                 <div class="pb-3 mb-3 mb-lg-3">
-                  <label class="form-label fw-semibold pb-1 mb-2">Color: <span class="text-body fw-normal fs-6" id="colorOption">{{ $product->variants->first()->color->name }}</span></label>
+                  <label class="form-label fw-semibold pb-1 mb-2">Màu sắc: <span class="text-body fw-normal fs-6" id="colorOption">{{ $product->variants->first()->color->name }}</span></label>
                   <div class="d-flex flex-wrap gap-2 mb-2" >
                     @php
                         $colors = $product->variants->unique('color_id');
                     @endphp
                     @foreach ($colors as $variant)
-                        <input type="radio" class="btn-check color-option" name="color-options" id="color-{{ $variant->color->id }}" 
+                        <input type="radio" class="btn-check color-option" name="color-options" id="color-{{ $variant->color->id }}"
                               value="{{ $variant->color->id }}" data-color-name="{{ $variant->color->name }}">
                         <label for="color-{{ $variant->color->id }}" class="btn btn-color fs-xl" style="color: {{ $variant->color->code }};">
                             <span class="visually-hidden">{{ $variant->color->name }}</span>
                         </label>
                     @endforeach
                 </div>
-                
+                @if ($errors->has('color-options'))
+                    <div class="text-danger mt-2">
+                        {{ $errors->first('color-options') }}
+                    </div>
+                @endif
+
                 <!-- Hiển thị giá -->
                 <div class="d-flex flex-wrap align-items-center mb-2">
                     <div class="fs-3 mb-0 text-danger fw-bold" id="productPrice" data-base-price="{{ $minPrice }}">{{ number_format($minPrice, 0, ',', '.') }} đ</div>
@@ -208,8 +216,8 @@
                   <script>
                     const variants = @json($variants);
                   </script>
-              
-            
+
+
                 <!-- Count + Buttons -->
                 <div class="d-flex flex-wrap flex-sm-nowrap flex-md-wrap flex-lg-nowrap gap-3 gap-lg-2 gap-xl-3 mb-4">
                   <div class="count-input flex-shrink-0 order-sm-1">
@@ -221,9 +229,11 @@
                       <i class="ci-plus"></i>
                     </button>
                   </div>
-                  <button type="button" class="btn btn-icon btn-lg btn-secondary animate-pulse order-sm-3 order-md-2 order-lg-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Add to Wishlist" aria-label="Add to Wishlist">
+
+
+                  {{-- <button type="button" class="btn btn-icon btn-lg btn-secondary animate-pulse order-sm-3 order-md-2 order-lg-3" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Add to Wishlist" aria-label="Add to Wishlist" data-id="{{$product->id}}">
                     <i class="ci-heart fs-lg animate-target"></i>
-                  </button>
+                  </button> --}}
                   <button type="button" class="btn btn-icon btn-lg btn-secondary animate-rotate order-sm-4 order-md-3 order-lg-4" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-sm" data-bs-title="Compare" aria-label="Compare">
                     <i class="ci-refresh-cw fs-lg animate-target"></i>
                   </button>
@@ -232,6 +242,11 @@
                     Thêm vào giỏ hàng
                   </button>
                 </div>
+                @if ($errors->has('quantity'))
+                      <div class="text-danger mt-2">
+                          {{ $errors->first('quantity') }}
+                      </div>
+                  @endif
             </form>
 
             <!-- Features -->
@@ -266,16 +281,6 @@
                 <td class="py-2">Hôm nay</td>
                 <td class="text-body-emphasis fw-semibold text-end py-2 pe-0">Miễn phí</td>
               </tr>
-              <tr>
-                <td class="py-2 ps-0">Nhận hàng từ bưu điện</td>
-                <td class="py-2">Ngày mai</td>
-                <td class="text-body-emphasis fw-semibold text-end py-2 pe-0">50.0000 đ</td>
-              </tr>
-              <tr>
-                <td class="py-2 ps-0">Giang hàng bằng chuyển phát nhanh</td>
-                <td class="py-2">2-3 ngày </td>
-                <td class="text-body-emphasis fw-semibold text-end py-2 pe-0">35.000 đ</td>
-              </tr>
             </tbody>
           </table>
 
@@ -305,7 +310,7 @@
                 </button>
               </h3>
               <div class="accordion-collapse collapse" id="payment" aria-labelledby="headingPayment" data-bs-parent="#infoAccordion">
-                <div class="accordion-body">Trải nghiệm giao dịch không rắc rối với <a class="fw-medium" href="#!"> các tùy chọn thanh toán linh hoạt</a> và các tiện ích tín dụng của chúng tôi. Tìm hiểu thêm về 
+                <div class="accordion-body">Trải nghiệm giao dịch không rắc rối với <a class="fw-medium" href="#!"> các tùy chọn thanh toán linh hoạt</a> và các tiện ích tín dụng của chúng tôi. Tìm hiểu thêm về
                   các phương thức thanh toán khác nhau được chấp nhận, các gói trả góp và bất kỳ ưu đãi tín dụng độc quyền nào có sẵn để giúp trải nghiệm mua sắm của bạn trở nên liền mạch.</div>
               </div>
             </div>
@@ -353,7 +358,7 @@
 
   <!-- Viewed products (Carousel) -->
   <section class="container pb-4 pb-md-5 mb-2 mb-sm-0 mb-lg-2 mb-xl-4">
-    <h2 class="h3 border-bottom pb-4 mb-0">Sản phẩm đã xem</h2>
+    <h2 class="h3 border-bottom pb-4 mb-0">Sản phẩm tương tự</h2>
 
     <!-- Product carousel -->
     <div class="position-relative mx-md-1">
@@ -385,15 +390,17 @@
         }
       }">
         <div class="swiper-wrapper">
-
+          @foreach($relatedProducts as $relatedProduct)
           <!-- Item -->
           <div class="swiper-slide">
             <div class="product-card animate-underline hover-effect-opacity bg-body rounded">
               <div class="position-relative">
                 <div class="position-absolute top-0 end-0 z-2 hover-effect-target opacity-0 mt-3 me-3">
                   <div class="d-flex flex-column gap-2">
-                    <button type="button" class="btn btn-icon btn-secondary animate-pulse d-none d-lg-inline-flex" aria-label="Add to Wishlist">
-                      <i class="ci-heart fs-base animate-target"></i>
+                    <button type="button"
+                        class="btn btn-icon btn-secondary animate-pulse d-none d-lg-inline-flex"
+                        aria-label="Add to Wishlist" data-id="{{$relatedProduct->id}}">
+                        <i class="ci-heart fs-base animate-target"></i>
                     </button>
                     <button type="button" class="btn btn-icon btn-secondary animate-rotate d-none d-lg-inline-flex" aria-label="Compare">
                       <i class="ci-refresh-cw fs-base animate-target"></i>
@@ -419,42 +426,51 @@
                     </li>
                   </ul>
                 </div>
-                <a class="d-block rounded-top overflow-hidden p-3 p-sm-4" href="#!">
+                <a class="d-block rounded-top overflow-hidden p-3 p-sm-4" href="{{ route('product.show', $relatedProduct->id) }}">
                   <div class="ratio" style="--cz-aspect-ratio: calc(240 / 258 * 100%)">
-                    <img src="{{asset('client/img/shop/electronics/13.png')}}" alt="Dualsense Edge">
+                    <img src="{{ asset('storage/' . $relatedProduct->image_url) }}" alt="{{ $relatedProduct->name }}">
                   </div>
                 </a>
               </div>
               <div class="w-100 min-w-0 px-1 pb-2 px-sm-3 pb-sm-3">
                 <div class="d-flex align-items-center gap-2 mb-2">
                   <div class="d-flex gap-1 fs-xs">
-                    <i class="ci-star-filled text-warning"></i>
-                    <i class="ci-star-filled text-warning"></i>
-                    <i class="ci-star-filled text-warning"></i>
-                    <i class="ci-star-filled text-warning"></i>
-                    <i class="ci-star-filled text-warning"></i>
+                    @for ($i = 1; $i <= 5; $i++)
+                        @if ($i <= floor($relatedProduct->rating))
+                            <i class="ci-star-filled text-warning"></i>
+                        @elseif($i == ceil($relatedProduct->rating))
+                            <i class="ci-star-half text-warning"></i>
+                        @else
+                            <i class="ci-star text-muted"></i>
+                        @endif
+                    @endfor
                   </div>
-                  <span class="text-body-tertiary fs-xs">(187)</span>
                 </div>
                 <h3 class="pb-1 mb-2">
-                  <a class="d-block fs-sm fw-medium text-truncate" href="#!">
-                    <span class="animate-target">Sony Dualsense Edge Controller</span>
+                  <a class="d-block fs-sm fw-medium text-truncate"
+                      href="{{ route('product.show', $relatedProduct->id) }}">
+                      <span class="animate-target">{{ $relatedProduct->name }}</span>
                   </a>
                 </h3>
                 <div class="d-flex align-items-center justify-content-between">
-                  <div class="h5 lh-1 mb-0">$200.00</div>
-                  <button type="button" class="product-card-button btn btn-icon btn-secondary animate-slide-end ms-2" aria-label="Add to Cart">
-                    <i class="ci-shopping-cart fs-base animate-target"></i>
+                  @php
+                      $minPrice = $relatedProduct->variants->min('price_difference');
+                  @endphp
+                  <div class="h5 lh-1 mb-0">{{ number_format($minPrice, 0, ',', '.') }} VNĐ</div>
+                  <button type="button"
+                      class="product-card-button btn btn-icon btn-secondary animate-slide-end ms-2"
+                      aria-label="Add to Cart">
+                      <i class="ci-shopping-cart fs-base animate-target"></i>
                   </button>
                 </div>
               </div>
             </div>
           </div>
-
           
+          @endforeach
+
         </div>
       </div>
-
       <!-- External slider prev/next buttons visible on screens < 500px wide (sm breakpoint) -->
       <div class="d-flex justify-content-center gap-2 mt-n2 mb-3 pb-1 d-sm-none">
         <button type="button" class="viewed-prev btn btn-prev btn-icon btn-outline-secondary bg-body rounded-circle animate-slide-start me-1" aria-label="Prev">

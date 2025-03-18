@@ -123,6 +123,12 @@ class ColorController extends Controller
     {
         $color = Color::findOrFail($id);
 
+        // Kiểm tra xem màu sắc có được sử dụng trong bất kỳ sản phẩm nào không
+        if ($color->productVariants()->exists()) {
+            return redirect()->route('color.index')
+                ->with('error', 'Không thể xóa màu sắc này vì đang được sử dụng trong sản phẩm!');
+        }
+
         $color->status = 0;
         $color->save();
 

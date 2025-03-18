@@ -20,7 +20,9 @@
                             <th>STT</th>
                             <th>Tên Màu Sắc</th>
                             <th>Mã Màu Sắc</th>
+                            @if(auth()->user()->role === 'admin')
                             <th>Hành động </th>
+                            @endif
                         </thead>
                         <tbody>
                             @foreach ($colors as $index => $item)
@@ -28,6 +30,7 @@
                                     <td>{{ $index + 1 }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->code }}</td>
+                                    @if(auth()->user()->role === 'admin')
                                     <td>
                                         <form action="{{ route('color.restore', $item->id) }}" method="POST">
                                             @csrf
@@ -35,6 +38,7 @@
                                                 onclick="return confirm('Bạn có chắc chắn muốn khôi phục màu sắc này không?')">Khôi phục</button>
                                         </form>
                                     </td>
+                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>

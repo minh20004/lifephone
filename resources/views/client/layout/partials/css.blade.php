@@ -21,12 +21,19 @@
 
 <!-- Vendor styles -->
 <link rel="stylesheet" href="{{ asset('client/vendor/swiper/swiper-bundle.min.css') }}">
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap JavaScript -->
 
 <!-- Bootstrap + Theme styles -->
 <link rel="preload" href="{{ asset('client/css/theme.min.css') }}" as="style">
 <link rel="preload" href="{{ asset('client/css/theme.rtl.min.css') }}" as="style">
 <link rel="stylesheet" href="{{ asset('client/css/theme.min.css') }}" id="theme-styles">
+<link rel="stylesheet" href="{{ asset('client/css/header.css') }}" id="theme-styles">
 
+<link rel="stylesheet" href="{{ asset('client/css/header.css') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <!-- Customizer -->
 <script src="{{ asset('client/js/customizer.min.js') }}"></script>
 
@@ -39,19 +46,19 @@
     }
 
     .product-description img {
-        max-width: 100%; 
+        max-width: 100%;
         height: auto;
         display: block;
-        margin: 10px 0; 
+        margin: 10px 0;
     }
 
     .product-description p {
-        margin-bottom: 10px; 
+        margin-bottom: 10px;
     }
 </style>
 {{-- chọn màu của sản phẩm --}}
 <style>
-              
+
     .btn-color {
         width: 30px;
         height: 30px;
@@ -60,18 +67,18 @@
         align-items: center;
         justify-content: center;
         padding: 1;
-        border: 2px solid #ddd; 
-        transition: border-color 0.3s; 
+        border: 2px solid #ddd;
+        transition: border-color 0.3s;
     }
 
-    
+
     .btn-color:hover {
         border-color: #333;
     }
 
-    
+
     .btn-check:checked + .btn-color {
-        border-color: #000; 
+        border-color: #000;
     }
 </style>
 {{-- /* Nút Chat */ --}}
@@ -265,4 +272,111 @@
     border-radius: 8px;
     cursor: pointer;
 }
+</style>
+{{-- form kiểm tra thong tin đon hàng --}}
+<style>
+    .progress-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 30px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .progress-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+        margin-top: 25px;
+    }
+
+    .progress-step .icon {
+        width: 45px;
+        height: 45px;
+        border: 2px solid #ddd;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        color: #ddd;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+    }
+
+    .progress-step .icon.completed {
+        color: #28a745;
+        border-color: #28a745;
+        background-color: #28a745;
+        color: white;
+    }
+
+    .progress-step .icon.completed-filled {
+        background-color: #28a745;
+        color: white;
+        border-color: #28a745;
+    }
+
+    .progress-step .icon.cancelled {
+        background-color: #dc3545;
+        color: white;
+        border-color: #dc3545;
+    }
+
+    .progress-step p {
+        color: #495057;
+        font-size: 0.85rem;
+        font-weight: 500;
+        margin-top: 8px;
+        white-space: nowrap;
+    }
+
+    .progress-line {
+        flex: 1;
+        height: 4px;
+        background-color: #e9ecef;
+        position: relative;
+        z-index: 1;
+        margin: 0 -40px;
+    }
+
+    .progress-line.completed {
+        background-color: #28a745;
+    }
+
+    .progress-line.cancelled {
+        background-color: #dc3545;
+    }
+
+    @media (max-width: 768px) {
+        .progress-container {
+            padding: 15px;
+            overflow-x: auto;
+            justify-content: flex-start;
+        }
+
+        .progress-step {
+            flex: 0 0 auto;
+            margin: 0 10px;
+        }
+
+        .progress-step .icon {
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
+        }
+
+        .progress-step p {
+            font-size: 0.8rem;
+        }
+
+        .progress-line {
+            min-width: 30px;
+        }
+    }
 </style>

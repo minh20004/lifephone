@@ -104,9 +104,9 @@ class CapacityController extends Controller
     {
         $capacity = Capacity::FindorFail($id);
 
-        // if ($capacity->capacities()->withTrashed()->count() > 0) {
-        //     return redirect()->route('capac$capacity.index')->with('error', 'Không thể xóa dung lượng vì vẫn còn sản phẩm trong dung lượng này.');
-        // }
+        if ($capacity->productVariants()->count() > 0) {
+            return redirect()->route('capacity.index')->with('error', 'Không thể xóa dung lượng vì vẫn còn sản phẩm trong dung lượng này.');
+        }
 
         $capacity->status = 0;
         $capacity->save();

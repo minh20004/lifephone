@@ -6,20 +6,22 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="m-3" style="margin-left: 20px">
-                    <a href="{{ route('product.index') }}"><b class="fs-4 fw-bold">Danh sách sản phẩm</b></a>
+                    <a href="{{ route('product-admin.index') }}"><b class="fs-4 fw-bold">Danh sách sản phẩm</b></a>
                 </div>
             </div>
             <div class="card">
                 <div class="card-body">
                     <div class="mb-3" style=" border-bottom: 1px solid #ddd; padding-bottom: 10px;margin-bottom: 10px;">
-                        <a href="{{ route('product.create') }}" class="btn mb-3 fs-6 fw-bold text-dark"
+                       @if(auth()->user()->role === 'admin')
+                        <a href="{{ route('product-admin.create') }}" class="btn mb-3 fs-6 fw-bold text-dark"
                             style="background:#9df99d "><i class="bi bi-cloud-plus-fill"></i>Thêm sản phẩm </a>
                         <a href="{{ route('product.trashed') }}" class="btn btn-danger mb-3">Xem sản phẩm đã bị xóa</a>
+                       @endif
                     </div>
 
                     <div class="d-flex justify-content-end">
                         <div class="btn btn-light mb-4 border ">
-                            <form action="{{ route('product.index') }}" method="GET">
+                            <form action="{{ route('product-admin.index') }}" method="GET">
                                 <div class="input-group">
                                     <input type="text" class="form-control search_input" name="search" value="{{ $search }}"
                                         placeholder="Tìm kiếm...">
@@ -36,11 +38,13 @@
                             <th>Mã sản phẩm</th>
                             <th>Tên sản phẩm</th>
                             <th>Hình ảnh</th>
-                            <th>Hình ảnh phụ</th>
-                            <th>Mô tả</th>
+                            <!-- <th>Hình ảnh phụ</th> -->
+                            <!-- <th>Mô tả</th> -->
                             <th>Danh mục</th>
                             <th>Biến thể</th>
+                            @if(auth()->user()->role === 'admin')
                             <th>Hành động</th>
+                            @endif
 
                         </thead>
                         <tbody>
@@ -53,38 +57,35 @@
                                         {{-- <img src="{{ Storage::url($item->image_url) }}" width="70px" height="70px" alt=""> --}}
                                         <img src="{{ asset('storage/' . $item->image_url) }}" alt=""  width="70px" height="70px">
                                     </td>
-                                    <td>
-                                        @if ($item->gallery_image)
-                                            @php
-                                                $galleryImages = json_decode($item->gallery_image);
-                                            @endphp
-                                            @foreach ($galleryImages as $galleryImage)
-                                                <img src="{{ Storage::url($galleryImage) }}" width="70px" alt="">
-                                            @endforeach
-                                        @else
-                                            Không có ảnh phụ
-                                        @endif
-                                    </td>
-                                    
-                                    <td>{!! Str::limit($item->description, 40) !!}</td>
                                     <td>{{ $item->category->name }}</td>
                                     <td><a href="{{ route('product.variants', $item->id) }}" class="btn btn-dark"><i class="bi bi-eye-fill"></i></a></td>
+                                    @if(auth()->user()->role === 'admin')
                                     <td class="d-flex">
                                         <div class="me-2">
-                                            <a href="{{ route('product.edit', $item->id) }}">
-                                                <button class="btn btn-warning"><i class="bi bi-pencil-square"></i></button>
-                                            </a>
+                                            @if(auth()->user()->role === 'admin')
+                                                <a href="{{ route('product-admin.edit', $item->id) }}">
+                                                    <button class="btn btn-warning"><i class="bi bi-pencil-square"></i></button>
+                                                </a>
+                                            @endif
                                         </div>
                                         <div>
-                                            <form action="{{ route('product.destroy', $item->id) }}" method="POST">
+                                            <form action="{{ route('product-admin.destroy', $item->id) }}" method="POST">
                                                 @method('DELETE')
                                                 @csrf
-                                                <button class="btn btn-danger"
-                                                    onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không')">
-                                                    <i class="bi bi-trash-fill"></i></button>
+                                                @if(auth()->user()->role === 'admin')
+                                                    <button class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?')">
+                                                        <i class="bi bi-trash-fill"></i>
+                                                    </button>
+                                                @else
+                                                    <!-- Nếu không phải admin, không hiển thị nút xóa -->
+                                                    <button class="btn btn-danger" style="display: none;">
+                                                        <i class="bi bi-trash-fill"></i>
+                                                    </button>
+                                                @endif
                                             </form>
-                                        </div>
+                                        </div>                                      
                                     </td>
+                                    @endif
                                 </tr>
                             @endforeach
 

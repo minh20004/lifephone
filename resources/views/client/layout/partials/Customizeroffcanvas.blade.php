@@ -1,4 +1,4 @@
-<div class="offcanvas offcanvas-end" id="customizer" tabindex="-1">
+{{-- <div class="offcanvas offcanvas-end" id="customizer" tabindex="-1">
     <div class="offcanvas-header border-bottom">
       <h4 class="h5 offcanvas-title">Customize theme</h4>
       <button class="btn-close" type="button" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -136,4 +136,4 @@
         Show code
       </button>
     </div>
-  </div>
+  </div> --}}

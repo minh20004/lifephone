@@ -19,7 +19,8 @@ class Voucher extends Model
         'min_order_value',
         'start_date',
         'end_date',
-        'usage_limit'
+        'usage_limit',
+        'image'
     ];
 
     public function orders()
